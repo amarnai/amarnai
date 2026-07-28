@@ -44,20 +44,18 @@ const CONTENT_SCRIPTS = [
 ];
 
 /**
- * Resources Gmail's own page is allowed to load from the extension, for the
- * "Amarnai Reply" button:
+ * Resources Gmail's own page is allowed to load from the extension:
  *   - pageWorld.js: InboxSDK's page-world half, which it injects into Gmail.
- *   - the button icon, rendered by Gmail inside its compose tray.
+ *   - the button icon, which InboxSDK's compose button loads by URL.
  *
- * Scoped to Gmail alone rather than <all_urls>: every other site is still unable
- * to see that the extension is installed. Emitted only alongside the content
- * scripts, so a build with injection disabled exposes nothing.
+ * Gmail alone, and only these two. The hand-rolled buttons on both providers
+ * build their icon as an inline SVG node instead (see content/core/replyIcon),
+ * so nothing here needs to be reachable from OWA. Narrow on purpose: every site
+ * not listed remains unable to probe for the extension. Emitted only alongside
+ * the content scripts, so a build with injection disabled exposes nothing.
  */
 const WEB_ACCESSIBLE_RESOURCES = [
-  // InboxSDK's page-world half is Gmail-only.
-  { resources: ["pageWorld.js"], matches: [GMAIL_MAIL_HOST] },
-  // The button icon renders inside both providers' own pages.
-  { resources: ["reply-button-icon.svg"], matches: MAIL_HOSTS },
+  { resources: ["pageWorld.js", "reply-button-icon.svg"], matches: [GMAIL_MAIL_HOST] },
 ];
 
 /**

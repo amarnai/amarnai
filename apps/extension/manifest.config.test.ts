@@ -115,19 +115,14 @@ describe("buildManifest — native summary injection", () => {
   // InboxSDK's page-world half and the button icon are loaded by Gmail's own
   // page, so they must be web-accessible — but only to Gmail. Any wider match
   // would let unrelated sites probe for the extension.
-  it("exposes pageWorld to Gmail alone, and the icon to the mail hosts only", () => {
+  it("exposes only InboxSDK's two files, to Gmail alone", () => {
+    // The injected buttons use an inline SVG, so OWA needs nothing exposed.
     for (const browser of ["chrome", "firefox"] as const) {
       const m = buildManifest({ apiUrl: API, browser }) as Record<string, unknown>;
       expect(m["web_accessible_resources"]).toEqual([
-        { resources: ["pageWorld.js"], matches: ["https://mail.google.com/*"] },
         {
-          resources: ["reply-button-icon.svg"],
-          matches: [
-            "https://mail.google.com/*",
-            "https://outlook.office.com/*",
-            "https://outlook.office365.com/*",
-            "https://outlook.live.com/*",
-          ],
+          resources: ["pageWorld.js", "reply-button-icon.svg"],
+          matches: ["https://mail.google.com/*"],
         },
       ]);
     }

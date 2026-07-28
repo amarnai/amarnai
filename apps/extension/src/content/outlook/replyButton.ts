@@ -27,7 +27,6 @@ import { detectOutlookThread } from "./detectThread.js";
 
 export const OWA_BUTTON_ATTRIBUTE = "data-amarnai-owa-reply";
 
-const REV = "owa-r3";
 const OBSERVE_THROTTLE_MS = 300;
 /** How long a generated draft waits for a compose editor before it lapses. */
 const PENDING_TTL_MS = 90_000;
@@ -163,7 +162,7 @@ export function findReplyCluster(
 }
 
 /** The inline compose editor, once a reply (or any compose) is open. */
-export function findComposeEditor(doc: Document): HTMLElement | null {
+function findComposeEditor(doc: Document): HTMLElement | null {
   return doc.querySelector<HTMLElement>('[contenteditable="true"][role="textbox"]');
 }
 
@@ -188,7 +187,7 @@ function tryInsertPending(doc: Document): void {
   lastInserted = wrapper;
   pending = null;
   setState(doc, { kind: "inserted" });
-  debugLog(`reply button (owa): draft inserted (${REV})`);
+  debugLog("reply button (owa): draft inserted");
 }
 
 async function onClick(doc: Document): Promise<void> {
@@ -331,18 +330,18 @@ export function ensureOutlookReplyButton(doc: Document = document): void {
     // stranded where it first fit.
     if (cluster && existing.parentElement !== cluster.container) {
       cluster.container.appendChild(existing);
-      debugLog(`reply button (owa): re-homed to the reply row (${REV})`);
+      debugLog("reply button (owa): re-homed to the reply row");
     }
   } else {
     if (!cluster) {
-      debugLog(`reply button (owa): native reply row not found (${REV})`);
+      debugLog("reply button (owa): native reply row not found");
       return;
     }
     ensureOwaStyles(doc);
     cluster.container.appendChild(makeButton(doc));
     render(doc);
     debugLog(
-      `reply button (owa): injected (${REV}) —`,
+      "reply button (owa): injected —",
       `row buttons=${cluster.container.children.length - 1}`,
     );
   }

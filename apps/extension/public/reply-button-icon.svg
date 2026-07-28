@@ -2,9 +2,11 @@
   <!-- Amarnai Reply — canonical icon.
        Geometry derived from the Amarnai logo wedge (aspect ~1.58:1,
        barb notch depth ~24% of length), mirrored to point left.
-       Colors are baked in rather than currentColor: this file is loaded via
-       <img> (entry points) and iconUrl (InboxSDK compose button), and
-       currentColor does not inherit into an <img> — it renders black there.
+       Sole consumer: InboxSDK's compose-button `iconUrl`, which takes a URL and
+       cannot take a node. The hand-rolled buttons inline the same geometry from
+       content/core/replyIcon.ts instead — keep the two in step.
+       Colors are baked in rather than currentColor because currentColor does
+       not inherit into a URL-loaded SVG; it would render black.
        Clay brand: #BB5B33 on light surfaces, #CD6A3F on dark; the media query
        is honored inside <img> SVGs and tracks the OS scheme (checked against
        Gmail's own theme in QA). -->

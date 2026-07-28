@@ -69,10 +69,6 @@ function ensureEntryStyles(doc: Document): void {
   doc.head.appendChild(style);
 }
 
-/** Bumped on every behavior change; printed in the logs so a stale build is
- * recognizable at a glance instead of masquerading as "nothing changed". */
-const REV = "r9";
-
 const OBSERVE_THROTTLE_MS = 300;
 
 let disabled = false;
@@ -159,35 +155,7 @@ function injectBarButton(root: Element, doc: Document): void {
   makeAccessible(pill, () => activate(nativeReply, doc));
 
   anchor.insertAdjacentElement("afterend", pill);
-  debugLog(
-    `reply entry: bottom-bar button injected (${REV}) —`,
-    `pad=${pill.style.paddingLeft || "?"}/${pill.style.paddingRight || "?"}`,
-  );
-  // One structural dump of the whole bar row: names, widths, hidden markers.
-  // This is the line that identifies "the invisible element" — whatever sits in
-  // the row that should not, from Gmail or another extension, shows up here.
-  const rowChildren = Array.from(pill.parentElement?.children ?? []) as HTMLElement[];
-  debugLog(
-    `reply entry: bar layout (${REV}) —`,
-    rowChildren
-      .map((el) => {
-        const name =
-          el === pill
-            ? "AMARNAI"
-            : `${el.tagName.toLowerCase()}.${String(el.className).split(" ")[0] || "?"}`;
-        const width = el.getBoundingClientRect().width;
-        return `${name}(${width.toFixed(0)}w${isRendered(el) ? "" : ",hidden"})`;
-      })
-      .join(" "),
-  );
-}
-
-/** Visibly rendered: takes layout space AND is actually painted. */
-function isRendered(el: HTMLElement): boolean {
-  if (el.getBoundingClientRect().width <= 0) return false;
-  const style = el.ownerDocument.defaultView?.getComputedStyle(el);
-  if (!style) return true;
-  return style.visibility === "visible" && style.display !== "none" && style.opacity !== "0";
+  debugLog("reply entry: bottom-bar button injected");
 }
 
 const MESSAGE_MARKER = "[data-legacy-message-id], [data-message-id]";
@@ -262,12 +230,6 @@ function findHeaderAnchor(
   // Last resort: any popup button at all beats no icon.
   if (!generic) generic = [...allButtons].reverse().find(isPopup) ?? null;
 
-  debugLog(
-    "reply entry: structural header scan —",
-    `buttons=${allButtons.length}`,
-    `popups=${allButtons.filter(isPopup).length}`,
-    `anchored=${generic ? "yes" : "no"}`,
-  );
   // Unknown classes may paint the anchor's own glyph (the three dots) via CSS;
   // borrowing them would draw that glyph under our icon. Style inline instead.
   return generic ? { anchor: generic, borrowClasses: false } : null;
@@ -319,7 +281,7 @@ function injectHeaderButton(root: Element, doc: Document): void {
 
   anchor.insertAdjacentElement("beforebegin", button);
   debugLog(
-    `reply entry: header button injected (${REV})`,
+    "reply entry: header button injected",
     borrowClasses ? "(class-anchored)" : "(structural anchor)",
   );
 }
