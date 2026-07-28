@@ -42,8 +42,51 @@ const ATTACHMENT_EXPAND = "attachments($select=id,name,contentType,size,isInline
 // getThreadSnapshot, which reads the mailbox and partitions by folder.
 const INBOX_MESSAGES = "/me/mailFolders/inbox/messages";
 
+// Sent Items is tracked by delta as well, but ONLY as a change signal: a reply
+// the user sends never touches the inbox, so without this the thread would not
+// re-sync and the reply would never be persisted. See listChangesSince.
+const SENT_MESSAGES = "/me/mailFolders/sentitems/messages";
+
 // Mailbox-wide message collection, used only by getThreadSnapshot.
 const ALL_MESSAGES = "/me/messages";
+
+/**
+ * Outlook needs TWO delta cursors (inbox + Sent Items) where the pipeline stores
+ * one opaque string. Both are carried in that one value as JSON rather than by
+ * adding a provider-specific column: `ProviderSyncState.historyId` is contracted
+ * as an opaque provider cursor, so its internal shape is this adapter's business.
+ *
+ * `sent` is optional so a cursor stored before Sent Items was tracked still
+ * parses — see {@link parseOutlookCursor}.
+ */
+type OutlookSyncCursor = { inbox: string; sent?: string };
+
+/**
+ * Cursors written before Sent Items tracking existed are a bare Graph deltaLink
+ * URL, not JSON. Those are read as inbox-only, and listChangesSince establishes
+ * the missing Sent Items cursor at "now" on the next sync. That upgrade is
+ * deliberately non-retroactive: adopting the sent cursor at "now" imports no
+ * history, whereas walking Sent Items from the beginning would re-surface every
+ * thread the user has ever replied to as changed, in one sync. The one-off
+ * repair script backfills that history instead.
+ */
+function parseOutlookCursor(cursor: string): OutlookSyncCursor {
+  if (!cursor.trimStart().startsWith("{")) return { inbox: cursor };
+  try {
+    const parsed = JSON.parse(cursor) as Partial<OutlookSyncCursor>;
+    if (typeof parsed.inbox !== "string" || parsed.inbox.length === 0) return { inbox: cursor };
+    return typeof parsed.sent === "string" && parsed.sent.length > 0
+      ? { inbox: parsed.inbox, sent: parsed.sent }
+      : { inbox: parsed.inbox };
+  } catch {
+    // Not JSON after all — treat the whole value as the inbox deltaLink.
+    return { inbox: cursor };
+  }
+}
+
+function serializeOutlookCursor(cursor: OutlookSyncCursor): string {
+  return JSON.stringify(cursor);
+}
 
 /**
  * The two well-known folders whose messages make up a thread snapshot: the inbox
@@ -296,63 +339,55 @@ export class GraphClient {
     const me = (await meRes.json()) as { mail?: string | null; userPrincipalName?: string };
     const emailAddress = (me.mail ?? me.userPrincipalName ?? "").toLowerCase();
 
-    // Establish the initial delta cursor at "now" without importing anything.
-    // Work/school mailboxes honor `$deltatoken=latest` (empty response with an
-    // immediate deltaLink), but consumer outlook.com mailboxes ignore it and
-    // enumerate the full inbox in pages instead — so follow nextLink pages,
-    // discarding the entries, until the terminal deltaLink appears. The large
-    // page size keeps that walk to ~1 request per 200 inbox messages, and it
-    // only runs when a cursor is first established. There is deliberately no
-    // empty-string fallback: persisting "" as a cursor is indistinguishable
-    // from "no cursor", which re-enters this branch on every sync and silently
-    // disables incremental sync forever — a chain that ends without a
-    // deltaLink must fail loudly instead.
-    let url = `${GRAPH_BASE_URL}${INBOX_MESSAGES}/delta?$deltatoken=latest`;
+    // Establish both delta cursors at "now" without importing anything.
+    const [inbox, sent] = await Promise.all([
+      this.establishDeltaCursor(INBOX_MESSAGES, accessToken),
+      this.establishDeltaCursor(SENT_MESSAGES, accessToken),
+    ]);
+    return { emailAddress, syncCursor: serializeOutlookCursor({ inbox, sent }) };
+  }
+
+  /**
+   * Point a folder's delta cursor at "now" without importing anything.
+   *
+   * Work/school mailboxes honor `$deltatoken=latest` (empty response with an
+   * immediate deltaLink), but consumer outlook.com mailboxes ignore it and
+   * enumerate the folder in pages instead — so follow nextLink pages, discarding
+   * the entries, until the terminal deltaLink appears. The large page size keeps
+   * that walk to ~1 request per 200 messages, and it only runs when a cursor is
+   * first established. There is deliberately no empty-string fallback: persisting
+   * "" as a cursor is indistinguishable from "no cursor", which re-enters this
+   * branch on every sync and silently disables incremental sync forever — a chain
+   * that ends without a deltaLink must fail loudly instead.
+   */
+  private async establishDeltaCursor(folderPath: string, accessToken: string): Promise<string> {
+    let url = `${GRAPH_BASE_URL}${folderPath}/delta?$deltatoken=latest`;
     for (;;) {
       const page = await this.graphGet<GraphMessage>(url, accessToken, { maxPageSize: 200 });
-      if (page["@odata.deltaLink"]) {
-        return { emailAddress, syncCursor: page["@odata.deltaLink"] };
-      }
+      if (page["@odata.deltaLink"]) return page["@odata.deltaLink"];
       if (!page["@odata.nextLink"]) {
         throw new Error(
-          "Graph inbox delta ended without a deltaLink — cannot establish a sync cursor",
+          `Graph ${folderPath} delta ended without a deltaLink — cannot establish a sync cursor`,
         );
       }
       url = page["@odata.nextLink"];
     }
   }
 
-  async listChangesSince(
-    cursor: string,
-  ): Promise<{ changedThreadIds: string[]; removedMessageIds: string[]; newCursor: string }> {
-    const accessToken = await this.refreshAccessToken();
-    const seen = new Set<string>();
-    const removed = new Set<string>();
-    let url = cursor;
-    let newCursor = cursor;
-
-    // Follow nextLink pages until the terminal deltaLink appears.
+  /** Follow a delta chain to its terminal deltaLink, collecting every entry. */
+  private async walkDelta(
+    startUrl: string,
+    accessToken: string,
+  ): Promise<{ entries: GraphDeltaEntry[]; newCursor: string }> {
+    const entries: GraphDeltaEntry[] = [];
+    let url = startUrl;
+    let newCursor = startUrl;
     for (;;) {
       const page: GraphListResponse<GraphDeltaEntry> = await this.graphGet<GraphDeltaEntry>(
         url,
         accessToken,
       );
-      for (const entry of page.value ?? []) {
-        // A message archived / deleted / moved out of the inbox surfaces as an
-        // `@removed` entry carrying only its id (no conversationId), because the
-        // message is gone from the synced folder. Since the inbox is the only
-        // scope we track, a move to Archive is indistinguishable from a delete —
-        // both are inbox-membership removals. Collect the id so the caller can
-        // resolve its thread from persisted data and re-sort it (Gmail parity:
-        // an INBOX-label removal re-sorts the whole thread). A normal
-        // created/updated entry carries a conversationId and re-sorts its thread
-        // directly.
-        if (entry["@removed"]) {
-          if (entry.id) removed.add(entry.id);
-        } else if (entry.conversationId) {
-          seen.add(entry.conversationId);
-        }
-      }
+      entries.push(...(page.value ?? []));
       if (page["@odata.deltaLink"]) {
         newCursor = page["@odata.deltaLink"];
         break;
@@ -360,11 +395,76 @@ export class GraphClient {
       if (!page["@odata.nextLink"]) break;
       url = page["@odata.nextLink"];
     }
+    return { entries, newCursor };
+  }
+
+  async listChangesSince(cursor: string): Promise<{
+    changedThreadIds: string[];
+    removedMessageIds: string[];
+    sentOnlyCandidateThreadIds: string[];
+    newCursor: string;
+  }> {
+    const accessToken = await this.refreshAccessToken();
+    const stored = parseOutlookCursor(cursor);
+
+    const seen = new Set<string>();
+    const removed = new Set<string>();
+
+    /**
+     * A message archived / deleted / moved out of the tracked folder surfaces as
+     * an `@removed` entry carrying only its id (no conversationId). For the inbox
+     * that is an inbox-membership removal (a move to Archive is indistinguishable
+     * from a delete); for Sent Items it is the user deleting their own sent copy.
+     * Either way the caller resolves the id to its thread from persisted data and
+     * re-sorts it, which drops the row (Gmail parity: an INBOX-label removal
+     * re-sorts the whole thread). A normal created/updated entry carries a
+     * conversationId and re-sorts its thread directly.
+     */
+    const collect = (entries: GraphDeltaEntry[], onConversation?: (id: string) => void) => {
+      for (const entry of entries) {
+        if (entry["@removed"]) {
+          if (entry.id) removed.add(entry.id);
+        } else if (entry.conversationId) {
+          onConversation?.(entry.conversationId);
+          seen.add(entry.conversationId);
+        }
+      }
+    };
+
+    const inbox = await this.walkDelta(stored.inbox, accessToken);
+    collect(inbox.entries);
+
+    // ── Sent Items ────────────────────────────────────────────────────────────
+    // Tracked purely as a change SIGNAL. A reply the user sends from Outlook never
+    // touches the inbox, so without this the thread never re-syncs and the reply
+    // is never persisted — the snapshot already returns Sent Items messages, but
+    // nothing would call it. Thread CONTENT still comes from getThreadSnapshot,
+    // and the not-found / removal rules stay inbox-derived there.
+    const sentOnlyCandidates = new Set<string>();
+    let sentCursor = stored.sent;
+    if (sentCursor === undefined) {
+      // Upgrade from an inbox-only cursor: adopt Sent Items at "now". Walking it
+      // from the beginning would report every thread the user has ever replied to
+      // as changed in a single sync.
+      sentCursor = await this.establishDeltaCursor(SENT_MESSAGES, accessToken);
+    } else {
+      const sent = await this.walkDelta(sentCursor, accessToken);
+      sentCursor = sent.newCursor;
+      // A conversation seen ONLY in Sent Items is the user's own outbound mail
+      // with no inbox activity this cycle. Flagged as a sent-only candidate so the
+      // worker skips it without a fetch when it was never imported (a new email
+      // awaiting a reply), while still processing it when it WAS imported (a reply
+      // to an existing thread) — which is the whole point of tracking this folder.
+      collect(sent.entries, (id) => {
+        if (!seen.has(id)) sentOnlyCandidates.add(id);
+      });
+    }
 
     return {
       changedThreadIds: Array.from(seen),
       removedMessageIds: Array.from(removed),
-      newCursor,
+      sentOnlyCandidateThreadIds: Array.from(sentOnlyCandidates),
+      newCursor: serializeOutlookCursor({ inbox: inbox.newCursor, sent: sentCursor }),
     };
   }
 

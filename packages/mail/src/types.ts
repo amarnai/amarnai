@@ -137,8 +137,8 @@ export type MailChangeResult = {
   /** Deduplicated thread IDs added or modified since the cursor. */
   changedThreadIds: string[];
   /**
-   * Provider message IDs the delta reports as removed from the synced inbox
-   * scope (archived, deleted, or moved out). These entries carry only a message
+   * Provider message IDs the delta reports as removed from a synced folder
+   * (archived, deleted, or moved out). These entries carry only a message
    * ID — no thread ID — so the caller resolves each to its owning thread from
    * persisted data and re-sorts that thread, matching the Gmail path where an
    * INBOX-label removal re-surfaces the whole thread through {@link changedThreadIds}.
@@ -150,8 +150,11 @@ export type MailChangeResult = {
    * Optional provider hint: changed threads whose only delta activity is the
    * user's own outbound mail (sent, not in the inbox). The sync worker skips
    * fetching these when they are not already persisted, so a sent email awaiting
-   * a reply is never imported. Providers without per-message label data (Outlook
-   * via Graph, whose sync is already inbox-scoped) simply omit it.
+   * a reply is never imported.
+   *
+   * Both providers populate it, from different evidence: Gmail from per-message
+   * SENT-without-INBOX labels, Outlook from a conversation that appeared in the
+   * Sent Items delta but not the inbox delta.
    */
   sentOnlyCandidateThreadIds?: string[];
   /** New cursor to persist after processing. */

@@ -84,23 +84,29 @@ describe("GraphClient.refreshAccessToken", () => {
 // ─── getProfile ───────────────────────────────────────────────────────────────
 
 describe("GraphClient.getProfile", () => {
-  it("returns the address and an initial delta cursor from $deltatoken=latest", async () => {
+  it("returns the address and initial delta cursors for BOTH tracked folders", async () => {
     routeGraph((url) => {
       if (url.includes("/me?")) return jsonResponse({ mail: "User@Outlook.com" });
-      if (url.includes("/messages/delta"))
-        return jsonResponse({ value: [], "@odata.deltaLink": "https://graph/delta?$deltatoken=abc" });
+      if (url.includes("inbox/messages/delta"))
+        return jsonResponse({ value: [], "@odata.deltaLink": "inbox-delta" });
+      if (url.includes("sentitems/messages/delta"))
+        return jsonResponse({ value: [], "@odata.deltaLink": "sent-delta" });
       throw new Error(`unexpected url ${url}`);
     });
     const profile = await client().getProfile();
     expect(profile.emailAddress).toBe("user@outlook.com");
-    expect(profile.syncCursor).toBe("https://graph/delta?$deltatoken=abc");
+    // Sent Items must be seeded at connect time too, or the first reply the user
+    // sends would be missed until some later sync established the cursor.
+    expect(JSON.parse(profile.syncCursor)).toEqual({ inbox: "inbox-delta", sent: "sent-delta" });
   });
 
   // Consumer outlook.com mailboxes ignore `$deltatoken=latest` and enumerate the
-  // inbox in pages; the cursor only appears on the terminal page.
+  // folder in pages; the cursor only appears on the terminal page.
   it("follows nextLink pages until the deltaLink when $deltatoken=latest is not honored", async () => {
     routeGraph((url) => {
       if (url.includes("/me?")) return jsonResponse({ mail: "user@outlook.com" });
+      if (url.includes("sentitems/messages/delta"))
+        return jsonResponse({ value: [], "@odata.deltaLink": "sent-delta" });
       if (url.includes("deltatoken=latest"))
         return jsonResponse({ value: [{ id: "m1" }], "@odata.nextLink": "https://graph/delta?page=2" });
       if (url.includes("page=2"))
@@ -108,7 +114,7 @@ describe("GraphClient.getProfile", () => {
       throw new Error(`unexpected url ${url}`);
     });
     const profile = await client().getProfile();
-    expect(profile.syncCursor).toBe("https://graph/delta?$deltatoken=real");
+    expect(JSON.parse(profile.syncCursor).inbox).toBe("https://graph/delta?$deltatoken=real");
   });
 
   // Persisting "" as a cursor is indistinguishable from "no cursor" and would
@@ -126,45 +132,126 @@ describe("GraphClient.getProfile", () => {
 // ─── listChangesSince ─────────────────────────────────────────────────────────
 
 describe("GraphClient.listChangesSince", () => {
+  /** The "point Sent Items at now" request, issued when no sent cursor is stored. */
+  const isSentEstablish = (url: string) =>
+    url.includes("sentitems/messages/delta") && url.includes("deltatoken=latest");
+
+  /** Both cursors are carried in one opaque value; tests assert on the parts. */
+  const parts = (cursor: string) => JSON.parse(cursor) as { inbox: string; sent?: string };
+
+  /** A compound cursor as it is stored once Sent Items is tracked. */
+  const compound = (inbox: string, sent: string) => JSON.stringify({ inbox, sent });
+
   it("pages nextLink until the deltaLink and dedups conversation ids", async () => {
     routeGraph((url) => {
-      if (url === "cursor-0")
+      if (url === "inbox-0")
         return jsonResponse({
           value: [{ id: "m1", conversationId: "c1" }, { id: "m2", conversationId: "c1" }],
-          "@odata.nextLink": "cursor-1",
+          "@odata.nextLink": "inbox-1",
         });
-      if (url === "cursor-1")
+      if (url === "inbox-1")
         return jsonResponse({
           value: [{ id: "m3", conversationId: "c2" }],
-          "@odata.deltaLink": "cursor-next",
+          "@odata.deltaLink": "inbox-next",
         });
+      if (url === "sent-0") return jsonResponse({ value: [], "@odata.deltaLink": "sent-next" });
       throw new Error(`unexpected url ${url}`);
     });
-    const res = await client().listChangesSince("cursor-0");
+    const res = await client().listChangesSince(compound("inbox-0", "sent-0"));
     expect(res.changedThreadIds.sort()).toEqual(["c1", "c2"]);
     expect(res.removedMessageIds).toEqual([]);
-    expect(res.newCursor).toBe("cursor-next");
+    expect(parts(res.newCursor)).toEqual({ inbox: "inbox-next", sent: "sent-next" });
   });
 
   it("collects @removed message ids (archive/delete/move-out) apart from changed conversations", async () => {
-    // A message archived / deleted / moved out of the inbox surfaces as an
+    // A message archived / deleted / moved out of a tracked folder surfaces as an
     // `@removed` tombstone carrying only its id — no conversationId — so it must
     // be reported separately for the worker to resolve its thread and re-sort it.
     routeGraph((url) => {
-      if (url === "cursor-0")
+      if (url === "inbox-0")
         return jsonResponse({
           value: [
             { id: "m1", conversationId: "c1" },
             { id: "m-removed", "@removed": { reason: "deleted" } },
           ],
-          "@odata.deltaLink": "cursor-next",
+          "@odata.deltaLink": "inbox-next",
+        });
+      if (url === "sent-0")
+        return jsonResponse({
+          // The user deleted their own sent copy.
+          value: [{ id: "m-sent-removed", "@removed": { reason: "deleted" } }],
+          "@odata.deltaLink": "sent-next",
         });
       throw new Error(`unexpected url ${url}`);
     });
-    const res = await client().listChangesSince("cursor-0");
+    const res = await client().listChangesSince(compound("inbox-0", "sent-0"));
     expect(res.changedThreadIds).toEqual(["c1"]);
-    expect(res.removedMessageIds).toEqual(["m-removed"]);
-    expect(res.newCursor).toBe("cursor-next");
+    expect(res.removedMessageIds.sort()).toEqual(["m-removed", "m-sent-removed"]);
+  });
+
+  // ── Sent Items as a change signal ───────────────────────────────────────────
+
+  it("reports a conversation seen only in Sent Items as changed AND as a sent-only candidate", async () => {
+    // The gap this closes: replying from Outlook writes to Sent Items and never
+    // touches the inbox, so without this the thread never re-syncs and the reply
+    // is never persisted. Flagged as a candidate so the worker skips it when it
+    // was never imported (a new email awaiting a reply) but still processes it
+    // when it was (a reply to an existing thread).
+    routeGraph((url) => {
+      if (url === "inbox-0") return jsonResponse({ value: [], "@odata.deltaLink": "inbox-next" });
+      if (url === "sent-0")
+        return jsonResponse({
+          value: [{ id: "s1", conversationId: "c-reply" }],
+          "@odata.deltaLink": "sent-next",
+        });
+      throw new Error(`unexpected url ${url}`);
+    });
+    const res = await client().listChangesSince(compound("inbox-0", "sent-0"));
+    expect(res.changedThreadIds).toEqual(["c-reply"]);
+    expect(res.sentOnlyCandidateThreadIds).toEqual(["c-reply"]);
+  });
+
+  it("does not flag a conversation as sent-only when the inbox also saw it", async () => {
+    // Inbound message plus the user's reply in the same cycle: real two-sided
+    // activity, so it must be fetched, not skipped.
+    routeGraph((url) => {
+      if (url === "inbox-0")
+        return jsonResponse({
+          value: [{ id: "m1", conversationId: "c-both" }],
+          "@odata.deltaLink": "inbox-next",
+        });
+      if (url === "sent-0")
+        return jsonResponse({
+          value: [{ id: "s1", conversationId: "c-both" }],
+          "@odata.deltaLink": "sent-next",
+        });
+      throw new Error(`unexpected url ${url}`);
+    });
+    const res = await client().listChangesSince(compound("inbox-0", "sent-0"));
+    expect(res.changedThreadIds).toEqual(["c-both"]);
+    expect(res.sentOnlyCandidateThreadIds).toEqual([]);
+  });
+
+  it("upgrades a legacy inbox-only cursor by adopting Sent Items at 'now', scanning nothing", async () => {
+    // Cursors stored before Sent Items was tracked are a bare deltaLink. Walking
+    // Sent Items from the beginning would report every thread the user has ever
+    // replied to as changed in one sync, so the upgrade is non-retroactive.
+    let sentWalks = 0;
+    routeGraph((url) => {
+      if (url === "legacy-inbox-cursor")
+        return jsonResponse({
+          value: [{ id: "m1", conversationId: "c1" }],
+          "@odata.deltaLink": "inbox-next",
+        });
+      if (isSentEstablish(url)) return jsonResponse({ value: [], "@odata.deltaLink": "sent-fresh" });
+      sentWalks++;
+      throw new Error(`unexpected url ${url}`);
+    });
+    const res = await client().listChangesSince("legacy-inbox-cursor");
+    expect(res.changedThreadIds).toEqual(["c1"]);
+    expect(res.sentOnlyCandidateThreadIds).toEqual([]);
+    expect(parts(res.newCursor)).toEqual({ inbox: "inbox-next", sent: "sent-fresh" });
+    expect(sentWalks).toBe(0);
   });
 
   it("maps a 410 Gone to MailCursorExpiredError", async () => {
@@ -176,7 +263,7 @@ describe("GraphClient.listChangesSince", () => {
 
   it("sends the immutable-id Prefer header on delta requests", async () => {
     routeGraph(() => jsonResponse({ value: [], "@odata.deltaLink": "next" }));
-    await client().listChangesSince("cursor-0");
+    await client().listChangesSince(compound("inbox-0", "sent-0"));
     const graphCall = fetchMock.mock.calls.find(([u]) => !isToken(u as string));
     const headers = (graphCall?.[1] as RequestInit).headers as Record<string, string>;
     expect(headers["Prefer"]).toBe('IdType="ImmutableId"');
@@ -516,11 +603,12 @@ describe("GraphClient throttling", () => {
       return Promise.resolve(jsonResponse({ value: [], "@odata.deltaLink": "next" }));
     });
 
-    const promise = client().listChangesSince("cursor-0");
+    const promise = client().listChangesSince(JSON.stringify({ inbox: "inbox-0", sent: "sent-0" }));
     await vi.advanceTimersByTimeAsync(1000);
     const res = await promise;
-    expect(res.newCursor).toBe("next");
-    expect(graphCalls).toBe(2);
+    expect(JSON.parse(res.newCursor).inbox).toBe("next");
+    // Throttled inbox call, its retry, then the Sent Items walk.
+    expect(graphCalls).toBe(3);
     vi.useRealTimers();
   });
 });

@@ -144,7 +144,7 @@ async function getChangedThreadIds(
     // removedMessageIds and sentOnlyCandidateThreadIds are optional/defaulted so a
     // provider result missing them degrades gracefully (no removals / no sent-only
     // hint → every changed thread fetched) rather than throwing before the cursor
-    // advances. Outlook omits both.
+    // advances. Both providers populate both.
     const { changedThreadIds, removedMessageIds = [], sentOnlyCandidateThreadIds = [], newCursor } =
       await client.listChangesSince(storedHistoryId);
     // Resolve inbox-removal message IDs to their threads and merge (deduped) so a
@@ -154,8 +154,10 @@ async function getChangedThreadIds(
     const removedThreadIds = await resolveRemovedThreadIds(emailAccountId, removedMessageIds);
     return {
       changedThreadIds: Array.from(new Set([...changedThreadIds, ...removedThreadIds])),
-      // Threads merged in via removals can never be sent-only candidates (Gmail
-      // produces no removals; Outlook produces no candidates), so no interaction.
+      // A thread can now appear in both sets (Outlook produces removals AND
+      // candidates), but there is still no interaction: a removal-resolved thread
+      // was looked up from persisted messages, so it is by definition already
+      // imported, and the sent-only skip only ever drops threads that are not.
       sentOnlyCandidateThreadIds,
       newCursor,
     };
