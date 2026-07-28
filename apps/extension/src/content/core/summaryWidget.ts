@@ -1,4 +1,5 @@
 import { STRINGS, formatResetDate } from "./strings.js";
+import { createLogoMark } from "./logoMark.js";
 
 // Framework-free summary card injected into the mail page.
 //
@@ -98,17 +99,22 @@ const STYLES = `
    read identically. Costs ~13px, not a full line, and gives the text (and
    especially a bullet list) the full measure in a narrow reading pane. */
 .eyebrow {
-  display: block;
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: "Google Sans", Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 9.5px;
-  font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--am-accent-ink);
   margin-bottom: 4px;
+  font-weight: 600;
 }
 .card.row .eyebrow { margin-bottom: 0; flex: 0 0 auto; }
+/* The mark keeps the brand color even though the label text is muted, same
+   split as the terracotta rail against the card's own neutral ink. */
+.eyebrow [data-amarnai-logo] { color: var(--am-accent-ink); }
 .text { overflow-wrap: anywhere; }
 /* Tighter than the in-app list: vertical space is the scarce resource here,
    since every line pushes the actual conversation further down the page. */
@@ -307,7 +313,10 @@ function render(root: ShadowRoot, state: WidgetState, dark = false): void {
 
   const eyebrow = document.createElement("span");
   eyebrow.className = "eyebrow";
-  eyebrow.textContent = STRINGS.eyebrow;
+  eyebrow.append(createLogoMark(document, 11));
+  const eyebrowLabel = document.createElement("span");
+  eyebrowLabel.textContent = STRINGS.eyebrow;
+  eyebrow.append(eyebrowLabel);
 
   if (state.kind === "bullets") {
     const list = document.createElement("ul");
