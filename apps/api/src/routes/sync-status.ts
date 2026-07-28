@@ -11,6 +11,7 @@ import {
 } from "@amarnai/db";
 import { getBackfillCap, isTaxonomyRoutable } from "@amarnai/shared";
 import { config } from "@amarnai/config";
+import { isStripeConfigured } from "@amarnai/billing";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -174,6 +175,12 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     backfillRoutingStarted: disconnected ? false : state.backfillRoutingStartedAt != null,
     sortingPaused: syncSettings?.sortingPaused ?? false,
     workspacePlan: workspace?.plan ?? "FREE",
+    // Whether plans can be bought in this deployment at all. Self-hosted
+    // installs run without Stripe, and a client cannot tell that apart from
+    // "you are on the free plan" — without this it would offer an upgrade that
+    // can only fail. Travels with workspacePlan because the two are always read
+    // together: what you are on, and whether anything else is purchasable.
+    billingEnabled: isStripeConfigured(),
     pushEnabled,
   });
 });

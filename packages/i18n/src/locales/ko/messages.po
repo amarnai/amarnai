@@ -57,13 +57,13 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {#개 스레드 가져옴.} other {#개 스레드 가져옴.}} 현재 플랜의 가져오기 한도에 도달했습니다."
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#: ../../apps/extension/src/panel/StatusSlot.tsx:48
 #, fuzzy
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one {#개의 스레드가 대기 중입니다. 정렬을 시작하려면 폴더를 설정하세요.} other {#개의 스레드가 대기 중입니다. 정렬을 시작하려면 폴더를 설정하세요.}}"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:65
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one {#개의 스레드 정렬 준비 완료} other {#개의 스레드 정렬 준비 완료}}"
 
@@ -1166,6 +1166,10 @@ msgstr "Apprentice"
 msgid "Archive"
 msgstr "보관함"
 
+#: ../ui/src/settings/PlanSection.tsx:59
+msgid "Ask the workspace owner to change the plan."
+msgstr "워크스페이스 소유자에게 플랜 변경을 요청하세요."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -1288,7 +1292,7 @@ msgstr "아지루,\n"
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "바빌론의 세 번째 금 수송품이 두 전령이 다녀갔음에도 아직 도착하지 않고 있습니다. Burna-Buriash는 더 이상 지체하지 말고 발송해 달라고 요청합니다."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:73
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1608,8 +1612,13 @@ msgstr "구독 변경"
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:271
 #, fuzzy
-msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
-msgstr "유료 플랜 변경 또는 취소는 Amarnai 웹 앱에서 진행됩니다."
+#~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
+#~ msgstr "유료 플랜 변경 또는 취소는 Amarnai 웹 앱에서 진행됩니다."
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#, fuzzy
+msgid "Changing or cancelling a paid plan is done in your subscription settings."
+msgstr "유료 플랜 변경 또는 취소는 구독 설정에서 진행됩니다."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
@@ -2172,7 +2181,7 @@ msgstr "플랜을 로드할 수 없습니다."
 msgid "Could not load your folders. Please try again."
 msgstr "폴더를 로드할 수 없습니다. 다시 시도해 주세요."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:92
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:104
 msgid "Could not load your settings. Please try again."
 msgstr "설정을 로드할 수 없습니다. 다시 시도해 주세요."
 
@@ -2671,8 +2680,8 @@ msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함이 Amarnai
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {sharedNames}에 여전히 연결되어 있어 Amarnai는 계속 접근 권한을 가집니다."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
-#: ../../apps/extension/src/panel/StatusSlot.tsx:107
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
@@ -3226,7 +3235,7 @@ msgstr "재무"
 msgid "Find and draft"
 msgstr "찾기 및 초안 작성"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:202
+#: ../../apps/extension/src/panel/StatusSlot.tsx:208
 msgid "Fine-tune later in the folder editor"
 msgstr "폴더 편집기에서 나중에 미세 조정하세요."
 
@@ -3546,7 +3555,7 @@ msgstr "받은편지함에서 폴더 생성"
 msgid "Generate folders from your inbox"
 msgstr "받은편지함에서 폴더 생성"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:191
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
@@ -4412,16 +4421,16 @@ msgstr "실시간"
 msgid "Load more"
 msgstr "더 보기"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:476
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:497
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:541
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "로딩 중"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:141
+#: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4448,7 +4457,7 @@ msgstr "이전 스레드를 불러오는 중…"
 msgid "Loading…"
 msgstr "불러오는 중…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:123
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:146
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4669,9 +4678,9 @@ msgstr "월간"
 msgid "Monthly sorting limit reached"
 msgstr "월별 정렬 한도 도달"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
-msgid "More settings on the web"
-msgstr "웹에서 더 많은 설정"
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+#~ msgid "More settings on the web"
+#~ msgstr "웹에서 더 많은 설정"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -4811,7 +4820,7 @@ msgstr "새 알림"
 msgid "New password"
 msgstr "새 비밀번호"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:147
+#: ../../apps/extension/src/panel/StatusSlot.tsx:153
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
@@ -5098,6 +5107,10 @@ msgstr "열기"
 #, fuzzy
 msgid "Open a message first, then choose Amarnai Reply."
 msgstr "먼저 메시지를 열고 Amarnai 답장 기능을 선택하세요."
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+msgid "Open all settings in a new tab"
+msgstr "새 탭에서 모든 설정 열기"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
 #, fuzzy
@@ -5439,6 +5452,7 @@ msgstr "툴바에 Amarnai 고정"
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
+#: ../ui/src/settings/PlanSection.tsx:43
 #, fuzzy
 msgid "Plan"
 msgstr "플랜"
@@ -6264,7 +6278,7 @@ msgstr "작동 방식 보기"
 msgid "Select"
 msgstr "선택"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:408
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6370,18 +6384,18 @@ msgstr "새 비밀번호 설정"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "분류를 시작할 수 있도록 최소 3개 이상의 폴더를 설정하세요."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:53
+#: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 #, fuzzy
 msgid "Set up folders"
 msgstr "폴더 설정"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:183
+#: ../../apps/extension/src/panel/StatusSlot.tsx:189
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "Amarnai가 메일을 제대로 분류할 수 있도록 폴더를 설정해 주세요. 1분이면 충분합니다."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:180
+#: ../../apps/extension/src/panel/StatusSlot.tsx:186
 msgid "Set up your folders"
 msgstr "폴더 설정"
 
@@ -6395,7 +6409,7 @@ msgstr "이 작업 공간의 언어를 설정합니다(인터페이스 및 AI �
 msgid "Setting up your workspace…"
 msgstr "작업 공간 설정 중…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6595,7 +6609,7 @@ msgstr "문제가 발생했습니다. 다시 시도해주세요."
 msgid "Soon"
 msgstr "출시 예정"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:68
+#: ../../apps/extension/src/panel/StatusSlot.tsx:74
 msgid "Sort"
 msgstr "정렬"
 
@@ -6631,7 +6645,7 @@ msgstr "분류됨"
 msgid "Sorting"
 msgstr "분류 중"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:138
+#: ../../apps/extension/src/panel/StatusSlot.tsx:144
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
@@ -7210,6 +7224,10 @@ msgstr "이 스레드는 분류 대기 중입니다."
 msgid "This workspace is already on the highest plan."
 msgstr "이 워크스페이스는 이미 최고 플랜을 사용 중입니다."
 
+#: ../ui/src/settings/PlanSection.tsx:46
+msgid "This workspace is on {planLabel}."
+msgstr "이 워크스페이스는 {planLabel} 플랜을 사용 중입니다."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
 msgid "Thread"
@@ -7507,7 +7525,7 @@ msgstr "미분류"
 msgid "Unclassified. Change folder"
 msgstr "미분류. 폴더 변경"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:452
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -7627,6 +7645,7 @@ msgstr "업데이트 중…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
+#: ../ui/src/settings/PlanSection.tsx:52
 #: ../ui/src/upgrade/UpgradeDialog.tsx:164
 #, fuzzy
 msgid "Upgrade"
@@ -7651,14 +7670,14 @@ msgstr "공동 작업자를 초대하고 스레드를 할당하려면 유료 플
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "공동 작업자 초대를 위해 Pro 또는 Business 구독으로 업그레이드하세요."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:97
+#: ../../apps/extension/src/panel/StatusSlot.tsx:103
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "지금 가져오려면 업그레이드하세요."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:99
+#: ../../apps/extension/src/panel/StatusSlot.tsx:105
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7694,7 +7713,7 @@ msgstr "필터 설정을 변경한 후 \"받은편지함 재검색\"을 사용�
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "필터를 변경한 후 \"받은편지함 재검색\"을 사용하여 이미 받은편지함에 있는 스레드에 적용하세요."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:198
+#: ../../apps/extension/src/panel/StatusSlot.tsx:204
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
@@ -8142,7 +8161,7 @@ msgstr "{planLabel} 플랜입니다."
 #~ msgstr "대기 목록에 등록되었습니다!"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:80
+#: ../../apps/extension/src/panel/StatusSlot.tsx:86
 #, fuzzy
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "이번 달 {0} 플랜의 이메일 가져오기 한도를 모두 소진했습니다(재시도 1회 포함). 가져오기 한도는 {refreshDate}에 초기화됩니다."
@@ -8162,7 +8181,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "지금은 생성 횟수를 모두 사용하셨습니다. {when}에 다시 이용 가능합니다."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:83
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #, fuzzy
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "{0} 플랜이 최신 이메일 가져오기를 완료했습니다. 한도를 초과하는 이전 이메일은 로드되지 않았습니다."
@@ -8254,7 +8273,7 @@ msgstr "내 방식대로 정리되는 받은 편지함"
 msgid "Your name"
 msgstr "이름"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:145
+#: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -8279,7 +8298,7 @@ msgid "Your plan is updated. The new limits apply right away."
 msgstr "플랜이 업데이트되었습니다. 새로운 제한이 즉시 적용됩니다."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:82
+#: ../../apps/extension/src/panel/StatusSlot.tsx:88
 #, fuzzy
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "재시도 가져오기가 완료되었지만, {0} 플랜의 제한 사항이 적용됩니다. 다음 재시도는 {refreshDate}에 가능합니다."

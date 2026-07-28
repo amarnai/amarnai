@@ -57,13 +57,13 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {# utas diimpor.} other {# utas diimpor.}} Batas impor paket Anda tercapai."
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#: ../../apps/extension/src/panel/StatusSlot.tsx:48
 #, fuzzy
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one {# email menunggu. Siapkan folder untuk mulai menyortir.} other {# email menunggu. Siapkan folder untuk mulai menyortir.}}"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:65
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one {# email siap disortir} other {# email siap disortir}}"
 
@@ -1166,6 +1166,10 @@ msgstr "Magang"
 msgid "Archive"
 msgstr "Arsip"
 
+#: ../ui/src/settings/PlanSection.tsx:59
+msgid "Ask the workspace owner to change the plan."
+msgstr "Minta pemilik ruang kerja untuk mengubah paket."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -1288,7 +1292,7 @@ msgstr "Aziru,\n"
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "Pengiriman emas ketiga Babel tertunda setelah dua utusan. Burna-Buriash meminta Anda untuk segera mengirimkannya tanpa penundaan lebih lanjut."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:73
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1608,8 +1612,13 @@ msgstr "Ubah Langganan"
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:271
 #, fuzzy
-msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
-msgstr "Mengubah atau membatalkan paket berbayar dilakukan di aplikasi web Amarnai."
+#~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
+#~ msgstr "Mengubah atau membatalkan paket berbayar dilakukan di aplikasi web Amarnai."
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#, fuzzy
+msgid "Changing or cancelling a paid plan is done in your subscription settings."
+msgstr "Mengubah atau membatalkan paket berbayar dilakukan di pengaturan langganan Anda."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
@@ -2172,7 +2181,7 @@ msgstr "Tidak dapat memuat rencana."
 msgid "Could not load your folders. Please try again."
 msgstr "Gagal memuat folder Anda. Silakan coba lagi."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:92
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:104
 msgid "Could not load your settings. Please try again."
 msgstr "Gagal memuat pengaturan Anda. Silakan coba lagi."
 
@@ -2671,8 +2680,8 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini masih terhubung di {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
-#: ../../apps/extension/src/panel/StatusSlot.tsx:107
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
@@ -3226,7 +3235,7 @@ msgstr "Keuangan"
 msgid "Find and draft"
 msgstr "Cari dan susun draf"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:202
+#: ../../apps/extension/src/panel/StatusSlot.tsx:208
 msgid "Fine-tune later in the folder editor"
 msgstr "Sempurnakan nanti di editor folder"
 
@@ -3546,7 +3555,7 @@ msgstr "Buat folder dari kotak masuk"
 msgid "Generate folders from your inbox"
 msgstr "Buat folder dari kotak masuk Anda"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:191
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
@@ -4412,16 +4421,16 @@ msgstr "Aktif"
 msgid "Load more"
 msgstr "Muat lebih banyak"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:476
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:497
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:541
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "Memuat"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:141
+#: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4448,7 +4457,7 @@ msgstr "Memuat utas sebelumnya..."
 msgid "Loading…"
 msgstr "Memuat..."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:123
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:146
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4669,9 +4678,9 @@ msgstr "Bulanan"
 msgid "Monthly sorting limit reached"
 msgstr "Batas penyortiran bulanan tercapai"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
-msgid "More settings on the web"
-msgstr "Pengaturan lainnya di web"
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+#~ msgid "More settings on the web"
+#~ msgstr "Pengaturan lainnya di web"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -4811,7 +4820,7 @@ msgstr "Notifikasi baru"
 msgid "New password"
 msgstr "Kata sandi baru"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:147
+#: ../../apps/extension/src/panel/StatusSlot.tsx:153
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
@@ -5098,6 +5107,10 @@ msgstr "Buka"
 #, fuzzy
 msgid "Open a message first, then choose Amarnai Reply."
 msgstr "Buka pesan terlebih dahulu, lalu pilih Balasan Amarnai."
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+msgid "Open all settings in a new tab"
+msgstr "Buka semua pengaturan di tab baru"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
 #, fuzzy
@@ -5439,6 +5452,7 @@ msgstr "Sematkan Amarnai ke bilah alat Anda"
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
+#: ../ui/src/settings/PlanSection.tsx:43
 #, fuzzy
 msgid "Plan"
 msgstr "Paket"
@@ -6264,7 +6278,7 @@ msgstr "Lihat Cara Kerjanya"
 msgid "Select"
 msgstr "Pilih"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:408
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6370,18 +6384,18 @@ msgstr "Atur kata sandi baru"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "Siapkan setidaknya 3 folder agar kami bisa mulai mengelompokkan."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:53
+#: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 #, fuzzy
 msgid "Set up folders"
 msgstr "Siapkan folder"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:183
+#: ../../apps/extension/src/panel/StatusSlot.tsx:189
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "Siapkan folder agar Amarnai tahu ke mana harus menyimpan email Anda. Hanya butuh semenit."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:180
+#: ../../apps/extension/src/panel/StatusSlot.tsx:186
 msgid "Set up your folders"
 msgstr "Siapkan folder Anda"
 
@@ -6395,7 +6409,7 @@ msgstr "Mengatur bahasa untuk ruang kerja ini, termasuk antarmuka dan folder yan
 msgid "Setting up your workspace…"
 msgstr "Menyiapkan ruang kerja Anda…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6595,7 +6609,7 @@ msgstr "Terjadi kesalahan. Silakan coba lagi."
 msgid "Soon"
 msgstr "Segera"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:68
+#: ../../apps/extension/src/panel/StatusSlot.tsx:74
 msgid "Sort"
 msgstr "Sortir"
 
@@ -6631,7 +6645,7 @@ msgstr "Terurut"
 msgid "Sorting"
 msgstr "Mengurutkan"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:138
+#: ../../apps/extension/src/panel/StatusSlot.tsx:144
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
@@ -7210,6 +7224,10 @@ msgstr "Thread ini menunggu untuk dirutekan."
 msgid "This workspace is already on the highest plan."
 msgstr "Ruang kerja ini sudah menggunakan paket tertinggi."
 
+#: ../ui/src/settings/PlanSection.tsx:46
+msgid "This workspace is on {planLabel}."
+msgstr "Ruang kerja ini menggunakan {planLabel}."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
 msgid "Thread"
@@ -7508,7 +7526,7 @@ msgstr "Tidak Terklasifikasi"
 msgid "Unclassified. Change folder"
 msgstr "Tidak terklasifikasi. Ubah folder"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:452
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -7628,6 +7646,7 @@ msgstr "Memperbarui…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
+#: ../ui/src/settings/PlanSection.tsx:52
 #: ../ui/src/upgrade/UpgradeDialog.tsx:164
 #, fuzzy
 msgid "Upgrade"
@@ -7652,14 +7671,14 @@ msgstr "Upgrade ke paket berbayar untuk mengundang kolaborator dan menugaskan th
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "Upgrade ke langganan Pro atau Bisnis untuk mengundang kolaborator."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:97
+#: ../../apps/extension/src/panel/StatusSlot.tsx:103
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "Upgrade untuk mengimpor sekarang"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:99
+#: ../../apps/extension/src/panel/StatusSlot.tsx:105
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7695,7 +7714,7 @@ msgstr "Gunakan \"Pindai ulang kotak masuk\" setelah mengubah pengaturan filter 
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "Gunakan \"Pindai ulang kotak masuk\" setelah mengubah filter untuk menerapkannya pada percakapan yang sudah ada di kotak masuk Anda."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:198
+#: ../../apps/extension/src/panel/StatusSlot.tsx:204
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
@@ -8143,7 +8162,7 @@ msgstr "Anda menggunakan {planLabel}"
 #~ msgstr "Anda sudah terdaftar!"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:80
+#: ../../apps/extension/src/panel/StatusSlot.tsx:86
 #, fuzzy
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "Anda sudah memakai semua kuota impor email rencana {0} bulan ini, termasuk satu kali percobaan ulang. Impor akan diperbarui {refreshDate}."
@@ -8163,7 +8182,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "Jatah generasi Anda sudah habis untuk saat ini. Tersedia lagi {when}."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:83
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #, fuzzy
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "Rencana {0} Anda telah selesai mengimpor email terbaru Anda. Email lama di luar batas tidak dimuat."
@@ -8255,7 +8274,7 @@ msgstr "Inbox Anda, tersortir sesuai keinginan."
 msgid "Your name"
 msgstr "Nama Anda"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:145
+#: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -8280,7 +8299,7 @@ msgid "Your plan is updated. The new limits apply right away."
 msgstr "Paket Anda telah diperbarui. Batasan baru segera berlaku."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:82
+#: ../../apps/extension/src/panel/StatusSlot.tsx:88
 #, fuzzy
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "Impor percobaan ulang Anda telah selesai dan masih dibatasi oleh rencana {0} Anda. Percobaan ulang berikutnya tersedia {refreshDate}."

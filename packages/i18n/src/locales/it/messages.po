@@ -55,13 +55,13 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {# conversazione importata.} other {# conversazioni importate.}} Il limite di importazione del tuo piano è stato raggiunto."
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#: ../../apps/extension/src/panel/StatusSlot.tsx:48
 #, fuzzy
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one {# conversazione è in attesa. Imposta le cartelle per iniziare a smistare.} other {# conversazioni sono in attesa. Imposta le cartelle per iniziare a smistare.}}"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:65
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
 #, fuzzy
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one {# conversazione pronta per lo smistamento} other {# conversazioni pronte per lo smistamento}}"
@@ -1151,6 +1151,10 @@ msgstr "Apprendista"
 msgid "Archive"
 msgstr "Archivio"
 
+#: ../ui/src/settings/PlanSection.tsx:59
+msgid "Ask the workspace owner to change the plan."
+msgstr "Chiedi al proprietario dell'area di lavoro di cambiare il piano."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -1271,7 +1275,7 @@ msgstr "Aziru,\n"
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "La terza spedizione d'oro di Babilonia è in ritardo dopo due messaggeri. Burna-Buriash ti chiede di spedirla senza ulteriore indugio."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:73
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1587,8 +1591,13 @@ msgstr "Modifica abbonamento"
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:271
 #, fuzzy
-msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
-msgstr "La modifica o la cancellazione di un piano a pagamento si effettua nell'app web di Amarnai."
+#~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
+#~ msgstr "La modifica o la cancellazione di un piano a pagamento si effettua nell'app web di Amarnai."
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#, fuzzy
+msgid "Changing or cancelling a paid plan is done in your subscription settings."
+msgstr "La modifica o l'annullamento di un piano a pagamento si gestisce dalle impostazioni dell'abbonamento."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
@@ -2142,7 +2151,7 @@ msgstr "Impossibile caricare il piano."
 msgid "Could not load your folders. Please try again."
 msgstr "Impossibile caricare le tue cartelle. Riprova."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:92
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:104
 #, fuzzy
 msgid "Could not load your settings. Please try again."
 msgstr "Impossibile caricare le tue impostazioni. Riprova."
@@ -2633,8 +2642,8 @@ msgstr "Scollega questo spazio di lavoro. Amarnai mantiene l'accesso perché que
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Scollega questo spazio di lavoro. Amarnai mantiene l'accesso perché questa casella di posta è ancora collegata in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
-#: ../../apps/extension/src/panel/StatusSlot.tsx:107
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
@@ -3177,7 +3186,7 @@ msgstr "Finanza"
 msgid "Find and draft"
 msgstr "Trova e crea bozza"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:202
+#: ../../apps/extension/src/panel/StatusSlot.tsx:208
 msgid "Fine-tune later in the folder editor"
 msgstr "Perfeziona in seguito nell'editor delle cartelle"
 
@@ -3491,7 +3500,7 @@ msgstr "Genera cartelle dalla casella di posta"
 msgid "Generate folders from your inbox"
 msgstr "Genera cartelle dalla tua casella di posta"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:191
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
@@ -4342,17 +4351,17 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Carica altro"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:476
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:497
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:541
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 #, fuzzy
 msgid "Loading"
 msgstr "Caricamento"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:141
+#: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4378,7 +4387,7 @@ msgstr "Caricamento conversazioni passate…"
 msgid "Loading…"
 msgstr "Caricamento in corso…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:123
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:146
 #: ../ui/src/emails/EmailRail.tsx:59
 msgid "Mail"
 msgstr "Posta"
@@ -4594,9 +4603,9 @@ msgstr "Mensile"
 msgid "Monthly sorting limit reached"
 msgstr "Limite di smistamento mensile raggiunto"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
-msgid "More settings on the web"
-msgstr "Altre impostazioni sul web"
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+#~ msgid "More settings on the web"
+#~ msgstr "Altre impostazioni sul web"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -4733,7 +4742,7 @@ msgstr "Nuova notifica"
 msgid "New password"
 msgstr "Nuova password"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:147
+#: ../../apps/extension/src/panel/StatusSlot.tsx:153
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
@@ -5014,6 +5023,10 @@ msgstr "Apri"
 #, fuzzy
 msgid "Open a message first, then choose Amarnai Reply."
 msgstr "Apri prima un messaggio, poi scegli Amarnai Rispondi."
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+msgid "Open all settings in a new tab"
+msgstr "Apri tutte le impostazioni in una nuova scheda"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
 #, fuzzy
@@ -5358,6 +5371,7 @@ msgstr "Fissa Amarnai alla barra degli strumenti"
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
+#: ../ui/src/settings/PlanSection.tsx:43
 msgid "Plan"
 msgstr "Piano"
 
@@ -6171,7 +6185,7 @@ msgstr "Guardalo in azione"
 msgid "Select"
 msgstr "Seleziona"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:408
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6274,19 +6288,19 @@ msgstr "Imposta nuova password"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "Imposta almeno 3 cartelle in modo da poter iniziare a ordinare."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:53
+#: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 #, fuzzy
 msgid "Set up folders"
 msgstr "Imposta le cartelle"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:183
+#: ../../apps/extension/src/panel/StatusSlot.tsx:189
 #, fuzzy
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "Imposta le cartelle in modo che Amarnai sappia dove archiviare la tua posta. Ci vuole solo un minuto."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:180
+#: ../../apps/extension/src/panel/StatusSlot.tsx:186
 #, fuzzy
 msgid "Set up your folders"
 msgstr "Configura le tue cartelle"
@@ -6300,7 +6314,7 @@ msgstr "Imposta la lingua per quest'area di lavoro, inclusa l'interfaccia e le c
 msgid "Setting up your workspace…"
 msgstr "Configurazione dello spazio di lavoro in corso…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6493,7 +6507,7 @@ msgstr "Qualcosa è andato storto. Riprova."
 msgid "Soon"
 msgstr "Prossimamente"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:68
+#: ../../apps/extension/src/panel/StatusSlot.tsx:74
 msgid "Sort"
 msgstr "Smista"
 
@@ -6529,7 +6543,7 @@ msgstr "Ordinate"
 msgid "Sorting"
 msgstr "Ordinamento"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:138
+#: ../../apps/extension/src/panel/StatusSlot.tsx:144
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
@@ -7101,6 +7115,10 @@ msgstr "Questa conversazione è in attesa di essere instradata."
 msgid "This workspace is already on the highest plan."
 msgstr "Questo spazio di lavoro è già sul piano più alto."
 
+#: ../ui/src/settings/PlanSection.tsx:46
+msgid "This workspace is on {planLabel}."
+msgstr "Questa area di lavoro utilizza {planLabel}."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
 msgid "Thread"
@@ -7395,7 +7413,7 @@ msgstr "Non classificate"
 msgid "Unclassified. Change folder"
 msgstr "Non classificato. Cambia cartella"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:452
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -7510,6 +7528,7 @@ msgstr "Aggiornamento in corso…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
+#: ../ui/src/settings/PlanSection.tsx:52
 #: ../ui/src/upgrade/UpgradeDialog.tsx:164
 #, fuzzy
 msgid "Upgrade"
@@ -7533,14 +7552,14 @@ msgstr "Passa a un piano a pagamento per invitare i collaboratori e assegnare lo
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "Passa a un abbonamento Pro o Business per invitare collaboratori."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:97
+#: ../../apps/extension/src/panel/StatusSlot.tsx:103
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "Esegui l'upgrade per importare subito"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:99
+#: ../../apps/extension/src/panel/StatusSlot.tsx:105
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7574,7 +7593,7 @@ msgstr "Usa \"Riscansiona posta in arrivo\" dopo aver modificato le impostazioni
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "Usa \"Riscansione casella di posta\" dopo aver modificato i filtri per applicarli alle conversazioni già presenti nella tua casella di posta."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:198
+#: ../../apps/extension/src/panel/StatusSlot.tsx:204
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
@@ -8015,7 +8034,7 @@ msgstr "Sei su {planLabel}"
 #~ msgstr "Sei sulla lista!"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:80
+#: ../../apps/extension/src/panel/StatusSlot.tsx:86
 #, fuzzy
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "Questo mese hai utilizzato tutte le importazioni email del tuo piano {0}, incluso un nuovo tentativo. Le importazioni si aggiornano il {refreshDate}."
@@ -8035,7 +8054,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "Hai esaurito le tue generazioni per ora. Di nuovo disponibile {when}."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:83
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #, fuzzy
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "Il tuo piano {0} ha completato l'importazione delle tue email più recenti. Quelle più vecchie, oltre il limite previsto, non sono state caricate."
@@ -8126,7 +8145,7 @@ msgstr "La tua posta in arrivo, organizzata a modo tuo."
 msgid "Your name"
 msgstr "Il tuo nome"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:145
+#: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -8150,7 +8169,7 @@ msgid "Your plan is updated. The new limits apply right away."
 msgstr "Il tuo piano è stato aggiornato. I nuovi limiti si applicano immediatamente."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:82
+#: ../../apps/extension/src/panel/StatusSlot.tsx:88
 #, fuzzy
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "Il tuo tentativo di importazione è terminato ed è ancora limitato dal tuo piano {0}. Il prossimo tentativo sarà disponibile il {refreshDate}."

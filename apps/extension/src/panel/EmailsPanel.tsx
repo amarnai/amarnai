@@ -332,6 +332,7 @@ export function EmailsPanel({
             onDismissPlanCap={() => setPlanCapDismissed(true)}
             onOpenPlanSetup={setPlanSetup}
             onOpenUpgrade={() => setUpgradeOpen(true)}
+            upgradeAvailable={syncStatus?.billingEnabled ?? false}
           />
           <ScopeField
             folders={folders}
@@ -502,6 +503,10 @@ export function EmailsPanel({
           <SettingsOverlay
             api={api}
             workspaceId={workspaceId}
+            onUpgrade={() => {
+              setSettingsOpen(false);
+              setUpgradeOpen(true);
+            }}
             onClose={() => setSettingsOpen(false)}
           />
         </Suspense>

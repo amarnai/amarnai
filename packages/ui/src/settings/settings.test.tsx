@@ -6,6 +6,7 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import type { ApiClient, GmailSyncSettings } from "@amarnai/api-client";
 import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { PlanSection } from "./PlanSection.js";
 import { WorkspaceNameSection } from "./WorkspaceNameSection.js";
 import { WorkspaceLanguageSection } from "./WorkspaceLanguageSection.js";
 import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection.js";
@@ -232,5 +233,38 @@ describe("LabelWritebackSection", () => {
 
     expect(screen.getByText(/categories in outlook/i)).toBeTruthy();
     expect(screen.queryByText(/labels in gmail/i)).toBeNull();
+  });
+});
+
+describe("PlanSection", () => {
+  it("names the current plan and offers an upgrade to the owner", () => {
+    const onUpgrade = vi.fn();
+    wrap(<PlanSection plan="FREE" billingEnabled isOwner onUpgrade={onUpgrade} />);
+
+    expect(screen.getByText(/Apprentice/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: /upgrade/i }));
+    expect(onUpgrade).toHaveBeenCalled();
+  });
+
+  it("offers nothing to buy on a deployment without billing", () => {
+    wrap(<PlanSection plan="FREE" billingEnabled={false} isOwner onUpgrade={vi.fn()} />);
+
+    // Self-hosted without Stripe: an upgrade could only end in a failed checkout.
+    expect(screen.queryByRole("button", { name: /upgrade/i })).toBeNull();
+    expect(screen.getByText(/Apprentice/)).toBeTruthy();
+  });
+
+  it("points a non-owner at the owner instead of a button that would be refused", () => {
+    wrap(<PlanSection plan="FREE" billingEnabled isOwner={false} onUpgrade={vi.fn()} />);
+
+    expect(screen.queryByRole("button", { name: /upgrade/i })).toBeNull();
+    expect(screen.getByText(/ask the workspace owner/i)).toBeTruthy();
+  });
+
+  it("offers no upgrade from the top plan", () => {
+    wrap(<PlanSection plan="BUSINESS" billingEnabled isOwner onUpgrade={vi.fn()} />);
+
+    expect(screen.queryByRole("button", { name: /upgrade/i })).toBeNull();
+    expect(screen.getByText(/Pharaoh/)).toBeTruthy();
   });
 });

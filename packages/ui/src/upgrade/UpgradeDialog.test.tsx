@@ -194,12 +194,12 @@ describe("UpgradeDialog — failures", () => {
   });
 });
 
-describe("UpgradeDialog — downgrade stays on the web", () => {
+describe("UpgradeDialog — downgrade stays in subscription settings", () => {
   it("offers no way to downgrade or cancel from the panel", () => {
     renderDialog({ currentPlan: "PRO" });
 
     expect(screen.queryByText(/cancel subscription/i)).toBeNull();
     expect(screen.queryByText(/downgrade/i)).toBeNull();
-    expect(screen.getByText(/done in the Amarnai web app/i)).toBeTruthy();
+    expect(screen.getByText(/done in your subscription settings/i)).toBeTruthy();
   });
 });

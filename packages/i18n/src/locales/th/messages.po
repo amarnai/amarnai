@@ -57,13 +57,13 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "นำเข้า {0} เธรดแล้ว ถึงขีดจำกัดการนำเข้าของแผนคุณแล้ว"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:42
+#: ../../apps/extension/src/panel/StatusSlot.tsx:48
 #, fuzzy
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one{# เธรดรออยู่} other{# เธรดรออยู่}} ตั้งค่าโฟลเดอร์เพื่อเริ่มจัดเรียง"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:65
+#: ../../apps/extension/src/panel/StatusSlot.tsx:71
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one{# เธรดพร้อมจัดเรียง} other{# เธรดพร้อมจัดเรียง}}"
 
@@ -1166,6 +1166,10 @@ msgstr "Apprentice"
 msgid "Archive"
 msgstr "เก็บถาวร"
 
+#: ../ui/src/settings/PlanSection.tsx:59
+msgid "Ask the workspace owner to change the plan."
+msgstr "แจ้งเจ้าของเวิร์กสเปซให้เปลี่ยนแพลน"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -1288,7 +1292,7 @@ msgstr "Aziru,\n"
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "ทองคำลอตที่สามของบาบิโลนล่าช้า หลังจากผู้ส่งสารสองคน Burna-Buriash ขอให้คุณจัดส่งโดยไม่ล่าช้าอีกต่อไป"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:73
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -1608,8 +1612,13 @@ msgstr "เปลี่ยนการสมัครสมาชิก"
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:271
 #, fuzzy
-msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
-msgstr "การเปลี่ยนหรือยกเลิกแพ็กเกจแบบชำระเงินทำได้ที่เว็บแอป Amarnai"
+#~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
+#~ msgstr "การเปลี่ยนหรือยกเลิกแพ็กเกจแบบชำระเงินทำได้ที่เว็บแอป Amarnai"
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#, fuzzy
+msgid "Changing or cancelling a paid plan is done in your subscription settings."
+msgstr "การเปลี่ยนแปลงหรือยกเลิกแพลนแบบชำระเงิน ทำได้ที่การตั้งค่าการสมัครสมาชิกของคุณ"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
@@ -2172,7 +2181,7 @@ msgstr "ไม่สามารถโหลดแผนได้"
 msgid "Could not load your folders. Please try again."
 msgstr "ไม่สามารถโหลดโฟลเดอร์ของคุณได้ โปรดลองอีกครั้ง"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:92
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:104
 msgid "Could not load your settings. Please try again."
 msgstr "ไม่สามารถโหลดการตั้งค่าของคุณได้ โปรดลองอีกครั้ง"
 
@@ -2671,8 +2680,8 @@ msgstr "ยกเลิกการเชื่อมต่อเวิร์ก
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "ยกเลิกการเชื่อมต่อเวิร์กสเปซนี้ Amarnai ยังคงเข้าถึงได้ เนื่องจากกล่องจดหมายนี้ยังคงเชื่อมต่ออยู่ใน {sharedNames}"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
-#: ../../apps/extension/src/panel/StatusSlot.tsx:107
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
@@ -3226,7 +3235,7 @@ msgstr "การเงิน"
 msgid "Find and draft"
 msgstr "ค้นหาและร่าง"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:202
+#: ../../apps/extension/src/panel/StatusSlot.tsx:208
 msgid "Fine-tune later in the folder editor"
 msgstr "ปรับแต่งภายหลังในตัวแก้ไขโฟลเดอร์"
 
@@ -3546,7 +3555,7 @@ msgstr "สร้างโฟลเดอร์จากกล่องขาเ
 msgid "Generate folders from your inbox"
 msgstr "สร้างโฟลเดอร์จากกล่องขาเข้าของคุณ"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:191
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
@@ -4412,16 +4421,16 @@ msgstr "สด"
 msgid "Load more"
 msgstr "โหลดเพิ่ม"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:476
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:497
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:541
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "กำลังโหลด"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:141
+#: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -4448,7 +4457,7 @@ msgstr "กำลังโหลดเธรดเก่า..."
 msgid "Loading…"
 msgstr "กำลังโหลด..."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:123
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:146
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4669,9 +4678,9 @@ msgstr "รายเดือน"
 msgid "Monthly sorting limit reached"
 msgstr "ถึงขีดจำกัดการจัดเรียงรายเดือนแล้ว"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
-msgid "More settings on the web"
-msgstr "การตั้งค่าเพิ่มเติมบนเว็บ"
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+#~ msgid "More settings on the web"
+#~ msgstr "การตั้งค่าเพิ่มเติมบนเว็บ"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -4811,7 +4820,7 @@ msgstr "แจ้งเตือนใหม่"
 msgid "New password"
 msgstr "รหัสผ่านใหม่"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:147
+#: ../../apps/extension/src/panel/StatusSlot.tsx:153
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
@@ -5098,6 +5107,10 @@ msgstr "เปิด"
 #, fuzzy
 msgid "Open a message first, then choose Amarnai Reply."
 msgstr "เปิดข้อความก่อน จากนั้นเลือก Amarnai Reply"
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:175
+msgid "Open all settings in a new tab"
+msgstr "เปิดการตั้งค่าทั้งหมดในแท็บใหม่"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
 #, fuzzy
@@ -5439,6 +5452,7 @@ msgstr "ปักหมุด Amarnai ไปยังแถบเครื่อ
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
+#: ../ui/src/settings/PlanSection.tsx:43
 #, fuzzy
 msgid "Plan"
 msgstr "แผน"
@@ -6264,7 +6278,7 @@ msgstr "ดูการทำงาน"
 msgid "Select"
 msgstr "เลือก"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:408
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6370,18 +6384,18 @@ msgstr "ตั้งรหัสผ่านใหม่"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "ตั้งค่าอย่างน้อย 3 โฟลเดอร์ เพื่อให้เราเริ่มจัดเรียงได้"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:53
+#: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 #, fuzzy
 msgid "Set up folders"
 msgstr "ตั้งค่าโฟลเดอร์"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:183
+#: ../../apps/extension/src/panel/StatusSlot.tsx:189
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "ตั้งค่าโฟลเดอร์เพื่อให้ Amarnai จัดเก็บอีเมลของคุณได้อย่างถูกต้อง ใช้เวลาเพียงไม่กี่นาที"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:180
+#: ../../apps/extension/src/panel/StatusSlot.tsx:186
 msgid "Set up your folders"
 msgstr "ตั้งค่าโฟลเดอร์ของคุณ"
 
@@ -6395,7 +6409,7 @@ msgstr "กำหนดภาษาสำหรับพื้นที่ทำ
 msgid "Setting up your workspace…"
 msgstr "กำลังตั้งค่าพื้นที่ทำงานของคุณ..."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6595,7 +6609,7 @@ msgstr "เกิดข้อผิดพลาด โปรดลองอี�
 msgid "Soon"
 msgstr "เร็วๆ นี้"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:68
+#: ../../apps/extension/src/panel/StatusSlot.tsx:74
 msgid "Sort"
 msgstr "จัดเรียง"
 
@@ -6631,7 +6645,7 @@ msgstr "จัดระเบียบแล้ว"
 msgid "Sorting"
 msgstr "การจัดเรียง"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:138
+#: ../../apps/extension/src/panel/StatusSlot.tsx:144
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
@@ -7210,6 +7224,10 @@ msgstr "เธรดนี้กำลังรอการจัดเส้น
 msgid "This workspace is already on the highest plan."
 msgstr "พื้นที่ทำงานนี้ใช้แพ็กเกจสูงสุดอยู่แล้ว"
 
+#: ../ui/src/settings/PlanSection.tsx:46
+msgid "This workspace is on {planLabel}."
+msgstr "เวิร์กสเปซนี้ใช้แพลน {planLabel}"
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 #, fuzzy
 msgid "Thread"
@@ -7507,7 +7525,7 @@ msgstr "ยังไม่จัดประเภท"
 msgid "Unclassified. Change folder"
 msgstr "ยังไม่จัดหมวดหมู่. เปลี่ยนโฟลเดอร์"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:452
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -7627,6 +7645,7 @@ msgstr "กำลังอัปเดต..."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
+#: ../ui/src/settings/PlanSection.tsx:52
 #: ../ui/src/upgrade/UpgradeDialog.tsx:164
 #, fuzzy
 msgid "Upgrade"
@@ -7651,14 +7670,14 @@ msgstr "อัปเกรดเป็นแผนชำระเงินเพ
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "อัปเกรดเป็นแพ็กเกจ Pro หรือ Business เพื่อเชิญผู้ทำงานร่วมกัน"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:97
+#: ../../apps/extension/src/panel/StatusSlot.tsx:103
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 #, fuzzy
 msgid "Upgrade to import now"
 msgstr "อัปเกรดเพื่อนำเข้าเลย"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:99
+#: ../../apps/extension/src/panel/StatusSlot.tsx:105
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -7694,7 +7713,7 @@ msgstr "ใช้ \"สแกนกล่องจดหมายใหม่\" 
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "ใช้ \"สแกนกล่องจดหมายใหม่\" หลังจากเปลี่ยนตัวกรอง เพื่อใช้กับอีเมลที่มีอยู่ในกล่องจดหมายของคุณ"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:198
+#: ../../apps/extension/src/panel/StatusSlot.tsx:204
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
@@ -8142,7 +8161,7 @@ msgstr "คุณใช้แผน {planLabel}"
 #~ msgstr "คุณอยู่ในรายชื่อแล้ว!"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:80
+#: ../../apps/extension/src/panel/StatusSlot.tsx:86
 #, fuzzy
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "คุณใช้วงเงินนำเข้าอีเมลทั้งหมดของแผน {0} สำหรับเดือนนี้แล้ว รวมถึงการนำเข้าซ้ำ 1 ครั้ง การนำเข้าจะรีเฟรชในวันที่ {refreshDate}"
@@ -8162,7 +8181,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "คุณใช้สิทธิ์การสร้างของคุณครบแล้วสำหรับตอนนี้ จะพร้อมใช้งานอีกครั้ง {when}"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:83
+#: ../../apps/extension/src/panel/StatusSlot.tsx:89
 #, fuzzy
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "แผน {0} ของคุณนำเข้าอีเมลล่าสุดเสร็จสิ้นแล้ว อีเมลที่เก่ากว่าขีดจำกัดจะไม่ได้ถูกโหลด"
@@ -8254,7 +8273,7 @@ msgstr "กล่องจดหมายของคุณ จัดเรี�
 msgid "Your name"
 msgstr "ชื่อของคุณ"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:145
+#: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -8279,7 +8298,7 @@ msgid "Your plan is updated. The new limits apply right away."
 msgstr "แพ็กเกจของคุณได้รับการอัปเดตแล้ว ขีดจำกัดใหม่จะมีผลทันที"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:82
+#: ../../apps/extension/src/panel/StatusSlot.tsx:88
 #, fuzzy
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "การนำเข้าซ้ำของคุณเสร็จสิ้นแล้ว และยังคงถูกจำกัดโดยแผน {0} ของคุณ การนำเข้าซ้ำครั้งถัดไปจะพร้อมใช้งานในวันที่ {refreshDate}"

@@ -15,6 +15,11 @@ type Props = {
   onOpenPlanSetup: (mode: PlanSetupMode) => void;
   /** Open the in-panel plan picker (owned by EmailsPanel). */
   onOpenUpgrade: () => void;
+  /**
+   * Whether this deployment sells plans. False on self-hosted installs with no
+   * Stripe, where offering an upgrade would lead only to a failed checkout.
+   */
+  upgradeAvailable: boolean;
 };
 
 // The single pinned sorting-status row under the panel header. Which state to
@@ -29,6 +34,7 @@ export function StatusSlot({
   onDismissPlanCap,
   onOpenPlanSetup,
   onOpenUpgrade,
+  upgradeAvailable,
 }: Props) {
   const { _ } = useLingui();
   // The empty takeover is rendered full-pane by EmailsPanel, not in the slot.
@@ -73,7 +79,7 @@ export function StatusSlot({
   }
 
   if (status.kind === "plan-cap") {
-    const isTopPlan = status.plan === TOP_PLAN;
+    const canUpgrade = upgradeAvailable && status.plan !== TOP_PLAN;
     const refreshDate = formatQuotaResetDate(getDraftQuotaResetsAt().toISOString());
     const message =
       status.limitState === "BLOCKED"
@@ -87,7 +93,7 @@ export function StatusSlot({
         <div className="ax-status-notice">
           <span className="ax-status-text">{message}</span>
           <div className="ax-status-actions">
-            {!isTopPlan && (
+            {canUpgrade && (
               <button
                 type="button"
                 className="ax-btn ax-btn-primary ax-status-btn"

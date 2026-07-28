@@ -1,6 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, TEST_USER_ID } from "./helpers.js";
 
+const { mockIsStripeConfigured } = vi.hoisted(() => ({
+  mockIsStripeConfigured: vi.fn(() => true),
+}));
+
 vi.mock("@amarnai/db", () => ({
   db: {
     workspaceMember: { findUnique: vi.fn() },
@@ -19,6 +23,8 @@ vi.mock("@amarnai/db", () => ({
   meterWindowStart: () => new Date("2026-06-01T00:00:00Z"),
   MeterKind: { BACKFILL: "BACKFILL" },
 }));
+
+vi.mock("@amarnai/billing", () => ({ isStripeConfigured: mockIsStripeConfigured }));
 
 import app from "../app.js";
 import { db, getInboxBackfillCeiling, getMeterUsed, getBackfillGraceUsed } from "@amarnai/db";
@@ -43,6 +49,7 @@ async function getBody(): Promise<SyncStatusBody> {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mockIsStripeConfigured.mockReturnValue(true);
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
   vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
     subjectId: "sub-1",
@@ -314,5 +321,22 @@ describe("GET /workspaces/:workspaceId/sync-status", () => {
     expect(body.backfillCapReached).toBe(false);
     expect(body.backfillBeyondCount).toBe(0);
     expect(body.backfillRoutingStarted).toBe(false);
+  });
+});
+
+describe("GET sync-status — billingEnabled", () => {
+  it("reports that plans are purchasable when Stripe is configured", async () => {
+    const body = (await getBody()) as unknown as { billingEnabled: boolean };
+
+    expect(body.billingEnabled).toBe(true);
+  });
+
+  it("reports no billing on a deployment running without Stripe", async () => {
+    mockIsStripeConfigured.mockReturnValue(false);
+
+    const body = (await getBody()) as unknown as { billingEnabled: boolean };
+
+    // Self-hosted installs must not be offered an upgrade that cannot complete.
+    expect(body.billingEnabled).toBe(false);
   });
 });

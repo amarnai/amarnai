@@ -7,8 +7,10 @@ import type {
   GmailConnection,
   GmailSyncSettingsResponse,
   MailProvider,
+  SyncStatus,
 } from "@amarnai/api-client";
 import {
+  PlanSection,
   WorkspaceNameSection,
   WorkspaceLanguageSection,
   GmailSyncSettingsSection,
@@ -20,6 +22,8 @@ import { openWebApp } from "./openWebApp";
 type Props = {
   api: ApiClient;
   workspaceId: string;
+  /** Open the in-panel plan picker (owned by EmailsPanel, like the other overlays). */
+  onUpgrade: () => void;
   onClose: () => void;
 };
 
@@ -34,26 +38,34 @@ type Props = {
  * either need room to show consequences or are rare enough that the extra step
  * is the right amount of friction.
  */
-export function SettingsOverlay({ api, workspaceId, onClose }: Props) {
+export function SettingsOverlay({ api, workspaceId, onUpgrade, onClose }: Props) {
   const { _ } = useLingui();
-  const { workspaces, refreshWorkspaces } = useSession();
+  const { workspaces, userId, refreshWorkspaces } = useSession();
   const workspace = workspaces.find((w) => w.id === workspaceId) ?? null;
+
+  // Everything below the plan is owner-only server-side: PATCH /workspaces/:id
+  // and checkout both reject a member. Mirror the web settings page and hide
+  // those controls rather than letting them fail on submit.
+  const isOwner = workspace?.owner.id === userId;
 
   const [settings, setSettings] = useState<GmailSyncSettingsResponse | null>(null);
   const [connection, setConnection] = useState<GmailConnection | null>(null);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const [s, c] = await Promise.all([
+        const [s, c, st] = await Promise.all([
           api.gmailSyncSettings(workspaceId),
           api.gmailConnection(workspaceId).catch(() => null),
+          api.syncStatus(workspaceId).catch(() => null),
         ]);
         if (cancelled) return;
         setSettings(s);
         setConnection(c);
+        setSyncStatus(st);
       } catch {
         if (!cancelled) setFailed(true);
       }
@@ -100,24 +112,35 @@ export function SettingsOverlay({ api, workspaceId, onClose }: Props) {
 
           {settings && workspace && (
             <>
-              <WorkspaceNameSection
-                api={api}
-                workspaceId={workspaceId}
-                currentName={workspace.name}
-                onSaved={() => void refreshWorkspaces()}
+              <PlanSection
+                plan={workspace.plan}
+                billingEnabled={syncStatus?.billingEnabled ?? false}
+                isOwner={isOwner}
+                onUpgrade={onUpgrade}
               />
-              <WorkspaceLanguageSection
-                api={api}
-                workspaceId={workspaceId}
-                currentLocale={workspace.locale}
-                // The session derives the active locale from the workspace list,
-                // so re-pulling it re-activates the Lingui provider.
-                onChanged={() => refreshWorkspaces()}
-              />
+
+              {isOwner && (
+                <>
+                  <WorkspaceNameSection
+                    api={api}
+                    workspaceId={workspaceId}
+                    currentName={workspace.name}
+                    onSaved={() => void refreshWorkspaces()}
+                  />
+                  <WorkspaceLanguageSection
+                    api={api}
+                    workspaceId={workspaceId}
+                    currentLocale={workspace.locale}
+                    // The session derives the active locale from the workspace
+                    // list, so re-pulling it re-activates the Lingui provider.
+                    onChanged={() => refreshWorkspaces()}
+                  />
+                </>
+              )}
 
               {/* Sync and writeback describe a mailbox, so they are meaningless
                   without an active connection. Connecting one is a web flow. */}
-              {mailActive && (
+              {isOwner && mailActive && (
                 <section className="st-section">
                   <h2 className="st-title">
                     <Trans>Mail</Trans>
@@ -149,7 +172,7 @@ export function SettingsOverlay({ api, workspaceId, onClose }: Props) {
                 className="st-btn"
                 onClick={() => void openWebApp(api, "/settings")}
               >
-                <Trans>More settings on the web</Trans>
+                <Trans>Open all settings in a new tab</Trans>
               </button>
             </>
           )}

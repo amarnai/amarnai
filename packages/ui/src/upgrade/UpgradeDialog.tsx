@@ -269,7 +269,7 @@ export function UpgradeDialog({
                 )}
                 <p className="ug-note">
                   <Trans>
-                    Changing or cancelling a paid plan is done in the Amarnai web app.
+                    Changing or cancelling a paid plan is done in your subscription settings.
                   </Trans>
                 </p>
               </div>

@@ -1,3 +1,5 @@
+export { PlanSection } from "./PlanSection.js";
+export type { PlanSectionProps } from "./PlanSection.js";
 export { WorkspaceNameSection } from "./WorkspaceNameSection.js";
 export type { WorkspaceNameSectionProps } from "./WorkspaceNameSection.js";
 export { WorkspaceLanguageSection } from "./WorkspaceLanguageSection.js";

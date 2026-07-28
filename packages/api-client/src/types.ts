@@ -386,6 +386,8 @@ export type SyncStatus = {
   backfillRoutingStarted: boolean;
   sortingPaused: boolean;
   workspacePlan: "FREE" | "PRO" | "BUSINESS";
+  /** Whether this deployment sells plans at all (false on self-host without Stripe). */
+  billingEnabled: boolean;
   pushEnabled: boolean;
 } | null;
 
