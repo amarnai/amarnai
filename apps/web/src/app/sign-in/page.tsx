@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
+import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { SignInForm } from "./SignInForm";
 
 export default async function SignInPage({
@@ -13,5 +14,5 @@ export default async function SignInPage({
   // was sent to a different account, where they must switch to the invited one.
   if (user && error !== "invite_wrong_account") redirect("/emails");
 
-  return <SignInForm />;
+  return <SignInForm microsoftEnabled={isOutlookConfigured()} />;
 }

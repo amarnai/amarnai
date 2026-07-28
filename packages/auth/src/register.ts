@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { db, Prisma } from "@amarnai/db";
+import type { FederatedProvider } from "./provision.js";
 
 // Email-verification tokens are valid for 24 hours.
 const VERIFICATION_TTL_MS = 24 * 60 * 60 * 1000;
@@ -46,9 +47,11 @@ export type RegisterEmailResult =
   // An account with this email already exists and is verified. The caller emails
   // a "you already have an account, sign in" notice (only the real owner sees it).
   | { status: "already_registered" }
-  // A verified account with no password (Google sign-in). The caller emails a
-  // "sign in with Google" notice.
-  | { status: "google_only" };
+  // A verified account with no password (federated sign-in). The caller emails a
+  // "sign in with Google"/"sign in with Microsoft" notice for `provider`. When an
+  // account carries both links, Google wins the tie — arbitrary but stable, and
+  // either notice leads to a working sign-in.
+  | { status: "federated_only"; provider: FederatedProvider };
 
 // Email-first registration. Creates the account row for a genuinely new email (no
 // password — that is set later at the verify step by the proven mailbox owner),
@@ -72,6 +75,7 @@ export async function registerEmail({
       id: true,
       emailVerified: true,
       googleLinkedAt: true,
+      microsoftLinkedAt: true,
       credential: { select: { id: true } },
       verificationTokens: {
         where: { type: "EMAIL_VERIFICATION" },
@@ -84,14 +88,15 @@ export async function registerEmail({
 
   if (existing) {
     if (existing.emailVerified) {
-      // Has a password → normal sign-in / reset. Truly Google-linked (and no
-      // password) → point at Google. A verified account with NEITHER is an
+      // Has a password → normal sign-in / reset. Truly federated (and no
+      // password) → point at that provider. A verified account with NEITHER is an
       // email-first user who never finished setting a password: treat it like
       // "already registered" so the notice email routes them to forgot-password
       // (which issues a set-password token for exactly this state), instead of
-      // wrongly telling them to sign in with Google.
+      // wrongly telling them to sign in with a provider they never used.
       if (existing.credential) return { status: "already_registered" };
-      if (existing.googleLinkedAt) return { status: "google_only" };
+      if (existing.googleLinkedAt) return { status: "federated_only", provider: "google" };
+      if (existing.microsoftLinkedAt) return { status: "federated_only", provider: "microsoft" };
       return { status: "already_registered" };
     }
 

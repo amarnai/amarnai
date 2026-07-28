@@ -8,13 +8,16 @@ import { msg } from "@lingui/core/macro";
 import { registerAction } from "@/actions/auth";
 import { AuthShell } from "@/components/AuthShell";
 import { GoogleButton } from "@/components/GoogleButton";
+import { MicrosoftButton } from "@/components/MicrosoftButton";
 
 export function SignUpForm({
   defaultEmail,
   invited = false,
+  microsoftEnabled = false,
 }: {
   defaultEmail?: string | undefined;
   invited?: boolean;
+  microsoftEnabled?: boolean;
 }) {
   const { _ } = useLingui();
   const [state, action, pending] = useActionState(registerAction, null);
@@ -22,6 +25,11 @@ export function SignUpForm({
   // navigation would not remount this component or clear the success state;
   // a local flag does. Resubmitting clears it via the wrapped action below.
   const [retrying, setRetrying] = useState(false);
+  // Provider sign-up leads; the email form sits behind a disclosure. It opens
+  // automatically for an invited user or a prefilled address — that flow starts
+  // from a specific mailbox, so the email field is the point.
+  const [showEmailForm, setShowEmailForm] = useState(Boolean(defaultEmail) || invited);
+  const emailFormOpen = showEmailForm || Boolean(state?.error);
 
   const submit = (formData: FormData) => {
     setRetrying(false);
@@ -29,7 +37,7 @@ export function SignUpForm({
   };
 
   // Success is intentionally identical for every account state (new, already
-  // registered, or Google-only): the response must not reveal whether the email
+  // registered, or federated-only): the response must not reveal whether the email
   // is registered. Whatever the case, the right next step arrives by email, so
   // the copy stays generic and never hints at which state applies.
   if (state?.success && !retrying && !pending) {
@@ -65,37 +73,49 @@ export function SignUpForm({
           <Trans>Create your account to accept your workspace invitation.</Trans>
         </p>
       )}
-      <form action={submit} className="auth-form">
-        {state?.error && <p className="auth-error">{state.error}</p>}
-
-        <div className="form-group">
-          <label className="form-label" htmlFor="email">
-            <Trans>Email</Trans>
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            defaultValue={defaultEmail}
-            className="form-input"
-          />
-          <p className="auth-hint">
-            <Trans>We'll email you a link to set your password and finish signing up.</Trans>
-          </p>
-        </div>
-
-        <button type="submit" disabled={pending} className="btn-primary auth-submit">
-          {pending ? _( msg`Sending…`) : _( msg`Continue with email`)}
-        </button>
-      </form>
+      <GoogleButton label={_( msg`Sign up with Google`)} />
+      {microsoftEnabled && <MicrosoftButton label={_( msg`Sign up with Microsoft`)} />}
 
       <div className="auth-divider">
         <span><Trans>or</Trans></span>
       </div>
 
-      <GoogleButton label={_( msg`Sign up with Google`)} />
+      {!emailFormOpen ? (
+        <button
+          type="button"
+          className="auth-link auth-disclosure"
+          aria-expanded={false}
+          onClick={() => setShowEmailForm(true)}
+        >
+          <Trans>Sign up with email instead</Trans>
+        </button>
+      ) : (
+        <form action={submit} className="auth-form">
+          {state?.error && <p className="auth-error">{state.error}</p>}
+
+          <div className="form-group">
+            <label className="form-label" htmlFor="email">
+              <Trans>Email</Trans>
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              defaultValue={defaultEmail}
+              className="form-input"
+            />
+            <p className="auth-hint">
+              <Trans>We'll email you a link to set your password and finish signing up.</Trans>
+            </p>
+          </div>
+
+          <button type="submit" disabled={pending} className="btn-primary auth-submit">
+            {pending ? _( msg`Sending…`) : _( msg`Continue with email`)}
+          </button>
+        </form>
+      )}
 
       <p className="auth-switch">
         <Trans>

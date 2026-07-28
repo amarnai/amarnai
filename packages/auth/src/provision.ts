@@ -1,7 +1,13 @@
 import { db, Prisma } from "@amarnai/db";
 import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
+import { OUTLOOK_MAIL_READ_SCOPE } from "@amarnai/outlook";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
 import { storeGmailConnection, ProviderMismatchError } from "./gmail-connection.js";
+import { storeOutlookConnection } from "./outlook-connection.js";
+
+// Which identity provider vouched for this sign-in. Selects the `*LinkedAt`
+// column stamped on the user row; everything else about provisioning is shared.
+export type FederatedProvider = "google" | "microsoft";
 
 export type ProvisionGoogleUserInput = {
   email: string;
@@ -26,6 +32,28 @@ export type ProvisionGoogleUserResult = {
   gmailConnected: boolean;
 };
 
+export type ProvisionMicrosoftUserInput = {
+  email: string;
+  name?: string | null;
+  // Present after a successful Microsoft grant. When both are supplied the
+  // user's default workspace is created and the Outlook connection is stored.
+  outlookAccessToken?: string | null;
+  outlookRefreshToken?: string | null;
+  // Scopes Microsoft actually granted. Defaults to Mail.Read (the read scope).
+  grantedScopes?: string[];
+  // Creator's resolved locale; seeds the default workspace's language.
+  locale?: string;
+};
+
+export type ProvisionMicrosoftUserResult = {
+  userId: string;
+  // The default workspace id when an Outlook connection was established, else null.
+  workspaceId: string | null;
+  // True when this sign-in created the user record (first-ever sign-in).
+  isNew: boolean;
+  outlookConnected: boolean;
+};
+
 // Upserts the Google user and, when OAuth tokens are present, provisions their
 // default workspace and stores the Gmail connection (refresh token encrypted at
 // rest). Shared by the web next-auth signIn callback and the API /auth/google
@@ -38,7 +66,7 @@ export type ProvisionGoogleUserResult = {
 export async function provisionGoogleUser(
   input: ProvisionGoogleUserInput
 ): Promise<ProvisionGoogleUserResult> {
-  const { userId, isNew } = await upsertGoogleUser(input);
+  const { userId, isNew } = await upsertFederatedUser(input, "google");
 
   if (!input.gmailAccessToken || !input.gmailRefreshToken) {
     return { userId, workspaceId: null, isNew, gmailConnected: false };
@@ -69,14 +97,63 @@ export async function provisionGoogleUser(
   }
 }
 
-// Upserts the Google user and, on the null -> verified transition, invalidates any
+// Microsoft counterpart of provisionGoogleUser, with the same contract: the user
+// row is upserted and stamped as Microsoft-linked, and when a grant is present
+// the default workspace is created and the Outlook connection stored (refresh
+// token encrypted with the same key Gmail uses, so the worker refreshes both the
+// same way). Outlook setup failures are non-fatal for the same reason.
+export async function provisionMicrosoftUser(
+  input: ProvisionMicrosoftUserInput
+): Promise<ProvisionMicrosoftUserResult> {
+  const { userId, isNew } = await upsertFederatedUser(input, "microsoft");
+
+  if (!input.outlookAccessToken || !input.outlookRefreshToken) {
+    return { userId, workspaceId: null, isNew, outlookConnected: false };
+  }
+
+  try {
+    const workspace = await getOrCreateDefaultWorkspace(userId, input.locale);
+    await storeOutlookConnection({
+      workspaceId: workspace.id,
+      accessToken: input.outlookAccessToken,
+      refreshToken: input.outlookRefreshToken,
+      grantedScopes: input.grantedScopes ?? [OUTLOOK_MAIL_READ_SCOPE],
+    });
+
+    return { userId, workspaceId: workspace.id, isNew, outlookConnected: true };
+  } catch (err) {
+    // Mirror of the Gmail branch: a returning user whose default workspace is
+    // already connected to Gmail signs in fine, and that connection is left
+    // untouched rather than clobbered with Outlook.
+    if (!(err instanceof ProviderMismatchError)) {
+      console.error(
+        "[provisionMicrosoftUser] outlook_setup:",
+        err instanceof Error ? err.message : err
+      );
+    }
+    return { userId, workspaceId: null, isNew, outlookConnected: false };
+  }
+}
+
+type UpsertFederatedUserInput = {
+  email: string;
+  name?: string | null;
+  imageUrl?: string | null;
+};
+
+// Upserts the federated user and, on the null -> verified transition, invalidates any
 // untrusted pre-verification password credential — in the SAME transaction as the
 // verify flip, so a partial failure can never leave the account credential-less
 // yet unverified (the state a caller-retry would then mis-handle). Retries once on
 // a create/create race from a double OAuth callback. Returns the user id and
 // whether this sign-in created the record.
-async function upsertGoogleUser(
-  input: ProvisionGoogleUserInput
+//
+// Provider-agnostic: `provider` only picks which `*LinkedAt` column is stamped.
+// An address that signs in with both providers accumulates both timestamps, and
+// neither sign-in ever clears the other.
+async function upsertFederatedUser(
+  input: UpsertFederatedUserInput,
+  provider: FederatedProvider
 ): Promise<{ userId: string; isNew: boolean }> {
   for (let attempt = 0; ; attempt++) {
     const existing = await db.user.findUnique({
@@ -85,29 +162,33 @@ async function upsertGoogleUser(
         id: true,
         emailVerified: true,
         googleLinkedAt: true,
+        microsoftLinkedAt: true,
         credential: { select: { id: true } },
       },
     });
     const isNew = existing === null;
 
-    // Mark the Google linkage the first time it happens and keep the original
+    // Mark the provider linkage the first time it happens and keep the original
     // timestamp on later sign-ins. Durable proof the account is truly federated,
     // which the register/forgot-password flows read so they never treat a
-    // passwordless email-first account as a Google account.
-    const googleLinkedAt = existing?.googleLinkedAt ?? new Date();
+    // passwordless email-first account as a federated account.
+    const linkedAt =
+      provider === "google"
+        ? { googleLinkedAt: existing?.googleLinkedAt ?? new Date() }
+        : { microsoftLinkedAt: existing?.microsoftLinkedAt ?? new Date() };
 
     try {
       const user = await db.$transaction(async (tx) => {
-        // First-time verification via Google of an account that already carries a
-        // password set while it was still unverified. That password is untrusted
-        // (an unauthenticated caller may have planted it via /auth/register on an
-        // email they do not control). This Google grant is the first proof of
-        // mailbox ownership but does not vouch for that password, so we invalidate
-        // the credential and revoke any API sessions it opened — ATOMICALLY with
-        // the emailVerified flip below, so the account is never observably
-        // credential-less-but-unverified. The epoch bump kills any planted
-        // stateless web JWT. Fires only on the null -> verified transition; a
-        // returning verified user's password is never touched.
+        // First-time verification via the provider of an account that already
+        // carries a password set while it was still unverified. That password is
+        // untrusted (an unauthenticated caller may have planted it via
+        // /auth/register on an email they do not control). This grant is the first
+        // proof of mailbox ownership but does not vouch for that password, so we
+        // invalidate the credential and revoke any API sessions it opened —
+        // ATOMICALLY with the emailVerified flip below, so the account is never
+        // observably credential-less-but-unverified. The epoch bump kills any
+        // planted stateless web JWT. Fires only on the null -> verified
+        // transition; a returning verified user's password is never touched.
         if (existing && existing.emailVerified === null && existing.credential !== null) {
           await tx.user.update({
             where: { id: existing.id },
@@ -123,14 +204,14 @@ async function upsertGoogleUser(
             ...(input.name != null ? { name: input.name } : {}),
             ...(input.imageUrl != null ? { imageUrl: input.imageUrl } : {}),
             emailVerified: new Date(),
-            googleLinkedAt,
+            ...linkedAt,
           },
           create: {
             email: input.email,
             name: input.name ?? null,
             imageUrl: input.imageUrl ?? null,
             emailVerified: new Date(),
-            googleLinkedAt,
+            ...linkedAt,
           },
           select: { id: true },
         });

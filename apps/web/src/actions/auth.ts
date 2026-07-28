@@ -27,6 +27,7 @@ import {
   sendPasswordResetEmail,
   sendAccountExistsEmail,
   sendGoogleAccountEmail,
+  sendMicrosoftAccountEmail,
 } from "@/lib/email";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 import { INVITE_COOKIE, sanitizeInvitePath } from "@/lib/invite-redirect";
@@ -48,6 +49,10 @@ export async function signOutAction() {
 
 export async function googleSignInAction() {
   await signIn("google", { redirectTo: await postAuthRedirect() });
+}
+
+export async function microsoftSignInAction() {
+  await signIn("microsoft-entra-id", { redirectTo: await postAuthRedirect() });
 }
 
 export async function credentialsSignInAction(
@@ -116,6 +121,8 @@ export async function registerAction(
       }
     } else if (result.status === "already_registered") {
       await sendAccountExistsEmail(email);
+    } else if (result.provider === "microsoft") {
+      await sendMicrosoftAccountEmail(email);
     } else {
       await sendGoogleAccountEmail(email);
     }

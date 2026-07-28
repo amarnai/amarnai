@@ -223,6 +223,12 @@ model User {
   // password). Backfilled for pre-existing verified-without-password accounts.
   googleLinkedAt DateTime?
 
+  // Microsoft counterpart of `googleLinkedAt`, with identical semantics: set the
+  // first time this account completes a Microsoft (Entra) sign-in and never
+  // cleared. An account can carry both if the same address signs in with both
+  // providers; recovery flows treat either as "federated, holds no password".
+  microsoftLinkedAt DateTime?
+
   // Monotonic session-invalidation counter. Stamped into every issued web JWT and
   // re-checked on refresh: bumping this invalidates all existing stateless
   // sessions at once (there is no server-side session store to revoke). Bumped

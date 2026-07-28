@@ -60,29 +60,63 @@ describe("registerEmail", () => {
     expect(db.verificationToken.upsert).not.toHaveBeenCalled();
   });
 
-  it("reports an existing verified Google account as google_only", async () => {
+  it("reports an existing verified Google account as federated_only/google", async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue({
       id: "user-1",
       emailVerified: new Date(),
       googleLinkedAt: new Date(),
+      microsoftLinkedAt: null,
       credential: null,
       verificationTokens: [],
     } as never);
 
     const result = await registerEmail({ email: "g@b.com" });
 
-    expect(result).toEqual({ status: "google_only" });
+    expect(result).toEqual({ status: "federated_only", provider: "google" });
     expect(db.verificationToken.upsert).not.toHaveBeenCalled();
   });
 
-  it("reports a verified passwordless NON-Google account as already_registered, not google_only (N8)", async () => {
+  it("reports an existing verified Microsoft account as federated_only/microsoft", async () => {
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      emailVerified: new Date(),
+      googleLinkedAt: null,
+      microsoftLinkedAt: new Date(),
+      credential: null,
+      verificationTokens: [],
+    } as never);
+
+    const result = await registerEmail({ email: "m@b.com" });
+
+    expect(result).toEqual({ status: "federated_only", provider: "microsoft" });
+    expect(db.verificationToken.upsert).not.toHaveBeenCalled();
+  });
+
+  it("names Google when an account is linked to both providers", async () => {
+    // Either notice reaches a working sign-in; the tie-break just has to be stable.
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      emailVerified: new Date(),
+      googleLinkedAt: new Date(),
+      microsoftLinkedAt: new Date(),
+      credential: null,
+      verificationTokens: [],
+    } as never);
+
+    const result = await registerEmail({ email: "both@b.com" });
+
+    expect(result).toEqual({ status: "federated_only", provider: "google" });
+  });
+
+  it("reports a verified passwordless NON-federated account as already_registered (N8)", async () => {
     // Email-first account that verified but never set a password: it must not be
-    // told to sign in with Google. already_registered routes it to the notice
+    // told to sign in with a provider. already_registered routes it to the notice
     // email, whose forgot-password link issues a set-password token.
     vi.mocked(db.user.findUnique).mockResolvedValue({
       id: "user-1",
       emailVerified: new Date(),
       googleLinkedAt: null,
+      microsoftLinkedAt: null,
       credential: null,
       verificationTokens: [],
     } as never);

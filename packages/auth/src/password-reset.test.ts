@@ -76,6 +76,7 @@ describe("createPasswordResetToken", () => {
       id: "user-1",
       emailVerified: new Date(),
       googleLinkedAt: new Date(),
+      microsoftLinkedAt: null,
       credential: null,
       verificationTokens: [],
     } as never);
@@ -86,11 +87,30 @@ describe("createPasswordResetToken", () => {
     expect(db.verificationToken.upsert).not.toHaveBeenCalled();
   });
 
+  it("returns null for a Microsoft-linked account with no password", async () => {
+    // Without this the account would loop forever: it holds no password, so a
+    // reset token would let a stranger set one on a mailbox they never proved.
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      id: "user-1",
+      emailVerified: new Date(),
+      googleLinkedAt: null,
+      microsoftLinkedAt: new Date(),
+      credential: null,
+      verificationTokens: [],
+    } as never);
+
+    const token = await createPasswordResetToken("m@b.com");
+
+    expect(token).toBeNull();
+    expect(db.verificationToken.upsert).not.toHaveBeenCalled();
+  });
+
   it("returns null for an unverified account with no password (must verify first)", async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue({
       id: "user-1",
       emailVerified: null,
       googleLinkedAt: null,
+      microsoftLinkedAt: null,
       credential: null,
       verificationTokens: [],
     } as never);
@@ -101,13 +121,14 @@ describe("createPasswordResetToken", () => {
     expect(db.verificationToken.upsert).not.toHaveBeenCalled();
   });
 
-  it("issues a set-password token for a verified passwordless non-Google account (B2/K1)", async () => {
+  it("issues a set-password token for a verified passwordless non-federated account (B2/K1)", async () => {
     // Email-first user who verified but abandoned setting a password. This is
     // their durable recovery path — without it the account is stranded.
     vi.mocked(db.user.findUnique).mockResolvedValue({
       id: "user-1",
       emailVerified: new Date(),
       googleLinkedAt: null,
+      microsoftLinkedAt: null,
       credential: null,
       verificationTokens: [],
     } as never);

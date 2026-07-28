@@ -2,29 +2,40 @@ import { useState, type FormEvent } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { GoogleGIcon } from "@amarnai/ui";
+import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
 import { useSession } from "./session";
 import { GoogleAuthCancelledError } from "./googleAuth";
-import { WEB_APP_URL } from "../config";
+import { MicrosoftAuthCancelledError } from "./microsoftAuth";
+import { MS_CLIENT_ID, WEB_APP_URL } from "../config";
 import { ensureHostPermissions } from "../platform/permissions";
 
 // Firefox treats host permissions as user-grantable and may not have them yet;
 // Chrome grants them at install, so this resolves true without a prompt there.
 const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and your inbox to work. Please allow access and try again.`;
 
+// Which sign-in flow is in flight, so all controls disable together while only
+// the clicked one owns the outcome. Mirrors ConnectMailCta's `pending`.
+type Pending = "google" | "microsoft" | "email" | null;
+
 export function SignInScreen() {
   const { _ } = useLingui();
-  const { signIn, signInWithGoogle } = useSession();
+  const { signIn, signInWithGoogle, signInWithMicrosoft } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [pending, setPending] = useState<Pending>(null);
+  const busy = pending !== null;
+
+  // Microsoft sign-in is only offered when the extension build carries a
+  // Microsoft client id; otherwise the OAuth flow cannot run. Mirrors the web app
+  // gating its Microsoft button on isOutlookConfigured().
+  const microsoftEnabled = MS_CLIENT_ID.length > 0;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (busy) return;
     setError(null);
-    setBusy(true);
+    setPending("email");
     try {
       // Must be the first await — Firefox drops the user-gesture context otherwise.
       if (!(await ensureHostPermissions())) {
@@ -35,14 +46,14 @@ export function SignInScreen() {
     } catch (err) {
       setError(err instanceof Error ? err.message : _(msg`Sign-in failed. Please try again.`));
     } finally {
-      setBusy(false);
+      setPending(null);
     }
   }
 
   async function onGoogle() {
     if (busy) return;
     setError(null);
-    setBusy(true);
+    setPending("google");
     try {
       // Must be the first await — Firefox drops the user-gesture context otherwise.
       if (!(await ensureHostPermissions())) {
@@ -56,7 +67,30 @@ export function SignInScreen() {
         setError(err instanceof Error ? err.message : _(msg`Google sign-in failed. Please try again.`));
       }
     } finally {
-      setBusy(false);
+      setPending(null);
+    }
+  }
+
+  async function onMicrosoft() {
+    if (busy) return;
+    setError(null);
+    setPending("microsoft");
+    try {
+      // Must be the first await — Firefox drops the user-gesture context otherwise.
+      if (!(await ensureHostPermissions())) {
+        setError(_(NEEDS_PERMISSIONS));
+        return;
+      }
+      await signInWithMicrosoft();
+    } catch (err) {
+      // A dismissed OAuth window is not an error worth showing.
+      if (!(err instanceof MicrosoftAuthCancelledError)) {
+        setError(
+          err instanceof Error ? err.message : _(msg`Microsoft sign-in failed. Please try again.`),
+        );
+      }
+    } finally {
+      setPending(null);
     }
   }
 
@@ -103,8 +137,20 @@ export function SignInScreen() {
 
       <button type="button" className="ax-btn ax-btn-google" onClick={onGoogle} disabled={busy}>
         <GoogleGIcon />
-        <Trans>Sign in with Google</Trans>
+        <Trans>Continue with Google</Trans>
       </button>
+
+      {microsoftEnabled && (
+        <button
+          type="button"
+          className="ax-btn ax-btn-outlook"
+          onClick={onMicrosoft}
+          disabled={busy}
+        >
+          <OutlookIcon variant="mono" size={16} />
+          <Trans>Continue with Microsoft</Trans>
+        </button>
+      )}
 
       <p className="ax-auth-footer">
         <Trans>

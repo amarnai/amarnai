@@ -8,4 +8,5 @@ export {
   sendWelcomeEmail,
   sendAccountExistsEmail,
   sendGoogleAccountEmail,
+  sendMicrosoftAccountEmail,
 } from "@amarnai/email";

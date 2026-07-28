@@ -181,6 +181,10 @@ export type OutlookProfile = {
   emailAddress: string;
   /** Stable Entra object id — the durable `providerAccountId` for Outlook. */
   subjectId: string;
+  /** Account display name, used to seed `User.name` on federated sign-in. Null
+   *  when the directory has none. No avatar: Graph serves the photo as a binary
+   *  we would have to host ourselves, so Microsoft users start without one. */
+  displayName: string | null;
 };
 
 /**
@@ -189,7 +193,7 @@ export type OutlookProfile = {
  * is null for some personal accounts, so `userPrincipalName` is the fallback.
  */
 export async function fetchOutlookProfile(accessToken: string): Promise<OutlookProfile> {
-  const url = `${GRAPH_BASE_URL}/me?$select=id,mail,userPrincipalName`;
+  const url = `${GRAPH_BASE_URL}/me?$select=id,mail,userPrincipalName,displayName`;
   const res = await fetch(url, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
@@ -200,11 +204,16 @@ export async function fetchOutlookProfile(accessToken: string): Promise<OutlookP
     devLog("graph_me", res.status, graphError);
     throw new MicrosoftApiError(`Graph /me fetch failed: ${res.status}`, res.status, graphError);
   }
-  const data = (await res.json()) as { id?: string; mail?: string | null; userPrincipalName?: string };
+  const data = (await res.json()) as {
+    id?: string;
+    mail?: string | null;
+    userPrincipalName?: string;
+    displayName?: string | null;
+  };
   const emailAddress = (data.mail ?? data.userPrincipalName ?? "").toLowerCase();
   if (!emailAddress) throw new Error("Graph /me returned no mail or userPrincipalName");
   if (!data.id) throw new Error("Graph /me returned no id");
-  return { emailAddress, subjectId: data.id };
+  return { emailAddress, subjectId: data.id, displayName: data.displayName ?? null };
 }
 
 /** The stable Entra object id for the token's account (the `providerAccountId`). */

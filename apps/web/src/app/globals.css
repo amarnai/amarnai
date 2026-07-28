@@ -3117,7 +3117,10 @@ a {
 }
 
 
-.btn-google {
+/* Federated sign-in buttons (Google, Microsoft): identical neutral treatment so
+   neither provider reads as the "real" option. */
+.btn-google,
+.btn-microsoft {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3135,10 +3138,15 @@ a {
   transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
-.btn-google:hover {
+.btn-google:hover,
+.btn-microsoft:hover {
   background: var(--bg-soft);
   border-color: var(--line-3);
   box-shadow: var(--shadow-1);
+}
+
+form:has(> .btn-google) + form:has(> .btn-microsoft) {
+  margin-top: 10px;
 }
 
 /* ─── Auth form shared ────────────────────────────────────────────────────── */
@@ -3248,6 +3256,15 @@ a {
   flex: 1;
   height: 1px;
   background: var(--color-border);
+}
+
+/* Toggle that reveals the demoted email/password form. Full width so it reads as
+   the row below the divider rather than a stray inline link. */
+.auth-disclosure {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
 }
 
 .auth-switch {

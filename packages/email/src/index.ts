@@ -156,6 +156,22 @@ export async function sendGoogleAccountEmail(to: string): Promise<void> {
   );
 }
 
+// Microsoft counterpart of sendGoogleAccountEmail, for an account that signs in
+// with Microsoft and holds no password.
+export async function sendMicrosoftAccountEmail(to: string): Promise<void> {
+  const signIn = `${appUrl()}/sign-in`;
+  await sendEmail(
+    to,
+    "You already have an Amarnai account",
+    layout(`
+      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Amarnai with this email address, but you already have an account that signs in with Microsoft.</p>
+      <p style="margin:0 0 20px;">Use <strong>Sign in with Microsoft</strong> to get back in — there's no password to set.</p>
+      <p style="margin:0 0 20px;">${button(signIn, "Go to sign in")}</p>
+      <p style="margin:0;color:${colors.ink3};font-size:13px;">If this wasn't you, no action is needed — no changes were made to your account.</p>
+    `)
+  );
+}
+
 export async function sendWorkspaceInvitationEmail(
   to: string,
   inviterName: string,

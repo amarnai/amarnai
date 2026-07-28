@@ -96,11 +96,11 @@ export async function applyPasswordReset(
 // Returns null (and the caller stays silent — never revealing whether an account
 // exists) when:
 //   - no user has this email,
-//   - the account cannot hold a password (a Google-linked account with no
-//     password, or an account not yet verified), or
+//   - the account cannot hold a password (a Google- or Microsoft-linked account
+//     with no password, or an account not yet verified), or
 //   - a reset token was already issued within the throttle window.
 //
-// A reset IS issued for a verified account that has no password and no Google
+// A reset IS issued for a verified account that has no password and no federated
 // link — an email-first user who never finished setting their first password.
 // This is the durable, emailed recovery path that keeps such an account from
 // being permanently stranded (it is the only door left once the one-time verify
@@ -112,6 +112,7 @@ export async function createPasswordResetToken(email: string): Promise<string | 
       id: true,
       emailVerified: true,
       googleLinkedAt: true,
+      microsoftLinkedAt: true,
       credential: { select: { id: true } },
       verificationTokens: {
         where: { type: "PASSWORD_RESET" },
@@ -126,7 +127,9 @@ export async function createPasswordResetToken(email: string): Promise<string | 
 
   const canSetPassword =
     user.credential !== null ||
-    (user.emailVerified !== null && user.googleLinkedAt === null);
+    (user.emailVerified !== null &&
+      user.googleLinkedAt === null &&
+      user.microsoftLinkedAt === null);
   if (!canSetPassword) return null;
 
   const last = user.verificationTokens[0];

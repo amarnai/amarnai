@@ -54,6 +54,7 @@ const PUBLIC_PATHS = new Set([
   "/auth/login",
   "/auth/register",
   "/auth/google",
+  "/auth/microsoft",
   "/auth/refresh",
   "/auth/logout",
   "/auth/forgot-password",
@@ -93,6 +94,7 @@ app.use(
 app.use("/auth/login", rateLimit({ limit: 10, windowSeconds: 900, prefix: "login" }));
 app.use("/auth/register", rateLimit({ limit: 5, windowSeconds: 900, prefix: "register" }));
 app.use("/auth/google", rateLimit({ limit: 20, windowSeconds: 900, prefix: "google" }));
+app.use("/auth/microsoft", rateLimit({ limit: 20, windowSeconds: 900, prefix: "microsoft" }));
 app.use("/auth/refresh", rateLimit({ limit: 60, windowSeconds: 900, prefix: "refresh" }));
 app.use("/auth/forgot-password", rateLimit({ limit: 5, windowSeconds: 900, prefix: "forgot-password" }));
 

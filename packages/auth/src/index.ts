@@ -19,8 +19,14 @@ export {
 export { StaleWhileErrorCache } from "./session-account-cache.js";
 export type { CacheOutcome } from "./session-account-cache.js";
 export { getOrCreateDefaultWorkspace } from "./workspace.js";
-export { provisionGoogleUser } from "./provision.js";
-export type { ProvisionGoogleUserInput, ProvisionGoogleUserResult } from "./provision.js";
+export { provisionGoogleUser, provisionMicrosoftUser } from "./provision.js";
+export type {
+  FederatedProvider,
+  ProvisionGoogleUserInput,
+  ProvisionGoogleUserResult,
+  ProvisionMicrosoftUserInput,
+  ProvisionMicrosoftUserResult,
+} from "./provision.js";
 export { storeGmailConnection } from "./gmail-connection.js";
 export type { StoreGmailConnectionInput } from "./gmail-connection.js";
 export { storeOutlookConnection } from "./outlook-connection.js";

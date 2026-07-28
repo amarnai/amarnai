@@ -11,6 +11,7 @@ import {
   registerEmail,
   rotateVerificationToken,
   provisionGoogleUser,
+  provisionMicrosoftUser,
   createPasswordResetToken,
   type IssuedRefreshToken,
   type RegisterEmailResult,
@@ -24,13 +25,20 @@ import {
   exchangeAuthCode,
   type GoogleUserInfo,
 } from "@amarnai/gmail";
+import {
+  parseGrantedScopes as parseOutlookScopes,
+  exchangeAuthCode as exchangeOutlookAuthCode,
+  fetchOutlookProfile,
+} from "@amarnai/outlook";
 import { RegisterEmailSchema } from "@amarnai/shared";
 import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
+import { config } from "@amarnai/config";
 import {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendAccountExistsEmail,
   sendGoogleAccountEmail,
+  sendMicrosoftAccountEmail,
 } from "@amarnai/email";
 import { db, deleteUserCascade, maybeCreateExtensionNudge } from "@amarnai/db";
 import { cancelSubscriptionsForAccountDeletion } from "@amarnai/billing";
@@ -38,6 +46,7 @@ import type { AppEnv } from "../env.js";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
 import { registerGmailWatch } from "../services/gmail-watch.js";
+import { registerOutlookSubscription } from "../services/outlook-subscription.js";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -64,6 +73,16 @@ const googleSchema = z.object({
   serverAuthCode: z.string().min(1),
   scope: z.string().min(1),
   redirectUri: z.string().url().optional(),
+});
+
+// Microsoft sign-in has one caller: the browser extension, which always runs the
+// code flow through chrome.identity against a chromiumapp.org redirect. There is
+// no mobile server-auth-code analogue, so `redirectUri` is required rather than
+// optional (it must match the redirect the code was minted for).
+const microsoftSchema = z.object({
+  code: z.string().min(1),
+  scope: z.string().min(1),
+  redirectUri: z.string().url(),
 });
 
 const auth = new Hono<AppEnv>();
@@ -155,6 +174,8 @@ async function dispatchRegisterEmail(email: string, result: RegisterEmailResult)
   }
   if (result.status === "already_registered") {
     await sendAccountExistsEmail(email);
+  } else if (result.provider === "microsoft") {
+    await sendMicrosoftAccountEmail(email);
   } else {
     await sendGoogleAccountEmail(email);
   }
@@ -296,6 +317,101 @@ auth.post("/auth/google", async (c) => {
   if (result.gmailConnected && result.workspaceId) {
     maybeCreateExtensionNudge({ userId: result.userId, workspaceId: result.workspaceId }).catch(
       (err) => console.error("[auth/google] extension_nudge:", err instanceof Error ? err.message : err)
+    );
+  }
+
+  return c.json(await issueTokenPair(result.userId));
+});
+
+// Microsoft sign-in for the browser extension, the Outlook mirror of
+// /auth/google: one grant creates the account, its default workspace, and the
+// Outlook connection. The extension runs the code flow via chrome.identity and
+// posts the code plus the chromiumapp.org redirect it was minted for.
+auth.post("/auth/microsoft", async (c) => {
+  if (!config.outlook.enabled) {
+    return c.json({ error: "Outlook is not configured" }, 404);
+  }
+
+  const body = await c.req.json().catch(() => null);
+  const parsed = microsoftSchema.safeParse(body);
+  if (!parsed.success) return c.json({ error: "Invalid request" }, 400);
+
+  const { code, scope, redirectUri } = parsed.data;
+  const notGranted = "Outlook read access (Mail.Read) was not granted";
+
+  // Early check on the client-claimed scope to avoid redeeming a code that did
+  // not include read access. The authoritative check is on the token response.
+  if (!parseOutlookScopes(scope).hasReadonly) {
+    return c.json({ error: notGranted }, 403);
+  }
+
+  let accessToken: string;
+  let refreshToken: string;
+  let grantedScope: string;
+  try {
+    ({
+      accessToken,
+      refreshToken,
+      scope: grantedScope,
+    } = await exchangeOutlookAuthCode(code, redirectUri));
+  } catch (err) {
+    console.error("[auth/microsoft] exchange:", err instanceof Error ? err.message : err);
+    return c.json({ error: "Could not complete Microsoft sign-in" }, 502);
+  }
+
+  // Store the scopes Microsoft actually granted, not what the client claimed.
+  const { scopes: grantedScopes, hasReadonly } = parseOutlookScopes(grantedScope);
+  if (!hasReadonly) {
+    return c.json({ error: notGranted }, 403);
+  }
+
+  // Identity comes from Graph /me, never from an id_token email claim: on the
+  // /common authority those claims are not tenant-verified (the nOAuth class of
+  // account-takeover), while /me is bound to the token we just redeemed.
+  let email: string;
+  let displayName: string | null;
+  try {
+    ({ emailAddress: email, displayName } = await fetchOutlookProfile(accessToken));
+  } catch {
+    return c.json({ error: "Could not read Microsoft profile" }, 502);
+  }
+
+  const result = await provisionMicrosoftUser({
+    email,
+    name: displayName,
+    outlookAccessToken: accessToken,
+    outlookRefreshToken: refreshToken,
+    grantedScopes,
+    // Seed the default workspace language from the caller's device locale.
+    locale: localeFromAcceptLanguage(c.req.header("accept-language")),
+  });
+
+  // First-time sign-up: immediate inbox sync plus the Graph change-notification
+  // subscription, both fire-and-forget (polling and the worker's renewal tick are
+  // the fallbacks). Same dedup id as the trigger-sync route.
+  if (result.isNew && result.outlookConnected && result.workspaceId) {
+    const { workspaceId } = result;
+    syncInboxQueue
+      .add(
+        "sync-inbox",
+        { workspaceId },
+        { deduplication: { id: `sync-inbox_${workspaceId}` } }
+      )
+      .catch((err) =>
+        console.error("[auth/microsoft] trigger_sync:", err instanceof Error ? err.message : err)
+      );
+    registerOutlookSubscription(workspaceId).catch((err) =>
+      console.error(
+        "[auth/microsoft] register_subscription:",
+        err instanceof Error ? err.message : err
+      )
+    );
+  }
+
+  if (result.outlookConnected && result.workspaceId) {
+    maybeCreateExtensionNudge({ userId: result.userId, workspaceId: result.workspaceId }).catch(
+      (err) =>
+        console.error("[auth/microsoft] extension_nudge:", err instanceof Error ? err.message : err)
     );
   }
 

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
+import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { SignUpForm } from "./SignUpForm";
 
 export default async function SignUpPage({
@@ -11,5 +12,11 @@ export default async function SignUpPage({
   const user = await getSessionUser();
   if (user) redirect("/emails");
 
-  return <SignUpForm defaultEmail={email} invited={invite === "1"} />;
+  return (
+    <SignUpForm
+      defaultEmail={email}
+      invited={invite === "1"}
+      microsoftEnabled={isOutlookConfigured()}
+    />
+  );
 }

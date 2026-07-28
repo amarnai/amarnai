@@ -28,6 +28,8 @@ export { GmailIcon } from "./icons/GmailIcon.js";
 export type { GmailIconProps } from "./icons/GmailIcon.js";
 export { OutlookIcon } from "./icons/OutlookIcon.js";
 export type { OutlookIconProps } from "./icons/OutlookIcon.js";
+export { MicrosoftIcon } from "./icons/MicrosoftIcon.js";
+export type { MicrosoftIconProps } from "./icons/MicrosoftIcon.js";
 export { AppDownloadBanner } from "./AppDownloadBanner.js";
 export type { AppDownloadBannerProps } from "./AppDownloadBanner.js";
 export { ThemeProvider, ThemeContext } from "./theme/ThemeProvider.js";

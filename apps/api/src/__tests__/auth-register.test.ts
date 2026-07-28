@@ -54,6 +54,7 @@ vi.mock("@amarnai/email", () => ({
   sendVerificationEmail: vi.fn(async () => {}),
   sendAccountExistsEmail: vi.fn(async () => {}),
   sendGoogleAccountEmail: vi.fn(async () => {}),
+  sendMicrosoftAccountEmail: vi.fn(async () => {}),
 }));
 
 vi.mock("../services/queue-client.js", () => ({
@@ -67,6 +68,7 @@ import {
   sendVerificationEmail,
   sendAccountExistsEmail,
   sendGoogleAccountEmail,
+  sendMicrosoftAccountEmail,
 } from "@amarnai/email";
 
 async function post(body: unknown): Promise<Response> {
@@ -120,13 +122,25 @@ describe("POST /auth/register", () => {
   });
 
   it("returns the SAME neutral response for a Google-only email, and emails a Google notice", async () => {
-    vi.mocked(registerEmail).mockResolvedValue({ status: "google_only" });
+    vi.mocked(registerEmail).mockResolvedValue({ status: "federated_only", provider: "google" });
 
     const res = await post({ email: "g@b.com" });
 
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
     await vi.waitFor(() => expect(sendGoogleAccountEmail).toHaveBeenCalledWith("g@b.com"));
+    expect(sendMicrosoftAccountEmail).not.toHaveBeenCalled();
+  });
+
+  it("emails a Microsoft notice for a Microsoft-only email, with the same neutral response", async () => {
+    vi.mocked(registerEmail).mockResolvedValue({ status: "federated_only", provider: "microsoft" });
+
+    const res = await post({ email: "m@b.com" });
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true });
+    await vi.waitFor(() => expect(sendMicrosoftAccountEmail).toHaveBeenCalledWith("m@b.com"));
+    expect(sendGoogleAccountEmail).not.toHaveBeenCalled();
   });
 
   it("ignores a legacy password field in the body (email-first)", async () => {

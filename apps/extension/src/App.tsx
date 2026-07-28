@@ -6,11 +6,13 @@ import { SessionProvider, useSession } from "./auth/session";
 import { LinguiProvider } from "./i18n/LinguiProvider";
 import { SignInScreen } from "./auth/SignInScreen";
 import { GoogleAuthCancelledError } from "./auth/googleAuth";
+import { MicrosoftAuthCancelledError } from "./auth/microsoftAuth";
 import { TriageGate } from "./panel/TriageGate";
 import { HostPermissionGate } from "./platform/HostPermissionGate";
 import { ensureHostPermissions } from "./platform/permissions";
 import { currentBrowser, extensionVersion } from "./platform/ext";
-import { GoogleGIcon, ThemeProvider } from "@amarnai/ui";
+import { MS_CLIENT_ID } from "./config";
+import { GoogleGIcon, OutlookIcon, ThemeProvider } from "@amarnai/ui";
 import type { SupportedLocale } from "@amarnai/i18n";
 
 function Gate() {
@@ -53,47 +55,75 @@ function Gate() {
 // Chrome grants them at install, so this resolves true without a prompt there.
 const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and your inbox to work. Please allow access and try again.`;
 
-// Signed in but no workspace yet: the user has an account but hasn't connected
-// Gmail. Run the Gmail OAuth grant in-panel (same flow as the sign-in screen),
-// which provisions the user's default workspace and reconnects the session — the
-// consent lands here instead of on the web app, which the extension could not see.
-// The sign-out control lets a user who signed into the wrong account get out
-// (otherwise this screen is a dead end — there is no workspace picker yet).
+// Signed in but no workspace yet: the user has an account but hasn't connected an
+// inbox. Run the provider's OAuth grant in-panel (same flow as the sign-in
+// screen), which provisions the user's default workspace and reconnects the
+// session — the consent lands here instead of on the web app, which the extension
+// could not see. The sign-out control lets a user who signed into the wrong
+// account get out (otherwise this screen is a dead end — there is no workspace
+// picker yet).
 function NoWorkspace() {
   const { _ } = useLingui();
-  const { signInWithGoogle, signOut } = useSession();
+  const { signInWithGoogle, signInWithMicrosoft, signOut } = useSession();
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  // Which provider's grant is in flight (null when idle), so both buttons stay
+  // disabled while one runs. Mirrors ConnectMailCta.
+  const [pending, setPending] = useState<"GMAIL" | "OUTLOOK" | null>(null);
+  const busy = pending !== null;
+  // Outlook is only offered when the extension build carries a Microsoft client
+  // id; otherwise the OAuth flow cannot run.
+  const outlookEnabled = MS_CLIENT_ID.length > 0;
 
-  async function onConnect() {
+  async function onConnect(target: "GMAIL" | "OUTLOOK") {
     if (busy) return;
     setError(null);
-    setBusy(true);
+    setPending(target);
     try {
       // Must be the first await — Firefox drops the user-gesture context otherwise.
       if (!(await ensureHostPermissions())) {
         setError(_(NEEDS_PERMISSIONS));
         return;
       }
-      await signInWithGoogle();
+      if (target === "OUTLOOK") await signInWithMicrosoft();
+      else await signInWithGoogle();
     } catch (err) {
       // A dismissed OAuth window is not an error worth showing.
-      if (!(err instanceof GoogleAuthCancelledError)) {
-        setError(err instanceof Error ? err.message : _(msg`Could not connect Gmail. Please try again.`));
+      const cancelled =
+        err instanceof GoogleAuthCancelledError || err instanceof MicrosoftAuthCancelledError;
+      if (!cancelled) {
+        setError(
+          err instanceof Error ? err.message : _(msg`Could not connect your inbox. Please try again.`),
+        );
       }
     } finally {
-      setBusy(false);
+      setPending(null);
     }
   }
 
   return (
     <div className="ax-center ax-muted ax-noworkspace">
-      <p><Trans>Connect your Gmail account to start triaging.</Trans></p>
+      <p><Trans>Connect your inbox to start triaging.</Trans></p>
       {error && <p className="ax-auth-error" role="alert">{error}</p>}
-      <button type="button" className="ax-btn ax-btn-primary" onClick={() => void onConnect()} disabled={busy}>
+      <button
+        type="button"
+        className="ax-btn ax-btn-primary"
+        onClick={() => void onConnect("GMAIL")}
+        disabled={busy}
+      >
         <GoogleGIcon variant="mono" size={16} />
-        <Trans>Connect Gmail</Trans>
+        {pending === "GMAIL" ? <Trans>Connecting…</Trans> : <Trans>Connect Gmail</Trans>}
       </button>
+      {outlookEnabled && (
+        <button
+          type="button"
+          className="ax-btn ax-btn-outlook"
+          onClick={() => void onConnect("OUTLOOK")}
+          disabled={busy}
+        >
+          <OutlookIcon variant="mono" size={16} />
+          {pending === "OUTLOOK" ? <Trans>Connecting…</Trans> : <Trans>Connect Outlook</Trans>}
+        </button>
+      )}
       <button type="button" className="ax-linkbtn" onClick={() => void signOut()} disabled={busy}>
         <Trans>Sign out</Trans>
       </button>

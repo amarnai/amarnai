@@ -61,6 +61,10 @@ interface SessionValue {
   // Runs the Google OAuth flow and provisions/signs in via /auth/google. Throws
   // GoogleAuthCancelledError on dismiss, and a user-facing message otherwise.
   signInWithGoogle(): Promise<void>;
+  // Microsoft counterpart of signInWithGoogle: runs the Microsoft OAuth flow and
+  // provisions/signs in via /auth/microsoft. Throws MicrosoftAuthCancelledError
+  // on dismiss, and a user-facing message otherwise.
+  signInWithMicrosoft(): Promise<void>;
   // Re-runs the Gmail OAuth grant and reconnects the given workspace (not the
   // default one), reactivating a DISCONNECTED connection. Unlike signInWithGoogle
   // it leaves the session tokens untouched — the user is already signed in.
@@ -231,6 +235,24 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     await bootstrap(tokens.accessToken);
   }, [bootstrap]);
 
+  const signInWithMicrosoft = useCallback(async () => {
+    const authResult = await requestMicrosoftAuth(); // throws MicrosoftAuthCancelledError on dismiss
+    // Raw fetch, not the ApiClient: this is the pre-token call that mints the
+    // session (mirrors signInWithGoogle).
+    const res = await fetch(`${API_BASE_URL}/auth/microsoft`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(authResult),
+    });
+    if (!res.ok) {
+      const body = (await res.json().catch(() => null)) as { error?: string } | null;
+      throw new Error(body?.error ?? "Microsoft sign-in failed. Please try again.");
+    }
+    const tokens = (await res.json()) as StoredTokens;
+    await extensionTokenStore.set(tokens);
+    await bootstrap(tokens.accessToken);
+  }, [bootstrap]);
+
   const reconnectGmail = useCallback(
     async (targetWorkspaceId: string) => {
       const authResult = await requestGoogleAuth(); // throws GoogleAuthCancelledError on dismiss
@@ -290,6 +312,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       retry,
       signIn,
       signInWithGoogle,
+      signInWithMicrosoft,
       reconnectGmail,
       reconnectOutlook,
       signOut,
@@ -308,6 +331,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       retry,
       signIn,
       signInWithGoogle,
+      signInWithMicrosoft,
       reconnectGmail,
       reconnectOutlook,
       signOut,
