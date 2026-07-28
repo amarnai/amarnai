@@ -1,5 +1,5 @@
 import type { ThreadMessage } from "../types.js";
-import { allocateThreadCharBudget, cleanForEmbedding, truncateToShare } from "../embedding/math.js";
+import { allocateThreadCharBudget, cleanBodyForPrompt, truncateToShare } from "../embedding/math.js";
 
 /**
  * Total character budget for the thread bodies in one summary prompt, shared out
@@ -115,7 +115,7 @@ export function buildSummaryPrompt(
   const sections = allocated.map(({ message: msg, budget }, i) => {
     const cleaned = msg.bodyText
       ? truncateToShare(
-          cleanForEmbedding(msg.bodyText, { stripReplyTail: msg !== firstMsg }),
+          cleanBodyForPrompt(msg.bodyText, { stripReplyTail: msg !== firstMsg }),
           budget
         )
       : "";

@@ -1,6 +1,18 @@
 import type { ThreadMessage } from "../types.js";
+import { allocateThreadCharBudget, cleanBodyForPrompt, truncateToShare } from "../embedding/math.js";
 
-const MAX_BODY_CHARS = 16_000;
+// ─── Body budget ──────────────────────────────────────────────────────────────
+//
+// Unlike a summary, a draft has to REPRODUCE the message it answers: every ask,
+// date, and name in the latest message must reach the model intact, so the split
+// is deliberately lopsided rather than the breadth-weighted 60/40 the summary and
+// embedding paths use. 80 % of 20,000 keeps the latest message's 16,000-character
+// allowance exactly as it was, while the earlier messages move from a fixed
+// 500-character head each (which cut most replies off at the greeting, and had no
+// ceiling at all on a long thread) to a shared 4,000 that is split evenly, with
+// the oldest dropped before any of them is slivered.
+const DRAFT_CHAR_BUDGET = 20_000;
+const DRAFT_LATEST_SHARE = 0.8;
 
 const BASE_SYSTEM_PROMPT = `You are a professional email assistant. Generate a concise, polished reply draft for the email thread provided.
 
@@ -32,9 +44,7 @@ function buildSystemPrompt(draftInstructions: string | null): string {
   );
 }
 
-const MAX_BODY_CHARS_CTX = 500;
-
-function formatMessage(msg: ThreadMessage, index: number): string {
+function formatMessage(msg: ThreadMessage, index: number, body: string): string {
   const date =
     msg.receivedAt instanceof Date
       ? msg.receivedAt.toISOString()
@@ -45,10 +55,7 @@ function formatMessage(msg: ThreadMessage, index: number): string {
     `From: ${msg.senderName ? `${msg.senderName} <${msg.senderEmail}>` : msg.senderEmail}`,
   ];
   if (msg.subject) lines.push(`Subject: ${msg.subject}`);
-  const body = msg.bodyText ?? "(no body)";
-  const truncated =
-    body.length > MAX_BODY_CHARS ? body.slice(0, MAX_BODY_CHARS) + "\n[... truncated ...]" : body;
-  lines.push(`Body:\n${truncated}`);
+  lines.push(`Body:\n${body || "(no body)"}`);
   return lines.join("\n");
 }
 
@@ -71,20 +78,35 @@ export function buildDraftPrompt(
     return da.getTime() - db.getTime();
   });
 
+  // Every body is stripped of its quoted reply chain and signature before it is
+  // budgeted, so the allowance is spent on what the sender actually wrote rather
+  // than on a copy of the message above it. The FIRST message keeps its quoted
+  // block: it duplicates nothing, and a forwarded email is often only its
+  // forwarded block.
+  const firstMsg = sorted[0];
+  const allocated = allocateThreadCharBudget(sorted, DRAFT_CHAR_BUDGET, {
+    latestShare: DRAFT_LATEST_SHARE,
+  });
+  const indexOffset = sorted.length - allocated.length;
+  const rendered = allocated.map(({ message: msg, budget }, i) => {
+    const body = msg.bodyText
+      ? truncateToShare(
+          cleanBodyForPrompt(msg.bodyText, { stripReplyTail: msg !== firstMsg }),
+          budget
+        )
+      : "";
+    return formatMessage(msg, indexOffset + i, body);
+  });
+
   let messagesSection: string;
-  if (sorted.length <= 1) {
-    messagesSection = sorted.map(formatMessage).join("\n\n");
+  if (rendered.length <= 1) {
+    messagesSection = rendered.join("\n\n");
   } else {
-    const earlier = sorted.slice(0, -1);
-    const latest = sorted[sorted.length - 1]!;
-    const latestFormatted = formatMessage(latest, sorted.length - 1);
-    // Earlier messages get a tighter body limit to keep prompt size down
-    const earlierFormatted = earlier
-      .map((m, i) => {
-        const truncBody = (m.bodyText ?? "(no body)").slice(0, MAX_BODY_CHARS_CTX);
-        return formatMessage({ ...m, bodyText: truncBody }, i);
-      })
-      .join("\n\n");
+    const latestFormatted = rendered[rendered.length - 1]!;
+    const earlierFormatted = [
+      ...(indexOffset > 0 ? [`[... ${indexOffset} earlier messages omitted ...]`] : []),
+      ...rendered.slice(0, -1),
+    ].join("\n\n");
     messagesSection = [
       `### Latest message (the one to reply to)\n\n${latestFormatted}`,
       `### Earlier thread context\n\n${earlierFormatted}`,

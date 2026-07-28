@@ -360,24 +360,48 @@ export function truncateToShare(text: string, budget: number): string {
 }
 
 /**
+ * {@link cleanForEmbedding}, but never destructive: when cleaning would remove
+ * everything, the original body is kept.
+ *
+ * A message whose entire content is a sign-off ("Thanks") cleans to the empty
+ * string, which is harmless for an embedding but not for a prompt: the body
+ * renders as "(no body)" and the model then summarises or answers a message it
+ * cannot see. Embeddings deliberately keep the strict version, so their stored
+ * input hashes stay stable.
+ */
+export function cleanBodyForPrompt(
+  body: string,
+  options?: { stripReplyTail?: boolean }
+): string {
+  return cleanForEmbedding(body, options) || body.trim();
+}
+
+/**
  * Split a character budget across a thread's messages.
  *
- * The latest message takes LATEST_SHARE of the budget (it carries current
+ * The latest message takes `latestShare` of the budget (it carries current
  * intent); the earlier ones share the remainder equally, and the oldest are
  * dropped when an equal share would fall below MIN_EARLIER_MSG_CHARS — a
  * 40-character slice of a message is noise, not context.
  *
+ * `latestShare` is what separates the callers: embeddings and summaries are
+ * breadth-weighted (0.6, the default) because they describe the whole thread,
+ * while a draft must reproduce the message it is answering and so weights the
+ * latest message far more heavily. The drop-oldest rule is the same either way.
+ *
  * `messages` must be in chronological order (oldest first); the result is too.
- * Shared by the embedding text builder and the summary prompt so the two cannot
- * drift into different ideas of what a thread's context window looks like.
+ * Shared by the embedding text builder, the summary prompt, and the draft prompt
+ * so the three cannot drift into different ideas of what a thread's context
+ * window looks like.
  */
 export function allocateThreadCharBudget<T>(
   messages: readonly T[],
-  totalBudget: number
+  totalBudget: number,
+  options?: { latestShare?: number }
 ): Array<{ message: T; budget: number; isLatest: boolean }> {
   if (messages.length === 0) return [];
 
-  const latestBudget = Math.floor(totalBudget * LATEST_SHARE);
+  const latestBudget = Math.floor(totalBudget * (options?.latestShare ?? LATEST_SHARE));
   const latest = messages[messages.length - 1]!;
   if (messages.length === 1) return [{ message: latest, budget: latestBudget, isLatest: true }];
 
