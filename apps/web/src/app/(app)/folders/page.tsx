@@ -40,7 +40,7 @@ export default async function TaxonomyPage() {
   return (
     <div className="taxonomy-shell">
       <div className="taxonomy-page-header">
-        <h1><Trans>Plan</Trans></h1>
+        <h1><Trans>Folders</Trans></h1>
         {error && <div className="error-box">{error}</div>}
       </div>
       {!error && (

@@ -32,7 +32,7 @@ export type PlanSetupDialogProps = {
    * opens a tab, the injected panel uses its own external-open capability.
    */
   onOpenWeb: (path: string) => void;
-  /** A plan was imported. The host reloads whatever it seeded from the taxonomy. */
+  /** Folders were imported. The host reloads whatever it seeded from the taxonomy. */
   onApplied: () => void;
   onClose: () => void;
 };
@@ -75,8 +75,8 @@ function withLayout(file: TaxonomyTransferFile): TaxonomyTransferFile {
 }
 
 /**
- * Create a sorting plan without leaving the surface the user is on: generate
- * one from the inbox, or start from a template, previewing the proposal on the
+ * Set up sorting folders without leaving the surface the user is on: generate
+ * them from the inbox, or start from a template, previewing the proposal on the
  * read-only canvas before anything is written.
  *
  * Rendered as a full-surface overlay so it works at the extension panel's 360px
@@ -255,12 +255,12 @@ export function PlanSetupDialog({
     setError(null);
     try {
       const preview = await api.previewTaxonomyImport(workspaceId, proposal.file);
-      // A workspace with no plan has nothing to carry over. A non-zero count
-      // means a plan appeared while this dialog was open (another tab, another
+      // A workspace with no folders has nothing to carry over. A non-zero count
+      // means folders appeared while this dialog was open (another tab, another
       // member): mapping old folders onto new ones is the web editor's review
       // flow, so hand off rather than silently re-sorting the user's threads.
       if (preview.migrateCount > 0) {
-        onOpenWeb("/plan");
+        onOpenWeb("/folders");
         onClose();
         return;
       }
@@ -272,7 +272,7 @@ export function PlanSetupDialog({
         setStep("forbidden");
         return;
       }
-      setError(err instanceof Error ? err.message : _(msg`Couldn't apply the plan.`));
+      setError(err instanceof Error ? err.message : _(msg`Couldn't apply the folders.`));
     } finally {
       setApplying(false);
     }
@@ -287,7 +287,7 @@ export function PlanSetupDialog({
     step === "templates"
       ? _(msg`Choose a template`)
       : step === "preview"
-        ? _(msg`Review your plan`)
+        ? _(msg`Review your folders`)
         : _(msg`Set up folders`);
 
   return (
@@ -328,7 +328,7 @@ export function PlanSetupDialog({
             <div className="ps-progress">
               <span className="ps-spinner" aria-hidden />
               <p className="ps-lead">
-                <Trans>Reading your inbox and building a plan. This can take a moment.</Trans>
+                <Trans>Reading your inbox and building your folders. This can take a moment.</Trans>
               </p>
             </div>
           )}
@@ -363,7 +363,7 @@ export function PlanSetupDialog({
 
           {step === "forbidden" && (
             <p className="ps-lead">
-              <Trans>A workspace owner manages this workspace's sorting plan.</Trans>
+              <Trans>A workspace owner manages this workspace's folders.</Trans>
             </p>
           )}
         </div>
@@ -429,9 +429,9 @@ export function PlanSetupDialog({
               <button
                 type="button"
                 className="ps-btn ps-btn--primary"
-                onClick={() => onOpenWeb("/plan")}
+                onClick={() => onOpenWeb("/folders")}
               >
-                <Trans>Open the plan editor</Trans>
+                <Trans>Open the folder editor</Trans>
               </button>
               <button type="button" className="ps-btn" onClick={onClose}>
                 <Trans>Close</Trans>

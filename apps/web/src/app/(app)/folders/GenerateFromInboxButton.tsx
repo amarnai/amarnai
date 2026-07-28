@@ -194,7 +194,7 @@ export function GenerateFromInboxButton({
       className={variant === "primary" ? "btn-primary" : "btn-ghost"}
       onClick={handleButtonClick}
       disabled={disabled}
-      aria-label={_(msg`Generate plan from inbox`)}
+      aria-label={_(msg`Generate folders from inbox`)}
     >
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
         <path
@@ -214,8 +214,8 @@ export function GenerateFromInboxButton({
         <Tooltip
           content={
             gmailConnected
-              ? _(msg`Generate a plan from your inbox`)
-              : _(msg`Connect Gmail to generate a plan from your inbox`)
+              ? _(msg`Generate folders from your inbox`)
+              : _(msg`Connect Gmail to generate folders from your inbox`)
           }
         >
           {triggerButton}
@@ -268,7 +268,7 @@ export function GenerateFromInboxButton({
 
                 {phase === "running" && (
                   <p className="text-muted">
-                    <Trans>Analyzing your inbox and building a plan… this can take a moment.</Trans>
+                    <Trans>Analyzing your inbox and building your folders… this can take a moment.</Trans>
                   </p>
                 )}
 

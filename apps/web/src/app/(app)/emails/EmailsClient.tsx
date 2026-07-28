@@ -242,7 +242,7 @@ export function EmailsClient({
 
   useEffect(() => {
     function handle() {
-      router.push("/plan");
+      router.push("/folders");
     }
     document.addEventListener("emails:new-folder", handle);
     return () => document.removeEventListener("emails:new-folder", handle);
@@ -312,7 +312,7 @@ export function EmailsClient({
         onSelectActive={pushActive}
         onRailQueryChange={setRailQuery}
         onToggleFolder={toggleFolder}
-        onNewFolder={() => router.push("/plan")}
+        onNewFolder={() => router.push("/folders")}
       />
       <ColumnResizeHandle column="rail" />
 

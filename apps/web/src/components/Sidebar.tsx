@@ -30,15 +30,7 @@ const isGmailDebugEnabled =
 
 const NAV: { href: string; label: MessageDescriptor; icon: React.ReactNode }[] = [
   { href: "/emails", label: msg`Emails`, icon: <NavGlyph name="emails" className="nav-icon" /> },
-  {
-    href: "/plan",
-    label: msg({
-      message: "Plan",
-      comment:
-        "Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.",
-    }),
-    icon: <NavGlyph name="taxonomy" className="nav-icon" />,
-  },
+  { href: "/folders", label: msg`Folders`, icon: <NavGlyph name="taxonomy" className="nav-icon" /> },
   { href: "/settings", label: msg`Settings`, icon: <NavGlyph name="settings" className="nav-icon" /> },
   ...(isDevEnabled ? [{ href: "/dev/mock-inbox", label: msg`Mock Inbox`, icon: null }] : []),
   ...(isGmailDebugEnabled

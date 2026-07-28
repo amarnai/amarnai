@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:610
 #, fuzzy
 msgid " (Inbox)"
 msgstr " (Posta in arrivo)"
@@ -67,7 +67,7 @@ msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}
 msgstr "{0, plural, one {# conversazione pronta per lo smistamento} other {# conversazioni pronte per lo smistamento}}"
 
 #. placeholder {0}: s.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:156
 msgid "{0, plural, one {# thread} other {# threads}}"
 msgstr "{0, plural, one {# conversazione} other {# conversazioni}}"
 
@@ -128,7 +128,7 @@ msgstr "{0} di {1} rimanenti · si azzera {quotaResetDate}"
 #~ msgstr ""
 
 #. placeholder {0}: migrateLive > 0 ? ( <Fragment> <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "} </Fragment> ) : null
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:224
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:225
 #, fuzzy
 msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
 msgstr "{0}<0>{resortLive}</0> conversazioni verranno riordinate dall'IA."
@@ -152,7 +152,7 @@ msgstr "{blacklistCount, plural, one {# bloccato} other {# bloccati}}"
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}. Cambia cartella"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:625
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:625
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {L'eliminazione di questa cartella lascerà # conversazione non ordinata.} other {L'eliminazione di questa cartella lascerà # conversazioni non ordinate.}}"
@@ -171,13 +171,17 @@ msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "{draftRemaining} di {draftLimit} rimanenti · si ripristina {draftResetDate}"
 
 #: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
+msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your folders changed since it was sorted or sorting hit a temporary error.} other {# needs-review threads can be re-sorted automatically, because your folders changed since they were sorted or sorting hit a temporary error.}}"
+msgstr "{eligible, plural, one {# conversazione da revisionare può essere riordinata automaticamente, perché le tue cartelle sono cambiate da quando è stata ordinata o l'ordinamento ha riscontrato un errore temporaneo.} other {# conversazioni da revisionare possono essere riordinate automaticamente, perché le tue cartelle sono cambiate da quando sono state ordinate o l'ordinamento ha riscontrato un errore temporaneo.}}"
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
 #, fuzzy
 #~ msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error. The rest need your decision.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error. The rest need your decision.}}"
 #~ msgstr "{eligible, plural, one {# conversazione da rivedere può essere riordinata automaticamente, perché il tuo piano è cambiato dall'ultimo ordinamento o si è verificato un errore temporaneo. Le altre richiedono la tua decisione.} other {# conversazioni da rivedere possono essere riordinate automaticamente, perché il tuo piano è cambiato dall'ultimo ordinamento o si è verificato un errore temporaneo. Le altre richiedono la tua decisione.}}"
 
 #: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
-msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error.}}"
-msgstr "{eligible, plural, one {# conversazione da rivedere può essere riordinata automaticamente, perché il tuo piano è cambiato da quando è stata ordinata o lo smistamento ha riscontrato un errore temporaneo.} other {# conversazioni da rivedere possono essere riordinate automaticamente, perché il tuo piano è cambiato da quando sono state ordinate o lo smistamento ha riscontrato un errore temporaneo.}}"
+#~ msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error.}}"
+#~ msgstr "{eligible, plural, one {# conversazione da rivedere può essere riordinata automaticamente, perché il tuo piano è cambiato da quando è stata ordinata o lo smistamento ha riscontrato un errore temporaneo.} other {# conversazioni da rivedere possono essere riordinate automaticamente, perché il tuo piano è cambiato da quando sono state ordinate o lo smistamento ha riscontrato un errore temporaneo.}}"
 
 #: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:81
 #, fuzzy
@@ -197,7 +201,7 @@ msgstr "{filed} archiviate · {reviewCount} da rivedere"
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# cartella} other {# cartelle}}"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:205
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:206
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {# cartella senza conversazioni non viene mostrata.} other {# cartelle senza conversazioni non vengono mostrate.}}"
 
@@ -231,7 +235,7 @@ msgstr "{quotaRemaining} di {0} rimanenti · si ripristina {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} di {limit} rimanenti · si ripristina {resetDate}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1667
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1665
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} di {TAXONOMY_MIN_NON_ROOT_NODES} cartelle connesse alla tua posta in arrivo. Il routing richiede almeno {TAXONOMY_MIN_NON_ROOT_NODES}."
@@ -293,12 +297,12 @@ msgstr "© 2026 Amarnai. Open source con licenza AGPL-3.0."
 msgid "+ Add folder"
 msgstr "+ Aggiungi cartella"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1498
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1507
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1496
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1505
 msgid "+ Add Folder"
 msgstr "+ Aggiungi cartella"
 
-#: ../../apps/web/src/components/Sidebar.tsx:187
+#: ../../apps/web/src/components/Sidebar.tsx:179
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ Nuovo spazio di lavoro"
@@ -552,9 +556,7 @@ msgstr "Una nuova candidatura è stata ricevuta da Horemheb di Tebe per la posiz
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Una nuova candidatura è stata ricevuta da Horemheb di Tebe per la posizione di Capo della Corrispondenza.\n"
-"\n"
-"Visualizza la candidatura nell'Archivio Reale."
+msgstr "Una nuova candidatura è stata ricevuta da Horemheb di Tebe per la posizione di Capo della Corrispondenza.\n\nVisualizza la candidatura nell'Archivio Reale."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:340
 #, fuzzy
@@ -562,8 +564,12 @@ msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "Un modello ti permette di iniziare subito a smistare, e puoi modificarlo in seguito."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
-msgid "A workspace owner manages this workspace's sorting plan."
-msgstr "Il proprietario di uno spazio di lavoro gestisce il piano di smistamento di questo spazio di lavoro."
+msgid "A workspace owner manages this workspace's folders."
+msgstr "Un proprietario di un'area di lavoro gestisce le cartelle di quest'area."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
+#~ msgid "A workspace owner manages this workspace's sorting plan."
+#~ msgstr "Il proprietario di uno spazio di lavoro gestisce il piano di smistamento di questo spazio di lavoro."
 
 #: ../ui/src/demo/demo-seed.ts:429
 #, fuzzy
@@ -576,11 +582,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Sarò vicino al Delta quella stessa settimana. Incontriamoci alla stazione di posta il secondo giorno; posso dedicare la mattinata.\n"
-"\n"
-"Fino ad allora,"
+msgstr "Abdi-Heba,\n\nSarò vicino al Delta quella stessa settimana. Incontriamoci alla stazione di posta il secondo giorno; posso dedicare la mattinata.\n\nFino ad allora,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -611,12 +613,12 @@ msgstr "Accesso negato. Per connetterti, concedi l'accesso in sola lettura a Out
 msgid "Account"
 msgstr "Account"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:107
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:101
 #, fuzzy
 msgid "Account menu"
 msgstr "Menu Account"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:121
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:115
 msgid "Account settings"
 msgstr "Impostazioni account"
 
@@ -647,11 +649,11 @@ msgid "Add"
 msgstr "Aggiungi"
 
 #. placeholder {0}: minNodeDescriptionLength(description)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:466
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:466
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "Aggiungi una descrizione (almeno {0} caratteri) per un'organizzazione precisa da parte dell'IA."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1532
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1530
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Aggiungi almeno 3 cartelle connesse per esportare"
@@ -999,7 +1001,7 @@ msgstr "Amarnai organizza la tua casella di posta nelle cartelle che definisci, 
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
 msgstr "Amarnai analizzerà i tuoi mittenti, etichette e parole chiave nell'oggetto (mai il corpo dei messaggi) per suggerire una serie personalizzata di cartelle. Rivedi e modifica prima di applicare."
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:293
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:293
 #, fuzzy
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. You can review and edit before anything is applied."
 msgstr "Amarnai analizzerà i tuoi mittenti, etichette e parole chiave dell'oggetto (mai i corpi dei messaggi) per suggerire un set personalizzato di cartelle. Puoi rivedere e modificare prima che venga applicato qualsiasi cosa."
@@ -1046,8 +1048,12 @@ msgstr "Analisi della tua casella di posta e creazione di un piano…"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:271
 #, fuzzy
-msgid "Analyzing your inbox and building a plan… this can take a moment."
-msgstr "Analizzando la tua posta in arrivo e creando un piano... questo potrebbe richiedere un momento."
+#~ msgid "Analyzing your inbox and building a plan… this can take a moment."
+#~ msgstr "Analizzando la tua posta in arrivo e creando un piano... questo potrebbe richiedere un momento."
+
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:271
+msgid "Analyzing your inbox and building your folders… this can take a moment."
+msgstr "Analizzo la tua casella di posta e creo le tue cartelle… potrebbe volerci un momento."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
@@ -1067,7 +1073,7 @@ msgid "Any thread the model is unsure about is flagged for review instead of bei
 msgstr "Le conversazioni su cui il modello è incerto vengono segnalate per la revisione, anziché essere archiviate automaticamente. Aprila per visualizzare la cartella suggerita, il punteggio di affidabilità e la logica, quindi approva l'instradamento o spostala in un'altra cartella."
 
 #. placeholder {0}: res.status
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:148
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:148
 #, fuzzy
 msgid "API error {0}"
 msgstr "Errore API {0}"
@@ -1086,7 +1092,7 @@ msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "Candidature, contatto con i recruiter e pianificazione dei colloqui."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:336
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
 #, fuzzy
 msgid "Apply"
 msgstr "Applica"
@@ -1101,14 +1107,14 @@ msgstr "Applicare “{selectedName}”? Questo sostituirà il tuo piano attuale.
 msgid "Apply template"
 msgstr "Applica modello"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:308
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:308
 #, fuzzy
 msgid "Applying replaces your current plan. You can fully edit it afterward."
 msgstr "L'applicazione sostituisce il tuo piano attuale. Potrai modificarlo completamente in seguito."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:336
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #, fuzzy
 msgid "Applying…"
@@ -1193,7 +1199,7 @@ msgid "Auto-file notifications to Updates / Other"
 msgstr "Archivia automaticamente le notifiche in Aggiornamenti / Altro"
 
 #. placeholder {0}: catchAllRow.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:190
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:191
 #, fuzzy
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "Le email automatiche e di massa ({0}) si spostano sempre nella nuova cartella generica."
@@ -1236,11 +1242,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Le tue parole di amicizia ci giungono gradite. Siamo aperti ad ascoltare ulteriormente ciò che la casa di Amurru propone. Invia le tue condizioni con il prossimo corriere.\n"
-"\n"
-"Con i nostri saluti,"
+msgstr "Aziru,\n\nLe tue parole di amicizia ci giungono gradite. Siamo aperti ad ascoltare ulteriormente ciò che la casa di Amurru propone. Invia le tue condizioni con il prossimo corriere.\n\nCon i nostri saluti,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1355,7 +1357,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Naviga facilmente tra le email nelle tue cartelle. Genera bozze di risposta e copiale nella tua casella di posta."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1592
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1590
 #, fuzzy
 msgid "Browse templates"
 msgstr "Sfoglia i modelli"
@@ -1387,8 +1389,8 @@ msgid "Build plan"
 msgstr "Crea piano"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:170
-msgid "Build your sorting plan"
-msgstr "Crea il tuo piano di smistamento"
+#~ msgid "Build your sorting plan"
+#~ msgstr "Crea il tuo piano di smistamento"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
@@ -1466,13 +1468,13 @@ msgstr "Posso auto-ospitare Amarnai?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:793
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1820
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1913
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:107
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:256
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:663
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:679
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:793
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1818
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1911
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:301
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:416
@@ -1575,7 +1577,7 @@ msgstr "Controlla la tua casella di posta"
 msgid "Checkout failed: {0}"
 msgstr "Pagamento non riuscito: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:775
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:775
 #, fuzzy
 msgid "Child folder"
 msgstr "Sottocartella"
@@ -1612,10 +1614,14 @@ msgstr "Scegli come visualizzare l'anteprima di Amarnai"
 msgid "Choose parent"
 msgstr "Scegli cartella principale"
 
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:117
+msgid "Choose where each folder’s threads should go under your new folders. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+msgstr "Scegli dove posizionare le conversazioni di ciascuna cartella nelle tue nuove cartelle. Le cartelle corrispondenti mantengono le loro conversazioni istantaneamente; tutto ciò che viene impostato per essere riordinato viene riclassificato dall'IA."
+
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:117
 #, fuzzy
-msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
-msgstr "Scegli dove devono andare le conversazioni di ogni cartella con il tuo nuovo piano. Le cartelle corrispondenti mantengono subito le loro conversazioni; tutto ciò che è impostato per essere riordinato viene riclassificato dall'IA."
+#~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+#~ msgstr "Scegli dove devono andare le conversazioni di ogni cartella con il tuo nuovo piano. Le cartelle corrispondenti mantengono subito le loro conversazioni; tutto ciò che è impostato per essere riordinato viene riclassificato dall'IA."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
 #, fuzzy
@@ -1654,8 +1660,8 @@ msgstr "Clienti"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:140
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:155
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:252
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:252
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:319
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
@@ -1667,7 +1673,7 @@ msgstr "Clienti"
 msgid "Close"
 msgstr "Chiudi"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1731
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1729
 #, fuzzy
 msgid "Close panel"
 msgstr "Chiudi pannello"
@@ -1726,7 +1732,7 @@ msgstr "I collaboratori sono disponibili nei piani Scribe e Pharaoh. <0>Esegui l
 #~ msgid "Collapse"
 #~ msgstr "Comprimi"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:532
 #, fuzzy
 msgid "Color"
 msgstr "Colore"
@@ -1762,7 +1768,7 @@ msgstr "Conferma annullamento"
 msgid "Confirm delete"
 msgstr "Conferma eliminazione"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:655
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "Conferma eliminazione"
@@ -1838,8 +1844,12 @@ msgstr "Connetti Gmail"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:218
 #, fuzzy
-msgid "Connect Gmail to generate a plan from your inbox"
-msgstr "Collega Gmail per generare un piano dalla tua casella di posta"
+#~ msgid "Connect Gmail to generate a plan from your inbox"
+#~ msgstr "Collega Gmail per generare un piano dalla tua casella di posta"
+
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:218
+msgid "Connect Gmail to generate folders from your inbox"
+msgstr "Collega Gmail per generare cartelle dalla tua casella di posta"
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
 #, fuzzy
@@ -1856,9 +1866,13 @@ msgstr "Connetti casella di posta"
 #~ msgstr "Pulsante Connetti casella di posta"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
+msgid "Connect once, generate your folders once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
+msgstr "Connettiti una volta, genera le tue cartelle una volta, e lascia che Amarnai gestisca la nuova posta e le migliaia di conversazioni già presenti nella tua casella di posta."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
 #, fuzzy
-msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
-msgstr "Connettiti, definisci il tuo piano e lascia che Amarnai gestisca la posta in arrivo e migliaia di conversazioni già nella tua inbox."
+#~ msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
+#~ msgstr "Connettiti, definisci il tuo piano e lascia che Amarnai gestisca la posta in arrivo e migliaia di conversazioni già nella tua inbox."
 
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
@@ -2078,7 +2092,7 @@ msgstr "Impossibile caricare il piano."
 msgid "Could not open billing management."
 msgstr "Impossibile aprire la gestione della fatturazione."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1394
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1394
 msgid "Could not prepare migration"
 msgstr "Impossibile preparare la migrazione"
 
@@ -2097,7 +2111,7 @@ msgstr "Impossibile raggiungere Amarnai. Controlla la tua connessione."
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Impossibile raggiungere il server. Verifica la tua connessione e riprova."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1344
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1344
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Impossibile leggere il file: JSON non valido."
@@ -2173,9 +2187,13 @@ msgid "Could not verify your Google account. Please try again."
 msgstr "Impossibile verificare il tuo account Google. Riprova."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
+msgid "Couldn't apply the folders."
+msgstr "Impossibile applicare le cartelle."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
 #, fuzzy
-msgid "Couldn't apply the plan."
-msgstr "Impossibile applicare il piano."
+#~ msgid "Couldn't apply the plan."
+#~ msgstr "Impossibile applicare il piano."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:182
 #, fuzzy
@@ -2214,7 +2232,7 @@ msgid "Courses"
 msgstr "Corsi"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
 #, fuzzy
 msgid "Create"
 msgstr "Crea"
@@ -2238,7 +2256,7 @@ msgstr "Crea account"
 msgid "Create an account to triage your inbox"
 msgstr "Crea un account per gestire la tua posta in arrivo"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Create Folder"
 msgstr "Crea Cartella"
@@ -2272,7 +2290,7 @@ msgstr "Creazione…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1872
 #: ../ui/src/demo/demo-seed.ts:34
 #, fuzzy
 msgid "Current"
@@ -2327,12 +2345,12 @@ msgid "Deal progress, transaction stages, and closing coordination across active
 msgstr "Avanzamento trattative, fasi transazionali e coordinamento chiusure per le vendite attive."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:546
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:546
 #, fuzzy
 msgid "Default"
 msgstr "Predefinito"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:544
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:544
 #, fuzzy
 msgid "Default color"
 msgstr "Colore predefinito"
@@ -2346,12 +2364,12 @@ msgstr "Workspace gratuito predefinito"
 #: ../../apps/mobile/app/(app)/notifications.tsx:146
 #: ../../apps/mobile/app/(app)/notifications.tsx:255
 #: ../../apps/mobile/app/(app)/notifications.tsx:341
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:695
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:706
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:802
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:695
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:802
 #, fuzzy
 msgid "Delete"
 msgstr "Elimina"
@@ -2417,7 +2435,7 @@ msgstr "Eliminazione in corso..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:655
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
@@ -2428,7 +2446,7 @@ msgid "Deployments"
 msgstr "Implementazioni"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:297
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:297
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Descrivi quali tipi di email appartengono qui: da chi provengono e di cosa trattano. Sii specifico e usa i nomi, gli argomenti e le parole effettivi che compaiono in quelle email. Descrivi cosa sono le email, non cosa intendi farne. Più chiara è la tua descrizione, più accuratamente le tue email verranno ordinate qui."
@@ -2438,7 +2456,7 @@ msgid "Describe your folders"
 msgstr "Descrivi le tue cartelle"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:508
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:508
 #, fuzzy
 msgid "Description"
 msgstr "Descrizione"
@@ -2458,7 +2476,7 @@ msgid "Didn't get an email? Check your spam folder, or <0>try again</0>."
 msgstr "Non hai ricevuto l'email? Controlla la cartella spam o <0>riprova</0>."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:127
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:319
 #, fuzzy
 msgid "Discard"
 msgstr "Ignora"
@@ -2681,7 +2699,7 @@ msgid "Draft shared"
 msgstr "Bozza condivisa"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:581
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:581
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "Linee guida stile bozza"
@@ -2715,13 +2733,13 @@ msgstr "Venditore e-commerce"
 msgid "e.g. Invoices"
 msgstr "es. Fatture"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:516
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "es. Fatture, ricevute, conferme di pagamento e domande di fatturazione da clienti e fornitori."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:587
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "es. Rispondi formalmente. Mantieni le risposte sotto le 3 frasi."
@@ -2735,7 +2753,7 @@ msgstr "Precedenti"
 msgid "Edit folder"
 msgstr "Modifica cartella"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Edit Folder"
 msgstr "Modifica cartella"
@@ -2745,7 +2763,7 @@ msgstr "Modifica cartella"
 msgid "Edit inbox"
 msgstr "Modifica Posta in arrivo"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:750
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:750
 msgid "Edit Path"
 msgstr "Modifica percorso"
 
@@ -2821,7 +2839,7 @@ msgid "Emails"
 msgstr "Email"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:325
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:325
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "Email relative alle mie bollette di cui devo occuparmi."
@@ -2854,7 +2872,7 @@ msgstr "Iscrizioni, tasse universitarie, assegnazioni alloggi e amministrazione 
 #~ msgstr "Iscrizioni, tasse universitarie, domande di alloggio e amministrazione ufficiale del campus."
 
 #. placeholder {0}: minNodeNameLength(name)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:463
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:463
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "Inserisci un nome cartella (almeno {0} caratteri)."
 
@@ -2948,16 +2966,21 @@ msgstr "Tutto ciò che non rientra in una cartella dedicata."
 msgid "Expenses"
 msgstr "Spese"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1556
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1554
 #, fuzzy
 msgid "Export"
 msgstr "Esporta"
 
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1529
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1537
+msgid "Export folders"
+msgstr "Esporta cartelle"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1531
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1539
 #, fuzzy
-msgid "Export plan"
-msgstr "Piano di esportazione"
+#~ msgid "Export plan"
+#~ msgstr "Piano di esportazione"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 msgid "External agencies, outside firms, and business partners engaged professionally."
@@ -2967,62 +2990,62 @@ msgstr "Agenzie esterne, aziende esterne e partner commerciali professionali."
 #~ msgid "External vendors, clients, and agencies engaged in a professional capacity."
 #~ msgstr "Fornitori esterni, clienti e agenzie coinvolte a titolo professionale."
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:163
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:163
 #, fuzzy
 msgid "Failed to apply"
 msgstr "Applicazione fallita"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1176
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1176
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Creazione cartella non riuscita"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1109
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1109
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Creazione percorso non riuscita"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1247
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1247
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Eliminazione cartella non riuscita"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1264
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1264
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Eliminazione percorso non riuscita"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:96
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:96
 #, fuzzy
 msgid "Failed to load status"
 msgstr "Caricamento stato non riuscito"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1305
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1305
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Ripristino non riuscito"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1076
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Salvataggio posizione non riuscito"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:150
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:150
 #, fuzzy
 msgid "Failed to start generation"
 msgstr "Avvio generazione non riuscito"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1286
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1286
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Annullamento non riuscito"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1208
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1208
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Aggiornamento cartella non riuscito"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1230
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1230
 msgid "Failed to update path"
 msgstr "Aggiornamento percorso non riuscito"
 
@@ -3080,9 +3103,13 @@ msgid "Find and draft"
 msgstr "Trova e crea bozza"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:197
+msgid "Fine-tune later in the folder editor"
+msgstr "Perfeziona in seguito nell'editor delle cartelle"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #, fuzzy
-msgid "Fine-tune later in the plan editor"
-msgstr "Affina in seguito nell'editor del piano."
+#~ msgid "Fine-tune later in the plan editor"
+#~ msgstr "Affina in seguito nell'editor del piano."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:222
 msgid "First-contact buyer and seller enquiries and new agent introductions."
@@ -3122,7 +3149,7 @@ msgstr "cartella"
 msgid "Folder"
 msgstr "Cartella"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:535
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:535
 msgid "Folder color"
 msgstr "Colore cartella"
 
@@ -3136,7 +3163,7 @@ msgstr "Cartella creata"
 msgid "Folder deleted"
 msgstr "Cartella eliminata"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1489
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1487
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "Limite di cartelle raggiunto ({MAX_TAXONOMY_NON_ROOT_NODES}). Elimina una cartella per aggiungerne un'altra."
 
@@ -3154,10 +3181,18 @@ msgstr "La cartella verrà ignorata finché non sarà collegata"
 msgid "Folder: {activeFolderName}"
 msgstr "Cartella: {activeFolderName}"
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/web/src/app/(app)/folders/page.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 #: ../ui/src/emails/EmailRail.tsx:106
 #: ../ui/src/emails/ThreadList.tsx:155
 msgid "Folders"
 msgstr "Cartelle"
+
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1480
+msgid "Folders are view-only. Only workspace admins can edit them."
+msgstr "Le cartelle sono in sola visualizzazione. Solo gli amministratori dell'area di lavoro possono modificarle."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:206
 #, fuzzy
@@ -3344,7 +3379,7 @@ msgid "Gala planning, charity auctions, and awareness campaign logistics."
 msgstr "Pianificazione di gala, aste di beneficenza e logistica delle campagne di sensibilizzazione."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:159
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:342
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:342
 #, fuzzy
 msgid "Generate"
 msgstr "Genera"
@@ -3359,8 +3394,8 @@ msgstr "Genera una nuova bozza. Consuma un credito dal tuo piano mensile."
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:217
 #, fuzzy
-msgid "Generate a plan from your inbox"
-msgstr "Genera un piano dalla tua casella di posta"
+#~ msgid "Generate a plan from your inbox"
+#~ msgstr "Genera un piano dalla tua casella di posta"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:455
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
@@ -3370,13 +3405,23 @@ msgstr "Genera un piano dalla tua casella di posta"
 msgid "Generate draft reply"
 msgstr "Genera bozza di risposta"
 
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:197
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
+#, fuzzy
+msgid "Generate folders from inbox"
+msgstr "Genera cartelle dalla casella di posta"
+
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:217
+msgid "Generate folders from your inbox"
+msgstr "Genera cartelle dalla tua casella di posta"
+
 #: ../../apps/extension/src/panel/StatusSlot.tsx:181
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1691
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:375
 #, fuzzy
@@ -3384,32 +3429,39 @@ msgid "Generate from inbox"
 msgstr "Genera dalla casella di posta"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:275
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:197
-#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
 #, fuzzy
 msgid "Generate plan from inbox"
 msgstr "Genera piano dalla casella di posta"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
 #, fuzzy
-msgid "Generate your plan"
-msgstr "Genera il tuo piano"
+msgid "Generate your folders"
+msgstr "Genera le tue cartelle"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
-msgid "Generate your plan."
-msgstr "Genera il tuo piano."
+msgid "Generate your folders."
+msgstr "Genera le tue cartelle."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+#, fuzzy
+#~ msgid "Generate your plan"
+#~ msgstr "Genera il tuo piano"
+
+#: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
+#~ msgid "Generate your plan."
+#~ msgstr "Genera il tuo piano."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "La generazione legge i tuoi mittenti, le etichette e le parole chiave dell'oggetto, mai il corpo dei messaggi. Rivedi il risultato prima che venga applicato qualsiasi cosa."
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:354
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:354
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #, fuzzy
 msgid "Generating…"
 msgstr "Generazione in corso…"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:283
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:283
 #, fuzzy
 msgid "Generation didn't complete."
 msgstr "Generazione non completata."
@@ -3508,7 +3560,7 @@ msgstr "Sincronizzazione Gmail in tempo reale attiva"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "L'accesso in sola lettura a Gmail non è stato concesso. Riprova e approva il permesso richiesto."
 
-#: ../../apps/web/src/components/Sidebar.tsx:45
+#: ../../apps/web/src/components/Sidebar.tsx:37
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Tester ordinamento Gmail"
@@ -3588,11 +3640,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Grande Re,\n"
-"\n"
-"I rapporti che hai richiesto saranno preparati prima che il consiglio si riunisca. Farò compilare ai miei scribi i resoconti dei territori orientali e li farò inviare in anticipo con un corriere veloce.\n"
-"\n"
-"In fratellanza,"
+msgstr "Grande Re,\n\nI rapporti che hai richiesto saranno preparati prima che il consiglio si riunisca. Farò compilare ai miei scribi i resoconti dei territori orientali e li farò inviare in anticipo con un corriere veloce.\n\nIn fratellanza,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3612,7 +3660,7 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Richieste di supporto, problemi di fornitura ed escalation clienti."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "Hide tips"
 msgstr "Nascondi suggerimenti"
@@ -3660,6 +3708,11 @@ msgstr "Bollette domestiche, conferme di pagamento, ricevute e registri delle sp
 msgid "How Amarnai stores and protects your data"
 msgstr "Come Amarnai archivia e protegge i tuoi dati"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:23
+#, fuzzy
+msgid "How do Amarnai's folders work?"
+msgstr "Come funzionano le cartelle di Amarnai?"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
 msgstr "Come faccio a sapere che è sicuro?"
@@ -3676,8 +3729,8 @@ msgstr "Come mi fa risparmiare tempo Amarnai?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:23
 #, fuzzy
-msgid "How does Amarnai's plan work?"
-msgstr "Come funziona il piano di Amarnai?"
+#~ msgid "How does Amarnai's plan work?"
+#~ msgstr "Come funziona il piano di Amarnai?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:35
 msgid "How is Amarnai different from Gmail and Outlook filters?"
@@ -3699,7 +3752,7 @@ msgid "How it works"
 msgstr "Come funziona"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "How to write a good description"
 msgstr "Come scrivere una buona descrizione"
@@ -3733,25 +3786,34 @@ msgstr "Se qualcosa non funziona o hai una domanda, ecco come contattarci."
 msgid "Ignored"
 msgstr "Ignorato"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1581
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1579
 #, fuzzy
 msgid "Import"
 msgstr "Importa"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1409
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1409
 #, fuzzy
 msgid "Import failed"
 msgstr "Importazione non riuscita"
 
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1562
+#, fuzzy
+msgid "Import folders"
+msgstr "Importa cartelle"
+
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1557
+msgid "Import folders (replaces current)"
+msgstr "Importa cartelle (sostituisce le attuali)"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1564
 #, fuzzy
-msgid "Import plan"
-msgstr "Importa piano"
+#~ msgid "Import plan"
+#~ msgstr "Importa piano"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1559
 #, fuzzy
-msgid "Import plan (replaces current)"
-msgstr "Importa piano (sostituisce quello attuale)"
+#~ msgid "Import plan (replaces current)"
+#~ msgstr "Importa piano (sostituisce quello attuale)"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:13
 #: ../ui/src/emails/queueLabels.ts:26
@@ -3780,7 +3842,7 @@ msgstr "Su Gmail e Outlook"
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:609
 #: ../ui/src/demo/demo-seed.ts:29
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
@@ -3912,12 +3974,12 @@ msgid "Invalid or missing reset link."
 msgstr "Link di reset non valido o mancante."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1358
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1358
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "File di tassonomia non valido: {0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1352
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1352
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "File di tassonomia non valido: {detail}"
@@ -4127,7 +4189,7 @@ msgstr "Lead"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:639
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:639
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "Lascia non smistato"
@@ -4169,7 +4231,7 @@ msgstr "Mi arrivavano lettere dal Faraone a sud e dagli Ittiti a nord, e potevo 
 msgid "Light"
 msgstr "Chiaro"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:521
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "Elenca i tipi di email che appartengono qui: mittenti, argomenti, parole chiave. Punta a una frase completa."
 
@@ -4411,11 +4473,11 @@ msgstr "Microsoft non è riuscita a completare l'autorizzazione. Il link potrebb
 msgid "Microsoft sign-in failed. Please try again."
 msgstr "Accesso Microsoft non riuscito. Riprova."
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:262
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:263
 msgid "Migrate & apply"
 msgstr "Migra e applica"
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:35
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "Casella di posta di prova"
@@ -4462,7 +4524,7 @@ msgid "Most popular"
 msgstr "Più popolare"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:633
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:633
 #, fuzzy
 msgid "Move them to"
 msgstr "Spostali in"
@@ -4498,7 +4560,7 @@ msgstr "I miei viaggi mi condurranno vicino al Delta nei prossimi giorni. Se il 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:495
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -4695,9 +4757,14 @@ msgstr "Nessuna email rilevante dalla tua ultima generazione, quindi il risultat
 #~ msgid "No signups yet."
 #~ msgstr "Nessuna iscrizione ancora."
 
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:126
+#, fuzzy
+msgid "No sorted threads to migrate. Your new folders will apply directly."
+msgstr "Nessuna conversazione ordinata da migrare. Le tue nuove cartelle verranno applicate direttamente."
+
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:126
-msgid "No sorted threads to migrate. Your new plan will apply directly."
-msgstr "Nessuna conversazione ordinata da migrare. Il tuo nuovo piano verrà applicato direttamente."
+#~ msgid "No sorted threads to migrate. Your new plan will apply directly."
+#~ msgstr "Nessuna conversazione ordinata da migrare. Il tuo nuovo piano verrà applicato direttamente."
 
 #. placeholder {0}: formatQuotaResetDate(state.quota.resetsAt)
 #: ../ui/src/emails/ThreadSummaryCard.tsx:53
@@ -4737,7 +4804,7 @@ msgid "No threads yet"
 msgstr "Ancora nessuna conversazione"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:153
+#: ../../apps/web/src/components/Sidebar.tsx:145
 #, fuzzy
 msgid "No workspace"
 msgstr "Nessuno spazio di lavoro"
@@ -4748,7 +4815,7 @@ msgstr "Nessuno"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:606
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:606
 #, fuzzy
 msgid "None (not connected)"
 msgstr "Nessuno (non connesso)"
@@ -4772,8 +4839,13 @@ msgid "Not included · <0>upgrade to add</0>"
 msgstr "Non incluso · <0>effettua l'upgrade per aggiungere</0>"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:28
-msgid "Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done."
-msgstr "Non necessariamente. Amarnai può generare un piano completo dalla tua inbox, con un clic. Puoi anche partire da un modello predefinito. La maggior parte degli utenti genera un piano, rinomina due o tre cartelle e ha finito."
+#~ msgid "Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done."
+#~ msgstr "Non necessariamente. Amarnai può generare un piano completo dalla tua inbox, con un clic. Puoi anche partire da un modello predefinito. La maggior parte degli utenti genera un piano, rinomina due o tre cartelle e ha finito."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:28
+#, fuzzy
+msgid "Not necessarily. Amarnai can generate a complete set of folders for you from your inbox, with one click. You can also start from a ready-made template. Most people generate their folders, rename two or three of them, and they're done."
+msgstr "Non necessariamente. Amarnai può generare per te un set completo di cartelle dalla tua casella di posta, con un solo clic. Puoi anche partire da un modello predefinito. La maggior parte delle persone genera le proprie cartelle, ne rinomina due o tre e ha finito."
 
 #: ../../apps/mobile/app/(app)/account.tsx:133
 msgid "Not set"
@@ -4814,8 +4886,12 @@ msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "Avvisi di reperibilità, rapporti interruzioni e escalation incidenti produzione."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
-msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
-msgstr "Un unico accesso crea il tuo account, collega la tua posta in arrivo Gmail o Outlook e ti consente di creare il tuo piano di smistamento. Amarnai non invia né elimina mai email."
+#~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+#~ msgstr "Un unico accesso crea il tuo account, collega la tua posta in arrivo Gmail o Outlook e ti consente di creare il tuo piano di smistamento. Amarnai non invia né elimina mai email."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Amarnai never sends or deletes mail."
+msgstr "Un singolo accesso crea il tuo account, collega la tua casella di posta Gmail o Outlook e ti permette di configurare le tue cartelle. Amarnai non invia né elimina mai email."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:100
 #, fuzzy
@@ -4862,7 +4938,7 @@ msgstr "Apri in Gmail"
 msgid "Open in Outlook"
 msgstr "Apri in Outlook"
 
-#: ../../apps/web/src/components/Sidebar.tsx:114
+#: ../../apps/web/src/components/Sidebar.tsx:106
 #, fuzzy
 msgid "Open navigation"
 msgstr "Apri navigazione"
@@ -4873,8 +4949,13 @@ msgid "open source email ai"
 msgstr "IA email open source"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
-msgid "Open the plan editor"
-msgstr "Apri l'editor del piano"
+#, fuzzy
+msgid "Open the folder editor"
+msgstr "Apri l'editor delle cartelle"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#~ msgid "Open the plan editor"
+#~ msgstr "Apri l'editor del piano"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:111
 msgid "Open this from the Amarnai Reply button in Outlook."
@@ -4914,11 +4995,11 @@ msgstr "Operazioni"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "Opzionale. Applicato durante la generazione di bozze di risposte per questa cartella."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:592
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:592
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Facoltativo. Applicato quando si generano bozze di risposte per le conversazioni in questa cartella."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:573
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:573
 msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "Opzionale. Imposta il colore del chip e dell'icona di questa cartella nella tua casella di posta. L'opzione predefinita assegna automaticamente un colore stabile."
 
@@ -4965,8 +5046,8 @@ msgid "Paid or upgraded workspace"
 msgstr "Workspace a pagamento o aggiornato"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:600
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:759
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:600
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:759
 msgid "Parent"
 msgstr "Genitore"
 
@@ -5169,21 +5250,15 @@ msgid "Pin Amarnai to your toolbar"
 msgstr "Fissa Amarnai alla barra degli strumenti"
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
-#. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:35
-#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 msgid "Plan"
 msgstr "Piano"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1480
-msgid "Plan is view-only. Only workspace admins can edit it."
-msgstr "Il piano è in sola lettura. Solo gli amministratori dello spazio di lavoro possono modificarlo."
+#~ msgid "Plan is view-only. Only workspace admins can edit it."
+#~ msgstr "Il piano è in sola lettura. Solo gli amministratori dello spazio di lavoro possono modificarlo."
 
 #: ../ui/src/pricing/planMessages.ts:67
 #, fuzzy
@@ -5192,8 +5267,8 @@ msgstr "Nodi del piano"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #, fuzzy
-msgid "Plan sorting"
-msgstr "Pianifica ordinamento"
+#~ msgid "Plan sorting"
+#~ msgstr "Pianifica ordinamento"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:156
 #, fuzzy
@@ -5410,12 +5485,12 @@ msgstr "Reindirizza {unclassifiedCount} non classificati"
 msgid "Re-route thread"
 msgstr "Re-instrada conversazione"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:171
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:172
 #, fuzzy
 msgid "Re-sort with AI"
 msgstr "Riordina con AI"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:241
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:242
 #, fuzzy
 msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 msgstr "Riordinare le conversazioni già ordinate questo mese è gratuito. Se raggiungi il limite mensile, il resto riprenderà il mese prossimo."
@@ -5448,15 +5523,20 @@ msgstr "Progettato per la sola lettura"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
 #, fuzzy
-msgid "Reading your inbox and building a plan. This can take a moment."
-msgstr "Lettura della tua posta in arrivo e creazione di un piano. Potrebbe richiedere un momento."
+#~ msgid "Reading your inbox and building a plan. This can take a moment."
+#~ msgstr "Lettura della tua posta in arrivo e creazione di un piano. Potrebbe richiedere un momento."
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
+#, fuzzy
+msgid "Reading your inbox and building your folders. This can take a moment."
+msgstr "Leggo la tua casella di posta e creo le tue cartelle. Potrebbe volerci un momento."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:205
 msgid "Real Estate Agent"
 msgstr "Agente Immobiliare"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:314
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:314
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Ricevute, conferme di pagamento e domande di fatturazione dai fornitori."
@@ -5475,7 +5555,7 @@ msgstr "Tentata di recente. Riprova più tardi."
 msgid "Recommended"
 msgstr "Consigliato"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1876
 #, fuzzy
 msgid "Recommended for your inbox"
 msgstr "Consigliato per la tua casella di posta"
@@ -5545,7 +5625,7 @@ msgstr "Reclutamento"
 msgid "Redirecting…"
 msgstr "Reindirizzamento…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1519
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1517
 #, fuzzy
 msgid "Redo"
 msgstr "Ripeti"
@@ -5565,7 +5645,7 @@ msgstr "Aggiorna"
 #~ msgstr "Aggiorna dopo il {refreshDate} per caricare altro."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:348
 #: ../ui/src/emails/SuggestedDraftCard.tsx:89
 #, fuzzy
 msgid "Regenerate"
@@ -5650,9 +5730,13 @@ msgstr "Si rinnova mensilmente il <0>{0}</0>."
 msgid "Renews on <0>{0}</0>."
 msgstr "Si rinnova il <0>{0}</0>."
 
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:103
+msgid "Replace folders"
+msgstr "Sostituisci cartelle"
+
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:103
-msgid "Replace plan"
-msgstr "Sostituisci piano"
+#~ msgid "Replace plan"
+#~ msgstr "Sostituisci piano"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1614
 #, fuzzy
@@ -5664,7 +5748,7 @@ msgstr "Sostituisci piano"
 #~ msgid "Replace taxonomy"
 #~ msgstr "Sostituisci tassonomia"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1815
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1813
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Sostituisci con un modello"
@@ -5801,9 +5885,13 @@ msgstr "Resi"
 #~ msgstr "Coda di revisione"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
+msgid "Review your folders"
+msgstr "Rivedi le tue cartelle"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
 #, fuzzy
-msgid "Review your plan"
-msgstr "Rivedi il tuo piano"
+#~ msgid "Review your plan"
+#~ msgstr "Rivedi il tuo piano"
 
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:70
 msgid "Reviews from early users"
@@ -5824,11 +5912,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Ti ascoltiamo. È stato ordinato grano aggiuntivo dai magazzini del sud e arriverà prima della festa del raccolto. Chiediamo la tua pazienza fino ad allora.\n"
-"\n"
-"Stai bene,"
+msgstr "Rib-Hadda,\n\nTi ascoltiamo. È stato ordinato grano aggiuntivo dai magazzini del sud e arriverà prima della festa del raccolto. Chiediamo la tua pazienza fino ad allora.\n\nStai bene,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5861,8 +5945,8 @@ msgstr "Uguale al mensile"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 msgid "Save"
 msgstr "Salva"
@@ -5909,8 +5993,8 @@ msgid "Saving..."
 msgstr "Salvataggio in corso..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -6081,6 +6165,7 @@ msgstr "Imposta nuova password"
 #~ msgstr "Imposta almeno 3 cartelle in modo da poter iniziare a ordinare."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:44
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:291
 #, fuzzy
 msgid "Set up folders"
@@ -6091,6 +6176,11 @@ msgstr "Imposta le cartelle"
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "Imposta le cartelle in modo che Amarnai sappia dove archiviare la tua posta. Ci vuole solo un minuto."
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:170
+#, fuzzy
+msgid "Set up your folders"
+msgstr "Configura le tue cartelle"
+
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
 msgstr "Imposta la lingua per quest'area di lavoro, inclusa l'interfaccia e le cartelle generate dall'IA."
@@ -6100,10 +6190,10 @@ msgstr "Imposta la lingua per quest'area di lavoro, inclusa l'interfaccia e le c
 msgid "Setting up your workspace…"
 msgstr "Configurazione dello spazio di lavoro in corso…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:42
+#: ../../apps/web/src/components/Sidebar.tsx:34
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -6209,7 +6299,7 @@ msgstr "Accedi con Google o Microsoft"
 
 #: ../../apps/extension/src/App.tsx:128
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:126
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -6391,12 +6481,12 @@ msgid "Start free"
 msgstr "Inizia gratis"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1816
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1814
 #, fuzzy
 msgid "Start from a template"
 msgstr "Inizia da un modello"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1584
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1582
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Inizia da un modello (sostituisce quello attuale)"
@@ -6652,7 +6742,7 @@ msgstr "Team"
 msgid "Template applied"
 msgstr "Modello applicato"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1608
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1606
 msgid "Templates"
 msgstr "Modelli"
 
@@ -6792,7 +6882,7 @@ msgstr "Queste impostazioni controllano quali conversazioni della posta in arriv
 msgid "This conversation has not synced to Amarnai yet."
 msgstr "Questa conversazione non è ancora stata sincronizzata con Amarnai."
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1472
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1472
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Questa cartella contiene sottocartelle. Rimuovi prima i loro percorsi, quindi eliminala."
@@ -6858,8 +6948,13 @@ msgstr "Questa conversazione non è stata ancora smistata."
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:420
 #, fuzzy
-msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
-msgstr "Questa conversazione non è ancora stata ordinata. Crea un piano di ordinamento così Amarnai saprà dove archiviarla."
+#~ msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+#~ msgstr "Questa conversazione non è ancora stata ordinata. Crea un piano di ordinamento così Amarnai saprà dove archiviarla."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:420
+#, fuzzy
+msgid "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
+msgstr "Questa conversazione non è ancora stata ordinata. Configura le tue cartelle in modo che Amarnai sappia dove archiviarla."
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:45
 msgid "This thread is waiting to be routed."
@@ -6957,13 +7052,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "A mio fratello, il Grande Re,\n"
-"\n"
-"Il grande consiglio si riunirà all'inizio di Shemu. Ti chiedo di preparare un resoconto completo dei territori orientali e di inviarlo in anticipo con un corriere veloce, prima della luna nuova, se possibile.\n"
-"\n"
-"La nostra alleanza è forte. Mostriamo al consiglio che tale rimane.\n"
-"\n"
-"Tushratta, Grande Re di Mitanni"
+msgstr "A mio fratello, il Grande Re,\n\nIl grande consiglio si riunirà all'inizio di Shemu. Ti chiedo di preparare un resoconto completo dei territori orientali e di inviarlo in anticipo con un corriere veloce, prima della luna nuova, se possibile.\n\nLa nostra alleanza è forte. Mostriamo al consiglio che tale rimane.\n\nTushratta, Grande Re di Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -6972,11 +7061,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "All'Ufficio Reale delle Nomine,\n"
-"\n"
-"Abbiamo ricevuto la candidatura di Horemheb di Tebe ed esamineremo le sue credenziali prima della prossima luna nuova. Comunicategli che invieremo notizie a tempo debito.\n"
-"\n"
-"Per decreto reale,"
+msgstr "All'Ufficio Reale delle Nomine,\n\nAbbiamo ricevuto la candidatura di Horemheb di Tebe ed esamineremo le sue credenziali prima della prossima luna nuova. Comunicategli che invieremo notizie a tempo debito.\n\nPer decreto reale,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -6987,13 +7072,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Al Grande Re,\n"
-"\n"
-"Per molti anni le nostre case sono state come fratelli. Scrivo ora per proporre di formalizzare questa amicizia a beneficio di entrambi i nostri popoli: un patto di mutua protezione e rotte condivise.\n"
-"\n"
-"Chiedo solo che tu ascolti le mie condizioni. Fai pervenire la tua risposta con il prossimo corriere e spedirò subito il mio inviato.\n"
-"\n"
-"Aziru, servo del Grande Re, signore di Amurru"
+msgstr "Al Grande Re,\n\nPer molti anni le nostre case sono state come fratelli. Scrivo ora per proporre di formalizzare questa amicizia a beneficio di entrambi i nostri popoli: un patto di mutua protezione e rotte condivise.\n\nChiedo solo che tu ascolti le mie condizioni. Fai pervenire la tua risposta con il prossimo corriere e spedirò subito il mio inviato.\n\nAziru, servo del Grande Re, signore di Amurru"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7002,11 +7081,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Al Grande Re,\n"
-"\n"
-"I miei viaggi mi porteranno vicino al Delta nei prossimi giorni. Se il Grande Re ha un'ora da dedicare, sarei lieto di avere l'occasione di parlare faccia a faccia; ci sono questioni più facili da dire che da scrivere.\n"
-"\n"
-"Tuo servo, Abdi-Heba, governatore di Urushalim"
+msgstr "Al Grande Re,\n\nI miei viaggi mi porteranno vicino al Delta nei prossimi giorni. Se il Grande Re ha un'ora da dedicare, sarei lieto di avere l'occasione di parlare faccia a faccia; ci sono questioni più facili da dire che da scrivere.\n\nTuo servo, Abdi-Heba, governatore di Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7015,11 +7090,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Al Grande Re, mio fratello,\n"
-"\n"
-"Le tue parole mi sono giunte. L'oro sarà spedito prima che il prossimo messaggero parta. Apprezziamo il legame tra le nostre case e non desideriamo che si raffreddi.\n"
-"\n"
-"In amicizia,"
+msgstr "Al Grande Re, mio fratello,\n\nLe tue parole mi sono giunte. L'oro sarà spedito prima che il prossimo messaggero parta. Apprezziamo il legame tra le nostre case e non desideriamo che si raffreddi.\n\nIn amicizia,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7030,13 +7101,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Al Grande Re, mio fratello,\n"
-"\n"
-"Scrivo in amicizia, come i nostri padri hanno fatto prima di noi. La terza consegna d'oro concordata nel nostro trattato non è arrivata. Sono passati due messaggeri e ancora aspettiamo.\n"
-"\n"
-"Chiediamo che tu la spedisca senza ulteriore indugio, come si conviene al legame tra le nostre case.\n"
-"\n"
-"Burna-Buriash II, Re di Babilonia"
+msgstr "Al Grande Re, mio fratello,\n\nScrivo in amicizia, come i nostri padri hanno fatto prima di noi. La terza consegna d'oro concordata nel nostro trattato non è arrivata. Sono passati due messaggeri e ancora aspettiamo.\n\nChiediamo che tu la spedisca senza ulteriore indugio, come si conviene al legame tra le nostre case.\n\nBurna-Buriash II, Re di Babilonia"
 
 #: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
@@ -7046,13 +7111,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Al Grande Re, mio signore, mio sole,\n"
-"\n"
-"Il grano che hai inviato il mese scorso è stato ricevuto con gratitudine e ho lodato il tuo nome davanti al popolo. Ma devo scrivere di nuovo: la terza spedizione non è arrivata e la città è irrequieta.\n"
-"\n"
-"Ho scritto sette volte. Non desidero disturbarti, eppure cos'altro posso fare?\n"
-"\n"
-"Tuo servo, Rib-Hadda, governatore di Byblos"
+msgstr "Al Grande Re, mio signore, mio sole,\n\nIl grano che hai inviato il mese scorso è stato ricevuto con gratitudine e ho lodato il tuo nome davanti al popolo. Ma devo scrivere di nuovo: la terza spedizione non è arrivata e la città è irrequieta.\n\nHo scritto sette volte. Non desidero disturbarti, eppure cos'altro posso fare?\n\nTuo servo, Rib-Hadda, governatore di Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7166,7 +7225,7 @@ msgstr "Non classificato. Cambia cartella"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:382
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1508
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #, fuzzy
 msgid "Undo"
@@ -7181,7 +7240,7 @@ msgstr "Università"
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1351
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1351
 #, fuzzy
 msgid "unknown error"
 msgstr "errore sconosciuto"
@@ -7345,14 +7404,14 @@ msgstr "Usa \"Riscansione casella di posta\" dopo aver modificato i filtri per a
 #: ../../apps/extension/src/panel/StatusSlot.tsx:188
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:330
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:378
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 #, fuzzy
 msgid "Use a template"
 msgstr "Usa un modello"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1924
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1922
 #, fuzzy
 msgid "Use template"
 msgstr "Usa modello"
@@ -7511,7 +7570,7 @@ msgstr "Cosa succede alle conversazioni su cui Amarnai non è sicuro?"
 msgid "What model does Amarnai use?"
 msgstr "Che modello usa Amarnai?"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:615
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:615
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Dove si trova questa cartella. Le cartelle senza un genitore rimangono disconnesse e vengono ignorate finché non vengono connesse."
@@ -7557,7 +7616,7 @@ msgstr "Professionista"
 msgid "Works with Gmail™ and Outlook."
 msgstr "Funziona con Gmail™ e Outlook."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:55
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
@@ -7590,7 +7649,7 @@ msgstr "Il nome del workspace non può essere vuoto"
 msgid "Workspace name updated."
 msgstr "Nome workspace aggiornato."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 msgid "Workspace settings"
 msgstr "Impostazioni spazio di lavoro"
 
@@ -7655,8 +7714,12 @@ msgid "Yes, reset workspace"
 msgstr "Sì, resetta workspace"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:44
-msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
-msgstr "Sì. Amarnai può gestire l'arretrato già presente nella tua casella di posta, non solo i messaggi che arrivano d'ora in poi. La gestione dell'arretrato e l'ordinamento della nuova posta utilizzano lo stesso piano, fino ai limiti del tuo piano, quindi la posta vecchia e nuova vengono organizzate allo stesso modo."
+msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same folders, up to your plan's limits, so old and new mail end up organized the same way."
+msgstr "Sì. Amarnai può gestire il backlog già presente nella tua casella di posta, non solo i messaggi che arrivano da ora in poi. La gestione del backlog e l'ordinamento della nuova posta utilizzano le stesse cartelle, fino ai limiti del tuo piano, in modo che la posta vecchia e nuova risultino organizzate allo stesso modo."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:44
+#~ msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
+#~ msgstr "Sì. Amarnai può gestire l'arretrato già presente nella tua casella di posta, non solo i messaggi che arrivano d'ora in poi. La gestione dell'arretrato e l'ordinamento della nuova posta utilizzano lo stesso piano, fino ai limiti del tuo piano, quindi la posta vecchia e nuova vengono organizzate allo stesso modo."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
 #~ msgid "Yes. Amarnai can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, so your whole inbox ends up organized the same way."
@@ -7723,12 +7786,12 @@ msgid "You can keep your free workspace and use paid workspaces separately."
 msgstr "Puoi mantenere il tuo workspace gratuito e usare i workspace a pagamento separatamente."
 
 #. placeholder {0}: new Date(eligibility.nextEligibleAt).toLocaleString()
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:285
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:285
 #, fuzzy
 msgid "You can try again after {0}, or start from a template."
 msgstr "Puoi riprovare dopo {0}, o iniziare da un modello."
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:286
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:286
 #, fuzzy
 msgid "You can try again shortly, or start from a template."
 msgstr "Puoi riprovare a breve, oppure iniziare da un modello."
@@ -7811,6 +7874,10 @@ msgstr "La tua prova gratuita di 14 giorni dura fino al <0>{0}</0>. Non ti verr�
 msgid "Your folders"
 msgstr "Le tue cartelle"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
+msgstr "Le tue cartelle sono un semplice albero che si dirama dalla tua casella di posta. Lascia che Amarnai le generi dalla tua casella di posta, parti da un modello o disegnale tu stesso."
+
 #: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:82
 #, fuzzy
 msgid "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
@@ -7819,6 +7886,15 @@ msgstr "Le tue cartelle sono replicate come etichette Gmail e mantenute sincroni
 #: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:76
 msgid "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
 msgstr "Le tue cartelle sono replicate come categorie Outlook e mantenute sincronizzate man mano che le conversazioni vengono ordinate. Amarnai gestisce solo le categorie nello spazio dei nomi <0>Amarnai</0> e non invia, elimina o sposta mai la tua posta."
+
+#: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
+#, fuzzy
+msgid "Your folders form a simple tree, branching out from the inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives."
+msgstr "Le tue cartelle formano un semplice albero, che si dirama dalla casella di posta. Lascia che Amarnai le generi dalla tua casella di posta, parti da un modello o disegnale tu stesso. Poi percorre l'albero per ogni email che arriva."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:24
+msgid "Your folders form a tree (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate it for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
+msgstr "Le tue cartelle formano un albero (ad esempio, una cartella Clienti con Assistenza e Fatturazione al di sotto), ciascuna descritta in linguaggio semplice, e Amarnai percorre quell'albero per instradare ogni conversazione alla cartella più adatta. Il modo più rapido per costruirlo è lasciare che Amarnai lo generi per te: legge la tua casella di posta e propone un albero completo, nominato e descritto, che puoi mantenere così com'è o modificare. Puoi anche partire da uno dei nostri modelli predefiniti o costruirlo da zero. Nessuna competenza tecnica richiesta."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:259
 #, fuzzy
@@ -7839,7 +7915,7 @@ msgid "Your inbox import finished."
 msgstr "L'importazione della tua casella di posta è terminata."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:262
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:262
 #, fuzzy
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "La tua casella di posta è ancora in fase di importazione. Puoi generare ora da ciò che è stato caricato finora, ma la rigenerazione al termine dell'importazione fornirà un risultato più accurato."
@@ -7865,17 +7941,17 @@ msgid "Your past threads are being loaded and will appear shortly."
 msgstr "Le tue conversazioni precedenti si stanno caricando e appariranno a breve."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
-msgid "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
-msgstr "Il tuo piano è una semplice struttura di cartelle che si ramifica dalla tua posta in arrivo. Lascia che Amarnai lo generi dalla tua casella, parti da un modello o crealo tu stesso."
+#~ msgid "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
+#~ msgstr "Il tuo piano è una semplice struttura di cartelle che si ramifica dalla tua posta in arrivo. Lascia che Amarnai lo generi dalla tua casella, parti da un modello o crealo tu stesso."
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
-msgid "Your plan is a simple folder tree: your folders branching out from the inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself. Then it walks the tree for every email that arrives."
-msgstr "Il tuo piano è un semplice albero di cartelle: le tue cartelle si diramano dalla casella di posta. Lascia che Amarnai lo generi dalla tua casella di posta, parti da un modello o disegnalo tu stesso. Poi scorre l'albero per ogni email che arriva."
+#~ msgid "Your plan is a simple folder tree: your folders branching out from the inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself. Then it walks the tree for every email that arrives."
+#~ msgstr "Il tuo piano è un semplice albero di cartelle: le tue cartelle si diramano dalla casella di posta. Lascia che Amarnai lo generi dalla tua casella di posta, parti da un modello o disegnalo tu stesso. Poi scorre l'albero per ogni email che arriva."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:24
-msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
-msgstr "Il tuo piano è un albero di cartelle (ad esempio una cartella Clienti con Sottocartelle di Supporto e Fatturazione), ognuna descritta in linguaggio semplice, e Amarnai percorre quest'albero per indirizzare ogni conversazione alla cartella che si adatta meglio. Il modo più veloce per costruirlo è lasciare che Amarnai ne generi uno per te: legge la tua casella di posta e propone un albero completo, nominato e descritto, che puoi mantenere così com'è o modificare. Puoi anche partire da uno dei nostri modelli predefiniti o costruirne uno da zero. Nessuna conoscenza tecnica richiesta."
+#~ msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
+#~ msgstr "Il tuo piano è un albero di cartelle (ad esempio una cartella Clienti con Sottocartelle di Supporto e Fatturazione), ognuna descritta in linguaggio semplice, e Amarnai percorre quest'albero per indirizzare ogni conversazione alla cartella che si adatta meglio. Il modo più veloce per costruirlo è lasciare che Amarnai ne generi uno per te: legge la tua casella di posta e propone un albero completo, nominato e descritto, che puoi mantenere così com'è o modificare. Puoi anche partire da uno dei nostri modelli predefiniti o costruirne uno da zero. Nessuna conoscenza tecnica richiesta."
 
 #. placeholder {0}: status.plan
 #: ../../apps/extension/src/panel/StatusSlot.tsx:73

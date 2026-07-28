@@ -22,6 +22,12 @@ const config: NextConfig = {
     };
     return config;
   },
+  // The taxonomy page moved from /plan to /folders when the feature was renamed.
+  // Kept indefinitely: extension builds already installed link to /plan by
+  // absolute URL, and they update on the store's schedule, not ours.
+  async redirects() {
+    return [{ source: "/plan", destination: "/folders", permanent: true }];
+  },
   // The full Content-Security-Policy (including `frame-ancestors 'none'`) is built
   // per request in src/proxy.ts because it carries a per-request nonce. X-Frame-Options
   // stays here as the static clickjacking fallback for asset routes the proxy matcher

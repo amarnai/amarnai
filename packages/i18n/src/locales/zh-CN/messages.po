@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:610
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:610
 #, fuzzy
 msgid " (Inbox)"
 msgstr "（收件箱）"
@@ -67,7 +67,7 @@ msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}
 msgstr "{0, plural, one {# 个会话待分类} other {# 个会话待分类}}"
 
 #. placeholder {0}: s.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:155
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:156
 msgid "{0, plural, one {# thread} other {# threads}}"
 msgstr "{0, plural, one {# 会话} other {# 会话}}"
 
@@ -128,7 +128,7 @@ msgstr "{0} / {1} 剩余 · {quotaResetDate} 重置"
 #~ msgstr ""
 
 #. placeholder {0}: migrateLive > 0 ? ( <Fragment> <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "} </Fragment> ) : null
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:224
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:225
 #, fuzzy
 msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
 msgstr "{0}<0>{resortLive}</0> 会话将由 AI 重新排序。"
@@ -152,7 +152,7 @@ msgstr "{blacklistCount, plural, one {# 已阻止} other {# 已阻止}}"
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}，更改文件夹"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:625
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:625
 #, fuzzy
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {删除此文件夹将导致 # 条会话未分类。} other {删除此文件夹将导致 # 条会话未分类。}}"
@@ -171,13 +171,17 @@ msgid "{draftRemaining} of {draftLimit} left · resets {draftResetDate}"
 msgstr "剩余 {draftRemaining} / {draftLimit} · {draftResetDate} 重置"
 
 #: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
+msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your folders changed since it was sorted or sorting hit a temporary error.} other {# needs-review threads can be re-sorted automatically, because your folders changed since they were sorted or sorting hit a temporary error.}}"
+msgstr "{eligible, plural, one {#个待审核会话可自动重新分类，因为您的文件夹在上次分类后已更改，或分类时出现临时错误。} other {#个待审核会话可自动重新分类，因为您的文件夹在上次分类后已更改，或分类时出现临时错误。}}"
+
+#: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
 #, fuzzy
 #~ msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error. The rest need your decision.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error. The rest need your decision.}}"
 #~ msgstr "{eligible, plural, one {有 # 待审核会话可自动重新分类，因为您的套餐在分类后已变更或分类时发生临时错误。其余会话需要您决定。} other {有 # 待审核会话可自动重新分类，因为您的套餐在分类后已变更或分类时发生临时错误。其余会话需要您决定。}}"
 
 #: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:65
-msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error.}}"
-msgstr "{eligible, plural, one {# 待审核的会话可自动重新整理，因为您的套餐自上次整理后已更改，或整理时遇到临时错误。} other {# 待审核的会话可自动重新整理，因为您的套餐自上次整理后已更改，或整理时遇到临时错误。}}"
+#~ msgid "{eligible, plural, one {# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error.} other {# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error.}}"
+#~ msgstr "{eligible, plural, one {# 待审核的会话可自动重新整理，因为您的套餐自上次整理后已更改，或整理时遇到临时错误。} other {# 待审核的会话可自动重新整理，因为您的套餐自上次整理后已更改，或整理时遇到临时错误。}}"
 
 #: ../../apps/web/src/app/(app)/emails/ResortReviewBanner.tsx:81
 #, fuzzy
@@ -197,7 +201,7 @@ msgstr "{filed} 已归档 · {reviewCount} 待审"
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# 个文件夹} other {# 个文件夹}}"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:205
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:206
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {未显示 # 个无会话的文件夹。} other {未显示 # 个无会话的文件夹。}}"
 
@@ -231,7 +235,7 @@ msgstr "剩余 {quotaRemaining} / {0} · 重置于 {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "剩余 {remaining} / {limit} · {resetDate} 重置"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1667
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1665
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "您的收件箱已连接 {routableCount} / {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。路由至少需要 {TAXONOMY_MIN_NON_ROOT_NODES} 个文件夹。"
@@ -293,12 +297,12 @@ msgstr "© 2026 Amarnai。AGPL-3.0 协议开源。"
 msgid "+ Add folder"
 msgstr "+ 添加文件夹"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1498
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1507
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1496
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1505
 msgid "+ Add Folder"
 msgstr "+ 添加文件夹"
 
-#: ../../apps/web/src/components/Sidebar.tsx:187
+#: ../../apps/web/src/components/Sidebar.tsx:179
 #, fuzzy
 msgid "+ New workspace"
 msgstr "+ 新建工作区"
@@ -552,9 +556,7 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
-"\n"
-"请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:340
 #, fuzzy
@@ -562,8 +564,12 @@ msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "模板助您即刻开始整理，稍后还可编辑。"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
-msgid "A workspace owner manages this workspace's sorting plan."
-msgstr "工作区所有者管理此工作区的整理方案。"
+msgid "A workspace owner manages this workspace's folders."
+msgstr "工作区所有者管理此工作区的文件夹。"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
+#~ msgid "A workspace owner manages this workspace's sorting plan."
+#~ msgstr "工作区所有者管理此工作区的整理方案。"
 
 #: ../ui/src/demo/demo-seed.ts:429
 #, fuzzy
@@ -576,11 +582,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n"
-"\n"
-"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
-"\n"
-"届时再叙，"
+msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -611,12 +613,12 @@ msgstr "访问被拒绝。请授予 Outlook 只读访问权限 (Mail.Read) 以�
 msgid "Account"
 msgstr "账户"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:107
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:101
 #, fuzzy
 msgid "Account menu"
 msgstr "账户菜单"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:121
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:115
 msgid "Account settings"
 msgstr "账户设置"
 
@@ -647,11 +649,11 @@ msgid "Add"
 msgstr "添加"
 
 #. placeholder {0}: minNodeDescriptionLength(description)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:466
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:466
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "添加描述 (至少 {0} 个字符)，以便 AI 精准分类。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1532
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1530
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "添加至少 3 个已连接的文件夹以导出"
@@ -999,7 +1001,7 @@ msgstr "Amarnai 会将您的收件箱分类到您定义的文件夹中，为您�
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
 msgstr "Amarnai 将分析您的发件人、标签和主题关键词（不涉及邮件正文），并推荐个性化文件夹。在应用前，您可以审阅和编辑。"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:293
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:293
 #, fuzzy
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. You can review and edit before anything is applied."
 msgstr "Amarnai 将分析您的发件人、标签和主题关键词（绝不分析邮件正文）以建议一组个性化文件夹。您可以在应用之前进行审核和编辑。"
@@ -1046,8 +1048,12 @@ msgstr "正在分析收件箱，并为您制定方案…"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:271
 #, fuzzy
-msgid "Analyzing your inbox and building a plan… this can take a moment."
-msgstr "正在分析您的收件箱并制定计划……这可能需要一点时间。"
+#~ msgid "Analyzing your inbox and building a plan… this can take a moment."
+#~ msgstr "正在分析您的收件箱并制定计划……这可能需要一点时间。"
+
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:271
+msgid "Analyzing your inbox and building your folders… this can take a moment."
+msgstr "正在分析您的收件箱并构建文件夹…这可能需要一些时间。"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
@@ -1067,7 +1073,7 @@ msgid "Any thread the model is unsure about is flagged for review instead of bei
 msgstr "模型不确定的会话会被标记为待审阅，而非自动归档。打开即可查看建议文件夹、置信度评分和理由，然后批准路由或发送到不同文件夹。"
 
 #. placeholder {0}: res.status
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:148
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:148
 #, fuzzy
 msgid "API error {0}"
 msgstr "API 错误 {0}"
@@ -1086,7 +1092,7 @@ msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "申请、招聘外联和面试安排。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:336
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
 #, fuzzy
 msgid "Apply"
 msgstr "应用"
@@ -1101,14 +1107,14 @@ msgstr "应用“{selectedName}”？这将替换您当前的套餐。"
 msgid "Apply template"
 msgstr "应用模板"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:308
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:308
 #, fuzzy
 msgid "Applying replaces your current plan. You can fully edit it afterward."
 msgstr "应用后会替换您当前的计划。您之后可以完全编辑它。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:336
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #, fuzzy
 msgid "Applying…"
@@ -1193,7 +1199,7 @@ msgid "Auto-file notifications to Updates / Other"
 msgstr "将通知自动归档到“更新/其他”"
 
 #. placeholder {0}: catchAllRow.threadCount
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:190
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:191
 #, fuzzy
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "自动化邮件和批量邮件 ({0}) 始终移至新的包罗万象文件夹。"
@@ -1236,11 +1242,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n"
-"\n"
-"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
-"\n"
-"此致，"
+msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1355,7 +1357,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "通过文件夹轻松浏览邮件。生成回复草稿，并将其复制到您的收件箱。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1592
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1590
 #, fuzzy
 msgid "Browse templates"
 msgstr "浏览模板"
@@ -1387,8 +1389,8 @@ msgid "Build plan"
 msgstr "构建计划"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:170
-msgid "Build your sorting plan"
-msgstr "构建您的分类方案"
+#~ msgid "Build your sorting plan"
+#~ msgstr "构建您的分类方案"
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
@@ -1466,13 +1468,13 @@ msgstr "我能自托管 Amarnai 吗？"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:107
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:255
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:663
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:679
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:793
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1820
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1913
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:107
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:256
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:663
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:679
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:793
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1818
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1911
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:301
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:416
@@ -1575,7 +1577,7 @@ msgstr "检查收件箱"
 msgid "Checkout failed: {0}"
 msgstr "结算失败：{0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:775
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:775
 #, fuzzy
 msgid "Child folder"
 msgstr "子文件夹"
@@ -1612,10 +1614,14 @@ msgstr "选择如何预览 Amarnai"
 msgid "Choose parent"
 msgstr "选择父级"
 
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:117
+msgid "Choose where each folder’s threads should go under your new folders. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+msgstr "为您的新文件夹选择每个会话的归属。匹配的文件夹会话将立即保留；设置为重新分类的会话则由AI重新分类。"
+
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:117
 #, fuzzy
-msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
-msgstr "请选择新套餐下每个文件夹的会话归属。已匹配的文件夹会话即时保留；任何设置为重新分类的会话都将由AI重新分类。"
+#~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
+#~ msgstr "请选择新套餐下每个文件夹的会话归属。已匹配的文件夹会话即时保留；任何设置为重新分类的会话都将由AI重新分类。"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
 #, fuzzy
@@ -1654,8 +1660,8 @@ msgstr "客户"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:140
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:155
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:252
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:252
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:319
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
@@ -1667,7 +1673,7 @@ msgstr "客户"
 msgid "Close"
 msgstr "关闭"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1731
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1729
 #, fuzzy
 msgid "Close panel"
 msgstr "关闭面板"
@@ -1726,7 +1732,7 @@ msgstr "协作者功能适用于 Scribe 和 Pharaoh 方案。<0>升级即可添�
 #~ msgid "Collapse"
 #~ msgstr "收起"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:532
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:532
 #, fuzzy
 msgid "Color"
 msgstr "颜色"
@@ -1762,7 +1768,7 @@ msgstr "确认取消"
 msgid "Confirm delete"
 msgstr "确认删除"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:655
 #, fuzzy
 msgid "Confirm Delete"
 msgstr "确认删除"
@@ -1838,8 +1844,12 @@ msgstr "连接 Gmail"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:218
 #, fuzzy
-msgid "Connect Gmail to generate a plan from your inbox"
-msgstr "连接 Gmail 以根据收件箱生成计划"
+#~ msgid "Connect Gmail to generate a plan from your inbox"
+#~ msgstr "连接 Gmail 以根据收件箱生成计划"
+
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:218
+msgid "Connect Gmail to generate folders from your inbox"
+msgstr "连接Gmail，从收件箱生成文件夹"
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
 #, fuzzy
@@ -1856,9 +1866,13 @@ msgstr "连接收件箱"
 #~ msgstr "连接收件箱按钮"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
+msgid "Connect once, generate your folders once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
+msgstr "只需连接一次，生成您的文件夹后，Amarnai即可处理新邮件和收件箱中已有的数千个会话。"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
 #, fuzzy
-msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
-msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
+#~ msgid "Connect once, generate your plan once, and let Amarnai handle new mail and the thousands of threads already sitting in your inbox."
+#~ msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
 
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
@@ -2078,7 +2092,7 @@ msgstr "无法加载方案。"
 msgid "Could not open billing management."
 msgstr "无法打开账单管理。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1394
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1394
 msgid "Could not prepare migration"
 msgstr "无法准备迁移"
 
@@ -2097,7 +2111,7 @@ msgstr "无法连接到 Amarnai。请检查您的网络连接。"
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "无法连接到服务器。请检查您的网络连接后重试。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1344
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1344
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "无法读取文件：JSON 无效。"
@@ -2173,9 +2187,13 @@ msgid "Could not verify your Google account. Please try again."
 msgstr "无法验证您的 Google 账户。请重试。"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
+msgid "Couldn't apply the folders."
+msgstr "无法应用文件夹。"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
 #, fuzzy
-msgid "Couldn't apply the plan."
-msgstr "无法应用方案。"
+#~ msgid "Couldn't apply the plan."
+#~ msgstr "无法应用方案。"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:182
 #, fuzzy
@@ -2214,7 +2232,7 @@ msgid "Courses"
 msgstr "课程"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
 #, fuzzy
 msgid "Create"
 msgstr "创建"
@@ -2238,7 +2256,7 @@ msgstr "创建账户"
 msgid "Create an account to triage your inbox"
 msgstr "创建账户，高效管理收件箱"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Create Folder"
 msgstr "创建文件夹"
@@ -2272,7 +2290,7 @@ msgstr "正在创建…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1874
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1872
 #: ../ui/src/demo/demo-seed.ts:34
 #, fuzzy
 msgid "Current"
@@ -2327,12 +2345,12 @@ msgid "Deal progress, transaction stages, and closing coordination across active
 msgstr "活跃销售的交易进展、阶段及结案协调。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:546
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:546
 #, fuzzy
 msgid "Default"
 msgstr "默认"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:544
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:544
 #, fuzzy
 msgid "Default color"
 msgstr "默认颜色"
@@ -2346,12 +2364,12 @@ msgstr "默认免费工作区"
 #: ../../apps/mobile/app/(app)/notifications.tsx:146
 #: ../../apps/mobile/app/(app)/notifications.tsx:255
 #: ../../apps/mobile/app/(app)/notifications.tsx:341
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:695
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:706
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:802
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:695
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:706
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:802
 #, fuzzy
 msgid "Delete"
 msgstr "删除"
@@ -2417,7 +2435,7 @@ msgstr "正在删除..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:655
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:655
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
 #, fuzzy
 msgid "Deleting…"
@@ -2428,7 +2446,7 @@ msgid "Deployments"
 msgstr "部署"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:297
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:297
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "描述哪些类型的邮件属于此处：它们来自谁，以及它们是关于什么的。请具体说明，并使用这些邮件中出现的实际名称、主题和词语。描述邮件是什么，而不是你打算如何处理它们。你的描述越清晰，邮件在此处分类就越准确。"
@@ -2438,7 +2456,7 @@ msgid "Describe your folders"
 msgstr "描述您的文件夹"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:508
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:508
 #, fuzzy
 msgid "Description"
 msgstr "描述"
@@ -2458,7 +2476,7 @@ msgid "Didn't get an email? Check your spam folder, or <0>try again</0>."
 msgstr "未收到邮件？请检查垃圾邮件文件夹，或<0>重试</0>。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:127
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:319
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:319
 #, fuzzy
 msgid "Discard"
 msgstr "放弃"
@@ -2681,7 +2699,7 @@ msgid "Draft shared"
 msgstr "草稿已分享"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:581
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:581
 #, fuzzy
 msgid "Draft style guidance"
 msgstr "草稿风格指南"
@@ -2715,13 +2733,13 @@ msgstr "电商卖家"
 msgid "e.g. Invoices"
 msgstr "例如：发票"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:516
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:516
 #, fuzzy
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "例如：来自客户和供应商的发票、收据、付款确认和账单问题。"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:587
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:587
 #, fuzzy
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "例如：正式回复。将回复限制在3句话以内。"
@@ -2735,7 +2753,7 @@ msgstr "更早"
 msgid "Edit folder"
 msgstr "编辑文件夹"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:486
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:486
 #, fuzzy
 msgid "Edit Folder"
 msgstr "编辑文件夹"
@@ -2745,7 +2763,7 @@ msgstr "编辑文件夹"
 msgid "Edit inbox"
 msgstr "编辑收件箱"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:750
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:750
 msgid "Edit Path"
 msgstr "编辑路径"
 
@@ -2821,7 +2839,7 @@ msgid "Emails"
 msgstr "电子邮件"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:325
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:325
 #, fuzzy
 msgid "Emails about my bills that I need to deal with."
 msgstr "关于我需要处理的账单的电子邮件。"
@@ -2854,7 +2872,7 @@ msgstr "入学注册、学费、宿舍分配及校园行政事务。"
 #~ msgstr "招生、学费、住房申请和官方校园管理。"
 
 #. placeholder {0}: minNodeNameLength(name)
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:463
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:463
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "输入文件夹名称 (至少 {0} 个字符)。"
 
@@ -2948,16 +2966,21 @@ msgstr "不符合任何指定文件夹的内容。"
 msgid "Expenses"
 msgstr "费用"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1556
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1554
 #, fuzzy
 msgid "Export"
 msgstr "导出"
 
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1529
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1537
+msgid "Export folders"
+msgstr "导出文件夹"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1531
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1539
 #, fuzzy
-msgid "Export plan"
-msgstr "导出计划"
+#~ msgid "Export plan"
+#~ msgstr "导出计划"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 msgid "External agencies, outside firms, and business partners engaged professionally."
@@ -2967,62 +2990,62 @@ msgstr "外部机构、公司及专业业务伙伴。"
 #~ msgid "External vendors, clients, and agencies engaged in a professional capacity."
 #~ msgstr "以专业身份合作的外部供应商、客户和代理机构。"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:163
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:163
 #, fuzzy
 msgid "Failed to apply"
 msgstr "应用失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1176
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1176
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "创建文件夹失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1109
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1109
 #, fuzzy
 msgid "Failed to create path"
 msgstr "创建路径失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1247
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1247
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "删除文件夹失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1264
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1264
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "删除路径失败"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:96
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:96
 #, fuzzy
 msgid "Failed to load status"
 msgstr "加载状态失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1305
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1305
 #, fuzzy
 msgid "Failed to redo"
 msgstr "重做失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1076
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1076
 #, fuzzy
 msgid "Failed to save position"
 msgstr "保存位置失败"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:150
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:150
 #, fuzzy
 msgid "Failed to start generation"
 msgstr "启动生成失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1286
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1286
 #, fuzzy
 msgid "Failed to undo"
 msgstr "撤消失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1208
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1208
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "更新文件夹失败"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1230
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1230
 msgid "Failed to update path"
 msgstr "更新路径失败"
 
@@ -3080,9 +3103,13 @@ msgid "Find and draft"
 msgstr "查找并起草"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:197
+msgid "Fine-tune later in the folder editor"
+msgstr "稍后在文件夹编辑器中微调"
+
+#: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #, fuzzy
-msgid "Fine-tune later in the plan editor"
-msgstr "稍后在方案编辑器中微调。"
+#~ msgid "Fine-tune later in the plan editor"
+#~ msgstr "稍后在方案编辑器中微调。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:222
 msgid "First-contact buyer and seller enquiries and new agent introductions."
@@ -3122,7 +3149,7 @@ msgstr "文件夹"
 msgid "Folder"
 msgstr "文件夹"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:535
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:535
 msgid "Folder color"
 msgstr "文件夹颜色"
 
@@ -3136,7 +3163,7 @@ msgstr "文件夹已创建"
 msgid "Folder deleted"
 msgstr "文件夹已删除"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1489
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1487
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "文件夹数量已达上限 ({MAX_TAXONOMY_NON_ROOT_NODES})。若要添加新文件夹，请先删除现有文件夹。"
 
@@ -3154,10 +3181,18 @@ msgstr "此文件夹在连接前将被忽略"
 msgid "Folder: {activeFolderName}"
 msgstr "文件夹：{activeFolderName}"
 
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
+#: ../../apps/web/src/app/(app)/folders/page.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:33
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 #: ../ui/src/emails/EmailRail.tsx:106
 #: ../ui/src/emails/ThreadList.tsx:155
 msgid "Folders"
 msgstr "文件夹"
+
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1480
+msgid "Folders are view-only. Only workspace admins can edit them."
+msgstr "文件夹只读。仅工作区管理员可编辑。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:206
 #, fuzzy
@@ -3344,7 +3379,7 @@ msgid "Gala planning, charity auctions, and awareness campaign logistics."
 msgstr "盛会策划、慈善拍卖及宣传活动后勤。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:159
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:342
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:342
 #, fuzzy
 msgid "Generate"
 msgstr "生成"
@@ -3359,8 +3394,8 @@ msgstr "生成新草稿。占用一次月用量。"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:217
 #, fuzzy
-msgid "Generate a plan from your inbox"
-msgstr "根据收件箱生成方案"
+#~ msgid "Generate a plan from your inbox"
+#~ msgstr "根据收件箱生成方案"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:455
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
@@ -3370,13 +3405,23 @@ msgstr "根据收件箱生成方案"
 msgid "Generate draft reply"
 msgstr "生成草稿回复"
 
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:197
+#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
+#, fuzzy
+msgid "Generate folders from inbox"
+msgstr "从收件箱生成文件夹"
+
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:217
+msgid "Generate folders from your inbox"
+msgstr "从您的收件箱生成文件夹"
+
 #: ../../apps/extension/src/panel/StatusSlot.tsx:181
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:207
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1693
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1691
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:375
 #, fuzzy
@@ -3384,32 +3429,39 @@ msgid "Generate from inbox"
 msgstr "从收件箱生成"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:275
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:197
-#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
 #, fuzzy
 msgid "Generate plan from inbox"
 msgstr "从收件箱生成方案"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
 #, fuzzy
-msgid "Generate your plan"
-msgstr "生成您的方案"
+msgid "Generate your folders"
+msgstr "生成您的文件夹"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
-msgid "Generate your plan."
-msgstr "制定您的方案。"
+msgid "Generate your folders."
+msgstr "生成您的文件夹。"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+#, fuzzy
+#~ msgid "Generate your plan"
+#~ msgstr "生成您的方案"
+
+#: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
+#~ msgid "Generate your plan."
+#~ msgstr "制定您的方案。"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "生成过程会读取您的发件人、标签和主题关键词，但绝不会读取邮件正文。在应用任何内容之前，您会先审阅结果。"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:354
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:354
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #, fuzzy
 msgid "Generating…"
 msgstr "正在生成…"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:283
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:283
 #, fuzzy
 msgid "Generation didn't complete."
 msgstr "生成未完成。"
@@ -3508,7 +3560,7 @@ msgstr "Gmail 实时同步已启用"
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "未授予 Gmail 只读访问权限。请重试并批准请求的权限。"
 
-#: ../../apps/web/src/components/Sidebar.tsx:45
+#: ../../apps/web/src/components/Sidebar.tsx:37
 #, fuzzy
 msgid "Gmail Sort Tester"
 msgstr "Gmail 分类测试器"
@@ -3588,11 +3640,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n"
-"\n"
-"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
-"\n"
-"兄弟情谊，"
+msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3612,7 +3660,7 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "客户的帮助请求、供应问题和升级请求。"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "Hide tips"
 msgstr "隐藏提示"
@@ -3660,6 +3708,11 @@ msgstr "家庭账单、付款确认、收据及日常开支记录。"
 msgid "How Amarnai stores and protects your data"
 msgstr "Amarnai 如何存储和保护您的数据"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:23
+#, fuzzy
+msgid "How do Amarnai's folders work?"
+msgstr "Amarnai的文件夹如何工作？"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
 msgstr "我怎么知道它是否安全？"
@@ -3676,8 +3729,8 @@ msgstr "Amarnai 如何帮我节省时间？"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:23
 #, fuzzy
-msgid "How does Amarnai's plan work?"
-msgstr "Amarnai 的方案如何运作？"
+#~ msgid "How does Amarnai's plan work?"
+#~ msgstr "Amarnai 的方案如何运作？"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:35
 msgid "How is Amarnai different from Gmail and Outlook filters?"
@@ -3699,7 +3752,7 @@ msgid "How it works"
 msgstr "工作原理"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:281
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:281
 #, fuzzy
 msgid "How to write a good description"
 msgstr "如何写出好的描述"
@@ -3733,25 +3786,34 @@ msgstr "如果遇到问题或有疑问，请通过以下方式联系我们。"
 msgid "Ignored"
 msgstr "已忽略"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1581
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1579
 #, fuzzy
 msgid "Import"
 msgstr "导入"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1409
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1409
 #, fuzzy
 msgid "Import failed"
 msgstr "导入失败"
 
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1562
+#, fuzzy
+msgid "Import folders"
+msgstr "导入文件夹"
+
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1557
+msgid "Import folders (replaces current)"
+msgstr "导入文件夹（替换当前）"
+
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1564
 #, fuzzy
-msgid "Import plan"
-msgstr "导入方案"
+#~ msgid "Import plan"
+#~ msgstr "导入方案"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1559
 #, fuzzy
-msgid "Import plan (replaces current)"
-msgstr "导入方案（替换当前）"
+#~ msgid "Import plan (replaces current)"
+#~ msgstr "导入方案（替换当前）"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:13
 #: ../ui/src/emails/queueLabels.ts:26
@@ -3780,7 +3842,7 @@ msgstr "适用于 Gmail 和 Outlook"
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:609
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:609
 #: ../ui/src/demo/demo-seed.ts:29
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
@@ -3912,12 +3974,12 @@ msgid "Invalid or missing reset link."
 msgstr "重置链接无效或缺失。"
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1358
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1358
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "分类法文件无效：{0}"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1352
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1352
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "分类法文件无效：{detail}"
@@ -4127,7 +4189,7 @@ msgstr "潜在客户"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:639
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:639
 #, fuzzy
 msgid "Leave unsorted"
 msgstr "保持未分类"
@@ -4169,7 +4231,7 @@ msgstr "南方法老与北方赫梯人的信件纷至沓来，我却一次只能
 msgid "Light"
 msgstr "浅色"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:521
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:521
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "列出属于此处的电子邮件类型：发件人、主题、关键词。请写一个完整的句子。"
 
@@ -4411,11 +4473,11 @@ msgstr "Microsoft 无法完成授权。链接可能已过期：请重试。如�
 msgid "Microsoft sign-in failed. Please try again."
 msgstr "微软登录失败，请重试。"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:262
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:263
 msgid "Migrate & apply"
 msgstr "迁移并应用"
 
-#: ../../apps/web/src/components/Sidebar.tsx:43
+#: ../../apps/web/src/components/Sidebar.tsx:35
 #, fuzzy
 msgid "Mock Inbox"
 msgstr "模拟收件箱"
@@ -4462,7 +4524,7 @@ msgid "Most popular"
 msgstr "最受欢迎"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:633
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:633
 #, fuzzy
 msgid "Move them to"
 msgstr "将其移至"
@@ -4498,7 +4560,7 @@ msgstr "未来几天我的行程将经过三角洲附近。如果伟大君王能
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:495
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:495
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
 #, fuzzy
 msgid "Name"
@@ -4695,9 +4757,14 @@ msgstr "自上次生成后，收件箱无显著新邮件，结果将保持不变
 #~ msgid "No signups yet."
 #~ msgstr "暂无注册。"
 
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:126
+#, fuzzy
+msgid "No sorted threads to migrate. Your new folders will apply directly."
+msgstr "没有已分类的会话可迁移。您的新文件夹将直接应用。"
+
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:126
-msgid "No sorted threads to migrate. Your new plan will apply directly."
-msgstr "没有已分类的会话可供迁移。您的新方案将直接生效。"
+#~ msgid "No sorted threads to migrate. Your new plan will apply directly."
+#~ msgstr "没有已分类的会话可供迁移。您的新方案将直接生效。"
 
 #. placeholder {0}: formatQuotaResetDate(state.quota.resetsAt)
 #: ../ui/src/emails/ThreadSummaryCard.tsx:53
@@ -4737,7 +4804,7 @@ msgid "No threads yet"
 msgstr "暂无会话"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:225
-#: ../../apps/web/src/components/Sidebar.tsx:153
+#: ../../apps/web/src/components/Sidebar.tsx:145
 #, fuzzy
 msgid "No workspace"
 msgstr "无工作区"
@@ -4748,7 +4815,7 @@ msgstr "无"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:606
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:606
 #, fuzzy
 msgid "None (not connected)"
 msgstr "无（未连接）"
@@ -4772,8 +4839,13 @@ msgid "Not included · <0>upgrade to add</0>"
 msgstr "未包含 · <0>升级以添加</0>"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:28
-msgid "Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done."
-msgstr "不一定。Amarnai 可一键根据您的收件箱生成完整方案。您也可以从现成的模板开始。大多数用户会生成方案，然后重命名两三个文件夹即可。"
+#~ msgid "Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done."
+#~ msgstr "不一定。Amarnai 可一键根据您的收件箱生成完整方案。您也可以从现成的模板开始。大多数用户会生成方案，然后重命名两三个文件夹即可。"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:28
+#, fuzzy
+msgid "Not necessarily. Amarnai can generate a complete set of folders for you from your inbox, with one click. You can also start from a ready-made template. Most people generate their folders, rename two or three of them, and they're done."
+msgstr "不一定。Amarnai可以一键从您的收件箱生成一套完整的文件夹。您也可以从现成模板开始。大多数用户生成文件夹后，只需修改两三个名称即可完成。"
 
 #: ../../apps/mobile/app/(app)/account.tsx:133
 msgid "Not set"
@@ -4814,8 +4886,12 @@ msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "待命警报、中断报告及生产事件升级。"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
-msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
-msgstr "只需一次登录，即可创建账户、连接 Gmail 或 Outlook 收件箱，并制定您的排序方案。Amarnai 绝不发送或删除邮件。"
+#~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
+#~ msgstr "只需一次登录，即可创建账户、连接 Gmail 或 Outlook 收件箱，并制定您的排序方案。Amarnai 绝不发送或删除邮件。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Amarnai never sends or deletes mail."
+msgstr "一次登录即可创建您的帐户，连接您的Gmail或Outlook收件箱，并设置您的文件夹。Amarnai绝不会发送或删除邮件。"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:100
 #, fuzzy
@@ -4862,7 +4938,7 @@ msgstr "在 Gmail 中打开"
 msgid "Open in Outlook"
 msgstr "在 Outlook 中打开"
 
-#: ../../apps/web/src/components/Sidebar.tsx:114
+#: ../../apps/web/src/components/Sidebar.tsx:106
 #, fuzzy
 msgid "Open navigation"
 msgstr "打开导航"
@@ -4873,8 +4949,13 @@ msgid "open source email ai"
 msgstr "开源邮件AI"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
-msgid "Open the plan editor"
-msgstr "打开方案编辑器"
+#, fuzzy
+msgid "Open the folder editor"
+msgstr "打开文件夹编辑器"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#~ msgid "Open the plan editor"
+#~ msgstr "打开方案编辑器"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:111
 msgid "Open this from the Amarnai Reply button in Outlook."
@@ -4914,11 +4995,11 @@ msgstr "运营"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "可选。为本文件夹生成草稿回复时应用。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:592
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:592
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "可选。在此文件夹中为会话生成草稿回复时应用。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:573
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:573
 msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "可选。设置此文件夹在收件箱中的标签和图标颜色。默认选项将自动分配一个稳定的颜色。"
 
@@ -4965,8 +5046,8 @@ msgid "Paid or upgraded workspace"
 msgstr "付费或升级工作区"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:600
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:759
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:600
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:759
 msgid "Parent"
 msgstr "父级"
 
@@ -5168,21 +5249,15 @@ msgid "Pin Amarnai to your toolbar"
 msgstr "将 Amarnai 固定到工具栏"
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
-#. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#. Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../../apps/web/src/app/(app)/plan/page.tsx:43
-#: ../../apps/web/src/components/Sidebar.tsx:35
-#: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 msgid "Plan"
 msgstr "方案"
 
 #. “Plan” here is the email-sorting taxonomy, not a billing or subscription plan.
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1480
-msgid "Plan is view-only. Only workspace admins can edit it."
-msgstr "方案为只读。只有工作区管理员才能编辑。"
+#~ msgid "Plan is view-only. Only workspace admins can edit it."
+#~ msgstr "方案为只读。只有工作区管理员才能编辑。"
 
 #: ../ui/src/pricing/planMessages.ts:67
 #, fuzzy
@@ -5191,8 +5266,8 @@ msgstr "套餐节点"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #, fuzzy
-msgid "Plan sorting"
-msgstr "规划分类"
+#~ msgid "Plan sorting"
+#~ msgstr "规划分类"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:156
 #, fuzzy
@@ -5409,12 +5484,12 @@ msgstr "重新路由 {unclassifiedCount} 个未分类项"
 msgid "Re-route thread"
 msgstr "重新路由会话"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:171
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:172
 #, fuzzy
 msgid "Re-sort with AI"
 msgstr "AI 智能重分"
 
-#: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:241
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:242
 #, fuzzy
 msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 msgstr "本月已分类的会话重新分类免费。如果您达到月度限额，剩余部分将在下个月恢复。"
@@ -5447,15 +5522,20 @@ msgstr "只读设计"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
 #, fuzzy
-msgid "Reading your inbox and building a plan. This can take a moment."
-msgstr "正在读取您的收件箱并构建方案。这可能需要一些时间。"
+#~ msgid "Reading your inbox and building a plan. This can take a moment."
+#~ msgstr "正在读取您的收件箱并构建方案。这可能需要一些时间。"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
+#, fuzzy
+msgid "Reading your inbox and building your folders. This can take a moment."
+msgstr "正在读取您的收件箱并构建文件夹。这可能需要一些时间。"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:205
 msgid "Real Estate Agent"
 msgstr "房地产经纪人"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:314
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:314
 #, fuzzy
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "来自供应商的收据、付款确认和账单问题。"
@@ -5474,7 +5554,7 @@ msgstr "最近已尝试。请稍后重试。"
 msgid "Recommended"
 msgstr "推荐"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1878
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1876
 #, fuzzy
 msgid "Recommended for your inbox"
 msgstr "收件箱推荐"
@@ -5544,7 +5624,7 @@ msgstr "招聘"
 msgid "Redirecting…"
 msgstr "正在重定向…"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1519
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1517
 #, fuzzy
 msgid "Redo"
 msgstr "重做"
@@ -5564,7 +5644,7 @@ msgstr "刷新"
 #~ msgstr "{refreshDate} 后刷新以加载更多。"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:348
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:348
 #: ../ui/src/emails/SuggestedDraftCard.tsx:89
 #, fuzzy
 msgid "Regenerate"
@@ -5649,9 +5729,13 @@ msgstr "每月在 <0>{0}</0> 续订。"
 msgid "Renews on <0>{0}</0>."
 msgstr "在 <0>{0}</0> 续订。"
 
+#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:103
+msgid "Replace folders"
+msgstr "替换文件夹"
+
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:103
-msgid "Replace plan"
-msgstr "更换套餐"
+#~ msgid "Replace plan"
+#~ msgstr "更换套餐"
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1614
 #~ msgid "Replace plan?"
@@ -5662,7 +5746,7 @@ msgstr "更换套餐"
 #~ msgid "Replace taxonomy"
 #~ msgstr "替换分类"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1815
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1813
 #, fuzzy
 msgid "Replace with a template"
 msgstr "替换为模板"
@@ -5799,9 +5883,13 @@ msgstr "退货"
 #~ msgstr "审阅队列"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
+msgid "Review your folders"
+msgstr "审核您的文件夹"
+
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
 #, fuzzy
-msgid "Review your plan"
-msgstr "审阅您的方案"
+#~ msgid "Review your plan"
+#~ msgstr "审阅您的方案"
 
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:70
 msgid "Reviews from early users"
@@ -5822,11 +5910,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n"
-"\n"
-"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
-"\n"
-"保重，"
+msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -5859,8 +5943,8 @@ msgstr "与月付相同"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 msgid "Save"
 msgstr "保存"
@@ -5907,8 +5991,8 @@ msgid "Saving..."
 msgstr "正在保存..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:480
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:790
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
 #, fuzzy
 msgid "Saving…"
@@ -6079,6 +6163,7 @@ msgstr "设置新密码"
 #~ msgstr "设置至少 3 个文件夹，以便我们开始分类。"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:44
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:291
 #, fuzzy
 msgid "Set up folders"
@@ -6089,6 +6174,11 @@ msgstr "设置文件夹"
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "设置文件夹，Amarnai 才能知道如何归档您的邮件。仅需一分钟。"
 
+#: ../../apps/extension/src/panel/StatusSlot.tsx:170
+#, fuzzy
+msgid "Set up your folders"
+msgstr "设置您的文件夹"
+
 #: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
 msgstr "设置此工作区的语言，包括界面和 AI 生成的文件夹。"
@@ -6098,10 +6188,10 @@ msgstr "设置此工作区的语言，包括界面和 AI 生成的文件夹。"
 msgid "Setting up your workspace…"
 msgstr "正在设置您的工作区…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:52
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
-#: ../../apps/web/src/components/Sidebar.tsx:42
+#: ../../apps/web/src/components/Sidebar.tsx:34
 msgid "Settings"
 msgstr "设置"
 
@@ -6207,7 +6297,7 @@ msgstr "使用 Google 或 Microsoft 登录"
 
 #: ../../apps/extension/src/App.tsx:128
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:132
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:126
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -6389,12 +6479,12 @@ msgid "Start free"
 msgstr "免费开始"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1816
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1814
 #, fuzzy
 msgid "Start from a template"
 msgstr "从模板开始"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1584
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1582
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "从模板开始（替换当前）"
@@ -6650,7 +6740,7 @@ msgstr "团队"
 msgid "Template applied"
 msgstr "模板已应用"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1608
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1606
 msgid "Templates"
 msgstr "模板"
 
@@ -6790,7 +6880,7 @@ msgstr "这些设置控制将导入哪些收件箱会话。垃圾邮件始终被
 msgid "This conversation has not synced to Amarnai yet."
 msgstr "此会话尚未同步到 Amarnai。"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1472
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1472
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "此文件夹包含子文件夹。请先移除它们的路径，然后才能删除此文件夹。"
@@ -6856,8 +6946,13 @@ msgstr "此会话尚未分类。"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:420
 #, fuzzy
-msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
-msgstr "此会话尚未分类。制定分类计划，以便 Amarnai 知道如何归档。"
+#~ msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
+#~ msgstr "此会话尚未分类。制定分类计划，以便 Amarnai 知道如何归档。"
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:420
+#, fuzzy
+msgid "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
+msgstr "此会话尚未分类。请设置您的文件夹，以便Amarnai知道如何归档。"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:45
 msgid "This thread is waiting to be routed."
@@ -6955,13 +7050,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n"
-"\n"
-"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
-"\n"
-"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
-"\n"
-"图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -6970,11 +7059,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n"
-"\n"
-"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
-"\n"
-"奉谕，"
+msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -6985,13 +7070,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n"
-"\n"
-"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
-"\n"
-"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
-"\n"
-"阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7000,11 +7079,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n"
-"\n"
-"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
-"\n"
-"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7013,11 +7088,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n"
-"\n"
-"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
-"\n"
-"友谊长存，"
+msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7028,13 +7099,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n"
-"\n"
-"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
-"\n"
-"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
-"\n"
-"布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
 
 #: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
@@ -7044,13 +7109,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n"
-"\n"
-"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
-"\n"
-"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
-"\n"
-"你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7164,7 +7223,7 @@ msgstr "未分类，更改文件夹"
 
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:382
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1510
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1508
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #, fuzzy
 msgid "Undo"
@@ -7179,7 +7238,7 @@ msgstr "大学"
 msgid "Unknown"
 msgstr "未知"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1351
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1351
 #, fuzzy
 msgid "unknown error"
 msgstr "未知错误"
@@ -7343,14 +7402,14 @@ msgstr "更改筛选器后，请使用“重新扫描收件箱”将其应用于
 #: ../../apps/extension/src/panel/StatusSlot.tsx:188
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:330
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:378
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 #, fuzzy
 msgid "Use a template"
 msgstr "使用模板"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:1924
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1922
 #, fuzzy
 msgid "Use template"
 msgstr "使用模板"
@@ -7509,7 +7568,7 @@ msgstr "Amarnai 不确定如何分类的会话会怎样处理？"
 msgid "What model does Amarnai use?"
 msgstr "Amarnai 使用什么模型？"
 
-#: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:615
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:615
 #, fuzzy
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "此文件夹所在位置。没有父级的文件夹将保持未连接状态并被忽略，直到被连接。"
@@ -7555,7 +7614,7 @@ msgstr "职场人士"
 msgid "Works with Gmail™ and Outlook."
 msgstr "支持 Gmail™ 和 Outlook。"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:61
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:55
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
@@ -7588,7 +7647,7 @@ msgstr "工作区名称不能为空"
 msgid "Workspace name updated."
 msgstr "工作区名称已更新。"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:49
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
 msgid "Workspace settings"
 msgstr "工作区设置"
 
@@ -7653,8 +7712,12 @@ msgid "Yes, reset workspace"
 msgstr "是的，重置工作区"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:44
-msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
-msgstr "是的。Amarnai 不仅能处理新邮件，还能整理收件箱中已有的积压邮件。清理积压邮件和整理新邮件都遵循您的方案限额，因此新旧邮件都能以同样的方式整理有序。"
+msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same folders, up to your plan's limits, so old and new mail end up organized the same way."
+msgstr "是的。Amarnai 不仅能处理您收件箱中已有的积压邮件，还能处理之后收到的新邮件。清理积压邮件和分类新邮件使用相同的文件夹（受限于您的套餐额度），因此新旧邮件将以相同的方式整理。"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:44
+#~ msgid "Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
+#~ msgstr "是的。Amarnai 不仅能处理新邮件，还能整理收件箱中已有的积压邮件。清理积压邮件和整理新邮件都遵循您的方案限额，因此新旧邮件都能以同样的方式整理有序。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
 #~ msgid "Yes. Amarnai can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, so your whole inbox ends up organized the same way."
@@ -7721,12 +7784,12 @@ msgid "You can keep your free workspace and use paid workspaces separately."
 msgstr "您可以保留免费工作区，并单独使用付费工作区。"
 
 #. placeholder {0}: new Date(eligibility.nextEligibleAt).toLocaleString()
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:285
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:285
 #, fuzzy
 msgid "You can try again after {0}, or start from a template."
 msgstr "您可以在 {0} 后重试，或者从模板开始。"
 
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:286
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:286
 #, fuzzy
 msgid "You can try again shortly, or start from a template."
 msgstr "您可以稍后重试，或者从模板开始。"
@@ -7809,6 +7872,10 @@ msgstr "您的14天免费试用期截至<0>{0}</0>。在此之前，我们不会
 msgid "Your folders"
 msgstr "您的文件夹"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
+msgstr "您的文件夹是一个从收件箱延伸出的简单树状结构。让Amarnai从您的收件箱生成，从模板开始，或自行绘制。"
+
 #: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:82
 #, fuzzy
 msgid "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
@@ -7817,6 +7884,15 @@ msgstr "您的文件夹将作为 Gmail 标签同步，并在会话排序时保�
 #: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:76
 msgid "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
 msgstr "您的文件夹将作为 Outlook 类别同步，并在会话排序时保持同步。Amarnai 仅管理 <0>Amarnai</0> 命名空间下的类别，且绝不会发送、删除或移动您的邮件。"
+
+#: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
+#, fuzzy
+msgid "Your folders form a simple tree, branching out from the inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives."
+msgstr "您的文件夹形成一个从收件箱延伸出的简单树状结构。让Amarnai从您的收件箱生成，从模板开始，或自行绘制。然后，它会遍历该树状结构来处理每封新邮件。"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:24
+msgid "Your folders form a tree (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate it for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
+msgstr "您的文件夹形成一个树状结构（例如，一个客户文件夹，下方包含支持和账单子文件夹），每个文件夹都用简洁明了的语言描述。Amarnai会遍历该树状结构，将每个会话路由到最适合的文件夹。最快的构建方式是让Amarnai为您生成：它会读取您的收件箱，并提出一个完整、已命名和描述的树状结构，您可以直接使用或进行调整。您也可以从我们的现成模板之一开始，或从头开始构建自己的文件夹。无需任何技术知识。"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:259
 #, fuzzy
@@ -7837,7 +7913,7 @@ msgid "Your inbox import finished."
 msgstr "您的收件箱导入已完成。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
-#: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:262
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:262
 #, fuzzy
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "您的收件箱仍在导入中。您可以根据目前已加载的内容进行生成，但在导入完成后重新生成将获得更准确的结果。"
@@ -7863,17 +7939,17 @@ msgid "Your past threads are being loaded and will appear shortly."
 msgstr "您的历史会话正在加载中，稍后会显示。"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
-msgid "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
-msgstr "您的方案是一棵从收件箱延伸出的简单文件夹树。您可以让 Amarnai 从收件箱生成，从模板开始，或自行绘制。"
+#~ msgid "Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself."
+#~ msgstr "您的方案是一棵从收件箱延伸出的简单文件夹树。您可以让 Amarnai 从收件箱生成，从模板开始，或自行绘制。"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
-msgid "Your plan is a simple folder tree: your folders branching out from the inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself. Then it walks the tree for every email that arrives."
-msgstr "你的方案是一个简单的文件夹树：从收件箱分支出你的各类文件夹。让 Amarnai 从你的收件箱生成它，或从模板开始，或自行绘制。然后，它会根据这个树结构分类每封新邮件。"
+#~ msgid "Your plan is a simple folder tree: your folders branching out from the inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself. Then it walks the tree for every email that arrives."
+#~ msgstr "你的方案是一个简单的文件夹树：从收件箱分支出你的各类文件夹。让 Amarnai 从你的收件箱生成它，或从模板开始，或自行绘制。然后，它会根据这个树结构分类每封新邮件。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:24
-msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
-msgstr "你的方案是一个文件夹树（例如，一个客户文件夹下设有支持和账单子文件夹），每个文件夹都以通俗易懂的语言描述，Amarnai 会根据这个树结构将每个会话精准归类到最合适的文件夹。构建该树最快的方式是让 Amarnai 为你生成一个：它会读取你的收件箱并建议一个完整、已命名且带有描述的文件夹树，你可以直接使用或进行调整。你也可以从我们现成的模板开始，或者从头开始构建自己的文件夹树。无需任何技术知识。"
+#~ msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
+#~ msgstr "你的方案是一个文件夹树（例如，一个客户文件夹下设有支持和账单子文件夹），每个文件夹都以通俗易懂的语言描述，Amarnai 会根据这个树结构将每个会话精准归类到最合适的文件夹。构建该树最快的方式是让 Amarnai 为你生成一个：它会读取你的收件箱并建议一个完整、已命名且带有描述的文件夹树，你可以直接使用或进行调整。你也可以从我们现成的模板开始，或者从头开始构建自己的文件夹树。无需任何技术知识。"
 
 #. placeholder {0}: status.plan
 #: ../../apps/extension/src/panel/StatusSlot.tsx:73

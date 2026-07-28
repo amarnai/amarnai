@@ -7,12 +7,12 @@ export function TaxonomyDemoSection() {
       <div className="ld-wrap">
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
-            <h2 className="ld-section-h"><Trans>Generate your plan.</Trans></h2>
+            <h2 className="ld-section-h"><Trans>Generate your folders.</Trans></h2>
             <p className="ld-section-lede">
               <Trans>
-                Your plan is a simple folder tree: your folders branching out
-                from the inbox. Let Amarnai generate it from your inbox, start
-                from a template, or draw it yourself. Then it walks the tree for
+                Your folders form a simple tree, branching out from the inbox.
+                Let Amarnai generate them from your inbox, start from a
+                template, or draw them yourself. Then it walks the tree for
                 every email that arrives.
               </Trans>
             </p>

@@ -417,13 +417,13 @@ export function ThreadPreviewPane({
             // gate "Route now"), so triage would no-op. Build the sorting plan
             // here in the panel rather than sending the user to the web app.
             <div className="ax-sort-now-wrap">
-              <p><Trans>This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it.</Trans></p>
+              <p><Trans>This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it.</Trans></p>
               <button
                 type="button"
                 className="ax-btn ax-btn-secondary ax-sort-now"
                 onClick={onOpenPlanSetup}
               >
-                <Trans>Plan sorting</Trans>
+                <Trans>Set up folders</Trans>
               </button>
             </div>
           ) : (

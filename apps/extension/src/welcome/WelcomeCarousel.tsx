@@ -95,8 +95,8 @@ const SLIDES: Slide[] = [
   {
     id: "plan",
     Art: PlanDemo,
-    title: msg`Generate your plan`,
-    body: msg`Your plan is a simple folder tree branching out from your inbox. Let Amarnai generate it from your inbox, start from a template, or draw it yourself.`,
+    title: msg`Generate your folders`,
+    body: msg`Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself.`,
   },
   {
     id: "emails",

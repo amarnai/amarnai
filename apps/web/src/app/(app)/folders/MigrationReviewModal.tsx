@@ -100,7 +100,7 @@ export function MigrationReviewModal({
       <div className="modal" style={{ maxWidth: 560 }}>
         <div className="modal-header">
           <h2 className="modal-title">
-            <Trans>Replace plan</Trans>
+            <Trans>Replace folders</Trans>
           </h2>
           <button
             className="modal-close"
@@ -116,15 +116,16 @@ export function MigrationReviewModal({
           <p style={{ marginBottom: 12 }}>
             <Trans>
               Choose where each folder&rsquo;s threads should go under your new
-              plan. Matched folders keep their threads instantly; anything set
-              to re-sort is re-classified by AI.
+              folders. Matched folders keep their threads instantly; anything
+              set to re-sort is re-classified by AI.
             </Trans>
           </p>
 
           {editableRows.length === 0 && !catchAllRow && (
             <p style={{ color: "var(--color-muted)", fontSize: 13 }}>
               <Trans>
-                No sorted threads to migrate. Your new plan will apply directly.
+                No sorted threads to migrate. Your new folders will apply
+                directly.
               </Trans>
             </p>
           )}

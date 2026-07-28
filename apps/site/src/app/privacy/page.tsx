@@ -62,7 +62,7 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Usage data:</strong> actions you take in the app (e.g., changing
-          plan rules, triggering a sync) to operate and improve the Service.
+          folder rules, triggering a sync) to operate and improve the Service.
         </li>
       </ul>
       <p>

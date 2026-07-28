@@ -8,10 +8,10 @@ import { useSession } from "../auth/session";
 import { WEB_APP_URL } from "../config";
 import { NotificationBell } from "./NotificationBell";
 
-// Slim panel header: workspace switcher, links out to the web app (plan and
+// Slim panel header: workspace switcher, links out to the web app (folders and
 // workspace settings), and the user menu (account settings, sign out). At
 // 320px there is no room for a full switcher UI, so a native <select> is used
-// when the user belongs to more than one workspace. Plan, settings, and
+// when the user belongs to more than one workspace. Folders, settings, and
 // account pages are not replicated in the panel; the header links to the web
 // app, which opens in a new tab under its own cookie session.
 export function PanelHeader() {
@@ -39,13 +39,7 @@ export function PanelHeader() {
     };
   }, [menuOpen]);
 
-  const planLabel = _(
-    msg({
-      message: "Plan",
-      comment:
-        "Sidebar nav label for the email-sorting taxonomy. Not a billing or subscription plan.",
-    }),
-  );
+  const foldersLabel = _(msg`Folders`);
   const settingsLabel = _(msg`Workspace settings`);
   // Short visible label at wide panel widths; the tooltip/aria-label keeps the
   // unambiguous "Workspace settings".
@@ -74,14 +68,14 @@ export function PanelHeader() {
 
       <a
         className="ax-header-iconbtn"
-        href={`${WEB_APP_URL}/plan`}
+        href={`${WEB_APP_URL}/folders`}
         target="_blank"
         rel="noopener noreferrer"
-        title={planLabel}
-        aria-label={planLabel}
+        title={foldersLabel}
+        aria-label={foldersLabel}
       >
         <NavGlyph name="taxonomy" />
-        <span className="ax-iconbtn-label">{planLabel}</span>
+        <span className="ax-iconbtn-label">{foldersLabel}</span>
       </a>
       <a
         className="ax-header-iconbtn"

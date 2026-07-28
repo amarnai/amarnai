@@ -14,7 +14,7 @@ type Props = {
 
 /**
  * Offers a one-click re-sort of the NEEDS_REVIEW threads that can plausibly route
- * differently now — their plan changed since they were sorted, or their last sort
+ * differently now — their folders changed since they were sorted, or their last sort
  * hit a transient error. Not every review thread qualifies, and the copy says so.
  * Self-fetches the eligible count and renders nothing when there is none.
  */
@@ -64,8 +64,8 @@ export function ResortReviewBanner({ workspaceId, refreshKey, onResorted }: Prop
       <span suppressHydrationWarning>
         <Plural
           value={eligible}
-          one="# needs-review thread can be re-sorted automatically, because your plan changed since it was sorted or sorting hit a temporary error."
-          other="# needs-review threads can be re-sorted automatically, because your plan changed since they were sorted or sorting hit a temporary error."
+          one="# needs-review thread can be re-sorted automatically, because your folders changed since it was sorted or sorting hit a temporary error."
+          other="# needs-review threads can be re-sorted automatically, because your folders changed since they were sorted or sorting hit a temporary error."
         />
       </span>
       <button

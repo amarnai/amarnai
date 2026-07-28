@@ -432,8 +432,9 @@ export function HowItWorksSection() {
           </h2>
           <p className="ld-section-lede">
             <Trans>
-              Connect once, generate your plan once, and let Amarnai handle new
-              mail and the thousands of threads already sitting in your inbox.
+              Connect once, generate your folders once, and let Amarnai handle
+              new mail and the thousands of threads already sitting in your
+              inbox.
             </Trans>
           </p>
         </div>

@@ -184,7 +184,7 @@ describe("PlanSetupDialog", () => {
     expect(onApplied).toHaveBeenCalled();
   });
 
-  it("hands off to the web plan editor when threads would have to be migrated", async () => {
+  it("hands off to the web folder editor when threads would have to be migrated", async () => {
     const api = makeApi({
       previewTaxonomyImport: vi.fn(async () => ({
         suggestions: [],
@@ -197,12 +197,12 @@ describe("PlanSetupDialog", () => {
     fireEvent.click(await screen.findByRole("button", { name: /Freelancer/ }));
     fireEvent.click(await screen.findByRole("button", { name: "Use these folders" }));
 
-    await waitFor(() => expect(onOpenWeb).toHaveBeenCalledWith("/plan"));
+    await waitFor(() => expect(onOpenWeb).toHaveBeenCalledWith("/folders"));
     expect(api.importTaxonomy).not.toHaveBeenCalled();
     expect(onApplied).not.toHaveBeenCalled();
   });
 
-  it("shows the forbidden state and links out when the user may not edit the plan", async () => {
+  it("shows the forbidden state and links out when the user may not edit the folders", async () => {
     const api = makeApi({
       generateTaxonomy: vi.fn(async () => {
         throw new ApiHttpError("Taxonomy editing is restricted to workspace admins", 403, null);
@@ -213,9 +213,9 @@ describe("PlanSetupDialog", () => {
     click("Generate from inbox");
 
     expect(
-      await screen.findByText("A workspace owner manages this workspace's sorting plan."),
+      await screen.findByText("A workspace owner manages this workspace's folders."),
     ).toBeDefined();
-    click("Open the plan editor");
-    expect(onOpenWeb).toHaveBeenCalledWith("/plan");
+    click("Open the folder editor");
+    expect(onOpenWeb).toHaveBeenCalledWith("/folders");
   });
 });

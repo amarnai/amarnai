@@ -221,7 +221,7 @@ function DemoCanvasInner() {
         <div className="ld-crumbs">
           <span><Trans>Workspace</Trans></span>
           <span className="ld-sep">/</span>
-          <span className="ld-here"><Trans>Plan</Trans></span>
+          <span className="ld-here"><Trans>Folders</Trans></span>
         </div>
         <div className="ld-play-note">
           <Trans>Drag and connect. It&apos;s fully interactive.</Trans>
@@ -231,7 +231,7 @@ function DemoCanvasInner() {
           className="ld-btn accent demo-generate-btn"
           onClick={runGenerate}
           disabled={generating}
-          aria-label={_(msg`Generate plan from inbox`)}
+          aria-label={_(msg`Generate folders from inbox`)}
         >
           <SparkleIcon />
           {generating ? <Trans>Generating…</Trans> : <Trans>Generate from inbox</Trans>}

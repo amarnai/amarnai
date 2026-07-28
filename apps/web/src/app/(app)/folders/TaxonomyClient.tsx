@@ -993,7 +993,7 @@ function TaxonomyCanvasInner({
     params.delete("openTemplates");
     params.delete("openGenerate");
     const next = params.size > 0 ? `?${params.toString()}` : "";
-    router.replace(`/plan${next}`, { scroll: false });
+    router.replace(`/folders${next}`, { scroll: false });
   }, []);
 
   // Fetch the recommended template the first time the picker opens (only when an
@@ -1477,9 +1477,7 @@ function TaxonomyCanvasInner({
     <div className="taxonomy-inner">
       {readOnly ? (
         <div className="taxonomy-readonly-banner">
-          <Trans comment="“Plan” here is the email-sorting taxonomy, not a billing or subscription plan.">
-            Plan is view-only. Only workspace admins can edit it.
-          </Trans>
+          <Trans>Folders are view-only. Only workspace admins can edit them.</Trans>
         </div>
       ) : (
         <div className="taxonomy-toolbar">
@@ -1528,7 +1526,7 @@ function TaxonomyCanvasInner({
           <Tooltip
             content={
               taxonomyIsRoutable
-                ? _(msg`Export plan`)
+                ? _(msg`Export folders`)
                 : _(msg`Add at least 3 connected folders to export`)
             }
           >
@@ -1536,7 +1534,7 @@ function TaxonomyCanvasInner({
               className="btn-ghost"
               onClick={handleExport}
               disabled={submitting || !taxonomyIsRoutable}
-              aria-label={_(msg`Export plan`)}
+              aria-label={_(msg`Export folders`)}
             >
               <svg
                 width="14"
@@ -1556,12 +1554,12 @@ function TaxonomyCanvasInner({
               <Trans>Export</Trans>
             </button>
           </Tooltip>
-          <Tooltip content={_(msg`Import plan (replaces current)`)}>
+          <Tooltip content={_(msg`Import folders (replaces current)`)}>
             <button
               className="btn-ghost"
               onClick={handleImportClick}
               disabled={submitting}
-              aria-label={_(msg`Import plan`)}
+              aria-label={_(msg`Import folders`)}
             >
               <svg
                 width="14"

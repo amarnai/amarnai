@@ -20,12 +20,12 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
     a: msg`Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes.`,
   },
   {
-    q: msg`How does Amarnai's plan work?`,
-    a: msg`Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required.`,
+    q: msg`How do Amarnai's folders work?`,
+    a: msg`Your folders form a tree (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate it for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required.`,
   },
   {
     q: msg`Do I have to build the folder structure myself?`,
-    a: msg`Not necessarily. Amarnai can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done.`,
+    a: msg`Not necessarily. Amarnai can generate a complete set of folders for you from your inbox, with one click. You can also start from a ready-made template. Most people generate their folders, rename two or three of them, and they're done.`,
   },
   {
     q: msg`Do I need the browser extension?`,
@@ -41,7 +41,7 @@ const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
   },
   {
     q: msg`Can Amarnai sort my existing inbox, not just new mail?`,
-    a: msg`Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way.`,
+    a: msg`Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same folders, up to your plan's limits, so old and new mail end up organized the same way.`,
   },
   {
     q: msg`What happens to threads Amarnai is unsure about?`,

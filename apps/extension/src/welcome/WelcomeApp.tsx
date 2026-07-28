@@ -140,7 +140,7 @@ export function WelcomeApp() {
                 <p className="wc-step-text">
                   <Trans>
                     One sign-in creates your account, connects your Gmail or Outlook
-                    inbox, and lets you build your sorting plan. Amarnai never sends or
+                    inbox, and lets you set up your folders. Amarnai never sends or
                     deletes mail.
                   </Trans>
                 </p>

@@ -147,8 +147,8 @@ export function StatusSlot({ status, onSort, onDismissPlanCap, onOpenPlanSetup }
   );
 }
 
-// Full-pane takeover for the "empty inbox, no plan" exception: there is no list
-// to pin a row over, so the whole pane becomes the plan-setup entry point. Both
+// Full-pane takeover for the "empty inbox, no folders" exception: there is no
+// list to pin a row over, so the whole pane becomes the setup entry point. Both
 // routes into the dialog are offered here (rather than one button into a choice
 // screen) because this screen is the user's first stop after connecting, and
 // the extra click is the whole cost of the decision.
@@ -167,7 +167,7 @@ export function NoPlanEmptyState({
         </svg>
       </div>
       <div className="ax-emptyplan-title">
-        <Trans>Build your sorting plan</Trans>
+        <Trans>Set up your folders</Trans>
       </div>
       <p className="ax-muted">
         <Trans>Set up folders so Amarnai knows where to file your mail. It only takes a minute.</Trans>
@@ -190,11 +190,11 @@ export function NoPlanEmptyState({
       </div>
       <a
         className="ax-linkbtn"
-        href={`${WEB_APP_URL}/plan`}
+        href={`${WEB_APP_URL}/folders`}
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Trans>Fine-tune later in the plan editor</Trans>
+        <Trans>Fine-tune later in the folder editor</Trans>
       </a>
     </div>
   );
