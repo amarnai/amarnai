@@ -30,7 +30,7 @@ import {
 import { DEDUP_CLASSIFY_LIVE } from "@amarnai/queue";
 import { redisConnection } from "../redis.js";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
-import { applyThreadFilter, computeThreadLabelFlags, isSentOnlyThreadSnapshot } from "./filter-thread-messages.js";
+import { applyThreadFilter, computeThreadLabelFlags, isAlwaysExcludedMessage, isSentOnlyThreadSnapshot } from "./filter-thread-messages.js";
 import { upsertEmailThread, upsertEmailMessages } from "./persist-thread.js";
 import { enqueueArmedBacklog } from "./route-armed-backlog.js";
 
@@ -655,7 +655,12 @@ export function createSyncInboxWorker(): Worker {
         // and messages individually deleted in Gmail. We compare against the raw
         // (unfiltered) snapshot so that messages excluded only by current settings
         // (e.g. promotions) are not removed and can reappear if settings change.
-        const rawMessageIds = rawSnapshot.messages.map((m) => m.providerMessageId);
+        // Always-excluded messages (trashed, unsent drafts) are the exception: they
+        // can never become eligible again, so keeping them out of the retain-list
+        // also cleans up rows written before the filter existed.
+        const rawMessageIds = rawSnapshot.messages
+          .filter((m) => !isAlwaysExcludedMessage(m))
+          .map((m) => m.providerMessageId);
         await db.emailMessage.deleteMany({
           where: {
             emailThreadId,

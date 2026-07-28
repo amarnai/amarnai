@@ -1,9 +1,25 @@
 import type { ThreadSnapshot, SnapshotMessage } from "@amarnai/ai";
-import { detectAutomatedThread } from "@amarnai/ai";
+import { detectAutomatedThread, isDraftMessage } from "@amarnai/ai";
 import type { GmailSyncSettings } from "@amarnai/shared";
 
 /** Gmail label IDs that are always excluded, regardless of user settings. */
 const ALWAYS_EXCLUDED_LABELS = ["TRASH"] as const;
+
+/**
+ * True when a message is excluded no matter what the workspace settings say:
+ * it is in the trash, or it is an unsent draft.
+ *
+ * Distinct from the settings-driven exclusions (spam, promotions) in one way that
+ * matters: a settings exclusion is reversible, so those messages are kept in the
+ * database and can reappear when the setting flips. These cannot come back, so
+ * they must be absent from storage entirely, or a message the user deleted (and a
+ * reply they never sent) keeps feeding classification, summaries, and drafts.
+ */
+export function isAlwaysExcludedMessage(msg: SnapshotMessage): boolean {
+  if (isDraftMessage(msg)) return true;
+  const labels = msg.labelIds ?? [];
+  return ALWAYS_EXCLUDED_LABELS.some((label) => labels.includes(label));
+}
 
 // ─── Thread label flags ───────────────────────────────────────────────────────
 
@@ -193,7 +209,7 @@ export function isThreadExcluded(
 /**
  * Filters a thread's messages according to GmailSyncSettings.
  *
- * - TRASH is always excluded regardless of settings.
+ * - TRASH and DRAFT are always excluded regardless of settings.
  * - SPAM is excluded when includeSpam is false.
  * - CATEGORY_PROMOTIONS is excluded when includePromotions is false.
  * - Threads where any message sender is blacklisted are excluded entirely.
@@ -235,9 +251,7 @@ export function applyThreadFilter(
 function isEligibleMessage(msg: SnapshotMessage, settings: GmailSyncSettings): boolean {
   const labels = msg.labelIds ?? [];
 
-  for (const label of ALWAYS_EXCLUDED_LABELS) {
-    if (labels.includes(label)) return false;
-  }
+  if (isAlwaysExcludedMessage(msg)) return false;
 
   if (!settings.includeSpam && labels.includes("SPAM")) return false;
   if (!settings.includePromotions && labels.includes("CATEGORY_PROMOTIONS")) return false;

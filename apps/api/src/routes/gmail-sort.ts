@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { db, resolveInboxQuota, recordMeterUsage, inboxKeyFor, meterWindowStart, threadSortDedupToken } from "@amarnai/db";
-import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
+import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig, isDraftMessage } from "@amarnai/ai";
 import type { EmbeddableNode } from "@amarnai/ai";
 import { getThreadSortLimit, getDraftQuotaResetsAt } from "@amarnai/shared";
 import { config } from "@amarnai/config";
@@ -116,6 +116,22 @@ gmailSort.post("/dev/workspaces/:workspaceId/gmail-sort-thread", async (c) => {
       return c.json({ error: "Gmail thread not found" }, 404);
     }
     return c.json({ error: "Failed to fetch Gmail thread" }, 502);
+  }
+
+  // Drop unsent drafts, matching the worker's ingest filter: a draft is not part
+  // of the conversation and must not be persisted or sorted on. messageCount and
+  // latestMessageAt are recomputed from what remains.
+  const realMessages = snapshot.messages.filter((m) => !isDraftMessage(m));
+  if (realMessages.length !== snapshot.messages.length) {
+    snapshot = {
+      ...snapshot,
+      messages: realMessages,
+      messageCount: realMessages.length,
+      latestMessageAt: realMessages.reduce<Date>(
+        (acc, m) => (m.receivedAt > acc ? m.receivedAt : acc),
+        new Date(0)
+      ),
+    };
   }
 
   if (snapshot.messages.length === 0) {

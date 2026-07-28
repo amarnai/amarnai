@@ -349,7 +349,7 @@ const CJK_BUDGET_SCALE = 0.4;
  *
  * Pure and deterministic — isPredominantlyCJK is a pure script-ratio check.
  */
-function truncateToShare(text: string, budget: number): string {
+export function truncateToShare(text: string, budget: number): string {
   const effectiveBudget = isPredominantlyCJK(text)
     ? Math.floor(budget * CJK_BUDGET_SCALE)
     : budget;
@@ -357,6 +357,42 @@ function truncateToShare(text: string, budget: number): string {
   const headLen = Math.floor(effectiveBudget * 0.7);
   const tailLen = effectiveBudget - headLen;
   return `${text.slice(0, headLen)} … ${text.slice(-tailLen)}`;
+}
+
+/**
+ * Split a character budget across a thread's messages.
+ *
+ * The latest message takes LATEST_SHARE of the budget (it carries current
+ * intent); the earlier ones share the remainder equally, and the oldest are
+ * dropped when an equal share would fall below MIN_EARLIER_MSG_CHARS — a
+ * 40-character slice of a message is noise, not context.
+ *
+ * `messages` must be in chronological order (oldest first); the result is too.
+ * Shared by the embedding text builder and the summary prompt so the two cannot
+ * drift into different ideas of what a thread's context window looks like.
+ */
+export function allocateThreadCharBudget<T>(
+  messages: readonly T[],
+  totalBudget: number
+): Array<{ message: T; budget: number; isLatest: boolean }> {
+  if (messages.length === 0) return [];
+
+  const latestBudget = Math.floor(totalBudget * LATEST_SHARE);
+  const latest = messages[messages.length - 1]!;
+  if (messages.length === 1) return [{ message: latest, budget: latestBudget, isLatest: true }];
+
+  const earlierBudget = totalBudget - latestBudget;
+  let keptEarlier = messages.slice(0, -1);
+  let perEarlier = Math.floor(earlierBudget / keptEarlier.length);
+  while (perEarlier < MIN_EARLIER_MSG_CHARS && keptEarlier.length > 1) {
+    keptEarlier = keptEarlier.slice(1); // drop oldest
+    perEarlier = Math.floor(earlierBudget / keptEarlier.length);
+  }
+
+  return [
+    ...keptEarlier.map((message) => ({ message, budget: perEarlier, isLatest: false })),
+    { message: latest, budget: latestBudget, isLatest: true },
+  ];
 }
 
 /**
@@ -384,8 +420,8 @@ export function buildThreadEmbeddingText(
 ): string {
   if (messages.length === 0) return "";
 
-  const latestBudget = Math.floor(THREAD_EMBEDDING_CHAR_BUDGET * LATEST_SHARE);
-  const earlierBudget = THREAD_EMBEDDING_CHAR_BUDGET - latestBudget;
+  const allocated = allocateThreadCharBudget(messages, THREAD_EMBEDDING_CHAR_BUDGET);
+  const latestBudget = allocated[allocated.length - 1]!.budget;
 
   const parts: string[] = [];
   const firstSubject = messages[0]?.subject;
@@ -413,7 +449,6 @@ export function buildThreadEmbeddingText(
   } else {
     // Multi-message thread: latest first, earlier as secondary context.
     const latest = messages[messages.length - 1]!;
-    const earlier = messages.slice(0, -1);
 
     parts.push("[LATEST MESSAGE — primary classification signal]");
     if (latest.bodyText) {
@@ -425,23 +460,16 @@ export function buildThreadEmbeddingText(
       parts.push(`Attachments: ${latest.attachmentNames.join(", ")}`);
     }
 
-    // Determine how many earlier messages to include.
-    // Drop from oldest (front of array) if per-message share falls below the minimum.
-    let keptEarlier = earlier;
-    let perEarlier = keptEarlier.length > 0
-      ? Math.floor(earlierBudget / keptEarlier.length)
-      : 0;
-    while (perEarlier < MIN_EARLIER_MSG_CHARS && keptEarlier.length > 1) {
-      keptEarlier = keptEarlier.slice(1); // drop oldest
-      perEarlier = Math.floor(earlierBudget / keptEarlier.length);
-    }
+    // Earlier messages, oldest first, each with its allocated share. The oldest
+    // are dropped by the allocator when their share would be too small to inform.
+    const keptEarlier = allocated.filter((a) => !a.isLatest);
 
     if (keptEarlier.length > 0) {
       parts.push("[EARLIER THREAD CONTEXT — secondary]");
-      for (const msg of keptEarlier) {
+      for (const { message: msg, budget } of keptEarlier) {
         if (msg.bodyText) {
           parts.push(
-            truncateToShare(cleanForEmbedding(msg.bodyText, { stripReplyTail: msg !== firstMsg }), perEarlier)
+            truncateToShare(cleanForEmbedding(msg.bodyText, { stripReplyTail: msg !== firstMsg }), budget)
           );
         }
         if (msg.attachmentNames?.length) {

@@ -70,6 +70,9 @@ vi.mock("@amarnai/ai", () => ({
   }),
   sortThreadByEmbedding: (...args: unknown[]) => mockSortThreadByEmbedding(...args),
   snapshotToThreadMessages: vi.fn().mockReturnValue([]),
+  // Mirrors the real predicate (packages/ai/src/thread-snapshot.ts), which is
+  // unit-tested there and in the worker's filter tests.
+  isDraftMessage: (m: { labelIds?: string[] }) => (m.labelIds ?? []).includes("DRAFT"),
 }));
 
 // The sort route enqueues a writeback reconcile; mock the queue so the real
@@ -446,6 +449,58 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
     expect(res.status).toBe(201);
     expect(db.emailThread.update).toHaveBeenCalledWith(
       expect.objectContaining({ data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }) })
+    );
+  });
+
+  it("drops an unsent draft from the thread before persisting or sorting", async () => {
+    // Gmail returns drafts as thread members. An Amarnai Reply draft would
+    // otherwise be stored as a message and become the newest content the sorter
+    // and every later summary/draft prompt sees.
+    const withDraft = makeSnapshot();
+    withDraft.messages.push({
+      providerMessageId: "gmail-draft-1",
+      senderEmail: "user@gmail.com",
+      senderName: "User",
+      toEmails: ["sender@example.com"],
+      ccEmails: [],
+      subject: "Re: Test thread",
+      bodyExcerpt: "My unsent reply",
+      attachments: [],
+      receivedAt: new Date("2026-01-21T10:00:00.000Z"),
+      labelIds: ["DRAFT"],
+    } as never);
+    withDraft.messageCount = 2;
+    withDraft.latestMessageAt = new Date("2026-01-21T10:00:00.000Z");
+
+    vi.mocked(GmailClient).mockImplementationOnce(() => ({
+      getThreadSnapshot: vi.fn().mockResolvedValue(withDraft),
+      listRecentThreads: vi.fn(),
+    }) as never);
+
+    const res = await postSort("gmail-thread-1");
+    expect(res.status).toBe(201);
+
+    // Only the real message is written.
+    expect(db.emailMessage.upsert).toHaveBeenCalledTimes(1);
+    expect(db.emailMessage.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          emailAccountId_providerMessageId: expect.objectContaining({
+            providerMessageId: "gmail-msg-1",
+          }),
+        }),
+      })
+    );
+
+    // The thread's count and date come from the real messages, so composing a
+    // draft never bumps the thread or inflates its message count.
+    expect(db.emailThread.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({
+          messageCount: 1,
+          latestMessageAt: new Date("2026-01-20T10:00:00.000Z"),
+        }),
+      })
     );
   });
 

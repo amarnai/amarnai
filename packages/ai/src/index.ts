@@ -10,7 +10,7 @@ export { validateNodeSelection, MIN_LLM_NODE_CONFIDENCE } from "./selection/vali
 export type { NodeSelectionResult } from "./selection/validator.js";
 export { selectNodeFromCandidates } from "./selection/select-path.js";
 export type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "./thread-snapshot.js";
-export { snapshotToThreadMessages } from "./thread-snapshot.js";
+export { snapshotToThreadMessages, isDraftMessage } from "./thread-snapshot.js";
 // ─── Embedding ────────────────────────────────────────────────────────────────
 export type { EmbeddingProvider, EmbeddingProviderConfig, EmbeddableNode, UpdatedNodeEmbedding } from "./embedding/types.js";
 export { createEmbeddingProvider } from "./providers/create-embedding.js";
@@ -74,9 +74,7 @@ export type { SummaryContext, SummaryResult } from "./summary/generate.js";
 export {
   buildSummaryPrompt,
   SUMMARY_PROMPT_VERSION,
-  MAX_BODY_CHARS_LATEST,
-  MAX_BODY_CHARS_EARLIER,
-  MAX_TOTAL_CHARS,
+  SUMMARY_CHAR_BUDGET,
   MAX_BULLETS,
   MAX_BULLET_CHARS,
 } from "./summary/prompt.js";

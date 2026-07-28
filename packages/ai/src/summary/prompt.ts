@@ -1,13 +1,20 @@
 import type { ThreadMessage } from "../types.js";
+import { allocateThreadCharBudget, cleanForEmbedding, truncateToShare } from "../embedding/math.js";
 
-// Truncation budgets. Unlike drafts — which need the latest message nearly whole
-// in order to reply to it — a summary is breadth-weighted: it must say what the
-// WHOLE thread is about, so every message gets a slice and the newest gets the
-// largest one. The totals keep a typical call around 750 input tokens and cap the
-// worst case near 1,500, which is what the cost model assumes.
-export const MAX_BODY_CHARS_LATEST = 3_000;
-export const MAX_BODY_CHARS_EARLIER = 400;
-export const MAX_TOTAL_CHARS = 6_000;
+/**
+ * Total character budget for the thread bodies in one summary prompt, shared out
+ * by {@link allocateThreadCharBudget} exactly as the embedding path shares its
+ * own: 60 % to the newest message, the rest split equally across the earlier ones,
+ * oldest dropped before any message is cut below a useful size.
+ *
+ * A summary is breadth-weighted — it must say what the WHOLE thread is about — so
+ * an even split matters more here than for drafts, which need the latest message
+ * nearly whole in order to reply to it. 6,000 characters is ≈ 1,500 input tokens,
+ * a hard ceiling rather than the old per-message limits, whose worst case ran to
+ * roughly 9,000 characters. Bodies are cleaned before budgeting, so the typical
+ * call is well under the cap.
+ */
+export const SUMMARY_CHAR_BUDGET = 6_000;
 
 /**
  * Bumped whenever the prompt or the output contract changes in a way that makes
@@ -17,8 +24,10 @@ export const MAX_TOTAL_CHARS = 6_000;
  *
  *   1 — prose only
  *   2 — prose by default, up to 3 bullets for genuinely enumerable threads
+ *   3 — bodies cleaned (quoted history, signatures) and budgeted evenly across
+ *       the thread instead of latest-takes-all
  */
-export const SUMMARY_PROMPT_VERSION = "2";
+export const SUMMARY_PROMPT_VERSION = "3";
 
 /** A thread must contain at least this many separable facts to earn bullets. */
 export const MIN_FACTS_FOR_BULLETS = 3;
@@ -65,7 +74,7 @@ export function buildSummarySystemPrompt(targetLanguage: string): string {
   );
 }
 
-function formatMessage(msg: ThreadMessage, index: number, bodyLimit: number): string {
+function formatMessage(msg: ThreadMessage, index: number, body: string): string {
   const date =
     msg.receivedAt instanceof Date ? msg.receivedAt.toISOString() : String(msg.receivedAt);
   const lines = [
@@ -74,10 +83,7 @@ function formatMessage(msg: ThreadMessage, index: number, bodyLimit: number): st
     `From: ${msg.senderName ? `${msg.senderName} <${msg.senderEmail}>` : msg.senderEmail}`,
   ];
   if (msg.subject) lines.push(`Subject: ${msg.subject}`);
-  const body = msg.bodyText ?? "(no body)";
-  const truncated =
-    body.length > bodyLimit ? body.slice(0, bodyLimit) + "\n[... truncated ...]" : body;
-  lines.push(`Body:\n${truncated}`);
+  lines.push(`Body:\n${body || "(no body)"}`);
   return lines.join("\n");
 }
 
@@ -96,23 +102,25 @@ export function buildSummaryPrompt(
     return da.getTime() - db.getTime();
   });
 
-  // Walk newest → oldest so the messages that survive the total budget are the ones
-  // that matter most, then render them back in chronological order.
-  const kept: Array<{ msg: ThreadMessage; index: number; limit: number }> = [];
-  let spent = 0;
-  for (let i = sorted.length - 1; i >= 0; i--) {
-    const isLatest = i === sorted.length - 1;
-    const limit = isLatest ? MAX_BODY_CHARS_LATEST : MAX_BODY_CHARS_EARLIER;
-    const bodyLen = Math.min((sorted[i]!.bodyText ?? "").length, limit);
-    // The newest message is always included, even if it alone exceeds the total.
-    if (!isLatest && spent + bodyLen > MAX_TOTAL_CHARS) break;
-    kept.push({ msg: sorted[i]!, index: i, limit });
-    spent += bodyLen;
-  }
-  kept.reverse();
+  // Share the budget out across the thread, dropping the oldest messages before
+  // cutting any kept message below a useful size.
+  const allocated = allocateThreadCharBudget(sorted, SUMMARY_CHAR_BUDGET);
+  const indexOffset = sorted.length - allocated.length;
 
-  const omitted = sorted.length - kept.length;
-  const sections = kept.map(({ msg, index, limit }) => formatMessage(msg, index, limit));
+  // The first message's quoted block is novel content (the forwarded-email case),
+  // not a duplicate of something else in the thread, so its tail is never stripped.
+  const firstMsg = sorted[0];
+
+  const omitted = indexOffset;
+  const sections = allocated.map(({ message: msg, budget }, i) => {
+    const cleaned = msg.bodyText
+      ? truncateToShare(
+          cleanForEmbedding(msg.bodyText, { stripReplyTail: msg !== firstMsg }),
+          budget
+        )
+      : "";
+    return formatMessage(msg, indexOffset + i, cleaned);
+  });
   const messagesSection = [
     ...(omitted > 0 ? [`[... ${omitted} earlier messages omitted ...]`] : []),
     ...sections,

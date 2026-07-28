@@ -80,6 +80,22 @@ export type ThreadSnapshot = {
   webLink?: string | null;
 };
 
+/**
+ * True when a message is an unsent draft sitting in the thread.
+ *
+ * Gmail's `threads.get` returns drafts alongside real messages, so a reply the
+ * user (or Amarnai Reply) has composed but not sent arrives in every snapshot of
+ * that thread. A draft is not part of the conversation: it must never be
+ * persisted, classified, summarised, or treated as the message being replied to.
+ *
+ * Outlook is unaffected — the Graph adapter is inbox-folder-scoped and drafts
+ * live in the Drafts folder, so nothing there ever carries this label (its
+ * normalizer emits `labelIds: []`, which is never a draft).
+ */
+export function isDraftMessage(msg: Pick<SnapshotMessage, "labelIds">): boolean {
+  return (msg.labelIds ?? []).includes("DRAFT");
+}
+
 export function snapshotToThreadMessages(snapshot: ThreadSnapshot): ThreadMessage[] {
   return snapshot.messages.map((m) => ({
     subject: m.subject,

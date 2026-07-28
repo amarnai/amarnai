@@ -1,7 +1,11 @@
 import { describe, it, expect } from "vitest";
 import type { SnapshotMessage } from "@amarnai/ai";
+import type { ThreadSnapshot } from "@amarnai/ai";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import {
+  applyThreadFilter,
   computeThreadLabelFlags,
+  isAlwaysExcludedMessage,
   computeThreadLabelFlagsFromMeta,
   isOutboundLabelSet,
   isSentOnlyThreadMeta,
@@ -183,5 +187,81 @@ describe("isSentOnlyThreadSnapshot", () => {
       isSentOnlyThreadSnapshot([msg({ senderEmail: OWNER, ccEmails: [OWNER], toEmails: ["x@y.com"] })], OWNER)
     ).toBe(false);
     expect(isSentOnlyThreadSnapshot([], OWNER)).toBe(false);
+  });
+});
+
+describe("applyThreadFilter — drafts", () => {
+  function snapshot(messages: SnapshotMessage[]): ThreadSnapshot {
+    return {
+      provider: "gmail",
+      providerThreadId: "t1",
+      subject: "Hi",
+      participants: [],
+      latestMessageAt: messages.reduce<Date>(
+        (acc, m) => (m.receivedAt > acc ? m.receivedAt : acc),
+        new Date(0)
+      ),
+      messageCount: messages.length,
+      messages,
+    };
+  }
+
+  const INBOUND = msg({
+    providerMessageId: "m-inbound",
+    receivedAt: new Date("2026-01-02T00:00:00Z"),
+  });
+  // Gmail's threads.get returns unsent drafts as thread members; an Amarnai Reply
+  // draft is the newest "message" in the thread until it is sent.
+  const DRAFT = msg({
+    providerMessageId: "m-draft",
+    senderEmail: "owner@gmail.com",
+    labelIds: ["DRAFT"],
+    receivedAt: new Date("2026-01-03T00:00:00Z"),
+  });
+
+  it("drops an unsent draft so it never reaches the database or a prompt", () => {
+    const filtered = applyThreadFilter(snapshot([INBOUND, DRAFT]), DEFAULT_GMAIL_SYNC_SETTINGS);
+    expect(filtered?.messages.map((m) => m.providerMessageId)).toEqual(["m-inbound"]);
+  });
+
+  it("recomputes messageCount and latestMessageAt from the real messages only", () => {
+    // Otherwise composing a draft silently bumps the thread to the top of the
+    // inbox and reports a message the user never sent.
+    const filtered = applyThreadFilter(snapshot([INBOUND, DRAFT]), DEFAULT_GMAIL_SYNC_SETTINGS);
+    expect(filtered?.messageCount).toBe(1);
+    expect(filtered?.latestMessageAt).toEqual(new Date("2026-01-02T00:00:00Z"));
+  });
+
+  it("excludes a draft even when it carries INBOX alongside the DRAFT label", () => {
+    const filtered = applyThreadFilter(
+      snapshot([INBOUND, msg({ providerMessageId: "m-draft", labelIds: ["INBOX", "DRAFT"] })]),
+      DEFAULT_GMAIL_SYNC_SETTINGS
+    );
+    expect(filtered?.messages.map((m) => m.providerMessageId)).toEqual(["m-inbound"]);
+  });
+
+  it("returns null for a thread that is nothing but a draft", () => {
+    expect(applyThreadFilter(snapshot([DRAFT]), DEFAULT_GMAIL_SYNC_SETTINGS)).toBeNull();
+  });
+
+  it("marks drafts and trashed messages as always-excluded, but not settings exclusions", () => {
+    // The sync's message-deletion diff keys off this: always-excluded messages are
+    // purged from storage, settings-excluded ones are retained so they can
+    // reappear when the setting flips.
+    expect(isAlwaysExcludedMessage(DRAFT)).toBe(true);
+    expect(isAlwaysExcludedMessage(msg({ labelIds: ["TRASH"] }))).toBe(true);
+    expect(isAlwaysExcludedMessage(msg({ labelIds: ["SPAM"] }))).toBe(false);
+    expect(isAlwaysExcludedMessage(msg({ labelIds: ["CATEGORY_PROMOTIONS"] }))).toBe(false);
+    expect(isAlwaysExcludedMessage(msg({ labelIds: [] }))).toBe(false);
+  });
+
+  it("leaves a thread with no drafts untouched (fast path keeps the same reference)", () => {
+    const s = snapshot([INBOUND]);
+    expect(applyThreadFilter(s, DEFAULT_GMAIL_SYNC_SETTINGS)).toBe(s);
+  });
+
+  it("keeps Outlook messages, whose normalizer emits no labels", () => {
+    const s = snapshot([msg({ providerMessageId: "m-graph", labelIds: [] })]);
+    expect(applyThreadFilter(s, DEFAULT_GMAIL_SYNC_SETTINGS)).toBe(s);
   });
 });

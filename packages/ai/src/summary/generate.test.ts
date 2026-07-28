@@ -5,9 +5,7 @@ import {
   buildSummaryPrompt,
   MIN_FACTS_FOR_BULLETS,
   MAX_BULLETS,
-  MAX_BODY_CHARS_LATEST,
-  MAX_BODY_CHARS_EARLIER,
-  MAX_TOTAL_CHARS,
+  SUMMARY_CHAR_BUDGET,
 } from "./prompt.js";
 
 class MockProvider implements AIProvider {
@@ -102,29 +100,41 @@ describe("buildSummaryPrompt", () => {
     expect(user!.content.indexOf("FIRST")).toBeLessThan(user!.content.indexOf("SECOND"));
   });
 
-  it("gives the latest message the larger body budget and truncates earlier ones harder", () => {
+  it("gives the latest message the larger share but leaves an earlier reply room to be understood", () => {
+    // The regression this guards: a substantive reply that is no longer the newest
+    // message used to be cut at 400 characters, which is barely past the greeting.
     const earlier = msg({
-      bodyText: "e".repeat(MAX_BODY_CHARS_EARLIER + 500),
+      bodyText: "e".repeat(2_000),
       receivedAt: new Date("2026-07-01T09:00:00.000Z"),
     });
     const latest = msg({
-      bodyText: "l".repeat(MAX_BODY_CHARS_LATEST + 500),
+      bodyText: "l".repeat(2_000),
       receivedAt: new Date("2026-07-02T09:00:00.000Z"),
     });
     const [, user] = buildSummaryPrompt([earlier, latest], CONTEXT);
     const content = user!.content;
-    expect(content.match(/e+/g)!.some((run) => run.length === MAX_BODY_CHARS_EARLIER)).toBe(true);
-    expect(content.match(/l+/g)!.some((run) => run.length === MAX_BODY_CHARS_LATEST)).toBe(true);
-    expect(content).toContain("[... truncated ...]");
+    const longestRun = (ch: string) =>
+      Math.max(...(content.match(new RegExp(`${ch}+`, "g")) ?? [""]).map((r) => r.length));
+    // Both fit whole: 60/40 of 6,000 leaves 3,600 for the latest and 2,400 for the
+    // earlier one, so a two-message thread is never truncated at all.
+    expect(longestRun("l")).toBe(2_000);
+    expect(longestRun("e")).toBe(2_000);
+  });
+
+  it("truncates with a head and a tail so the end of a long message survives", () => {
+    const latest = msg({ bodyText: `HEAD${"x".repeat(SUMMARY_CHAR_BUDGET)}TAIL` });
+    const [, user] = buildSummaryPrompt([latest], CONTEXT);
+    expect(user!.content).toContain("HEAD");
+    expect(user!.content).toContain("TAIL");
   });
 
   it("drops the oldest messages past the total budget and marks the omission", () => {
-    // Each earlier message contributes MAX_BODY_CHARS_EARLIER to the budget, so far
-    // more than MAX_TOTAL_CHARS / MAX_BODY_CHARS_EARLIER of them cannot all fit.
-    const count = Math.ceil(MAX_TOTAL_CHARS / MAX_BODY_CHARS_EARLIER) + 10;
+    // Earlier messages share 40% of the budget equally; once each share would fall
+    // below the useful minimum, the oldest are dropped instead of being slivered.
+    const count = 40;
     const messages = Array.from({ length: count }, (_, i) =>
       msg({
-        bodyText: `body-${i} ` + "x".repeat(MAX_BODY_CHARS_EARLIER),
+        bodyText: `body-${i} ` + "x".repeat(500),
         receivedAt: new Date(Date.UTC(2026, 6, 1, i)),
       })
     );
@@ -136,10 +146,47 @@ describe("buildSummaryPrompt", () => {
   });
 
   it("always keeps the newest message even when it alone exceeds the total budget", () => {
-    const huge = msg({ bodyText: "h".repeat(MAX_TOTAL_CHARS * 3) });
+    const huge = msg({ bodyText: "h".repeat(SUMMARY_CHAR_BUDGET * 3) });
     const [, user] = buildSummaryPrompt([huge], CONTEXT);
     expect(user!.content).toContain("h".repeat(100));
     expect(user!.content).not.toContain("earlier messages omitted");
+  });
+
+  it("strips a quoted reply tail in any language, not just English", () => {
+    // Gmail localises its attribution line, so an English-only rule let the whole
+    // prior thread ride along inside every reply.
+    const french = [
+      "Merci, c'est note pour vendredi.",
+      "",
+      "Le mar. 21 juil. 2026 a 13:17, Ana <ana@acme.com> a ecrit :",
+      "> Peux-tu confirmer la date de debut ?",
+      "> Ana",
+    ].join("\n");
+    // The reply must not be the first message: a first message's quoted block is
+    // novel content (see the forward case below), so only later replies are stripped.
+    const [, user] = buildSummaryPrompt(
+      [
+        msg({ bodyText: "Peux-tu confirmer la date de debut ?", receivedAt: new Date("2026-07-21T11:17:00.000Z") }),
+        msg({ bodyText: french, receivedAt: new Date("2026-07-21T13:00:00.000Z") }),
+      ],
+      CONTEXT
+    );
+    expect(user!.content).toContain("c'est note pour vendredi");
+    expect(user!.content).not.toContain("a ecrit :");
+    // The question survives once, in the message that actually asked it, instead of
+    // being repeated inside the reply's quoted tail.
+    expect(user!.content.match(/Peux-tu confirmer/g)).toHaveLength(1);
+  });
+
+  it("keeps the first message's quoted block, which is a forward rather than a duplicate", () => {
+    const forwarded = [
+      "FYI, see below.",
+      "",
+      "On Mon, Jul 20, 2026 at 9:00 AM Ana <ana@acme.com> wrote:",
+      "> The contract is attached.",
+    ].join("\n");
+    const [, user] = buildSummaryPrompt([msg({ bodyText: forwarded })], CONTEXT);
+    expect(user!.content).toContain("The contract is attached");
   });
 
   it("includes the subject when provided", () => {
