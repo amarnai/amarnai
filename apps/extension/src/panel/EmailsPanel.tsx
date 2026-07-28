@@ -15,13 +15,24 @@ import { StatusSlot, NoPlanEmptyState } from "./StatusSlot";
 import { PanelHeader } from "./WorkspacePicker";
 import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
-import { WEB_APP_URL } from "../config";
+import { openWebApp } from "./openWebApp";
+import { startCheckout, confirmCheckout } from "../billing/api";
+import {
+  setPendingCheckout,
+  getPendingCheckout,
+  clearPendingCheckout,
+} from "../billing/pendingCheckout";
 
 // The dialog pulls in the taxonomy canvas (ReactFlow), which is far larger than
 // the rest of the panel. Loaded on demand so users who already have a plan
 // never pay for it.
 const PlanSetupDialog = lazy(() =>
   import("@amarnai/ui/plan-setup").then((m) => ({ default: m.PlanSetupDialog })),
+);
+
+// Only ever opened from a quota-gated CTA, so most sessions never load it.
+const UpgradeDialog = lazy(() =>
+  import("@amarnai/ui/upgrade").then((m) => ({ default: m.UpgradeDialog })),
 );
 
 type Props = {
@@ -111,6 +122,25 @@ export function EmailsPanel({
 
   useEffect(() => { loadFolderCounts(); }, [loadFolderCounts]);
 
+  // A checkout the user was sent to a tab to complete. Confirming it here means
+  // the new plan lands as soon as they come back, instead of whenever Stripe's
+  // webhook arrives. `pending` just means payment is not finished: leave the
+  // marker in place and try again on the next focus.
+  const confirmPendingCheckout = useCallback(async () => {
+    const sessionId = await getPendingCheckout();
+    if (!sessionId) return;
+
+    const res = await confirmCheckout(sessionId).catch(() => null);
+    if (!res) return;
+    if (res.ok && res.data.pending) return;
+
+    await clearPendingCheckout();
+    if (res.ok && res.data.provisioned) {
+      api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
+      void refreshWorkspaces();
+    }
+  }, [api, workspaceId, refreshWorkspaces]);
+
   // The plan is edited in a separate web tab; re-pull the taxonomy (and folder
   // counts) when the panel regains focus so the banner reflects the new folders.
   useEffect(() => {
@@ -119,6 +149,7 @@ export function EmailsPanel({
         reloadTaxonomy();
         loadFolderCounts();
         void refreshWorkspaces();
+        void confirmPendingCheckout();
       }
     }
     window.addEventListener("focus", onFocus);
@@ -127,7 +158,7 @@ export function EmailsPanel({
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onFocus);
     };
-  }, [reloadTaxonomy, loadFolderCounts, refreshWorkspaces]);
+  }, [reloadTaxonomy, loadFolderCounts, refreshWorkspaces, confirmPendingCheckout]);
 
   // Refresh the list + sync status + taxonomy + folder counts when the worker
   // finishes a sync.
@@ -149,6 +180,9 @@ export function EmailsPanel({
   // Owned here because three different rows open it, and it must survive the
   // list <-> preview switch.
   const [planSetup, setPlanSetup] = useState<PlanSetupMode | null>(null);
+  // The in-panel plan picker. Opened only from quota-gated CTAs, so a self-hosted
+  // deployment (which never hits those) can never reach a billing screen.
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
   const routableNodeCount = folders.length;
@@ -221,6 +255,24 @@ export function EmailsPanel({
   const inviteNeedsUpgrade =
     syncStatus != null && getCollaboratorLimit(syncStatus.workspacePlan) === 0;
 
+  // Stripe's success page is cookie-gated on the web app, so the checkout URL is
+  // not opened directly: the sign-in bridge mints the web session on the way
+  // through and /upgrade/resume forwards to Stripe. The session id is recorded
+  // first so the result is confirmed even if the user never returns to that tab.
+  const handleCheckoutStarted = useCallback(
+    async ({ sessionId, url }: { sessionId: string; url: string }) => {
+      await setPendingCheckout(sessionId);
+      setUpgradeOpen(false);
+      await openWebApp(api, `/upgrade/resume?session_id=${encodeURIComponent(sessionId)}`);
+      // `url` is unused on this path: /upgrade/resume re-reads the session from
+      // Stripe and redirects there, which also re-checks that it belongs to the
+      // signed-in user. Kept in the callback shape so a host without a bridge
+      // (the web app itself) can open it directly.
+      void url;
+    },
+    [api]
+  );
+
   function openAssignFor(threadId: string, anchor: HTMLElement) {
     setAssignThreadId(threadId);
     setAssignAnchor(anchor);
@@ -262,6 +314,7 @@ export function EmailsPanel({
             onSort={handleSort}
             onDismissPlanCap={() => setPlanCapDismissed(true)}
             onOpenPlanSetup={setPlanSetup}
+            onOpenUpgrade={() => setUpgradeOpen(true)}
           />
           <ScopeField
             folders={folders}
@@ -361,7 +414,7 @@ export function EmailsPanel({
                   const path = inviteNeedsUpgrade
                     ? "/upgrade?ctx=collaborators"
                     : "/settings#team-members";
-                  window.open(`${WEB_APP_URL}${path}`, "_blank", "noopener");
+                  void openWebApp(api, path);
                 },
                 addMembersRequiresUpgrade: inviteNeedsUpgrade,
               }
@@ -412,9 +465,33 @@ export function EmailsPanel({
             api={api}
             workspaceId={workspaceId}
             initialMode={planSetup}
-            onOpenWeb={(path) => window.open(`${WEB_APP_URL}${path}`, "_blank", "noopener")}
+            onOpenWeb={(path) => void openWebApp(api, path)}
             onApplied={onPlanApplied}
             onClose={() => setPlanSetup(null)}
+          />
+        </Suspense>
+      )}
+
+      {upgradeOpen && (
+        <Suspense
+          fallback={
+            <div className="ug-overlay">
+              <div className="ax-center">
+                <span className="ax-spinner" aria-label={_(msg`Loading`)} />
+              </div>
+            </div>
+          }
+        >
+          <UpgradeDialog
+            workspaceId={workspaceId}
+            currentPlan={syncStatus?.workspacePlan ?? "FREE"}
+            startCheckout={startCheckout}
+            onCheckoutStarted={handleCheckoutStarted}
+            onUpgraded={() => {
+              api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
+              void refreshWorkspaces();
+            }}
+            onClose={() => setUpgradeOpen(false)}
           />
         </Suspense>
       )}

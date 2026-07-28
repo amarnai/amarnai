@@ -41,6 +41,7 @@ import type {
   RegisterPushDeviceResult,
   RegisterExtensionInput,
   RegisterExtensionResult,
+  CreateBridgeCodeResult,
   CurrentUser,
   UpdateCurrentUserInput,
   TaxonomyGenerationStatusResult,
@@ -764,6 +765,10 @@ export function makeApiClient(transport: ApiTransport) {
 
     registerExtension: (input: RegisterExtensionInput) =>
       apiMutate<RegisterExtensionResult>("/extension/register", "POST", input),
+
+    // ── Web sign-in bridge ─────────────────────────────────────────────────────
+
+    createBridgeCode: () => apiMutate<CreateBridgeCodeResult>("/auth/bridge/code", "POST"),
 
     // ── Dev endpoints ──────────────────────────────────────────────────────────
 

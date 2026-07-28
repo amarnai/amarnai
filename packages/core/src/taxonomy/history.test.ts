@@ -184,6 +184,19 @@ describe("snapshotsEqual", () => {
     expect(snapshotsEqual(a, b)).toBe(false);
   });
 
+  it("returns false when a folder colour changes", () => {
+    const a: GraphSnapshot = { nodes: [makeNode("a", { colorKey: null })], edges: [] };
+    const b: GraphSnapshot = { nodes: [makeNode("a", { colorKey: "sage" })], edges: [] };
+    // Otherwise the reducer drops the PUSH and recolouring is not undoable.
+    expect(snapshotsEqual(a, b)).toBe(false);
+  });
+
+  it("returns false when a draft prompt changes", () => {
+    const a: GraphSnapshot = { nodes: [makeNode("a", { draftPrompt: null })], edges: [] };
+    const b: GraphSnapshot = { nodes: [makeNode("a", { draftPrompt: "Be brief" })], edges: [] };
+    expect(snapshotsEqual(a, b)).toBe(false);
+  });
+
   it("returns false when an edge is added", () => {
     const a: GraphSnapshot = { nodes: [makeNode("a")], edges: [] };
     const b: GraphSnapshot = { nodes: [makeNode("a")], edges: [makeEdge("e1")] };

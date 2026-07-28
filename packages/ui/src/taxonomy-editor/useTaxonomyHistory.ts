@@ -1,9 +1,9 @@
 import { useCallback, useReducer } from "react";
 import { historyReducer, type GraphSnapshot } from "@amarnai/core/taxonomy";
 
-// The pure undo/redo reducer + snapshot diffing live in @amarnai/core/taxonomy
-// so the logic is shared with the mobile app. This thin React wrapper is the
-// only web-specific piece (it binds the reducer to useReducer/useCallback).
+// The pure undo/redo reducer + snapshot diffing live in @amarnai/core/taxonomy.
+// This thin React wrapper binds the reducer to useReducer/useCallback and is
+// shared by every surface that hosts the editor.
 export type { GraphSnapshot, HistoryState } from "@amarnai/core/taxonomy";
 export { snapshotsEqual, historyReducer } from "@amarnai/core/taxonomy";
 

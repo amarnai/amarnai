@@ -642,3 +642,8 @@ export type RegisterExtensionInput = {
 };
 
 export type RegisterExtensionResult = { ok: boolean };
+
+// A one-time code that carries this signed-in user into a web session, so a link
+// clicked in the extension panel does not land on the sign-in form. Single-use
+// and short-lived; `expiresAt` is an ISO timestamp.
+export type CreateBridgeCodeResult = { code: string; expiresAt: string };

@@ -70,11 +70,19 @@ const INJECTION_PERMISSIONS = ["scripting"];
 
 export function buildManifest({
   apiUrl,
+  webAppUrl,
   key,
   browser = "chrome",
   nativeInjection = true,
 }: {
   apiUrl: string;
+  /**
+   * The web app's origin. Needed as a host permission because the panel POSTs to
+   * the web app's billing routes directly (Stripe and the webhook live there, not
+   * on the API server), and those Next routes send no CORS headers — the host
+   * grant is what lets an extension page reach them.
+   */
+  webAppUrl: string;
   key?: string | undefined;
   browser?: BrowserTarget;
   /**
@@ -85,6 +93,7 @@ export function buildManifest({
   nativeInjection?: boolean;
 }) {
   const apiOrigin = new URL(apiUrl).origin;
+  const webAppOrigin = new URL(webAppUrl).origin;
   const { version } = JSON.parse(
     readFileSync(path.join(dir, "package.json"), "utf8"),
   ) as { version: string };
@@ -96,7 +105,14 @@ export function buildManifest({
   };
   // MAIL_HOSTS (Gmail + OWA) is shared with permissions.ts and openInGmail.ts so
   // the manifest grant can never drift from the runtime request or tab-reuse query.
-  const hostPermissions = [`${apiOrigin}/*`, ...MAIL_HOSTS];
+  // Both origins are derived rather than hardcoded, so they cannot drift from the
+  // URLs the panel actually calls. A self-hosted deployment where the API and web
+  // app share an origin gets one entry, not a duplicate.
+  const hostPermissions = [
+    `${apiOrigin}/*`,
+    ...(webAppOrigin === apiOrigin ? [] : [`${webAppOrigin}/*`]),
+    ...MAIL_HOSTS,
+  ];
 
   if (browser === "firefox") {
     // Firefox has no side_panel/sidePanel and no MV3 background.service_worker: it

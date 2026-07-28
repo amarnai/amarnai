@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:610
-msgid " (Inbox)"
-msgstr " (Inbox)"
+#~ msgid " (Inbox)"
+#~ msgstr " (Inbox)"
 
 #: ../../apps/mobile/src/components/MessageCard.tsx:57
 #: ../ui/src/emails/MessageCard.tsx:72
@@ -50,17 +50,17 @@ msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your pl
 msgstr "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:33
+#: ../../apps/extension/src/panel/StatusSlot.tsx:42
 msgid "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 msgstr "{0, plural, one {# thread is waiting. Set up folders to start sorting.} other {# threads are waiting. Set up folders to start sorting.}}"
 
 #. placeholder {0}: status.waitingCount
-#: ../../apps/extension/src/panel/StatusSlot.tsx:56
+#: ../../apps/extension/src/panel/StatusSlot.tsx:65
 msgid "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 msgstr "{0, plural, one {# thread ready to sort} other {# threads ready to sort}}"
 
 #. placeholder {0}: s.threadCount
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:156
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:138
 msgid "{0, plural, one {# thread} other {# threads}}"
 msgstr "{0, plural, one {# thread} other {# threads}}"
 
@@ -117,7 +117,7 @@ msgstr "{0} of {1} remaining · resets {quotaResetDate}"
 #~ msgstr "{0} of ~{1} threads · {percent}%"
 
 #. placeholder {0}: migrateLive > 0 ? ( <Fragment> <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "} </Fragment> ) : null
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:225
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:180
 msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
 msgstr "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
 
@@ -139,7 +139,7 @@ msgstr "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}. Change folder"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:625
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:297
 msgid "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 msgstr "{classificationCount, plural, one {Deleting this folder will leave # thread unsorted.} other {Deleting this folder will leave # threads unsorted.}}"
 
@@ -183,7 +183,7 @@ msgstr "{filed} sorted · {reviewCount} to review"
 msgid "{folderCount, plural, one {# folder} other {# folders}}"
 msgstr "{folderCount, plural, one {# folder} other {# folders}}"
 
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:206
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:170
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 
@@ -214,7 +214,7 @@ msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} of {limit} remaining · resets {resetDate}"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1665
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:854
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 
@@ -269,8 +269,8 @@ msgstr "© 2026 Amarnai. Open source under AGPL-3.0."
 msgid "+ Add folder"
 msgstr "+ Add folder"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1496
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1505
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:685
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:694
 msgid "+ Add Folder"
 msgstr "+ Add Folder"
 
@@ -289,6 +289,10 @@ msgstr "<0>King Aziru</0> is ready to sort your email threads. Connect your {pro
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:216
+msgid "${price} per month"
+msgstr "${price} per month"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:49
 msgid "${price}/mo"
@@ -494,11 +498,11 @@ msgstr "A new application has been received from Horemheb of Thebes for the posi
 "\n"
 "View the application in the House of Records."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:340
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "A template gets you sorting right away, and you can edit it later."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:366
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
 msgid "A workspace owner manages this workspace's folders."
 msgstr "A workspace owner manages this workspace's folders."
 
@@ -547,11 +551,11 @@ msgstr "Access was denied. Grant read-only Outlook (Mail.Read) access to connect
 msgid "Account"
 msgstr "Account"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:101
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:99
 msgid "Account menu"
 msgstr "Account menu"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:115
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:114
 msgid "Account settings"
 msgstr "Account settings"
 
@@ -579,11 +583,11 @@ msgid "Add"
 msgstr "Add"
 
 #. placeholder {0}: minNodeDescriptionLength(description)
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:466
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:130
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "Add a description (at least {0} characters) so the AI can sort accurately."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1530
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:719
 msgid "Add at least 3 connected folders to export"
 msgstr "Add at least 3 connected folders to export"
 
@@ -736,7 +740,7 @@ msgstr "Amarnai files every Gmail and Outlook thread into folders you design, fr
 msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 msgstr "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:313
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:342
 msgid "Amarnai files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
 msgstr "Amarnai files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
 
@@ -952,6 +956,10 @@ msgstr "Annual"
 msgid "Annual · Save 20%"
 msgstr "Annual · Save 20%"
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:199
+msgid "Annual, save 20%"
+msgstr "Annual, save 20%"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 msgid "Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder."
 msgstr "Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder."
@@ -993,7 +1001,7 @@ msgstr "Applying replaces your current plan. You can fully edit it afterward."
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
 msgid "Applying…"
 msgstr "Applying…"
 
@@ -1062,13 +1070,17 @@ msgstr "At least {PASSWORD_MIN_LENGTH} characters"
 msgid "Audience"
 msgstr "Audience"
 
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:220
+msgid "Auto"
+msgstr "Auto"
+
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
 #: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:86
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Auto-file notifications to Updates / Other"
 
 #. placeholder {0}: catchAllRow.threadCount
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:191
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:161
 msgid "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgstr "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 
@@ -1123,8 +1135,8 @@ msgstr "Babylon's third gold consignment is overdue after two messengers. Burna-
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:382
 #: ../ui/src/emails/ThreadPreview.tsx:114
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:402
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:422
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
 msgid "Back"
 msgstr "Back"
 
@@ -1174,6 +1186,7 @@ msgstr "Billing"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
 #: ../ui/src/PricingPlans.tsx:112
+#: ../ui/src/upgrade/UpgradeDialog.tsx:184
 msgid "Billing cycle"
 msgstr "Billing cycle"
 
@@ -1214,7 +1227,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1590
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:779
 msgid "Browse templates"
 msgstr "Browse templates"
 
@@ -1311,13 +1324,8 @@ msgstr "Can I self-host Amarnai?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:107
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:256
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:663
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:679
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:793
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1818
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1911
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1008
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1101
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:301
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:416
@@ -1326,6 +1334,11 @@ msgstr "Can I self-host Amarnai?"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:147
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:209
+#: ../ui/src/taxonomy-editor/EdgeForm.tsx:90
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:109
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:213
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:338
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:354
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1391,6 +1404,10 @@ msgstr "Change folder"
 msgid "Change subscription"
 msgstr "Change subscription"
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
+msgstr "Changing or cancelling a paid plan is done in the Amarnai web app."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "Channel notifications, upload analytics, and policy updates from social platforms."
@@ -1408,9 +1425,13 @@ msgstr "Check your inbox"
 msgid "Checkout failed: {0}"
 msgstr "Checkout failed: {0}"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:775
+#: ../ui/src/taxonomy-editor/EdgeForm.tsx:80
 msgid "Child folder"
 msgstr "Child folder"
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:235
+msgid "Choose {planName}"
+msgstr "Choose {planName}"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:77
 msgid "Choose a new password for your account."
@@ -1420,7 +1441,7 @@ msgstr "Choose a new password for your account."
 msgid "Choose a subscription"
 msgstr "Choose a subscription"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:288
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:317
 msgid "Choose a template"
 msgstr "Choose a template"
 
@@ -1440,7 +1461,7 @@ msgstr "Choose how to preview Amarnai"
 msgid "Choose parent"
 msgstr "Choose parent"
 
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:117
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:119
 msgid "Choose where each folder’s threads should go under your new folders. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 msgstr "Choose where each folder’s threads should go under your new folders. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 
@@ -1487,14 +1508,15 @@ msgstr "Clients"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:298
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:437
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:327
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
+#: ../ui/src/upgrade/UpgradeDialog.tsx:166
 msgid "Close"
 msgstr "Close"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1729
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:919
 msgid "Close panel"
 msgstr "Close panel"
 
@@ -1545,7 +1567,7 @@ msgstr "Collaborators are available on the Scribe and Pharaoh plans. <0>Upgrade 
 #~ msgid "Collapse"
 #~ msgstr "Collapse"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:532
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:206
 msgid "Color"
 msgstr "Color"
 
@@ -1577,7 +1599,7 @@ msgstr "Confirm cancellation"
 msgid "Confirm delete"
 msgstr "Confirm delete"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:655
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:330
 msgid "Confirm Delete"
 msgstr "Confirm Delete"
 
@@ -1739,6 +1761,14 @@ msgstr "Connection failed. Please try again."
 msgid "Content Creator"
 msgstr "Content Creator"
 
+#: ../../apps/web/src/app/auth/bridge/BridgeContinue.tsx:35
+msgid "Continue"
+msgstr "Continue"
+
+#: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:48
+msgid "Continue as {incomingEmail}"
+msgstr "Continue as {incomingEmail}"
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:409
 msgid "Continue to {name}"
 msgstr "Continue to {name}"
@@ -1770,6 +1800,10 @@ msgstr "Continue with Google"
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 msgid "Continue with Microsoft"
 msgstr "Continue with Microsoft"
+
+#: ../../apps/web/src/app/auth/bridge/BridgeContinue.tsx:30
+msgid "Continuing from your browser extension"
+msgstr "Continuing from your browser extension"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:119
 msgid "Continuous-integration runs, build pipelines, and deployment status notifications."
@@ -1866,7 +1900,7 @@ msgstr "Could not load the plan."
 msgid "Could not open billing management."
 msgstr "Could not open billing management."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1394
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:583
 msgid "Could not prepare migration"
 msgstr "Could not prepare migration"
 
@@ -1879,11 +1913,15 @@ msgstr "Could not queue rescan. Please try again."
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Could not reach Amarnai. Check your connection."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:141
+msgid "Could not reach the billing service. Please try again."
+msgstr "Could not reach the billing service. Please try again."
+
 #: ../../apps/mobile/app/forgot-password.tsx:42
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Could not reach the server. Please check your connection and try again."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1344
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:533
 msgid "Could not read file: invalid JSON."
 msgstr "Could not read file: invalid JSON."
 
@@ -1949,7 +1987,8 @@ msgstr "Could not upgrade"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Could not verify your Google account. Please try again."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:275
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:283
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:304
 msgid "Couldn't apply the folders."
 msgstr "Couldn't apply the folders."
 
@@ -1957,7 +1996,7 @@ msgstr "Couldn't apply the folders."
 #~ msgid "Couldn't apply the plan."
 #~ msgstr "Couldn't apply the plan."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:182
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:191
 msgid "Couldn't check generation status."
 msgstr "Couldn't check generation status."
 
@@ -1969,7 +2008,7 @@ msgstr "Couldn't load your inbox. Check your connection and reopen the panel."
 msgid "Couldn't reach Amarnai. Check your connection and try again."
 msgstr "Couldn't reach Amarnai. Check your connection and try again."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:237
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:246
 msgid "Couldn't start generation."
 msgstr "Couldn't start generation."
 
@@ -1990,7 +2029,7 @@ msgid "Courses"
 msgstr "Courses"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:448
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 msgid "Create"
 msgstr "Create"
 
@@ -2010,7 +2049,7 @@ msgstr "Create account"
 msgid "Create an account to triage your inbox"
 msgstr "Create an account to triage your inbox"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:486
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:151
 msgid "Create Folder"
 msgstr "Create Folder"
 
@@ -2039,7 +2078,7 @@ msgstr "Creating…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1872
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1062
 #: ../ui/src/demo/demo-seed.ts:34
 msgid "Current"
 msgstr "Current"
@@ -2088,11 +2127,11 @@ msgid "Deal progress, transaction stages, and closing coordination across active
 msgstr "Deal progress, transaction stages, and closing coordination across active sales."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:118
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:546
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:216
 msgid "Default"
 msgstr "Default"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:544
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:215
 msgid "Default color"
 msgstr "Default color"
 
@@ -2105,12 +2144,12 @@ msgstr "Default free workspace"
 #: ../../apps/mobile/app/(app)/notifications.tsx:146
 #: ../../apps/mobile/app/(app)/notifications.tsx:255
 #: ../../apps/mobile/app/(app)/notifications.tsx:341
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:695
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:706
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:802
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:198
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:271
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:272
+#: ../ui/src/taxonomy-editor/EdgeForm.tsx:99
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:368
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:379
 msgid "Delete"
 msgstr "Delete"
 
@@ -2169,8 +2208,8 @@ msgstr "Deleting..."
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:655
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:56
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:330
 msgid "Deleting…"
 msgstr "Deleting…"
 
@@ -2179,7 +2218,7 @@ msgid "Deployments"
 msgstr "Deployments"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:80
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:297
+#: ../ui/src/taxonomy-editor/DescriptionTips.tsx:42
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 
@@ -2188,7 +2227,7 @@ msgid "Describe your folders"
 msgstr "Describe your folders"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:508
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:176
 msgid "Description"
 msgstr "Description"
 
@@ -2279,8 +2318,8 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:389
-#: ../../apps/extension/src/panel/StatusSlot.tsx:99
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
+#: ../../apps/extension/src/panel/StatusSlot.tsx:107
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
@@ -2402,7 +2441,7 @@ msgid "Draft shared"
 msgstr "Draft shared"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:342
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:581
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:250
 msgid "Draft style guidance"
 msgstr "Draft style guidance"
 
@@ -2432,12 +2471,12 @@ msgstr "E-commerce Seller"
 msgid "e.g. Invoices"
 msgstr "e.g. Invoices"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:516
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:187
 msgid "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 msgstr "e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:350
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:587
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:258
 msgid "e.g. Reply formally. Keep responses under 3 sentences."
 msgstr "e.g. Reply formally. Keep responses under 3 sentences."
 
@@ -2450,7 +2489,7 @@ msgstr "Earlier"
 msgid "Edit folder"
 msgstr "Edit folder"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:486
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:151
 msgid "Edit Folder"
 msgstr "Edit Folder"
 
@@ -2458,7 +2497,7 @@ msgstr "Edit Folder"
 msgid "Edit inbox"
 msgstr "Edit inbox"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:750
+#: ../ui/src/taxonomy-editor/EdgeForm.tsx:48
 msgid "Edit Path"
 msgstr "Edit Path"
 
@@ -2526,7 +2565,7 @@ msgid "Emails"
 msgstr "Emails"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:100
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:325
+#: ../ui/src/taxonomy-editor/DescriptionTips.tsx:53
 msgid "Emails about my bills that I need to deal with."
 msgstr "Emails about my bills that I need to deal with."
 
@@ -2555,9 +2594,13 @@ msgstr "Enrollment, tuition fees, dorm assignments, and official campus administ
 #~ msgstr "Enrollment, tuition fees, housing applications, and official campus administration."
 
 #. placeholder {0}: minNodeNameLength(name)
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:463
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:127
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "Enter a folder name (at least {0} characters)."
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:104
+msgid "Enter a name for the new workspace."
+msgstr "Enter a name for the new workspace."
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:71
 msgid "Enter a valid email address"
@@ -2637,12 +2680,12 @@ msgstr "Everything that doesn't fit a named folder."
 msgid "Expenses"
 msgstr "Expenses"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1554
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:743
 msgid "Export"
 msgstr "Export"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1529
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1537
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:718
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:726
 msgid "Export folders"
 msgstr "Export folders"
 
@@ -2663,19 +2706,19 @@ msgstr "External agencies, outside firms, and business partners engaged professi
 msgid "Failed to apply"
 msgstr "Failed to apply"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1176
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:365
 msgid "Failed to create folder"
 msgstr "Failed to create folder"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1109
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:298
 msgid "Failed to create path"
 msgstr "Failed to create path"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1247
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:436
 msgid "Failed to delete folder"
 msgstr "Failed to delete folder"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1264
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:453
 msgid "Failed to delete path"
 msgstr "Failed to delete path"
 
@@ -2683,11 +2726,11 @@ msgstr "Failed to delete path"
 msgid "Failed to load status"
 msgstr "Failed to load status"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1305
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:494
 msgid "Failed to redo"
 msgstr "Failed to redo"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1076
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:265
 msgid "Failed to save position"
 msgstr "Failed to save position"
 
@@ -2695,15 +2738,15 @@ msgstr "Failed to save position"
 msgid "Failed to start generation"
 msgstr "Failed to start generation"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1286
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:475
 msgid "Failed to undo"
 msgstr "Failed to undo"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1208
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:397
 msgid "Failed to update folder"
 msgstr "Failed to update folder"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1230
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:419
 msgid "Failed to update path"
 msgstr "Failed to update path"
 
@@ -2753,7 +2796,7 @@ msgstr "Finance"
 msgid "Find and draft"
 msgstr "Find and draft"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:197
+#: ../../apps/extension/src/panel/StatusSlot.tsx:202
 msgid "Fine-tune later in the folder editor"
 msgstr "Fine-tune later in the folder editor"
 
@@ -2795,7 +2838,7 @@ msgstr "folder"
 msgid "Folder"
 msgstr "Folder"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:535
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:208
 msgid "Folder color"
 msgstr "Folder color"
 
@@ -2807,7 +2850,7 @@ msgstr "Folder created"
 msgid "Folder deleted"
 msgstr "Folder deleted"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1487
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:676
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 
@@ -2823,8 +2866,8 @@ msgstr "Folder will be ignored until connected"
 msgid "Folder: {activeFolderName}"
 msgstr "Folder: {activeFolderName}"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:42
-#: ../../apps/web/src/app/(app)/folders/page.tsx:43
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
+#: ../../apps/web/src/app/(app)/folders/page.tsx:45
 #: ../../apps/web/src/components/Sidebar.tsx:33
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
 #: ../ui/src/emails/EmailRail.tsx:106
@@ -2832,7 +2875,7 @@ msgstr "Folder: {activeFolderName}"
 msgid "Folders"
 msgstr "Folders"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1480
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:669
 msgid "Folders are view-only. Only workspace admins can edit them."
 msgstr "Folders are view-only. Only workspace admins can edit them."
 
@@ -3030,15 +3073,15 @@ msgstr "Generate folders from inbox"
 msgid "Generate folders from your inbox"
 msgstr "Generate folders from your inbox"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:181
+#: ../../apps/extension/src/panel/StatusSlot.tsx:191
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1691
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:880
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:375
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
 msgid "Generate from inbox"
 msgstr "Generate from inbox"
 
@@ -3062,7 +3105,7 @@ msgstr "Generate your folders."
 #~ msgid "Generate your plan."
 #~ msgstr "Generate your plan."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:348
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 
@@ -3084,7 +3127,7 @@ msgstr "Generation didn't complete. Try again after {0}, or start from a templat
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "Generation didn't complete. Try again shortly, or start from a template."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:150
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:159
 msgid "Generation didn't complete. You can start from a template instead."
 msgstr "Generation didn't complete. You can start from a template instead."
 
@@ -3251,7 +3294,7 @@ msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Help requests, supply issues, and escalations from customers."
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:71
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:281
+#: ../ui/src/taxonomy-editor/DescriptionTips.tsx:37
 msgid "Hide tips"
 msgstr "Hide tips"
 
@@ -3330,7 +3373,7 @@ msgid "How it works"
 msgstr "How it works"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:73
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:281
+#: ../ui/src/taxonomy-editor/DescriptionTips.tsx:37
 msgid "How to write a good description"
 msgstr "How to write a good description"
 
@@ -3359,19 +3402,19 @@ msgstr "If something isn’t working or you have a question, here’s how to rea
 msgid "Ignored"
 msgstr "Ignored"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1579
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:768
 msgid "Import"
 msgstr "Import"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1409
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:598
 msgid "Import failed"
 msgstr "Import failed"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1562
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:751
 msgid "Import folders"
 msgstr "Import folders"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1557
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:746
 msgid "Import folders (replaces current)"
 msgstr "Import folders (replaces current)"
 
@@ -3408,8 +3451,8 @@ msgstr "In Gmail and Outlook"
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:151
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:127
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:609
 #: ../ui/src/demo/demo-seed.ts:29
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:281
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 msgid "Inbox"
 msgstr "Inbox"
@@ -3526,11 +3569,11 @@ msgid "Invalid or missing reset link."
 msgstr "Invalid or missing reset link."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1358
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:547
 msgid "Invalid taxonomy file: {0}"
 msgstr "Invalid taxonomy file: {0}"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1352
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:541
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Invalid taxonomy file: {detail}"
 
@@ -3714,7 +3757,7 @@ msgstr "Leads"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:200
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:209
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:639
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:314
 msgid "Leave unsorted"
 msgstr "Leave unsorted"
 
@@ -3751,7 +3794,7 @@ msgstr "Letters reached me from Pharaoh in the south and the Hittites in the nor
 msgid "Light"
 msgstr "Light"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:521
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:193
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 msgstr "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
 
@@ -3778,11 +3821,12 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Load more"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:406
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:480
 msgid "Loading"
 msgstr "Loading"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:133
+#: ../../apps/extension/src/panel/StatusSlot.tsx:141
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
 #: ../ui/src/emails/BackfillCard.tsx:35
@@ -3819,7 +3863,7 @@ msgstr "Major donor relationships, pledge confirmations, and gift acknowledgemen
 msgid "Manage"
 msgstr "Manage"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:155
+#: ../../apps/extension/src/panel/NotificationBell.tsx:156
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
 #: ../../apps/web/src/components/NotificationBell.tsx:192
 msgid "Manage notifications"
@@ -3970,7 +4014,7 @@ msgstr "Microsoft could not complete the authorization. The link may have expire
 msgid "Microsoft sign-in failed. Please try again."
 msgstr "Microsoft sign-in failed. Please try again."
 
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:263
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:205
 msgid "Migrate & apply"
 msgstr "Migrate & apply"
 
@@ -3991,6 +4035,7 @@ msgstr "Monetization"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
 #: ../ui/src/PricingPlans.tsx:119
+#: ../ui/src/upgrade/UpgradeDialog.tsx:191
 msgid "Monthly"
 msgstr "Monthly"
 
@@ -4017,7 +4062,7 @@ msgid "Most popular"
 msgstr "Most popular"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:387
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:633
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:306
 msgid "Move them to"
 msgstr "Move them to"
 
@@ -4049,8 +4094,8 @@ msgstr "My travels bring me near the Delta in the coming days. If the Great King
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:495
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:161
 msgid "Name"
 msgstr "Name"
 
@@ -4121,7 +4166,7 @@ msgstr "New notification"
 msgid "New password"
 msgstr "New password"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:139
+#: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
 #: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
@@ -4136,6 +4181,8 @@ msgid "New workspace"
 msgstr "New workspace"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
+#: ../ui/src/upgrade/UpgradeDialog.tsx:265
+#: ../ui/src/upgrade/UpgradeDialog.tsx:266
 msgid "New workspace name"
 msgstr "New workspace name"
 
@@ -4223,7 +4270,7 @@ msgstr "No significant new mail since your last generation, so the result would 
 #~ msgid "No signups yet."
 #~ msgstr "No signups yet."
 
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:126
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:128
 msgid "No sorted threads to migrate. Your new folders will apply directly."
 msgstr "No sorted threads to migrate. Your new folders will apply directly."
 
@@ -4275,7 +4322,7 @@ msgstr "None"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:190
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:205
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:606
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:278
 msgid "None (not connected)"
 msgstr "None (not connected)"
 
@@ -4353,6 +4400,10 @@ msgstr "One sign-in creates your account, connects your Gmail or Outlook inbox, 
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:121
+msgid "Only the workspace owner can change the plan."
+msgstr "Only the workspace owner can change the plan."
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 msgid "Only the workspace owner can manage billing."
 msgstr "Only the workspace owner can manage billing."
@@ -4394,7 +4445,7 @@ msgstr "Open navigation"
 msgid "open source email ai"
 msgstr "open source email ai"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:463
 msgid "Open the folder editor"
 msgstr "Open the folder editor"
 
@@ -4428,6 +4479,10 @@ msgstr "Open this from the Amarnai Reply button in Outlook."
 msgid "Open-source maintainers, contributor discussions, and developer forum threads."
 msgstr "Open-source maintainers, contributor discussions, and developer forum threads."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:233
+msgid "Opening checkout"
+msgstr "Opening checkout"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:64
 msgid "Operations"
 msgstr "Operations"
@@ -4436,13 +4491,17 @@ msgstr "Operations"
 msgid "Optional. Applied when generating draft replies for this folder."
 msgstr "Optional. Applied when generating draft replies for this folder."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:592
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:261
 msgid "Optional. Applied when generating draft replies for threads in this folder."
 msgstr "Optional. Applied when generating draft replies for threads in this folder."
 
 #: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:573
-msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
-msgstr "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
+#~ msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
+#~ msgstr "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
+
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:240
+msgid "Optional. Sets this folder’s chip and icon color across your inbox. Default assigns a stable color automatically."
+msgstr "Optional. Sets this folder’s chip and icon color across your inbox. Default assigns a stable color automatically."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:130
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
@@ -4481,8 +4540,8 @@ msgid "Paid or upgraded workspace"
 msgstr "Paid or upgraded workspace"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:322
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:600
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:759
+#: ../ui/src/taxonomy-editor/EdgeForm.tsx:58
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:270
 msgid "Parent"
 msgstr "Parent"
 
@@ -4864,11 +4923,11 @@ msgstr "Re-route {unclassifiedCount} unclassified"
 msgid "Re-route thread"
 msgstr "Re-route thread"
 
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:172
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:148
 msgid "Re-sort with AI"
 msgstr "Re-sort with AI"
 
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:242
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:190
 msgid "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 msgstr "Re-sorting threads already sorted this month is free. If you reach your monthly limit, the rest resume next month."
 
@@ -4900,7 +4959,7 @@ msgstr "Read-only by design"
 #~ msgid "Reading your inbox and building a plan. This can take a moment."
 #~ msgstr "Reading your inbox and building a plan. This can take a moment."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:360
 msgid "Reading your inbox and building your folders. This can take a moment."
 msgstr "Reading your inbox and building your folders. This can take a moment."
 
@@ -4909,7 +4968,7 @@ msgid "Real Estate Agent"
 msgstr "Real Estate Agent"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:91
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:314
+#: ../ui/src/taxonomy-editor/DescriptionTips.tsx:50
 msgid "Receipts, payment confirmations, and billing questions from vendors."
 msgstr "Receipts, payment confirmations, and billing questions from vendors."
 
@@ -4925,7 +4984,7 @@ msgstr "Recently attempted. Try again later."
 msgid "Recommended"
 msgstr "Recommended"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1876
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1066
 msgid "Recommended for your inbox"
 msgstr "Recommended for your inbox"
 
@@ -4986,7 +5045,7 @@ msgstr "Recruiting"
 msgid "Redirecting…"
 msgstr "Redirecting…"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1517
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:706
 msgid "Redo"
 msgstr "Redo"
 
@@ -5077,7 +5136,7 @@ msgstr "Renews monthly on <0>{0}</0>."
 msgid "Renews on <0>{0}</0>."
 msgstr "Renews on <0>{0}</0>."
 
-#: ../../apps/web/src/app/(app)/folders/MigrationReviewModal.tsx:103
+#: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:104
 msgid "Replace folders"
 msgstr "Replace folders"
 
@@ -5093,7 +5152,7 @@ msgstr "Replace folders"
 #~ msgid "Replace taxonomy"
 #~ msgstr "Replace taxonomy"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1813
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1003
 msgid "Replace with a template"
 msgstr "Replace with a template"
 
@@ -5210,7 +5269,7 @@ msgstr "Returns"
 #~ msgid "Review queue"
 #~ msgstr "Review queue"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:290
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
 msgid "Review your folders"
 msgstr "Review your folders"
 
@@ -5269,9 +5328,9 @@ msgstr "Same as monthly"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 msgid "Save"
 msgstr "Save"
 
@@ -5312,9 +5371,9 @@ msgid "Saving..."
 msgstr "Saving..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:480
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:790
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 msgid "Saving…"
 msgstr "Saving…"
 
@@ -5373,7 +5432,7 @@ msgstr "See it work"
 msgid "Select"
 msgstr "Select"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:338
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:391
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 msgid "Select a thread to preview"
@@ -5463,17 +5522,17 @@ msgstr "Set new password"
 #~ msgid "Set up at least 3 folders so we can start sorting."
 #~ msgstr "Set up at least 3 folders so we can start sorting."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:44
+#: ../../apps/extension/src/panel/StatusSlot.tsx:53
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:426
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:291
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 msgid "Set up folders"
 msgstr "Set up folders"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:173
+#: ../../apps/extension/src/panel/StatusSlot.tsx:183
 msgid "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 msgstr "Set up folders so Amarnai knows where to file your mail. It only takes a minute."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:170
+#: ../../apps/extension/src/panel/StatusSlot.tsx:180
 msgid "Set up your folders"
 msgstr "Set up your folders"
 
@@ -5485,7 +5544,7 @@ msgstr "Sets the language for this workspace, including the interface and AI-gen
 msgid "Setting up your workspace…"
 msgstr "Setting up your workspace…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:47
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
 #: ../../apps/web/src/components/Sidebar.tsx:34
@@ -5586,7 +5645,7 @@ msgstr "Sign in with Google or Microsoft"
 
 #: ../../apps/extension/src/App.tsx:128
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:126
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:125
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -5623,6 +5682,10 @@ msgstr "Sign-up failed. Please try again."
 msgid "Signing in…"
 msgstr "Signing in…"
 
+#: ../../apps/web/src/app/auth/bridge/BridgeContinue.tsx:30
+msgid "Signing you in"
+msgstr "Signing you in"
+
 #: ../../apps/site/src/lib/seo.ts:107
 msgid "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
 msgstr "Simple per-workspace pricing. Start free, upgrade or create additional workspaces as you need."
@@ -5648,6 +5711,8 @@ msgstr "Something went wrong"
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:209
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:84
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:90
+#: ../ui/src/upgrade/UpgradeDialog.tsx:122
+#: ../ui/src/upgrade/UpgradeDialog.tsx:139
 msgid "Something went wrong. Please try again."
 msgstr "Something went wrong. Please try again."
 
@@ -5655,7 +5720,7 @@ msgstr "Something went wrong. Please try again."
 msgid "Soon"
 msgstr "Soon"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:59
+#: ../../apps/extension/src/panel/StatusSlot.tsx:68
 msgid "Sort"
 msgstr "Sort"
 
@@ -5686,7 +5751,7 @@ msgstr "Sorted"
 msgid "Sorting"
 msgstr "Sorting"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:130
+#: ../../apps/extension/src/panel/StatusSlot.tsx:138
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
 #: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
@@ -5747,11 +5812,11 @@ msgid "Start free"
 msgstr "Start free"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1814
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1004
 msgid "Start from a template"
 msgstr "Start from a template"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1582
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:771
 msgid "Start from a template (replaces current)"
 msgstr "Start from a template (replaces current)"
 
@@ -5769,6 +5834,10 @@ msgstr "Starting…"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 msgid "Startup Founder"
 msgstr "Startup Founder"
+
+#: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:53
+msgid "Stay signed in with the current account"
+msgstr "Stay signed in with the current account"
 
 #: ../ui/src/i18n/generation-reason-messages.ts:15
 msgid "Still importing your inbox. Check back once the import finishes."
@@ -5884,6 +5953,10 @@ msgstr "Support, onboarding, retention, churn, and customer success conversation
 msgid "Switch"
 msgstr "Switch"
 
+#: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:30
+msgid "Switch account?"
+msgstr "Switch account?"
+
 #: ../../apps/extension/src/panel/ScopeField.tsx:165
 #: ../../apps/extension/src/panel/ScopeField.tsx:207
 msgid "Switch folder view"
@@ -5944,6 +6017,7 @@ msgstr "Taxes"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
 #: ../ui/src/PricingPlans.tsx:183
+#: ../ui/src/upgrade/UpgradeDialog.tsx:219
 msgid "Taxes calculated at checkout"
 msgstr "Taxes calculated at checkout"
 
@@ -5976,7 +6050,7 @@ msgstr "Team"
 msgid "Template applied"
 msgstr "Template applied"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1606
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:795
 msgid "Templates"
 msgstr "Templates"
 
@@ -6085,7 +6159,7 @@ msgstr "These collaborators will lose access at the end of the billing period:"
 msgid "These collaborators will lose access on {0}:"
 msgstr "These collaborators will lose access on {0}:"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
 msgid "These folders will be created. You can edit them at any time."
 msgstr "These folders will be created. You can edit them at any time."
 
@@ -6097,11 +6171,15 @@ msgstr "These folders will be created. You can edit them at any time."
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "These settings control which inbox threads are imported. Trash is always excluded."
 
+#: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:35
+msgid "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
+msgstr "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
+
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:191
 msgid "This conversation has not synced to Amarnai yet."
 msgstr "This conversation has not synced to Amarnai yet."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1472
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:661
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "This folder has child folders. Remove their Paths first, then delete it."
 
@@ -6172,6 +6250,10 @@ msgstr "This thread is waiting to be routed."
 #: ../ui/src/emails/RationaleCard.tsx:83
 #~ msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 #~ msgstr "This thread is waiting to be routed. Use “Route now” to start sorting."
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:244
+msgid "This workspace is already on the highest plan."
+msgstr "This workspace is already on the highest plan."
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:86
 msgid "Thread"
@@ -6440,9 +6522,9 @@ msgstr "Unclassified"
 msgid "Unclassified. Change folder"
 msgstr "Unclassified. Change folder"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:382
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:435
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1508
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:697
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 msgid "Undo"
 msgstr "Undo"
@@ -6456,7 +6538,7 @@ msgstr "University"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1351
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:540
 msgid "unknown error"
 msgstr "unknown error"
 
@@ -6542,6 +6624,7 @@ msgstr "Updating…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
+#: ../ui/src/upgrade/UpgradeDialog.tsx:164
 msgid "Upgrade"
 msgstr "Upgrade"
 
@@ -6561,13 +6644,13 @@ msgstr "Upgrade to a paid plan to invite collaborators and assign threads to the
 #~ msgid "Upgrade to a Pro or Business subscription to invite collaborators."
 #~ msgstr "Upgrade to a Pro or Business subscription to invite collaborators."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:89
+#: ../../apps/extension/src/panel/StatusSlot.tsx:97
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to import now"
 msgstr "Upgrade to import now"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:91
+#: ../../apps/extension/src/panel/StatusSlot.tsx:99
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:60
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:50
 msgid "Upgrade to load the rest"
@@ -6598,26 +6681,30 @@ msgstr "Use \"Rescan inbox\" after changing filter settings to apply them to thr
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 msgstr "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:188
+#: ../../apps/extension/src/panel/StatusSlot.tsx:198
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:378
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:407
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
 msgid "Use a template"
 msgstr "Use a template"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1922
+#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1112
 msgid "Use template"
 msgstr "Use template"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
 msgid "Use these folders"
 msgstr "Use these folders"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:30
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Use this plan for a business, team, or separate Gmail account."
+
+#: ../ui/src/upgrade/UpgradeDialog.tsx:257
+msgid "Use this plan for a new workspace instead"
+msgstr "Use this plan for a new workspace instead"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:99
 msgid "Utilities, household maintenance, and home upkeep appointments."
@@ -6748,7 +6835,7 @@ msgstr "What happens to threads Amarnai is unsure about?"
 msgid "What model does Amarnai use?"
 msgstr "What model does Amarnai use?"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:615
+#: ../ui/src/taxonomy-editor/NodeForm.tsx:286
 msgid "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 msgstr "Where this folder sits. Folders with no parent stay disconnected and are ignored until connected."
 
@@ -6789,7 +6876,7 @@ msgstr "Working Professional"
 msgid "Works with Gmail™ and Outlook."
 msgstr "Works with Gmail™ and Outlook."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:55
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:57
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
@@ -6818,7 +6905,7 @@ msgstr "Workspace name cannot be empty"
 msgid "Workspace name updated."
 msgstr "Workspace name updated."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:44
 msgid "Workspace settings"
 msgstr "Workspace settings"
 
@@ -6980,7 +7067,7 @@ msgstr "You're on {planLabel}"
 #~ msgstr "You're on the list!"
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:71
+#: ../../apps/extension/src/panel/StatusSlot.tsx:80
 msgid "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "You've used all of your {0} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 
@@ -6998,7 +7085,7 @@ msgid "You've used your generations for now. Available again {when}."
 msgstr "You've used your generations for now. Available again {when}."
 
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:74
+#: ../../apps/extension/src/panel/StatusSlot.tsx:83
 msgid "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 msgstr "Your {0} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 
@@ -7011,6 +7098,14 @@ msgstr "Your {plan} plan finished importing your most recent emails. Older ones 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:103
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
+
+#: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:40
+msgid "Your extension is signed in as {incomingEmail}."
+msgstr "Your extension is signed in as {incomingEmail}."
+
+#: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:31
+msgid "Your extension is signed in to a different account"
+msgstr "Your extension is signed in to a different account"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:27
 #: ../../apps/site/src/components/landing/Nav.tsx:49
@@ -7072,7 +7167,7 @@ msgstr "Your inbox, sorted your way"
 msgid "Your name"
 msgstr "Your name"
 
-#: ../../apps/extension/src/panel/StatusSlot.tsx:137
+#: ../../apps/extension/src/panel/StatusSlot.tsx:145
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
@@ -7090,8 +7185,12 @@ msgstr "Your past threads are being loaded and will appear shortly."
 #~ msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 #~ msgstr "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:180
+msgid "Your plan is updated. The new limits apply right away."
+msgstr "Your plan is updated. The new limits apply right away."
+
 #. placeholder {0}: status.plan
-#: ../../apps/extension/src/panel/StatusSlot.tsx:73
+#: ../../apps/extension/src/panel/StatusSlot.tsx:82
 msgid "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 msgstr "Your retry import finished and is still capped by your {0} plan. Your next retry is available {refreshDate}."
 

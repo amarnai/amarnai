@@ -108,7 +108,7 @@ export function TaxonomyNodeCardBase({
   return title ? <Tooltip content={title}>{card}</Tooltip> : card;
 }
 
-export function TaxonomyNodeCard({ data }: NodeProps<TaxonomyRFNode>) {
+export function TaxonomyNodeCard({ data, selected }: NodeProps<TaxonomyRFNode>) {
   const { node, ignoredReason } = data;
 
   return (
@@ -118,6 +118,9 @@ export function TaxonomyNodeCard({ data }: NodeProps<TaxonomyRFNode>) {
       isRoot={node.isRoot}
       isCatchAll={node.isCatchAll ?? false}
       ignoredReason={ignoredReason}
+      selected={selected ?? false}
+      colorId={node.id}
+      colorKey={node.colorKey ?? null}
     />
   );
 }

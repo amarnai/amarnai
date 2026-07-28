@@ -1,52 +1,17 @@
 "use client";
 
-import {
-  ReactFlow,
-  ReactFlowProvider,
-  Background,
-  Controls,
-  MarkerType,
-  type Edge,
-} from "@xyflow/react";
+import { ReactFlow, ReactFlowProvider, Background, Controls } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/shared";
-import { computeIgnoredReasons, type IgnoredReason } from "@amarnai/core/taxonomy";
 import {
-  TaxonomyNodeCard,
-  type TaxonomyRFNode,
-} from "./TaxonomyNodeCard.js";
-import { TaxonomyEdgeRenderer } from "./TaxonomyEdge.js";
-import { readEdgeColors } from "./tokens.js";
+  taxonomyNodeTypes as nodeTypes,
+  taxonomyEdgeTypes as edgeTypes,
+  toRFNodes,
+  toRFEdges,
+  TAXONOMY_MIN_ZOOM,
+} from "./rfGraph.js";
 import { useTheme } from "../theme/useTheme.js";
 import "./taxonomy-canvas.css";
-
-const nodeTypes = { taxonomy: TaxonomyNodeCard };
-const edgeTypes = { "taxonomy-edge": TaxonomyEdgeRenderer };
-
-function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason): TaxonomyRFNode {
-  return {
-    id: n.id,
-    type: "taxonomy",
-    position: { x: n.positionX, y: n.positionY },
-    data: { node: n, ignoredReason },
-  };
-}
-
-function toRFEdge(e: TaxonomyEdge, ignoredMap: Map<string, IgnoredReason>): Edge {
-  const targetIgnored = ignoredMap.has(e.targetNodeId);
-  const colors = readEdgeColors();
-  return {
-    id: e.id,
-    source: e.sourceNodeId,
-    target: e.targetNodeId,
-    type: "taxonomy-edge",
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      color: targetIgnored ? colors.warn : colors.default,
-    },
-    data: { targetIgnored },
-  };
-}
 
 function ReadOnlyTaxonomyCanvasInner({
   nodes,
@@ -58,9 +23,8 @@ function ReadOnlyTaxonomyCanvasInner({
   // Re-render on theme change so edge markers/strokes re-read the themed
   // --rf-edge-* vars (readEdgeColors reads them at render time).
   useTheme();
-  const ignoredMap = computeIgnoredReasons(nodes, edges);
-  const rfNodes = nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
-  const rfEdges = edges.map((e) => toRFEdge(e, ignoredMap));
+  const rfNodes = toRFNodes(nodes, edges);
+  const rfEdges = toRFEdges(edges, nodes);
 
   return (
     <div className="taxonomy-canvas-wrap">
@@ -76,6 +40,7 @@ function ReadOnlyTaxonomyCanvasInner({
           deleteKeyCode={null}
           fitView
           fitViewOptions={{ padding: 0.3 }}
+          minZoom={TAXONOMY_MIN_ZOOM}
           proOptions={{ hideAttribution: true }}
         >
           <Background />

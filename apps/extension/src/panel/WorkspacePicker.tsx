@@ -5,7 +5,7 @@ import { msg } from "@lingui/core/macro";
 import { NavGlyph, ThemeToggle } from "@amarnai/ui";
 import { userInitials } from "@amarnai/core";
 import { useSession } from "../auth/session";
-import { WEB_APP_URL } from "../config";
+import { useWebAppLink } from "./openWebApp";
 import { NotificationBell } from "./NotificationBell";
 
 // Slim panel header: workspace switcher, links out to the web app (folders and
@@ -13,10 +13,11 @@ import { NotificationBell } from "./NotificationBell";
 // 320px there is no room for a full switcher UI, so a native <select> is used
 // when the user belongs to more than one workspace. Folders, settings, and
 // account pages are not replicated in the panel; the header links to the web
-// app, which opens in a new tab under its own cookie session.
+// app, which opens in a new tab already signed in (see useWebAppLink).
 export function PanelHeader() {
   const { _ } = useLingui();
   const { user, workspaces, workspaceId, switchWorkspace, signOut } = useSession();
+  const webAppLink = useWebAppLink();
   const active = workspaces.find((w) => w.id === workspaceId);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -44,6 +45,7 @@ export function PanelHeader() {
   // Short visible label at wide panel widths; the tooltip/aria-label keeps the
   // unambiguous "Workspace settings".
   const settingsShortLabel = _(msg`Settings`);
+  const accountLink = webAppLink("/account");
 
   return (
     <header className="ax-header">
@@ -68,9 +70,7 @@ export function PanelHeader() {
 
       <a
         className="ax-header-iconbtn"
-        href={`${WEB_APP_URL}/folders`}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...webAppLink("/folders")}
         title={foldersLabel}
         aria-label={foldersLabel}
       >
@@ -79,9 +79,7 @@ export function PanelHeader() {
       </a>
       <a
         className="ax-header-iconbtn"
-        href={`${WEB_APP_URL}/settings`}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...webAppLink("/settings")}
         title={settingsLabel}
         aria-label={settingsLabel}
       >
@@ -107,10 +105,11 @@ export function PanelHeader() {
             <a
               role="menuitem"
               className="ax-menu-item"
-              href={`${WEB_APP_URL}/account`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMenuOpen(false)}
+              {...accountLink}
+              onClick={(e) => {
+                setMenuOpen(false);
+                accountLink.onClick(e);
+              }}
             >
               <Trans>Account settings</Trans>
             </a>

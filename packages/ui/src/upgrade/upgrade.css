@@ -1,0 +1,272 @@
+/* ─── Upgrade dialog ──────────────────────────────────────────────────────── */
+/* Requires the consuming app to provide Amarnai CSS custom properties.       */
+/* Sized for the 360px extension panel first; widens on roomier surfaces.     */
+
+.ug-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: var(--space-md);
+  background: var(--bg);
+}
+
+.ug-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 560px;
+  min-height: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+
+.ug-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.ug-title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ug-close {
+  flex: none;
+  background: none;
+  border: none;
+  padding: 4px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink-3);
+  font-size: var(--fs-md);
+  font-family: inherit;
+}
+
+.ug-close:hover {
+  color: var(--ink);
+}
+
+.ug-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.ug-lead {
+  margin: 0;
+  font-size: var(--fs-md);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.ug-note {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+.ug-error {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--danger);
+  line-height: 1.5;
+}
+
+/* ─── Billing cycle toggle ────────────────────────────────────────────────── */
+
+.ug-cycle {
+  display: flex;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.ug-cycle-btn {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border: none;
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.ug-cycle-btn.is-active {
+  background: var(--accent);
+  color: var(--on-accent, #fff);
+  font-weight: 600;
+}
+
+.ug-cycle-btn:hover:not(.is-active) {
+  background: var(--bg-sunk);
+}
+
+/* ─── Plan cards ──────────────────────────────────────────────────────────── */
+
+.ug-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+}
+
+.ug-card--featured {
+  border-color: var(--accent);
+}
+
+.ug-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.ug-card-name {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ug-badge {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+}
+
+.ug-price {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 500;
+  color: var(--accent-ink);
+}
+
+.ug-price-note {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+.ug-highlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ug-highlights li {
+  position: relative;
+  padding-left: 18px;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.45;
+}
+
+.ug-highlights li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ─── Alternative target + actions ────────────────────────────────────────── */
+
+.ug-alt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+
+.ug-alt-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.ug-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-size: var(--fs-md);
+  font-family: inherit;
+}
+
+.ug-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.ug-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: 4px;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.14s, border-color 0.14s, opacity 0.14s;
+}
+
+.ug-btn:hover:not(:disabled) {
+  background: var(--bg-sunk);
+}
+
+.ug-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.ug-btn--primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--on-accent, #fff);
+}
+
+.ug-btn--primary:hover:not(:disabled) {
+  background: var(--accent-ink);
+}

@@ -8,7 +8,12 @@ import type {
   TaxonomyTransferFile,
   GenerationEligibilityReason,
 } from "@amarnai/shared";
-import type { ApiClient, TaxonomyGenerationStatusResult } from "@amarnai/api-client";
+import type {
+  ApiClient,
+  TaxonomyGenerationStatusResult,
+  TaxonomyImportPreviewResult,
+  TaxonomyMigrationMapping,
+} from "@amarnai/api-client";
 import { ApiHttpError } from "@amarnai/api-client";
 import {
   generationReasonText,
@@ -18,6 +23,7 @@ import {
 import { translateSource } from "@amarnai/i18n";
 import { ReadOnlyTaxonomyCanvas } from "../taxonomy/ReadOnlyTaxonomyCanvas.js";
 import { TemplatePicker } from "./TemplatePicker.js";
+import { MigrationReviewModal } from "../taxonomy-editor/MigrationReviewModal.js";
 
 export type PlanSetupMode = "choice" | "generate" | "template";
 
@@ -105,6 +111,9 @@ export function PlanSetupDialog({
   const [unavailable, setUnavailable] = useState<string | null>(null);
   const [proposal, setProposal] = useState<Proposal | null>(null);
   const [applying, setApplying] = useState(false);
+  // Set when applying would displace threads that are already filed, so the user
+  // decides where each old folder's threads land before anything is replaced.
+  const [migration, setMigration] = useState<TaxonomyImportPreviewResult | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const stopPolling = useCallback(() => {
@@ -257,11 +266,10 @@ export function PlanSetupDialog({
       const preview = await api.previewTaxonomyImport(workspaceId, proposal.file);
       // A workspace with no folders has nothing to carry over. A non-zero count
       // means folders appeared while this dialog was open (another tab, another
-      // member): mapping old folders onto new ones is the web editor's review
-      // flow, so hand off rather than silently re-sorting the user's threads.
+      // member), so the user must say where those threads go before anything is
+      // replaced. That review runs here rather than handing off to the web app.
       if (preview.migrateCount > 0) {
-        onOpenWeb("/folders");
-        onClose();
+        setMigration(preview);
         return;
       }
       await api.importTaxonomy(workspaceId, proposal.file);
@@ -269,6 +277,27 @@ export function PlanSetupDialog({
       onClose();
     } catch (err) {
       if (statusOf(err) === 403) {
+        setStep("forbidden");
+        return;
+      }
+      setError(err instanceof Error ? err.message : _(msg`Couldn't apply the folders.`));
+    } finally {
+      setApplying(false);
+    }
+  }
+
+  async function handleMigrate(mapping: TaxonomyMigrationMapping) {
+    if (!proposal || applying) return;
+    setApplying(true);
+    setError(null);
+    try {
+      await api.importTaxonomy(workspaceId, proposal.file, mapping);
+      setMigration(null);
+      onApplied();
+      onClose();
+    } catch (err) {
+      if (statusOf(err) === 403) {
+        setMigration(null);
         setStep("forbidden");
         return;
       }
@@ -440,6 +469,16 @@ export function PlanSetupDialog({
           )}
         </div>
       </div>
+
+      {migration && proposal && (
+        <MigrationReviewModal
+          file={proposal.file}
+          preview={migration}
+          submitting={applying}
+          onCancel={() => setMigration(null)}
+          onConfirm={(mapping) => void handleMigrate(mapping)}
+        />
+      )}
     </div>
   );
 }

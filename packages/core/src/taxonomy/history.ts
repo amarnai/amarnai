@@ -18,6 +18,12 @@ export type HistoryAction =
   | { type: "SYNC"; snapshot: GraphSnapshot }
   | { type: "RESET"; snapshot: GraphSnapshot };
 
+/**
+ * Compares every editable field. A field left out here is invisible to undo in
+ * the worst way: the reducer drops the PUSH entirely, so changing it does not
+ * even become an undoable step, and a later undo silently reverts around it.
+ * Keep this in step with the fields the editor can write.
+ */
 export function snapshotsEqual(a: GraphSnapshot, b: GraphSnapshot): boolean {
   if (a.nodes.length !== b.nodes.length || a.edges.length !== b.edges.length) return false;
   const aNodes = new Map(a.nodes.map((n) => [n.id, n]));
@@ -28,6 +34,8 @@ export function snapshotsEqual(a: GraphSnapshot, b: GraphSnapshot): boolean {
       an.name !== bn.name ||
       an.description !== bn.description ||
       an.instructions !== bn.instructions ||
+      an.draftPrompt !== bn.draftPrompt ||
+      an.colorKey !== bn.colorKey ||
       an.positionX !== bn.positionX ||
       an.positionY !== bn.positionY ||
       JSON.stringify(an.examples) !== JSON.stringify(bn.examples)

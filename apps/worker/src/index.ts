@@ -2,6 +2,7 @@ import { db, pruneIdempotencyMarkers, deleteStaleUnverifiedUsers, decayStaleRevi
 import { config } from "@amarnai/config";
 import { createMailProvider, MailAuthError } from "@amarnai/mail";
 import { deleteExpiredRefreshTokens } from "@amarnai/auth";
+import { deleteExpiredBridgeCodes } from "@amarnai/auth/bridge-code";
 import { processPendingSubscriptionCancellations } from "@amarnai/billing";
 import {
   createEmbeddingProvider,
@@ -398,10 +399,15 @@ async function main(): Promise<void> {
 
   // ── Expired refresh-token cleanup ──────────────────────────────────────────
   // Delete refresh tokens past their expiry on startup, then daily, so consumed
-  // and expired rows do not accumulate.
+  // and expired rows do not accumulate. Bridge codes ride the same sweep: they
+  // live for seconds, so every row this finds is long dead.
   async function reapRefreshTokens(): Promise<void> {
     const count = await deleteExpiredRefreshTokens();
     if (count > 0) console.log(`[refresh-token-reaper] Deleted ${count} expired refresh token(s)`);
+    const bridgeCount = await deleteExpiredBridgeCodes();
+    if (bridgeCount > 0) {
+      console.log(`[refresh-token-reaper] Deleted ${bridgeCount} expired bridge code(s)`);
+    }
   }
 
   await reapRefreshTokens().catch((err) =>

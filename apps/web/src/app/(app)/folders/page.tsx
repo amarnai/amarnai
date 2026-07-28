@@ -1,4 +1,4 @@
-import { requireUser, getUserWorkspaceRole } from "@/lib/session";
+import { requireUser, canEditTaxonomy } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor, type TaxonomyNode, type TaxonomyEdge } from "@/lib/api";
 import { Trans } from "@lingui/react/macro";
@@ -10,8 +10,10 @@ export default async function TaxonomyPage() {
   const user = await requireUser();
   const workspace = await getSelectedWorkspace(user.id);
 
-  const role = await getUserWorkspaceRole(workspace.id, user.id);
-  const isAdmin = role === "OWNER";
+  // Matches the API's rule rather than an owner-only shortcut, so a member of a
+  // workspace that allows member editing is not shown a read-only canvas the
+  // server would happily have accepted writes from.
+  const canEdit = await canEditTaxonomy(workspace.id, user.id);
 
   let nodes: TaxonomyNode[] = [];
   let edges: TaxonomyEdge[] = [];
@@ -48,7 +50,7 @@ export default async function TaxonomyPage() {
           workspaceId={workspace.id}
           nodes={nodes}
           edges={edges}
-          readOnly={!isAdmin}
+          readOnly={!canEdit}
           gmailConnected={gmailConnected}
         />
       )}

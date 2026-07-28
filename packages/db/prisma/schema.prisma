@@ -259,6 +259,7 @@ model User {
   credential               UserCredential?
   verificationTokens       VerificationToken[]
   refreshTokens            RefreshToken[]
+  authBridgeCodes          AuthBridgeCode[]
   pushDevices              PushDevice[]
   extensionInstall         ExtensionInstall?
   resolvedThreads          EmailThread[]         @relation("ResolvedByUser")
@@ -875,6 +876,25 @@ model RefreshToken {
 
   @@index([userId])
   @@index([familyId])
+}
+
+// A one-time code that carries an already-authenticated extension user into a
+// web session, so clicking a link in the side panel never dead-ends at /sign-in.
+// The raw code is returned to the panel once; only its SHA-256 hash is stored, so
+// a database leak cannot be replayed. Single-use (usedAt is claimed atomically)
+// and short-lived: the code exists only for the seconds between the click and the
+// redirect, which is what keeps a leaked URL from being worth replaying.
+model AuthBridgeCode {
+  id        String    @id @default(cuid())
+  userId    String
+  codeHash  String    @unique
+  usedAt    DateTime?
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 // A registered Expo push token for one of a user's devices. Tenant-scoped per

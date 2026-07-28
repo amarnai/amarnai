@@ -1,7 +1,22 @@
 import { getBackfillCap } from "./backfill-quota.js";
+import type { BillingPlan } from "./billing-state.js";
 
 export type PlanId = "free" | "pro" | "business";
 export type BillingCycle = "monthly" | "annual";
+
+/**
+ * The marketing plan ids here and the BillingPlan values stored on a workspace
+ * name the same tiers. Anything comparing "what the user has" against "what this
+ * card offers" needs this bridge.
+ */
+export const PLAN_TO_BILLING: Record<PlanId, BillingPlan> = {
+  free: "FREE",
+  pro: "PRO",
+  business: "BUSINESS",
+};
+
+/** Tier order, for deciding whether a target plan is an upgrade. */
+export const PLAN_TIER: Record<BillingPlan, number> = { FREE: 0, PRO: 1, BUSINESS: 2 };
 
 // ── Initial-backfill labels ──────────────────────────────────────────────────
 // Derived from the shared backfill caps so the marketing copy never duplicates

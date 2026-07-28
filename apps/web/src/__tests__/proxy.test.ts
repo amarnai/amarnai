@@ -79,3 +79,24 @@ describe("middleware auth gating — Outlook add-in routes", () => {
     vi.unstubAllEnvs();
   });
 });
+
+describe("middleware auth gating — extension sign-in bridge", () => {
+  it("lets a logged-out user reach the bridge (it carries its own one-time code)", () => {
+    const res = mw(makeReq("/auth/bridge"));
+
+    expect(isPassThrough(res)).toBe(true);
+  });
+
+  it("lets a signed-in but unverified user reach the bridge without bouncing to verify-email", () => {
+    const res = mw(makeReq("/auth/bridge", { id: "u-1", isEmailVerified: false }));
+
+    expect(isPassThrough(res)).toBe(true);
+  });
+
+  it("does not open up sibling paths under /auth", () => {
+    const res = mw(makeReq("/auth/bridge-admin"));
+
+    expect(res.status).toBe(307);
+    expect(location(res)).toContain("/sign-in");
+  });
+});

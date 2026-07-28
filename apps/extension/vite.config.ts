@@ -36,6 +36,7 @@ function emitManifest(env: Record<string, string>, mode: string): Plugin {
         source: JSON.stringify(
           buildManifest({
             apiUrl: env["VITE_API_URL"] ?? "http://localhost:3001",
+            webAppUrl: env["VITE_WEB_APP_URL"] ?? "http://localhost:3000",
             key:
               mode === "production"
                 ? undefined

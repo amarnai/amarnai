@@ -39,3 +39,5 @@ export type { UpsertEmailConnectionInput } from "./upsert-connection.js";
 // deliberately NOT re-exported here: this barrel is reachable from the web
 // Edge middleware (via @/auth), and node:crypto breaks the Edge bundle. Import
 // them from "@amarnai/auth/unsubscribe-token" instead.
+// createBridgeCode / redeemBridgeCode are excluded for the same reason; import
+// them from "@amarnai/auth/bridge-code".

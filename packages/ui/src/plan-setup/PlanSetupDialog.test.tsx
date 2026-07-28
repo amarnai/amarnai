@@ -184,10 +184,18 @@ describe("PlanSetupDialog", () => {
     expect(onApplied).toHaveBeenCalled();
   });
 
-  it("hands off to the web folder editor when threads would have to be migrated", async () => {
+  it("reviews the migration in place when threads would have to be moved", async () => {
     const api = makeApi({
       previewTaxonomyImport: vi.fn(async () => ({
-        suggestions: [],
+        suggestions: [
+          {
+            oldNodeId: "n-old",
+            oldName: "Clients",
+            threadCount: 12,
+            suggestedRef: null,
+            isCatchAll: false,
+          },
+        ],
         migrateCount: 12,
         resortCount: 3,
       })),
@@ -197,9 +205,42 @@ describe("PlanSetupDialog", () => {
     fireEvent.click(await screen.findByRole("button", { name: /Freelancer/ }));
     fireEvent.click(await screen.findByRole("button", { name: "Use these folders" }));
 
-    await waitFor(() => expect(onOpenWeb).toHaveBeenCalledWith("/folders"));
+    // The review happens here rather than sending the user to the web editor.
+    expect(await screen.findByText("Replace folders")).toBeDefined();
+    expect(onOpenWeb).not.toHaveBeenCalled();
     expect(api.importTaxonomy).not.toHaveBeenCalled();
     expect(onApplied).not.toHaveBeenCalled();
+  });
+
+  it("applies the reviewed mapping without leaving the dialog", async () => {
+    const api = makeApi({
+      previewTaxonomyImport: vi.fn(async () => ({
+        suggestions: [
+          {
+            oldNodeId: "n-old",
+            oldName: "Clients",
+            threadCount: 12,
+            suggestedRef: "work",
+            isCatchAll: false,
+          },
+        ],
+        migrateCount: 12,
+        resortCount: 0,
+      })),
+    });
+    const { onApplied } = renderDialog(api, { initialMode: "template" });
+
+    fireEvent.click(await screen.findByRole("button", { name: /Freelancer/ }));
+    fireEvent.click(await screen.findByRole("button", { name: "Use these folders" }));
+    fireEvent.click(await screen.findByRole("button", { name: /Migrate & apply/ }));
+
+    await waitFor(() => expect(onApplied).toHaveBeenCalled());
+    // The user's per-folder choices reach the server, not a bare file import.
+    expect(api.importTaxonomy).toHaveBeenCalledWith(
+      "ws1",
+      expect.anything(),
+      expect.objectContaining({ "n-old": "work" })
+    );
   });
 
   it("shows the forbidden state and links out when the user may not edit the folders", async () => {

@@ -4,7 +4,7 @@ import { msg } from "@lingui/core/macro";
 import type { InboxStatus } from "@amarnai/core/emails";
 import type { PlanSetupMode } from "@amarnai/ui/plan-setup";
 import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from "@amarnai/shared";
-import { WEB_APP_URL } from "../config";
+import { useWebAppLink } from "./openWebApp";
 
 type Props = {
   status: InboxStatus | null;
@@ -13,14 +13,23 @@ type Props = {
   onDismissPlanCap: () => void;
   /** Open the in-panel plan setup dialog (owned by EmailsPanel). */
   onOpenPlanSetup: (mode: PlanSetupMode) => void;
+  /** Open the in-panel plan picker (owned by EmailsPanel). */
+  onOpenUpgrade: () => void;
 };
 
 // The single pinned sorting-status row under the panel header. Which state to
 // show (and with what counts) is decided by the shared resolveInboxStatus in
 // @amarnai/core; this component owns only the 360px presentation. Two visual
 // templates: an action row (inline CTA) and a notice row (dismissible, may wrap).
-// Actions that need the plan editor or billing open the web app in a new tab.
-export function StatusSlot({ status, onSort, onDismissPlanCap, onOpenPlanSetup }: Props) {
+// Actions that need the plan editor or billing open the web app in a new tab,
+// already signed in (see useWebAppLink).
+export function StatusSlot({
+  status,
+  onSort,
+  onDismissPlanCap,
+  onOpenPlanSetup,
+  onOpenUpgrade,
+}: Props) {
   const { _ } = useLingui();
   // The empty takeover is rendered full-pane by EmailsPanel, not in the slot.
   if (!status || status.kind === "no-plan-empty") return null;
@@ -79,18 +88,17 @@ export function StatusSlot({ status, onSort, onDismissPlanCap, onOpenPlanSetup }
           <span className="ax-status-text">{message}</span>
           <div className="ax-status-actions">
             {!isTopPlan && (
-              <a
+              <button
+                type="button"
                 className="ax-btn ax-btn-primary ax-status-btn"
-                href={`${WEB_APP_URL}/upgrade`}
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={onOpenUpgrade}
               >
                 {status.limitState === "BLOCKED" ? (
                   <Trans>Upgrade to import now</Trans>
                 ) : (
                   <Trans>Upgrade to load the rest</Trans>
                 )}
-              </a>
+              </button>
             )}
             <button
               type="button"
@@ -157,6 +165,8 @@ export function NoPlanEmptyState({
 }: {
   onOpenPlanSetup: (mode: PlanSetupMode) => void;
 }) {
+  const webAppLink = useWebAppLink();
+
   return (
     <div className="ax-center">
       <div className="ax-emptyplan-glyph" aria-hidden>
@@ -188,12 +198,7 @@ export function NoPlanEmptyState({
           <Trans>Use a template</Trans>
         </button>
       </div>
-      <a
-        className="ax-linkbtn"
-        href={`${WEB_APP_URL}/folders`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a className="ax-linkbtn" {...webAppLink("/folders")}>
         <Trans>Fine-tune later in the folder editor</Trans>
       </a>
     </div>

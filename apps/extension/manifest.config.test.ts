@@ -2,10 +2,11 @@ import { describe, it, expect } from "vitest";
 import { buildManifest } from "./manifest.config";
 
 const API = "https://api.amarnai.com";
+const WEB = "https://app.amarnai.com";
 
 describe("buildManifest — chrome", () => {
   it("emits the Chrome MV3 shape with side panel + service worker", () => {
-    const m = buildManifest({ apiUrl: API, browser: "chrome" }) as Record<string, unknown>;
+    const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser: "chrome" }) as Record<string, unknown>;
     expect(m["manifest_version"]).toBe(3);
     expect(m["side_panel"]).toEqual({ default_path: "index.html" });
     expect(m["minimum_chrome_version"]).toBe("116");
@@ -17,20 +18,20 @@ describe("buildManifest — chrome", () => {
   });
 
   it("defaults to chrome when no browser is given", () => {
-    const m = buildManifest({ apiUrl: API }) as Record<string, unknown>;
+    const m = buildManifest({ apiUrl: API, webAppUrl: WEB }) as Record<string, unknown>;
     expect(m["side_panel"]).toBeDefined();
   });
 
   it("injects key only when provided", () => {
-    expect((buildManifest({ apiUrl: API }) as Record<string, unknown>)["key"]).toBeUndefined();
+    expect((buildManifest({ apiUrl: API, webAppUrl: WEB }) as Record<string, unknown>)["key"]).toBeUndefined();
     expect(
-      (buildManifest({ apiUrl: API, key: "PUBKEY" }) as Record<string, unknown>)["key"],
+      (buildManifest({ apiUrl: API, webAppUrl: WEB, key: "PUBKEY" }) as Record<string, unknown>)["key"],
     ).toBe("PUBKEY");
   });
 });
 
 describe("buildManifest — firefox", () => {
-  const m = buildManifest({ apiUrl: API, browser: "firefox", key: "PUBKEY" }) as Record<
+  const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser: "firefox", key: "PUBKEY" }) as Record<
     string,
     unknown
   >;
@@ -61,14 +62,16 @@ describe("buildManifest — firefox", () => {
 });
 
 describe("buildManifest — host permissions", () => {
-  it("derives host_permissions from the API origin on both targets", () => {
+  it("derives host_permissions from the API and web-app origins on both targets", () => {
     for (const browser of ["chrome", "firefox"] as const) {
-      const m = buildManifest({ apiUrl: "https://api.example.test/base", browser }) as Record<
-        string,
-        unknown
-      >;
+      const m = buildManifest({
+        apiUrl: "https://api.example.test/base",
+        webAppUrl: "https://app.example.test/",
+        browser,
+      }) as Record<string, unknown>;
       expect(m["host_permissions"]).toEqual([
         "https://api.example.test/*",
+        "https://app.example.test/*",
         "https://mail.google.com/*",
         "https://outlook.office.com/*",
         "https://outlook.office365.com/*",
@@ -76,12 +79,27 @@ describe("buildManifest — host permissions", () => {
       ]);
     }
   });
+
+  it("does not duplicate the grant when a self-host serves both from one origin", () => {
+    const m = buildManifest({
+      apiUrl: "https://amarnai.example.test/api",
+      webAppUrl: "https://amarnai.example.test",
+    }) as Record<string, unknown>;
+
+    expect(m["host_permissions"]).toEqual([
+      "https://amarnai.example.test/*",
+      "https://mail.google.com/*",
+      "https://outlook.office.com/*",
+      "https://outlook.office365.com/*",
+      "https://outlook.live.com/*",
+    ]);
+  });
 });
 
 describe("buildManifest — native summary injection", () => {
   it("declares both content scripts on both targets", () => {
     for (const browser of ["chrome", "firefox"] as const) {
-      const m = buildManifest({ apiUrl: API, browser }) as Record<string, unknown>;
+      const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser }) as Record<string, unknown>;
       expect(m["content_scripts"]).toEqual([
         {
           matches: ["https://mail.google.com/*"],
@@ -103,7 +121,7 @@ describe("buildManifest — native summary injection", () => {
 
   it("omits content_scripts entirely under the build-time kill-switch", () => {
     for (const browser of ["chrome", "firefox"] as const) {
-      const m = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+      const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser, nativeInjection: false }) as Record<
         string,
         unknown
       >;
@@ -118,7 +136,7 @@ describe("buildManifest — native summary injection", () => {
   it("exposes only InboxSDK's two files, to Gmail alone", () => {
     // The injected buttons use an inline SVG, so OWA needs nothing exposed.
     for (const browser of ["chrome", "firefox"] as const) {
-      const m = buildManifest({ apiUrl: API, browser }) as Record<string, unknown>;
+      const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser }) as Record<string, unknown>;
       expect(m["web_accessible_resources"]).toEqual([
         {
           resources: ["pageWorld.js", "reply-button-icon.svg"],
@@ -130,7 +148,7 @@ describe("buildManifest — native summary injection", () => {
 
   it("exposes nothing under the build-time kill-switch", () => {
     for (const browser of ["chrome", "firefox"] as const) {
-      const m = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+      const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser, nativeInjection: false }) as Record<
         string,
         unknown
       >;
@@ -145,8 +163,8 @@ describe("buildManifest — native summary injection", () => {
   // no install-time warning; anything beyond it appearing here is a regression.
   it("adds exactly the scripting permission, and no host permissions", () => {
     for (const browser of ["chrome", "firefox"] as const) {
-      const withInjection = buildManifest({ apiUrl: API, browser }) as Record<string, unknown>;
-      const without = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+      const withInjection = buildManifest({ apiUrl: API, webAppUrl: WEB, browser }) as Record<string, unknown>;
+      const without = buildManifest({ apiUrl: API, webAppUrl: WEB, browser, nativeInjection: false }) as Record<
         string,
         unknown
       >;
@@ -160,7 +178,7 @@ describe("buildManifest — native summary injection", () => {
 
   it("carries no scripting permission under the kill-switch (no call site exists)", () => {
     for (const browser of ["chrome", "firefox"] as const) {
-      const m = buildManifest({ apiUrl: API, browser, nativeInjection: false }) as Record<
+      const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser, nativeInjection: false }) as Record<
         string,
         unknown
       >;

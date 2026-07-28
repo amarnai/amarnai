@@ -65,6 +65,7 @@ export type {
   ExtensionBrowser,
   RegisterExtensionInput,
   RegisterExtensionResult,
+  CreateBridgeCodeResult,
   GenerationEligibility,
   GenerationEligibilityReason,
   TaxonomyGenerationStatus,

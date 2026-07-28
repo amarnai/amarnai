@@ -15,6 +15,7 @@ export function TaxonomyEdgeRenderer({
   targetPosition,
   markerEnd,
   data,
+  selected,
 }: EdgeProps) {
   const [edgePath] = getBezierPath({
     sourceX,
@@ -25,17 +26,26 @@ export function TaxonomyEdgeRenderer({
     targetPosition,
   });
 
+  // Four states: an edge can be warning (its target is unreachable) and selected
+  // independently, and both need to read on the same line.
   const targetIgnored =
     (data as TaxonomyEdgeData | undefined)?.targetIgnored ?? false;
   const colors = readEdgeColors();
-  const strokeColor = targetIgnored ? colors.warn : colors.default;
+  const strokeColor =
+    targetIgnored && selected
+      ? colors.warnSelected
+      : selected
+        ? colors.selected
+        : targetIgnored
+          ? colors.warn
+          : colors.default;
 
   return (
     <BaseEdge
       id={id}
       path={edgePath}
       {...(markerEnd !== undefined ? { markerEnd } : {})}
-      style={{ stroke: strokeColor, strokeWidth: 1.5 }}
+      style={{ stroke: strokeColor, strokeWidth: selected ? 2.5 : 1.5 }}
     />
   );
 }

@@ -7,12 +7,9 @@ import {
   type NotificationItem,
 } from "@amarnai/api-client";
 import { useSession } from "../auth/session";
-import { WEB_APP_URL } from "../config";
+import { useWebAppLink } from "./openWebApp";
 import { detectPanelSide, type PanelSide } from "../platform/panelSide";
 import { notificationTitle } from "./notificationText";
-
-// "Manage notifications" opens the web app's notifications page in a new tab.
-const MANAGE_URL = `${WEB_APP_URL}/notifications`;
 
 function BellIcon() {
   return (
@@ -35,6 +32,9 @@ export function NotificationBell() {
   const { _, i18n } = useLingui();
   const { client, status } = useSession();
   const signedIn = status === "signedIn";
+  // "Manage notifications" opens the web app's notifications page in a new tab,
+  // already signed in.
+  const manageLink = useWebAppLink()("/notifications");
   // Matches the "Settings" pattern: a short visible label at wide panel widths,
   // with the full unambiguous text kept in the aria-label/title.
   const notifLabel = _(msg`Notifications`);
@@ -147,10 +147,11 @@ export function NotificationBell() {
           </div>
           <a
             className="ax-notif-manage"
-            href={MANAGE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
+            {...manageLink}
+            onClick={(e) => {
+              setOpen(false);
+              manageLink.onClick(e);
+            }}
           >
             <Trans>Manage notifications</Trans>
           </a>

@@ -10,14 +10,8 @@ import {
   useNodesState,
   useEdgesState,
   useReactFlow,
-  BaseEdge,
-  getBezierPath,
-  MarkerType,
-  type Node,
   type Edge,
   type Connection,
-  type NodeProps,
-  type EdgeProps,
   type OnNodeDrag,
   type OnConnect,
   type EdgeMouseHandler,
@@ -29,37 +23,32 @@ import {
   api,
   type TaxonomyNode,
   type TaxonomyEdge,
-  type CreateTaxonomyNodeInput,
   type UpdateTaxonomyEdgeInput,
   type TaxonomyImportPreviewResult,
   type TaxonomyMigrationMapping,
 } from "@/lib/api";
-import { MigrationReviewModal } from "./MigrationReviewModal";
 import {
-  createTaxonomyNodeAction as createTaxonomyNodeActionRaw,
-  updateTaxonomyNodeAction as updateTaxonomyNodeActionRaw,
-  deleteTaxonomyNodeAction as deleteTaxonomyNodeActionRaw,
-  createTaxonomyEdgeAction as createTaxonomyEdgeActionRaw,
-  updateTaxonomyEdgeAction as updateTaxonomyEdgeActionRaw,
-  deleteTaxonomyEdgeAction as deleteTaxonomyEdgeActionRaw,
-  type ActionResult,
-} from "@/actions/taxonomy";
+  MigrationReviewModal,
+  NodeForm,
+  EdgeForm,
+  useTaxonomyHistory,
+  applySnapshotDiff,
+  type NodeFormSubmit,
+} from "@amarnai/ui/taxonomy-editor";
 import {
-  computeIgnoredReasons,
-  type IgnoredReason,
   TAXONOMY_TEMPLATES,
   matchesTemplate,
   localizeTemplate,
-  descendantIds,
 } from "@amarnai/core/taxonomy";
-import { FOLDER_COLOR_KEYS } from "@amarnai/core/emails";
-import {
-  useTaxonomyHistory,
-  snapshotsEqual,
-  type GraphSnapshot,
-} from "./useTaxonomyHistory";
 import { GenerateFromInboxButton, startGmailConnect } from "./GenerateFromInboxButton";
-import { TaxonomyNodeCardBase, readEdgeColors } from "@amarnai/ui/taxonomy";
+import {
+  taxonomyNodeTypes,
+  taxonomyEdgeTypes,
+  toRFNodes,
+  toRFEdges,
+  TAXONOMY_MIN_ZOOM,
+  type TaxonomyRFNode,
+} from "@amarnai/ui/taxonomy";
 import { Tooltip } from "@amarnai/ui";
 import {
   TAXONOMY_MIN_NON_ROOT_NODES,
@@ -69,744 +58,24 @@ import {
   serializeTaxonomy,
   TaxonomyTransferFileSchema,
   validateTaxonomyTransfer,
-  minNodeNameLength,
-  minNodeDescriptionLength,
   type TaxonomyTransferFile,
 } from "@amarnai/shared";
-import { Trans, Plural } from "@lingui/react/macro";
+import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { translateSource } from "@amarnai/i18n";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function nodeById(nodes: TaxonomyNode[], id: string): TaxonomyNode | undefined {
-  return nodes.find((n) => n.id === id);
-}
-
-// The taxonomy Server Actions return a result union instead of throwing, so
-// their validation messages (e.g. "This node already has a parent") survive
-// Next.js's production redaction of errors thrown across the action boundary.
-// unwrap re-throws here on the client — where the message is NOT redacted — so
-// the existing try/catch handlers can show it inline via setFormError/setApiError.
-function unwrap<T>(res: ActionResult<T>): T {
-  if (!res.ok) throw new Error(res.error);
-  return res.data;
-}
-
-const createTaxonomyNodeAction = (
-  ...args: Parameters<typeof createTaxonomyNodeActionRaw>
-) => createTaxonomyNodeActionRaw(...args).then(unwrap);
-
-const updateTaxonomyNodeAction = (
-  ...args: Parameters<typeof updateTaxonomyNodeActionRaw>
-) => updateTaxonomyNodeActionRaw(...args).then(unwrap);
-
-const deleteTaxonomyNodeAction = (
-  ...args: Parameters<typeof deleteTaxonomyNodeActionRaw>
-) => deleteTaxonomyNodeActionRaw(...args).then(unwrap);
-
-const createTaxonomyEdgeAction = (
-  ...args: Parameters<typeof createTaxonomyEdgeActionRaw>
-) => createTaxonomyEdgeActionRaw(...args).then(unwrap);
-
-const updateTaxonomyEdgeAction = (
-  ...args: Parameters<typeof updateTaxonomyEdgeActionRaw>
-) => updateTaxonomyEdgeActionRaw(...args).then(unwrap);
-
-const deleteTaxonomyEdgeAction = (
-  ...args: Parameters<typeof deleteTaxonomyEdgeActionRaw>
-) => deleteTaxonomyEdgeActionRaw(...args).then(unwrap);
-
-
 // ─── React Flow node/edge converters ──────────────────────────────────────────
+// The converters, node card, and edge renderer live in @amarnai/ui/taxonomy so
+// this editor and the read-only previews (plan setup, extension panel) render
+// the same taxonomy identically.
 
-type RFNodeData = { node: TaxonomyNode; ignoredReason: IgnoredReason };
-type RFNode = Node<RFNodeData, "taxonomy">;
+type RFNode = TaxonomyRFNode;
 
-function toRFNode(n: TaxonomyNode, ignoredReason: IgnoredReason): RFNode {
-  return {
-    id: n.id,
-    type: "taxonomy",
-    position: { x: n.positionX, y: n.positionY },
-    data: { node: n, ignoredReason },
-  };
-}
-
-function toRFNodes(nodes: TaxonomyNode[], edges: TaxonomyEdge[]): RFNode[] {
-  const ignoredMap = computeIgnoredReasons(nodes, edges);
-  return nodes.map((n) => toRFNode(n, ignoredMap.get(n.id) ?? null));
-}
-
-function toRFEdge(
-  e: TaxonomyEdge,
-  ignoredReasonsMap: Map<string, IgnoredReason>,
-): Edge {
-  const targetIgnored = ignoredReasonsMap.has(e.targetNodeId);
-  const colors = readEdgeColors();
-  return {
-    id: e.id,
-    source: e.sourceNodeId,
-    target: e.targetNodeId,
-    type: "taxonomy-edge",
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      color: targetIgnored ? colors.warn : colors.default,
-    },
-    data: { targetIgnored },
-  };
-}
-
-function toRFEdges(edges: TaxonomyEdge[], nodes: TaxonomyNode[]): Edge[] {
-  const ignoredMap = computeIgnoredReasons(nodes, edges);
-  return edges.map((e) => toRFEdge(e, ignoredMap));
-}
-
-// ─── Custom node component ────────────────────────────────────────────────────
-
-function TaxonomyNodeCard({ data, selected }: NodeProps<RFNode>) {
-  const { node, ignoredReason } = data;
-
-  return (
-    <TaxonomyNodeCardBase
-      name={node.name}
-      {...(node.description ? { description: node.description } : {})}
-      isRoot={node.isRoot}
-      isCatchAll={node.isCatchAll}
-      ignoredReason={ignoredReason}
-      selected={selected}
-      colorId={node.id}
-      colorKey={node.colorKey}
-    />
-  );
-}
-
-const nodeTypes = { taxonomy: TaxonomyNodeCard };
-
-// ─── Custom edge component ────────────────────────────────────────────────────
-
-type RFEdgeData = { targetIgnored: boolean };
-
-function TaxonomyEdge({
-  id,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-  sourcePosition,
-  targetPosition,
-  markerEnd,
-  data,
-  selected,
-}: EdgeProps) {
-  const [edgePath] = getBezierPath({
-    sourceX,
-    sourceY,
-    sourcePosition,
-    targetX,
-    targetY,
-    targetPosition,
-  });
-
-  const targetIgnored =
-    (data as RFEdgeData | undefined)?.targetIgnored ?? false;
-  const isWarning = targetIgnored;
-  const colors = readEdgeColors();
-  const strokeColor =
-    isWarning && selected
-      ? colors.warnSelected
-      : selected
-        ? colors.selected
-        : isWarning
-          ? colors.warn
-          : colors.default;
-
-  return (
-    <BaseEdge
-      id={id}
-      path={edgePath}
-      {...(markerEnd !== undefined ? { markerEnd } : {})}
-      style={{
-        stroke: strokeColor,
-        strokeWidth: selected ? 2.5 : 1.5,
-      }}
-    />
-  );
-}
-
-const edgeTypes = { "taxonomy-edge": TaxonomyEdge };
-
-// ─── DescriptionTips ────────────────────────────────────────────────────────
-
-function DescriptionTips() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 4,
-          background: "none",
-          border: "none",
-          padding: 0,
-          margin: 0,
-          font: "inherit",
-          fontSize: 11,
-          fontWeight: 500,
-          color: "var(--accent)",
-          cursor: "pointer",
-        }}
-      >
-        <svg
-          width="11"
-          height="11"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          style={{
-            transform: open ? "rotate(90deg)" : "rotate(0deg)",
-            transition: "transform 0.15s ease",
-          }}
-        >
-          <polyline points="9 6 15 12 9 18" />
-        </svg>
-        {open ? <Trans>Hide tips</Trans> : <Trans>How to write a good description</Trans>}
-      </button>
-      {open && (
-        <div
-          style={{
-            fontSize: 11,
-            lineHeight: 1.5,
-            color: "var(--color-foreground)",
-            marginTop: 6,
-            padding: "8px 10px",
-            background: "var(--color-surface)",
-            border: "1px solid var(--color-border-input)",
-            borderRadius: 6,
-          }}
-        >
-          <p style={{ margin: 0 }}>
-            <Trans>
-              Describe what kinds of emails belong here: who they come from and
-              what they are about. Be specific and use the actual names, topics,
-              and words that show up in those emails. Describe what the emails
-              are, not what you plan to do about them. The clearer your
-              description, the more accurately your email is sorted here.
-            </Trans>
-          </p>
-          <div
-            style={{
-              marginTop: 8,
-              padding: "5px 8px",
-              borderRadius: 5,
-              background: "var(--color-success-bg)",
-              color: "var(--color-success-text)",
-            }}
-          >
-            ✓ <Trans>Receipts, payment confirmations, and billing questions from vendors.</Trans>
-          </div>
-          <div
-            style={{
-              marginTop: 6,
-              padding: "5px 8px",
-              borderRadius: 5,
-              background: "var(--danger-soft)",
-              color: "var(--danger)",
-            }}
-          >
-            ✗ <Trans>Emails about my bills that I need to deal with.</Trans>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─── NodeForm ─────────────────────────────────────────────────────────────────
-
-// Re-parenting a folder reuses / creates / deletes its single incoming edge.
-// `currentEdgeId` is the existing incoming edge (if any); `newParentId` is the
-// chosen parent (null = disconnect).
-type ParentChange = {
-  currentEdgeId: string | null;
-  newParentId: string | null;
-};
-
-// Shared geometry for every color swatch in the folder-color picker; only the
-// fill/border and the selected-state outline differ per swatch.
-const SWATCH_BASE = {
-  width: 22,
-  height: 22,
-  borderRadius: 999,
-  cursor: "pointer",
-  outlineOffset: 2,
-} as const;
-const swatchOutline = (selected: boolean) =>
-  selected ? "1px solid var(--accent)" : "none";
-
-type NodeFormSubmit = {
-  data: CreateTaxonomyNodeInput;
-  // create mode: chosen parent (null = orphan / no edge)
-  parentId: string | null;
-  // edit mode: present only when the parent actually changed
-  parentChange?: ParentChange;
-};
-
-function NodeForm({
-  node,
-  nodes,
-  edges,
-  onSubmit,
-  onCancel,
-  onDelete,
-  deleteDisabledReason,
-  classificationCount = 0,
-  otherNodes = [],
-  submitting,
-  error,
-}: {
-  node: TaxonomyNode | null;
-  nodes: TaxonomyNode[];
-  edges: TaxonomyEdge[];
-  onSubmit: (submit: NodeFormSubmit) => void;
-  onCancel: () => void;
-  onDelete?: (moveToNodeId?: string) => void;
-  deleteDisabledReason?: string | null;
-  classificationCount?: number;
-  otherNodes?: Pick<TaxonomyNode, "id" | "name">[];
-  submitting: boolean;
-  error: string | null;
-}) {
-  const { _ } = useLingui();
-  const isRoot = node?.isRoot ?? false;
-
-  // A folder's parent is modelled as a single "Parent" choice instead of a
-  // standalone Path: the form reuses / creates / deletes the incoming edge as
-  // needed (mirrors the mobile NodeFormSheet).
-  const currentEdge = node
-    ? (edges.find((e) => e.targetNodeId === node.id) ?? null)
-    : null;
-  const currentParentId = currentEdge?.sourceNodeId ?? null;
-
-  // Parent options exclude the folder itself and its descendants (cycle guard;
-  // the server would reject re-parenting a folder under its own subtree), and
-  // the catch-all, which must stay a leaf (it is excluded from routing).
-  const excluded = node
-    ? new Set<string>([node.id, ...descendantIds(edges, node.id)])
-    : new Set<string>();
-  const parentOptions = nodes.filter((n) => !excluded.has(n.id) && !n.isCatchAll);
-
-  const [name, setName] = useState(node?.name ?? "");
-  const nameValid =
-    name.trim().length >= minNodeNameLength(name) && name.trim().length <= 40;
-  const [description, setDescription] = useState(node?.description ?? "");
-  const descriptionValid =
-    isRoot ||
-    description.replace(/\s/g, "").length >= minNodeDescriptionLength(description);
-  const [draftPrompt, setDraftPrompt] = useState(node?.draftPrompt ?? "");
-  // null = no override (deterministic hash default). A palette key otherwise.
-  const [colorKey, setColorKey] = useState<string | null>(node?.colorKey ?? null);
-  // "" represents "None (not connected)".
-  const [parentId, setParentId] = useState(currentParentId ?? "");
-  const [confirmingDelete, setConfirmingDelete] = useState(false);
-  const [moveToNodeId, setMoveToNodeId] = useState("");
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const trimmedDescription = description.trim();
-    const trimmedDraftPrompt = draftPrompt.trim();
-    const data: CreateTaxonomyNodeInput = {
-      name: name.trim(),
-      // Only include description if non-empty; omitting it on a root-node edit
-      // leaves the existing DB value unchanged.
-      ...(trimmedDescription ? { description: trimmedDescription } : {}),
-      instructions: node?.instructions ?? null,
-      draftPrompt: trimmedDraftPrompt || null,
-      examples: node?.examples ?? [],
-      colorKey,
-    };
-    const chosenParentId = parentId === "" ? null : parentId;
-    if (node && !isRoot && chosenParentId !== currentParentId) {
-      onSubmit({
-        data,
-        parentId: chosenParentId,
-        parentChange: {
-          currentEdgeId: currentEdge?.id ?? null,
-          newParentId: chosenParentId,
-        },
-      });
-    } else {
-      onSubmit({ data, parentId: chosenParentId });
-    }
-  }
-
-  function handleDeleteClick() {
-    if (classificationCount > 0) {
-      setConfirmingDelete(true);
-    } else {
-      onDelete?.();
-    }
-  }
-
-  // Why the Create/Save button is disabled, for a hover/focus tooltip. Only the
-  // validation cases get a reason; `submitting` is transient and already shown as
-  // the button label ("Saving…"), so it needs no explanation.
-  const submitDisabledReason = !nameValid
-    ? _(msg`Enter a folder name (at least ${minNodeNameLength(name)} characters).`)
-    : !descriptionValid
-      ? _(
-          msg`Add a description (at least ${minNodeDescriptionLength(description)} characters) so the AI can sort accurately.`
-        )
-      : null;
-
-  // Shared between the plain and tooltip-wrapped branches so the markup lives in
-  // one place. When a validation reason applies, pointerEvents:none lets hover
-  // reach the wrapping span so the Tooltip can show.
-  const submitButton = (
-    <button
-      className="btn-primary"
-      type="submit"
-      disabled={submitting || !nameValid || !descriptionValid}
-      style={submitDisabledReason != null ? { pointerEvents: "none" } : undefined}
-    >
-      {submitting ? <Trans>Saving…</Trans> : node ? <Trans>Save</Trans> : <Trans>Create</Trans>}
-    </button>
-  );
-
-  return (
-    <div className="panel-inner">
-      <h2>{node ? <Trans>Edit Folder</Trans> : <Trans>Create Folder</Trans>}</h2>
-      {error && (
-        <div className="error-box" style={{ marginBottom: 12 }}>
-          {error}
-        </div>
-      )}
-      <form className="node-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label">
-            <Trans>Name</Trans> <span className="required">*</span>
-          </label>
-          <input
-            className="form-input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            minLength={3}
-            maxLength={40}
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">
-            <Trans>Description</Trans>{!isRoot && <span className="required"> *</span>}
-          </label>
-          <textarea
-            className="form-textarea"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required={!isRoot}
-            maxLength={300}
-            placeholder={_(msg`e.g. Invoices, receipts, payment confirmations, and billing questions from clients and vendors.`)}
-          />
-          {!isRoot && (
-            <>
-              <p style={{ fontSize: 11, color: "var(--color-muted)" }}>
-                <Trans>
-                  List the kinds of emails that belong here: senders, topics,
-                  keywords. Aim for a full sentence.
-                </Trans>
-              </p>
-              <DescriptionTips />
-            </>
-          )}
-        </div>
-        {!isRoot && (
-          <div className="form-group">
-            <label className="form-label"><Trans>Color</Trans></label>
-            <div
-              role="radiogroup"
-              aria-label={_(msg`Folder color`)}
-              style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}
-            >
-              {/* Default = no override; the folder falls back to its stable
-                  hash-assigned swatch. */}
-              <button
-                type="button"
-                role="radio"
-                aria-checked={colorKey === null}
-                aria-label={_(msg`Default color`)}
-                onClick={() => setColorKey(null)}
-                title={_(msg`Default`)}
-                style={{
-                  ...SWATCH_BASE,
-                  background: "transparent",
-                  border: "1px dashed var(--color-border, var(--line-2))",
-                  outline: swatchOutline(colorKey === null),
-                }}
-              />
-              {FOLDER_COLOR_KEYS.map((key) => (
-                <button
-                  key={key}
-                  type="button"
-                  role="radio"
-                  aria-checked={colorKey === key}
-                  aria-label={key}
-                  title={key}
-                  onClick={() => setColorKey(key)}
-                  style={{
-                    ...SWATCH_BASE,
-                    background: `var(--folder-${key}-ink)`,
-                    border: `1px solid var(--folder-${key}-line)`,
-                    outline: swatchOutline(colorKey === key),
-                  }}
-                />
-              ))}
-            </div>
-            <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 6 }}>
-              <Trans>
-                Optional. Sets this folder's chip and icon color across your inbox.
-                Default assigns a stable color automatically.
-              </Trans>
-            </p>
-          </div>
-        )}
-        <div className="form-group">
-          <label className="form-label"><Trans>Draft style guidance</Trans></label>
-          <textarea
-            className="form-textarea"
-            value={draftPrompt}
-            onChange={(e) => setDraftPrompt(e.target.value)}
-            maxLength={500}
-            placeholder={_(msg`e.g. Reply formally. Keep responses under 3 sentences.`)}
-          />
-          <p
-            style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}
-          >
-            <Trans>
-              Optional. Applied when generating draft replies for threads in this
-              folder.
-            </Trans>
-          </p>
-        </div>
-        {!isRoot && (
-          <div className="form-group">
-            <label className="form-label"><Trans>Parent</Trans></label>
-            <select
-              className="form-select"
-              value={parentId}
-              onChange={(e) => setParentId(e.target.value)}
-            >
-              <option value="">{_(msg`None (not connected)`)}</option>
-              {parentOptions.map((n) => (
-                <option key={n.id} value={n.id}>
-                  {n.isRoot ? _(msg`Inbox`) : n.name}
-                  {n.isRoot ? _(msg` (Inbox)`) : ""}
-                </option>
-              ))}
-            </select>
-            <p style={{ fontSize: 11, color: "var(--color-muted)", marginTop: 2 }}>
-              <Trans>
-                Where this folder sits. Folders with no parent stay disconnected
-                and are ignored until connected.
-              </Trans>
-            </p>
-          </div>
-        )}
-        {confirmingDelete ? (
-          <div style={{ marginTop: 16 }}>
-            <div className="warning-box" style={{ marginBottom: 12 }}>
-              <Plural
-                value={classificationCount}
-                one="Deleting this folder will leave # thread unsorted."
-                other="Deleting this folder will leave # threads unsorted."
-              />
-            </div>
-            {otherNodes.length > 0 && (
-              <div className="form-group">
-                <label className="form-label"><Trans>Move them to</Trans></label>
-                <select
-                  className="form-select"
-                  value={moveToNodeId}
-                  onChange={(e) => setMoveToNodeId(e.target.value)}
-                >
-                  <option value="">{_(msg`Leave unsorted`)}</option>
-                  {otherNodes.map((n) => (
-                    <option key={n.id} value={n.id}>
-                      {n.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            <div className="form-actions">
-              <button
-                className="btn-danger"
-                type="button"
-                onClick={() => onDelete?.(moveToNodeId || undefined)}
-                disabled={submitting}
-              >
-                {submitting ? <Trans>Deleting…</Trans> : <Trans>Confirm Delete</Trans>}
-              </button>
-              <button
-                className="btn-ghost"
-                type="button"
-                onClick={() => setConfirmingDelete(false)}
-                disabled={submitting}
-              >
-                <Trans>Cancel</Trans>
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="form-actions">
-            {submitDisabledReason != null ? (
-              <Tooltip content={submitDisabledReason}>
-                <span style={{ display: "inline-block", cursor: "not-allowed" }}>
-                  {submitButton}
-                </span>
-              </Tooltip>
-            ) : (
-              submitButton
-            )}
-            <button className="btn-ghost" type="button" onClick={onCancel}>
-              <Trans>Cancel</Trans>
-            </button>
-            {node &&
-              !node.isRoot &&
-              onDelete &&
-              (deleteDisabledReason != null ? (
-                <Tooltip content={deleteDisabledReason ?? ""}>
-                  <span
-                    style={{ display: "inline-block", cursor: "not-allowed" }}
-                  >
-                    <button
-                      className="btn-danger"
-                      type="button"
-                      disabled
-                      style={{ pointerEvents: "none" }}
-                    >
-                      <Trans>Delete</Trans>
-                    </button>
-                  </span>
-                </Tooltip>
-              ) : (
-                <button
-                  className="btn-danger"
-                  type="button"
-                  onClick={handleDeleteClick}
-                  disabled={submitting}
-                >
-                  <Trans>Delete</Trans>
-                </button>
-              ))}
-          </div>
-        )}
-      </form>
-    </div>
-  );
-}
-
-// ─── EdgeForm ─────────────────────────────────────────────────────────────────
-
-// Edit-only: opened by clicking a Path on the canvas. New Paths are created via
-// the folder's Parent picker or by dragging a connection between folders.
-function EdgeForm({
-  edge,
-  nodes,
-  onSubmit,
-  onCancel,
-  onDelete,
-  submitting,
-  error,
-}: {
-  edge: TaxonomyEdge;
-  nodes: TaxonomyNode[];
-  onSubmit: (data: UpdateTaxonomyEdgeInput) => void;
-  onCancel: () => void;
-  onDelete?: () => void;
-  submitting: boolean;
-  error: string | null;
-}) {
-  const [sourceNodeId, setSourceNodeId] = useState(edge.sourceNodeId);
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    onSubmit(
-      sourceNodeId !== edge.sourceNodeId
-        ? ({ newSourceNodeId: sourceNodeId } satisfies UpdateTaxonomyEdgeInput)
-        : ({} satisfies UpdateTaxonomyEdgeInput),
-    );
-  }
-
-  return (
-    <div className="panel-inner">
-      <h2><Trans>Edit Path</Trans></h2>
-      {error && (
-        <div className="error-box" style={{ marginBottom: 12 }}>
-          {error}
-        </div>
-      )}
-      <form className="node-form" onSubmit={handleSubmit}>
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label"><Trans>Parent</Trans></label>
-            <select
-              className="form-select"
-              value={sourceNodeId}
-              onChange={(e) => setSourceNodeId(e.target.value)}
-            >
-              {nodes
-                .filter((n) => !n.isCatchAll || n.id === edge.sourceNodeId)
-                .map((n) => (
-                  <option key={n.id} value={n.id}>
-                    {n.name}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <label className="form-label"><Trans>Child folder</Trans></label>
-            <div
-              className="form-select"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                cursor: "default",
-              }}
-            >
-              {nodeById(nodes, edge.targetNodeId)?.name ?? edge.targetNodeId}
-            </div>
-          </div>
-        </div>
-        <div className="form-actions">
-          <button className="btn-primary" type="submit" disabled={submitting}>
-            {submitting ? <Trans>Saving…</Trans> : <Trans>Save</Trans>}
-          </button>
-          <button className="btn-ghost" type="button" onClick={onCancel}>
-            <Trans>Cancel</Trans>
-          </button>
-          {onDelete && (
-            <button
-              className="btn-danger"
-              type="button"
-              onClick={onDelete}
-              disabled={submitting}
-            >
-              <Trans>Delete</Trans>
-            </button>
-          )}
-        </div>
-      </form>
-    </div>
-  );
-}
+const nodeTypes = taxonomyNodeTypes;
+const edgeTypes = taxonomyEdgeTypes;
 
 // ─── Panel state ──────────────────────────────────────────────────────────────
 
@@ -817,86 +86,6 @@ type Panel =
   | { type: "edit-edge"; edge: TaxonomyEdge };
 
 // ─── Snapshot diff applier ────────────────────────────────────────────────────
-
-function nodesIdentical(a: TaxonomyNode, b: TaxonomyNode): boolean {
-  return (
-    a.name === b.name &&
-    a.description === b.description &&
-    a.instructions === b.instructions &&
-    a.draftPrompt === b.draftPrompt &&
-    a.positionX === b.positionX &&
-    a.positionY === b.positionY &&
-    JSON.stringify(a.examples) === JSON.stringify(b.examples)
-  );
-}
-
-async function applySnapshotDiff(
-  from: GraphSnapshot,
-  to: GraphSnapshot,
-  workspaceId: string,
-): Promise<void> {
-  if (snapshotsEqual(from, to)) return;
-
-  const fromNodeMap = new Map(from.nodes.map((n) => [n.id, n]));
-  const toNodeMap = new Map(to.nodes.map((n) => [n.id, n]));
-  const fromEdgeMap = new Map(from.edges.map((e) => [e.id, e]));
-  const toEdgeMap = new Map(to.edges.map((e) => [e.id, e]));
-
-  // 1. Delete edges no longer in target (before deleting nodes)
-  for (const id of fromEdgeMap.keys()) {
-    if (!toEdgeMap.has(id)) {
-      await deleteTaxonomyEdgeAction(workspaceId, id);
-    }
-  }
-
-  // 2. Delete nodes no longer in target (root nodes are never deleted)
-  for (const [id, fromNode] of fromNodeMap) {
-    if (!toNodeMap.has(id) && !fromNode.isRoot) {
-      await deleteTaxonomyNodeAction(workspaceId, id);
-    }
-  }
-
-  // 3. Create nodes that exist in target but not in source
-  for (const [id, toNode] of toNodeMap) {
-    if (!fromNodeMap.has(id) && !toNode.isRoot) {
-      await createTaxonomyNodeAction(workspaceId, {
-        name: toNode.name,
-        ...(toNode.description ? { description: toNode.description } : {}),
-        instructions: toNode.instructions,
-        draftPrompt: toNode.draftPrompt,
-        examples: toNode.examples,
-        positionX: toNode.positionX,
-        positionY: toNode.positionY,
-      });
-    }
-  }
-
-  // 4. Create edges that exist in target but not in source
-  for (const [id, toEdge] of toEdgeMap) {
-    if (!fromEdgeMap.has(id)) {
-      await createTaxonomyEdgeAction(workspaceId, {
-        sourceNodeId: toEdge.sourceNodeId,
-        targetNodeId: toEdge.targetNodeId,
-      });
-    }
-  }
-
-  // 5. Update nodes that exist in both but have changed fields
-  for (const [id, toNode] of toNodeMap) {
-    const fromNode = fromNodeMap.get(id);
-    if (fromNode && !nodesIdentical(fromNode, toNode)) {
-      await updateTaxonomyNodeAction(workspaceId, id, {
-        name: toNode.name,
-        ...(toNode.description ? { description: toNode.description } : {}),
-        instructions: toNode.instructions,
-        draftPrompt: toNode.draftPrompt,
-        examples: toNode.examples,
-        positionX: toNode.positionX,
-        positionY: toNode.positionY,
-      });
-    }
-  }
-}
 
 // ─── TaxonomyCanvasInner (must be inside ReactFlowProvider) ───────────────────
 
@@ -1056,7 +245,7 @@ function TaxonomyCanvasInner({
     async (_event, rfNode) => {
       if (readOnly) return;
       try {
-        await updateTaxonomyNodeAction(workspaceId, rfNode.id, {
+        await api.updateTaxonomyNode(workspaceId, rfNode.id, {
           positionX: Math.round(rfNode.position.x),
           positionY: Math.round(rfNode.position.y),
         });
@@ -1098,7 +287,7 @@ function TaxonomyCanvasInner({
       )
         return;
       try {
-        await createTaxonomyEdgeAction(workspaceId, {
+        await api.createTaxonomyEdge(workspaceId, {
           sourceNodeId: connection.source,
           targetNodeId: connection.target,
         });
@@ -1153,7 +342,7 @@ function TaxonomyCanvasInner({
     try {
       // Two calls (create folder, then its Path): if the Path call fails the
       // folder is left disconnected (shown as Ignored), matching mobile.
-      const created = await createTaxonomyNodeAction(workspaceId, {
+      const created = await api.createTaxonomyNode(workspaceId, {
         ...submit.data,
         ...(spawnPosition
           ? {
@@ -1163,7 +352,7 @@ function TaxonomyCanvasInner({
           : {}),
       });
       if (submit.parentId) {
-        await createTaxonomyEdgeAction(workspaceId, {
+        await api.createTaxonomyEdge(workspaceId, {
           sourceNodeId: submit.parentId,
           targetNodeId: created.id,
         });
@@ -1184,17 +373,17 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await updateTaxonomyNodeAction(workspaceId, nodeId, submit.data);
+      await api.updateTaxonomyNode(workspaceId, nodeId, submit.data);
       const pc = submit.parentChange;
       if (pc) {
         if (pc.currentEdgeId && pc.newParentId) {
-          await updateTaxonomyEdgeAction(workspaceId, pc.currentEdgeId, {
+          await api.updateTaxonomyEdge(workspaceId, pc.currentEdgeId, {
             newSourceNodeId: pc.newParentId,
           });
         } else if (pc.currentEdgeId && !pc.newParentId) {
-          await deleteTaxonomyEdgeAction(workspaceId, pc.currentEdgeId);
+          await api.deleteTaxonomyEdge(workspaceId, pc.currentEdgeId);
         } else if (!pc.currentEdgeId && pc.newParentId) {
-          await createTaxonomyEdgeAction(workspaceId, {
+          await api.createTaxonomyEdge(workspaceId, {
             sourceNodeId: pc.newParentId,
             targetNodeId: nodeId,
           });
@@ -1221,7 +410,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await updateTaxonomyEdgeAction(workspaceId, edgeId, data);
+      await api.updateTaxonomyEdge(workspaceId, edgeId, data);
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
@@ -1238,7 +427,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await deleteTaxonomyNodeAction(workspaceId, nodeId, moveToNodeId);
+      await api.deleteTaxonomyNode(workspaceId, nodeId, moveToNodeId);
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
@@ -1255,7 +444,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setFormError(null);
     try {
-      await deleteTaxonomyEdgeAction(workspaceId, edgeId);
+      await api.deleteTaxonomyEdge(workspaceId, edgeId);
       const { nodes, edges } = await refetch();
       history.push({ nodes, edges });
       setPanel({ type: "none" });
@@ -1278,7 +467,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setApiError(null);
     try {
-      await applySnapshotDiff(from, to, workspaceId);
+      await applySnapshotDiff(api, from, to, workspaceId);
       history.undo();
       const { nodes, edges } = await refetch();
       history.sync({ nodes, edges });
@@ -1297,7 +486,7 @@ function TaxonomyCanvasInner({
     setSubmitting(true);
     setApiError(null);
     try {
-      await applySnapshotDiff(from, to, workspaceId);
+      await applySnapshotDiff(api, from, to, workspaceId);
       history.redo();
       const { nodes, edges } = await refetch();
       history.sync({ nodes, edges });
@@ -1360,7 +549,7 @@ function TaxonomyCanvasInner({
     }
 
     const currentlyRoutable = isTaxonomyRoutable(
-      rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll })),
+      rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll ?? false })),
       rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
     );
 
@@ -1433,7 +622,7 @@ function TaxonomyCanvasInner({
   // ─── Render ───────────────────────────────────────────────────────────────
 
   const taxonomyIsRoutable = isTaxonomyRoutable(
-    rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll })),
+    rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll ?? false })),
     rfEdges.map((e) => ({ sourceNodeId: e.source, targetNodeId: e.target })),
   );
 
@@ -1640,7 +829,7 @@ function TaxonomyCanvasInner({
         // routing threshold. Derived from live canvas state so the indicator
         // updates the moment an edge connects a node to the inbox.
         const routableCount = countRoutableNonRootNodes(
-          rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll })),
+          rfNodes.map((n) => ({ id: n.id, isRoot: n.data.node.isRoot, isCatchAll: n.data.node.isCatchAll ?? false })),
           rfEdges.map((e) => ({
             sourceNodeId: e.source,
             targetNodeId: e.target,
@@ -1714,6 +903,7 @@ function TaxonomyCanvasInner({
             nodesConnectable={!readOnly}
             fitView
             fitViewOptions={{ padding: 0.3 }}
+            minZoom={TAXONOMY_MIN_ZOOM}
             proOptions={{ hideAttribution: true }}
           >
             <Background />

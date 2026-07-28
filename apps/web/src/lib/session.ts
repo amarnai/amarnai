@@ -75,22 +75,26 @@ export async function assertWorkspaceMember(workspaceId: string, userId: string)
 }
 
 /**
- * Verifies the user can edit taxonomy in this workspace.
- * Only OWNER role is permitted; all other roles are rejected.
- * Throws an error (not a redirect) so taxonomy actions can surface a useful message.
+ * Whether the user may edit this workspace's taxonomy. Mirrors the API's
+ * isTaxonomyEditor, which is the authority: OWNERs always may, MEMBERs may when
+ * the workspace has membersCanEditTaxonomy enabled. Used to decide whether the
+ * editor renders read-only, not to authorize the writes themselves (the API
+ * enforces those on every mutating route).
  */
-export async function assertTaxonomyEditor(workspaceId: string, userId: string): Promise<void> {
-  const member = await db.workspaceMember.findUnique({
-    where: { workspaceId_userId: { workspaceId, userId } },
-    select: { role: true },
-  });
-
-  if (!member) {
-    throw new Error("Not a member of this workspace");
-  }
-  if (member.role !== "OWNER") {
-    throw new Error("Taxonomy editing is restricted to workspace admins");
-  }
+export async function canEditTaxonomy(workspaceId: string, userId: string): Promise<boolean> {
+  const [member, workspace] = await Promise.all([
+    db.workspaceMember.findUnique({
+      where: { workspaceId_userId: { workspaceId, userId } },
+      select: { role: true },
+    }),
+    db.workspace.findUnique({
+      where: { id: workspaceId },
+      select: { membersCanEditTaxonomy: true },
+    }),
+  ]);
+  if (!member) return false;
+  if (member.role === "OWNER") return true;
+  return workspace?.membersCanEditTaxonomy ?? false;
 }
 
 /** @deprecated Use assertWorkspaceAdmin */

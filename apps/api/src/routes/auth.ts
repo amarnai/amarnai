@@ -17,6 +17,10 @@ import {
   type RegisterEmailResult,
 } from "@amarnai/auth";
 import { throttleOnce } from "../services/rate-limit.js";
+// node:crypto keeps these out of the @amarnai/auth barrel (the web Edge bundle
+// imports it), so they come from the subpath export.
+import { createBridgeCode, inspectBridgeCode, redeemBridgeCode } from "@amarnai/auth/bridge-code";
+import { constantTimeEqual } from "../services/constant-time-equal.js";
 import {
   fetchGmailProfile,
   fetchGoogleUserInfo,
@@ -435,6 +439,88 @@ auth.post("/auth/refresh", async (c) => {
   // window entirely.
   const accessToken = await issueAccessToken(rotated.userId, rotated.sessionEpoch);
   return c.json(tokenPairResponse(accessToken, rotated.refresh));
+});
+
+const bridgeRedeemSchema = z.object({
+  code: z.string().min(1),
+});
+
+// How often one user may mint a bridge code. Generous enough that normal
+// clicking never trips it (each outbound link in the panel mints one) but low
+// enough that a compromised panel cannot farm codes.
+const BRIDGE_CODE_THROTTLE_SECONDS = 2;
+
+// Mints a one-time code that carries this already-authenticated user into a web
+// session. Authenticated: the caller proves who they are with their access token,
+// and the code inherits that identity.
+auth.post("/auth/bridge/code", async (c) => {
+  const userId = c.get("userId") as string | undefined;
+  if (!userId) return c.json({ error: "Unauthorized" }, 401);
+
+  if (!(await throttleOnce(`bridge-code:${userId}`, BRIDGE_CODE_THROTTLE_SECONDS))) {
+    return c.json({ error: "Please wait before requesting another link" }, 429);
+  }
+
+  const { code, expiresAt } = await createBridgeCode(userId);
+  return c.json({ code, expiresAt: expiresAt.toISOString() });
+});
+
+// The bridge endpoints below are restricted to the trusted server-side caller.
+// The middleware's Path 1 already lets an internal-secret request through without
+// an X-User-Id header; this rejects Path 2 (a per-user access token), so a signed-
+// in user cannot exchange codes that were minted for somebody else.
+function isInternalCaller(authHeader: string | undefined): boolean {
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  return token !== null && constantTimeEqual(token, config.internalApiSecret);
+}
+
+// Resolves the account a code belongs to WITHOUT spending it. The web bridge
+// calls this only when a web session already exists, so it can tell "the same
+// person clicked through from their panel" (redirect, nothing to do) from "a
+// different account is signed in here" (ask first) before replacing anything.
+auth.post("/auth/bridge/inspect", async (c) => {
+  if (!isInternalCaller(c.req.header("Authorization"))) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+
+  const body = await c.req.json().catch(() => null);
+  const parsed = bridgeRedeemSchema.safeParse(body);
+  if (!parsed.success) return c.json({ error: "Invalid request" }, 400);
+
+  const found = await inspectBridgeCode(parsed.data.code);
+  if (!found) return c.json({ error: "Invalid or expired code" }, 401);
+
+  return c.json(found);
+});
+
+// Redeems a bridge code on behalf of the web server, which then mints its own
+// session. Restricted to the internal secret: only a trusted server-side caller
+// may turn a code into an identity, so a stolen code is useless to anyone who
+// cannot also present the shared secret. The middleware's Path 1 already let this
+// through without an X-User-Id header, and Path 2 (a per-user access token) is
+// rejected here rather than being allowed to redeem codes minted for others.
+//
+// The identity comes from the code row, not the request: the caller does not know
+// who the code belongs to, which is the whole point of the exchange.
+auth.post("/auth/bridge/redeem", async (c) => {
+  if (!isInternalCaller(c.req.header("Authorization"))) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+
+  const body = await c.req.json().catch(() => null);
+  const parsed = bridgeRedeemSchema.safeParse(body);
+  if (!parsed.success) return c.json({ error: "Invalid request" }, 400);
+
+  const redeemed = await redeemBridgeCode(parsed.data.code);
+  if (!redeemed) {
+    // Not written to AuditLog: that table is workspace-scoped and a bridge code
+    // is a per-user credential with no natural workspace. Code values are never
+    // logged, so a failed redemption is recorded without anything replayable.
+    console.warn("[auth/bridge] Rejected a bridge code redemption (unknown, used, or expired)");
+    return c.json({ error: "Invalid or expired code" }, 401);
+  }
+
+  return c.json(redeemed);
 });
 
 // Sign-out: revokes the refresh token. Idempotent — an already-invalid token

@@ -14,6 +14,7 @@ import {
 import { db } from "@amarnai/db";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { resolveSessionToken } from "@/lib/session-jwt";
+import { redeemBridgeCode } from "@/lib/bridge-code";
 import { getRequestLocale } from "@/lib/i18n-server";
 import { isLabelWritebackEnabled } from "@/lib/writeback-flag";
 import { isOutlookConfigured, fetchOutlookProfile } from "@/lib/outlook-oauth";
@@ -97,6 +98,34 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
         return { id: user.id, email: user.email, name: user.name, image: user.imageUrl };
       },
     }),
+    // Carries an already-authenticated extension user into a web session. The
+    // panel mints a one-time code against the API and hands it to /auth/bridge;
+    // this exchanges it for an identity server-side. Redemption goes through the
+    // API (not a direct DB read) because the API owns the code's single-use
+    // claim, and it is gated on the internal secret so only this server can
+    // perform the exchange.
+    Credentials({
+      id: "bridge",
+      credentials: { code: {} },
+      async authorize(credentials) {
+        const code = typeof credentials?.code === "string" ? credentials.code : "";
+        if (!code) return null;
+
+        const redeemed = await redeemBridgeCode(code);
+        if (!redeemed) return null;
+
+        // Read the profile locally rather than trusting the redeem payload for
+        // anything beyond identity, so the session carries the same fields a
+        // password sign-in would.
+        const user = await db.user.findUnique({
+          where: { id: redeemed.userId },
+          select: { id: true, email: true, name: true, imageUrl: true },
+        });
+        if (!user) return null;
+
+        return { id: user.id, email: user.email, name: user.name, image: user.imageUrl };
+      },
+    }),
   ],
   session: { strategy: "jwt" },
   pages: {
@@ -108,7 +137,9 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
     async signIn({ user, account }) {
       // Credentials users are created in registerAction and their emailVerified
       // is set only after clicking the verification link — skip the upsert here.
-      if (account?.provider === "credentials") return true;
+      // "bridge" is the same story: the account already exists (the extension is
+      // signed in as it), so there is nothing to provision.
+      if (account?.provider === "credentials" || account?.provider === "bridge") return true;
 
       if (account?.provider === "microsoft-entra-id") {
         // Identity comes from Graph /me, never from the id_token email claim: on

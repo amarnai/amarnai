@@ -8,11 +8,12 @@ import type { TaxonomyTransferFile } from "@amarnai/shared";
 import type {
   TaxonomyImportPreviewResult,
   TaxonomyMigrationMapping,
-} from "@/lib/api";
+} from "@amarnai/api-client";
+import "./taxonomy-editor.css";
 
 const RESORT = "resort" as const;
 
-type Props = {
+export type MigrationReviewModalProps = {
   file: TaxonomyTransferFile;
   preview: TaxonomyImportPreviewResult;
   submitting: boolean;
@@ -23,7 +24,7 @@ type Props = {
 /**
  * Pre-apply review for replacing the taxonomy. Shows, per old folder that holds
  * threads, whether those threads carry over to a matched new folder or get
- * re-sorted by AI — with editable defaults. One click on "Migrate & apply"
+ * re-sorted by AI, with editable defaults. One click on "Migrate and apply"
  * accepts the auto-matched defaults.
  */
 export function MigrationReviewModal({
@@ -32,7 +33,7 @@ export function MigrationReviewModal({
   submitting,
   onCancel,
   onConfirm,
-}: Props) {
+}: MigrationReviewModalProps) {
   const { _ } = useLingui();
 
   // New (incoming) non-root folders, minus the catch-all (never a manual target).
@@ -41,13 +42,13 @@ export function MigrationReviewModal({
       file.nodes
         .filter((n) => !n.isRoot && !(n.isCatchAll ?? false))
         .map((n) => ({ ref: n.ref, name: n.name })),
-    [file],
+    [file]
   );
 
   // Rows with threads, catch-all shown but locked. Zero-thread folders are hidden.
   const rows = useMemo(
     () => preview.suggestions.filter((s) => s.threadCount > 0),
-    [preview],
+    [preview]
   );
   const editableRows = rows.filter((r) => !r.isCatchAll);
   const catchAllRow = rows.find((r) => r.isCatchAll) ?? null;
@@ -87,7 +88,7 @@ export function MigrationReviewModal({
 
   return (
     <div
-      className="modal-backdrop"
+      className="tx-modal-backdrop"
       onClick={(e) => {
         if (e.target === e.currentTarget && !submitting) onCancel();
       }}
@@ -97,13 +98,14 @@ export function MigrationReviewModal({
       role="dialog"
       aria-modal="true"
     >
-      <div className="modal" style={{ maxWidth: 560 }}>
-        <div className="modal-header">
-          <h2 className="modal-title">
+      <div className="tx-modal">
+        <div className="tx-modal-head">
+          <h2 className="tx-modal-title">
             <Trans>Replace folders</Trans>
           </h2>
           <button
-            className="modal-close"
+            type="button"
+            className="tx-modal-close"
             aria-label={_(msg`Cancel`)}
             onClick={onCancel}
             disabled={submitting}
@@ -112,62 +114,36 @@ export function MigrationReviewModal({
           </button>
         </div>
 
-        <div className="modal-body">
-          <p style={{ marginBottom: 12 }}>
+        <div className="tx-modal-body">
+          <p className="tx-lead">
             <Trans>
-              Choose where each folder&rsquo;s threads should go under your new
-              folders. Matched folders keep their threads instantly; anything
-              set to re-sort is re-classified by AI.
+              Choose where each folder&rsquo;s threads should go under your new folders. Matched
+              folders keep their threads instantly; anything set to re-sort is re-classified by
+              AI.
             </Trans>
           </p>
 
           {editableRows.length === 0 && !catchAllRow && (
-            <p style={{ color: "var(--color-muted)", fontSize: 13 }}>
-              <Trans>
-                No sorted threads to migrate. Your new folders will apply
-                directly.
-              </Trans>
+            <p className="tx-hint">
+              <Trans>No sorted threads to migrate. Your new folders will apply directly.</Trans>
             </p>
           )}
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div className="tx-rows">
             {editableRows.map((s) => (
-              <div
-                key={s.oldNodeId}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                }}
-              >
-                <div style={{ minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontWeight: 500,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {s.oldName}
-                  </div>
-                  <div style={{ fontSize: 11, color: "var(--color-muted)" }}>
-                    <Plural
-                      value={s.threadCount}
-                      one="# thread"
-                      other="# threads"
-                    />
+              <div key={s.oldNodeId} className="tx-row">
+                <div className="tx-row-name">
+                  <div className="tx-row-label">{s.oldName}</div>
+                  <div className="tx-row-count">
+                    <Plural value={s.threadCount} one="# thread" other="# threads" />
                   </div>
                 </div>
                 <select
-                  className="form-select"
-                  style={{ maxWidth: 240 }}
+                  className="tx-select"
                   value={choices[s.oldNodeId] ?? RESORT}
                   disabled={submitting}
-                  onChange={(e) =>
-                    setChoices((c) => ({ ...c, [s.oldNodeId]: e.target.value }))
-                  }
+                  aria-label={s.oldName}
+                  onChange={(e) => setChoices((c) => ({ ...c, [s.oldNodeId]: e.target.value }))}
                 >
                   <option value={RESORT}>{_(msg`Re-sort with AI`)}</option>
                   {newFolders.map((f) => (
@@ -181,28 +157,16 @@ export function MigrationReviewModal({
           </div>
 
           {catchAllRow && (
-            <p
-              style={{
-                fontSize: 11,
-                color: "var(--color-muted)",
-                marginTop: 10,
-              }}
-            >
+            <p className="tx-hint">
               <Trans>
-                Automated and bulk mail ({catchAllRow.threadCount}) always moves
-                to the new catch-all folder.
+                Automated and bulk mail ({catchAllRow.threadCount}) always moves to the new
+                catch-all folder.
               </Trans>
             </p>
           )}
 
           {hiddenCount > 0 && (
-            <p
-              style={{
-                fontSize: 11,
-                color: "var(--color-muted)",
-                marginTop: 6,
-              }}
-            >
+            <p className="tx-hint">
               <Plural
                 value={hiddenCount}
                 one="# folder with no threads is not shown."
@@ -211,56 +175,42 @@ export function MigrationReviewModal({
             </p>
           )}
 
-          <div
-            style={{
-              marginTop: 14,
-              fontSize: 13,
-              padding: "10px 12px",
-              borderRadius: 8,
-              background:
-                "var(--color-surface-2, var(--color-muted-bg, rgba(0,0,0,0.04)))",
-            }}
-          >
-            <p style={{ margin: 0 }}>
+          <div className="tx-summary">
+            <p>
               <Trans>
                 {migrateLive > 0 ? (
                   <Fragment>
-                    <strong>{migrateLive}</strong> threads move to their new
-                    folder instantly.{" "}
+                    <strong>{migrateLive}</strong> threads move to their new folder instantly.{" "}
                   </Fragment>
                 ) : null}
                 <strong>{resortLive}</strong> threads will be re-sorted by AI.
               </Trans>
             </p>
-            <p
-              style={{
-                margin: "6px 0 0",
-                color: "var(--color-muted)",
-                fontSize: 12,
-              }}
-            >
+            <p>
               <Trans>
-                Re-sorting threads already sorted this month is free. If you
-                reach your monthly limit, the rest resume next month.
+                Re-sorting threads already sorted this month is free. If you reach your monthly
+                limit, the rest resume next month.
               </Trans>
             </p>
           </div>
         </div>
 
-        <div className="modal-footer">
+        <div className="tx-modal-foot">
           <button
-            className="btn-ghost"
-            onClick={onCancel}
-            disabled={submitting}
-          >
-            <Trans>Cancel</Trans>
-          </button>
-          <button
-            className="btn-primary"
+            type="button"
+            className="tx-btn tx-btn--primary"
             onClick={confirm}
             disabled={submitting}
           >
             <Trans>Migrate &amp; apply</Trans>
+          </button>
+          <button
+            type="button"
+            className="tx-btn tx-btn--ghost"
+            onClick={onCancel}
+            disabled={submitting}
+          >
+            <Trans>Cancel</Trans>
           </button>
         </div>
       </div>
