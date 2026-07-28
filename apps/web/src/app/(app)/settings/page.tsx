@@ -8,8 +8,7 @@ import { assembleBillingState } from "@/lib/billing-state";
 import { GmailConnectionSection } from "./GmailConnectionSection";
 import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { isLabelWritebackEnabled } from "@/lib/writeback-flag";
-import { WorkspaceNameSection } from "./WorkspaceNameSection";
-import { WorkspaceLanguageSection } from "./WorkspaceLanguageSection";
+import { WorkspaceSettingsSections } from "./WorkspaceSettingsSections";
 import { DeleteWorkspaceSection } from "./DeleteWorkspaceSection";
 import { ResetWorkspaceSection } from "./ResetWorkspaceSection";
 import { EmailBlacklistSection } from "./EmailBlacklistSection";
@@ -140,8 +139,11 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
 
       {isAdmin && (
         <>
-          <WorkspaceNameSection currentName={workspace.name} />
-          <WorkspaceLanguageSection currentLocale={workspace.locale} />
+          <WorkspaceSettingsSections
+            workspaceId={workspace.id}
+            currentName={workspace.name}
+            currentLocale={workspace.locale}
+          />
           <GmailConnectionSection
             workspaceId={workspace.id}
             connection={connection}

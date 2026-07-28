@@ -226,7 +226,7 @@ msgstr "{hiddenCount, plural, one {스레드가 없는 폴더 1개는 표시되�
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount}명 대기 중"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
 msgid "{providerName} Inbox"
 msgstr "{providerName} 받은 편지함"
 
@@ -242,7 +242,7 @@ msgstr "{0}개 중 {quotaRemaining}개 남음 · {quotaResetDate} 초기화"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{limit}개 중 {remaining}개 남음 · {resetDate} 초기화"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:854
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:876
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "받은편지함에 {TAXONOMY_MIN_NON_ROOT_NODES}개 폴더 중 {routableCount}개가 연결되었습니다. 라우팅하려면 최소 {TAXONOMY_MIN_NON_ROOT_NODES}개가 필요합니다."
@@ -306,8 +306,8 @@ msgstr "© 2026 Amarnai. AGPL-3.0에 따라 오픈 소스."
 msgid "+ Add folder"
 msgstr "+ 폴더 추가"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:685
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:694
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:717
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:726
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ 폴더 추가"
@@ -572,7 +572,9 @@ msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n\n지원서는 기록 보관소에서 확인할 수 있습니다."
+msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n"
+"\n"
+"지원서는 기록 보관소에서 확인할 수 있습니다."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -599,7 +601,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "압디-헤바님께,\n\n저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n\n그럼,"
+msgstr "압디-헤바님께,\n"
+"\n"
+"저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n"
+"\n"
+"그럼,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -616,12 +622,12 @@ msgstr "학술 연구원"
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "해당 Google 계정에만 액세스가 허용됩니다. 따라서 Amarnai가 정리하기를 원하는 Gmail 계정이 아니라면, 올바른 주소를 제출해 주세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
 #, fuzzy
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "액세스가 거부되었습니다. 연결하려면 Gmail 읽기 전용 액세스를 허용하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
 msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
 msgstr "액세스가 거부되었습니다. 연결하려면 읽기 전용 Outlook(Mail.Read) 액세스를 허용해 주세요."
 
@@ -630,12 +636,12 @@ msgstr "액세스가 거부되었습니다. 연결하려면 읽기 전용 Outloo
 msgid "Account"
 msgstr "계정"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:99
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #, fuzzy
 msgid "Account menu"
 msgstr "계정 메뉴"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:114
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:145
 msgid "Account settings"
 msgstr "계정 설정"
 
@@ -671,7 +677,7 @@ msgstr "추가"
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "AI의 정확한 분류를 위해 최소 {0}자 이상의 설명을 추가해 주세요."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:719
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:755
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "내보내려면 연결된 폴더를 최소 3개 이상 추가하세요."
@@ -828,7 +834,7 @@ msgstr "이미 목록에 있습니다."
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "이미 초대받으셨나요? <0>로그인</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:284
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:274
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "동기화된 이메일 데이터도 삭제"
@@ -1222,7 +1228,7 @@ msgid "Auto"
 msgstr "자동"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:86
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:98
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "알림을 업데이트/기타 폴더로 자동 분류"
@@ -1272,12 +1278,18 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "아지루,\n\n친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n\n안녕히,"
+msgstr "아지루,\n"
+"\n"
+"친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n"
+"\n"
+"안녕히,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "바빌론의 세 번째 금 수송품이 두 전령이 다녀갔음에도 아직 도착하지 않고 있습니다. Burna-Buriash는 더 이상 지체하지 말고 발송해 달라고 요청합니다."
 
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:73
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
@@ -1392,7 +1404,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "폴더를 통해 이메일을 편리하게 살펴보세요. 답장 초안을 생성하고 받은편지함으로 복사할 수 있습니다."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:779
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:817
 #, fuzzy
 msgid "Browse templates"
 msgstr "템플릿 둘러보기"
@@ -1504,11 +1516,9 @@ msgstr "Amarnai를 자체 호스팅할 수 있나요?"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1008
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1101
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:301
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:416
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:291
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1519,6 +1529,8 @@ msgstr "Amarnai를 자체 호스팅할 수 있나요?"
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:213
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:338
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:354
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1029
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1105
 #, fuzzy
 msgid "Cancel"
 msgstr "취소"
@@ -1566,12 +1578,12 @@ msgstr "CASA Tier 2 인증"
 msgid "Catch-all"
 msgstr "캐치올"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+#: ../ui/src/settings/LabelWritebackSection.tsx:83
 #, fuzzy
 msgid "Categories in Outlook"
 msgstr "Outlook 카테고리"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:104
 #, fuzzy
 msgid "Category writeback needs permission to manage your Outlook mail. Try again and approve it, or leave the feature off."
 msgstr "카테고리 연동에는 Outlook 메일 관리 권한이 필요합니다. 다시 시도하여 승인하거나, 이 기능을 끄세요."
@@ -1720,7 +1732,7 @@ msgstr "클라이언트"
 msgid "Close"
 msgstr "닫기"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:919
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:940
 #, fuzzy
 msgid "Close panel"
 msgstr "패널 닫기"
@@ -1826,13 +1838,13 @@ msgstr "삭제 확인"
 msgid "Confirm password"
 msgstr "비밀번호 확인"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:428
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:437
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:426
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:435
 #, fuzzy
 msgid "Connect {name}"
 msgstr "{name} 연결"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:398
 #, fuzzy
 msgid "Connect {name} to this workspace?"
 msgstr "이 워크스페이스에 {name}을(를) 연결하시겠습니까?"
@@ -1860,7 +1872,7 @@ msgstr "동기화 필터를 설정하려면 Gmail 받은 편지함을 연결하�
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:452
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:450
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Gmail 연결"
@@ -1927,7 +1939,7 @@ msgstr "한 번 연결하고 폴더를 생성하면, Amarnai가 새 메일과 �
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:460
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:458
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Outlook 연결"
@@ -1972,7 +1984,7 @@ msgstr "받은편지함을 연결하면 Amarnai가 몇 분 내에 분류를 시�
 msgid "Connect your inbox to start triaging."
 msgstr "받은 편지함을 연결하여 분류를 시작하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:394
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:392
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "{name}을(를) 연결하면 {retainedAddress}에서 분류된 이메일이 영구적으로 삭제됩니다. 폴더 및 설정은 유지됩니다."
@@ -1989,7 +2001,7 @@ msgid "Connecting…"
 msgstr "연결 중…"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:188
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
 #, fuzzy
 msgid "Connection failed. Please try again."
 msgstr "연결에 실패했습니다. 다시 시도해주세요."
@@ -2007,7 +2019,7 @@ msgstr "계속"
 msgid "Continue as {incomingEmail}"
 msgstr "{incomingEmail}으로 계속"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:409
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:407
 #, fuzzy
 msgid "Continue to {name}"
 msgstr "{name}(으)로 계속하기"
@@ -2078,12 +2090,12 @@ msgstr "복사됨"
 msgid "Copy"
 msgstr "복사"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:80
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "Gmail 받은 편지함에 액세스할 수 없습니다. Gmail API가 활성화되어 있고 Google Cloud Console의 OAuth 동의 화면에 gmail.readonly 범위가 추가되었는지 확인하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:108
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
 msgstr "Outlook 받은 편지함에 액세스할 수 없습니다. 다시 시도해 주세요."
 
@@ -2155,18 +2167,27 @@ msgstr "결제 정보를 불러올 수 없습니다."
 msgid "Could not load the plan."
 msgstr "플랜을 로드할 수 없습니다."
 
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:90
+#, fuzzy
+msgid "Could not load your folders. Please try again."
+msgstr "폴더를 로드할 수 없습니다. 다시 시도해 주세요."
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:92
+msgid "Could not load your settings. Please try again."
+msgstr "설정을 로드할 수 없습니다. 다시 시도해 주세요."
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
 #, fuzzy
 msgid "Could not open billing management."
 msgstr "결제 관리를 열 수 없습니다."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:583
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:615
 msgid "Could not prepare migration"
 msgstr "마이그레이션 준비에 실패했습니다."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:112
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:124
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "재스캔을 대기열에 추가할 수 없습니다. 다시 시도해주세요."
@@ -2184,7 +2205,7 @@ msgstr "결제 서비스에 연결할 수 없습니다. 다시 시도해 주세�
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "서버에 연결할 수 없습니다. 연결 상태를 확인하고 다시 시도해 주세요."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:533
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:565
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "파일을 읽을 수 없습니다. JSON 형식이 유효하지 않습니다."
@@ -2212,6 +2233,11 @@ msgstr "워크스페이스를 재설정할 수 없습니다."
 #, fuzzy
 msgid "Could not save filter setting. Please try again."
 msgstr "필터 설정을 저장할 수 없습니다. 다시 시도해 주세요."
+
+#: ../ui/src/settings/WorkspaceNameSection.tsx:48
+#, fuzzy
+msgid "Could not save. Please try again."
+msgstr "저장할 수 없습니다. 다시 시도해 주세요."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:248
 msgid "Could not sign in. Please try again."
@@ -2241,8 +2267,8 @@ msgstr "이 스레드를 요약할 수 없습니다."
 msgid "Could not update name. Please try again."
 msgstr "이름을 업데이트할 수 없습니다. 다시 시도해 주세요."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:117
 #: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:78
+#: ../ui/src/settings/LabelWritebackSection.tsx:128
 msgid "Could not update the setting. Please try again."
 msgstr "설정을 업데이트할 수 없습니다. 다시 시도해 주세요."
 
@@ -2256,7 +2282,7 @@ msgstr "미리 알림 설정을 업데이트할 수 없습니다."
 msgid "Could not upgrade"
 msgstr "업그레이드할 수 없습니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:82
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:72
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "Google 계정을 확인할 수 없습니다. 다시 시도해 주세요."
@@ -2368,8 +2394,8 @@ msgstr "생성 중..."
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1062
 #: ../ui/src/demo/demo-seed.ts:34
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1073
 #, fuzzy
 msgid "Current"
 msgstr "현재"
@@ -2548,7 +2574,7 @@ msgid "Design your folders"
 msgstr "폴더 디자인"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:101
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "AI를 사용하지 않고 감지된 알림, 뉴스레터, 서비스 업데이트가 모든 메일 보관함으로 분류됩니다. 분류 템플릿의 <0>업데이트/기타</0> 폴더가 필요합니다."
@@ -2568,7 +2594,7 @@ msgstr "버리기"
 msgid "Disconnect"
 msgstr "연결 해제"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:272
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:262
 msgid "Disconnect {providerName}"
 msgstr "{providerName} 연결 해제"
 
@@ -2602,7 +2628,7 @@ msgstr "받은 편지함 연결 해제 또는 계정 삭제"
 msgid "Disconnected"
 msgstr "연결 해제됨"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:341
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:339
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "이 작업 공간에서 연결이 해제되었습니다. {erasedNote} 이 메일함은 다른 작업 공간에도 연결되어 있어 Amarnai에 대한 접근 권한이 유지됩니다. 모든 접근 권한을 철회하려면 <0/>에서 Amarnai를 제거해야 합니다."
@@ -2612,11 +2638,11 @@ msgstr "이 작업 공간에서 연결이 해제되었습니다. {erasedNote} �
 #~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 #~ msgstr "연결 해제됨. {erasedNote} Google에서의 권한 철회가 확인되지 않았습니다. <0/>에서 Amarnai를 제거할 수 있습니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:357
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:355
 msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 msgstr "연결 해제됨. {erasedNote} Amarnai의 액세스를 완전히 취소하려면 <0/>에서 제거하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:365
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "연결 해제됨. Amarnai는 더 이상 이 받은 편지함을 동기화하지 않습니다."
@@ -2626,26 +2652,26 @@ msgstr "연결 해제됨. Amarnai는 더 이상 이 받은 편지함을 동기�
 #~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 #~ msgstr "연결 해제됨. Google에서 이 메일함에 대한 Amarnai의 접근 권한이 철회되었습니다. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:350
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 msgstr "연결 해제됨. Amarnai의 이 사서함 액세스 권한이 취소되었습니다.{erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:293
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:283
 #, fuzzy
 msgid "Disconnecting…"
 msgstr "연결 해제 중..."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:214
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:204
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함이 Amarnai의 다른 곳에도 연결되어 있어 Amarnai는 계속 접근 권한을 가집니다. 모든 접근 권한을 완전히 철회하려면 <0/>에서 Amarnai를 제거하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:209
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:199
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "이 작업 공간의 연결을 해제합니다. 이 메일함은 {sharedNames}에 여전히 연결되어 있어 Amarnai는 계속 접근 권한을 가집니다."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
 #: ../../apps/extension/src/panel/StatusSlot.tsx:107
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
@@ -3060,13 +3086,13 @@ msgstr "이름 지정된 폴더에 속하지 않는 모든 항목."
 msgid "Expenses"
 msgstr "경비"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:743
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:779
 #, fuzzy
 msgid "Export"
 msgstr "내보내기"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:718
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:726
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:754
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:762
 msgid "Export folders"
 msgstr "폴더 내보내기"
 
@@ -3090,22 +3116,22 @@ msgstr "외부 기관, 외부 업체, 전문 비즈니스 파트너."
 msgid "Failed to apply"
 msgstr "적용 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:365
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:397
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "폴더 생성 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:298
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:330
 #, fuzzy
 msgid "Failed to create path"
 msgstr "경로 생성 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:436
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:468
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "폴더 삭제 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:453
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:485
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "경로 삭제 실패"
@@ -3115,12 +3141,12 @@ msgstr "경로 삭제 실패"
 msgid "Failed to load status"
 msgstr "상태 로드 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:494
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:526
 #, fuzzy
 msgid "Failed to redo"
 msgstr "재실행 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:265
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:297
 #, fuzzy
 msgid "Failed to save position"
 msgstr "위치 저장 실패"
@@ -3130,17 +3156,17 @@ msgstr "위치 저장 실패"
 msgid "Failed to start generation"
 msgstr "생성 시작 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:475
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:507
 #, fuzzy
 msgid "Failed to undo"
 msgstr "실행 취소 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:397
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:429
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "폴더 업데이트 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:419
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:451
 #, fuzzy
 msgid "Failed to update path"
 msgstr "경로 업데이트 실패"
@@ -3261,7 +3287,7 @@ msgstr "폴더 생성 완료"
 msgid "Folder deleted"
 msgstr "폴더 삭제 완료"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:676
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:708
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "폴더 개수 제한({MAX_TAXONOMY_NON_ROOT_NODES}개)에 도달했습니다. 새 폴더를 추가하려면 기존 폴더를 삭제하세요."
 
@@ -3279,7 +3305,8 @@ msgstr "연결될 때까지 폴더가 무시됩니다."
 msgid "Folder: {activeFolderName}"
 msgstr "폴더: {activeFolderName}"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:83
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
 #: ../../apps/web/src/app/(app)/folders/page.tsx:45
 #: ../../apps/web/src/components/Sidebar.tsx:33
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
@@ -3289,7 +3316,7 @@ msgstr "폴더: {activeFolderName}"
 msgid "Folders"
 msgstr "폴더"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:669
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:701
 msgid "Folders are view-only. Only workspace admins can edit them."
 msgstr "폴더는 보기 전용입니다. 워크스페이스 관리자만 편집할 수 있습니다."
 
@@ -3525,9 +3552,9 @@ msgstr "받은편지함에서 폴더 생성"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:880
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "받은 편지함에서 생성"
@@ -3664,7 +3691,7 @@ msgstr "Gmail 실시간 동기화 활성"
 #~ msgid "Gmail marked as important"
 #~ msgstr "Gmail에서 중요 표시됨"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Gmail 읽기 전용 액세스 권한이 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해 주세요."
@@ -3708,12 +3735,12 @@ msgstr "금 잔액: 3차 위탁품 기한 경과"
 #~ msgid "Google account email"
 #~ msgstr "Google 계정 이메일"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:50
 #, fuzzy
 msgid "Google Account permissions"
 msgstr "Google 계정 권한"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:76
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:66
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google에서 인증을 완료할 수 없습니다. 링크가 만료되었을 수 있으니 다시 시도해 주세요. 문제가 계속되면 Google Cloud Console에서 Gmail 콜백 URL이 등록되었는지 확인해 주세요."
@@ -3750,7 +3777,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "위대하신 왕이시여,\n\n요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n\n충심을 다하여,"
+msgstr "위대하신 왕이시여,\n"
+"\n"
+"요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n"
+"\n"
+"충심을 다하여,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3901,22 +3932,22 @@ msgstr "문제가 발생하거나 궁금한 점이 있다면 문의 방법은 �
 msgid "Ignored"
 msgstr "무시됨"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:768
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:804
 #, fuzzy
 msgid "Import"
 msgstr "가져오기"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:598
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:630
 #, fuzzy
 msgid "Import failed"
 msgstr "가져오기 실패"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:751
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:787
 #, fuzzy
 msgid "Import folders"
 msgstr "폴더 가져오기"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:746
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:782
 msgid "Import folders (replaces current)"
 msgstr "폴더 가져오기 (현재 폴더 대체)"
 
@@ -3977,8 +4008,8 @@ msgid "Inbox import complete"
 msgstr "받은편지함 가져오기 완료"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:247
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:237
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:250
 #, fuzzy
 msgid "Inbox sync"
 msgstr "받은편지함 동기화"
@@ -3993,13 +4024,13 @@ msgid "Incidents"
 msgstr "사건"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:76
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Include Promotions"
 msgstr "프로모션 포함"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:66
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:78
 #, fuzzy
 msgid "Include spam"
 msgstr "스팸 포함"
@@ -4091,12 +4122,12 @@ msgid "Invalid or missing reset link."
 msgstr "잘못되거나 없는 재설정 링크입니다."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:547
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:579
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "잘못된 분류 파일: {0}"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:541
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:573
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "잘못된 분류 파일: {detail}"
@@ -4265,17 +4296,17 @@ msgstr "연구실 및 협력자"
 msgid "Lab group updates, collaborator threads, and experiment coordination."
 msgstr "연구실 그룹 업데이트, 협력자 스레드 및 실험 조율"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
 #, fuzzy
 msgid "Label writeback needs permission to manage your Gmail labels. Try again and approve it, or leave the feature off."
 msgstr "라벨 연동에는 Gmail 라벨 관리 권한이 필요합니다. 다시 시도하여 승인하거나, 이 기능을 끄세요."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+#: ../ui/src/settings/LabelWritebackSection.tsx:83
 msgid "Labels in Gmail"
 msgstr "Gmail 라벨"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
-#: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
+#: ../ui/src/settings/WorkspaceLanguageSection.tsx:54
 #, fuzzy
 msgid "Language"
 msgstr "언어"
@@ -4283,7 +4314,7 @@ msgstr "언어"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "마지막 동기화: {0}"
@@ -4291,7 +4322,7 @@ msgstr "마지막 동기화: {0}"
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
 msgid "Last verified: {0}"
 msgstr "최종 확인: {0}"
@@ -4381,8 +4412,12 @@ msgstr "실시간"
 msgid "Load more"
 msgstr "더 보기"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:480
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:476
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:497
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:541
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "로딩 중"
 
@@ -4413,6 +4448,7 @@ msgstr "이전 스레드를 불러오는 중…"
 msgid "Loading…"
 msgstr "불러오는 중…"
 
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:123
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4583,12 +4619,12 @@ msgstr "유료 고객 및 계정 보유자의 메시지."
 msgid "Metadata"
 msgstr "메타데이터"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:54
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:44
 #, fuzzy
 msgid "Microsoft account permissions"
 msgstr "Microsoft 계정 권한"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:104
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:94
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft에서 인증을 완료할 수 없습니다. 링크가 만료되었을 수 있습니다. 다시 시도해 주세요. 문제가 지속되면 앱 등록에서 리디렉션 URI가 등록되었는지 확인하세요."
 
@@ -4632,6 +4668,10 @@ msgstr "월간"
 #: ../../apps/web/src/lib/notifications.ts:112
 msgid "Monthly sorting limit reached"
 msgstr "월별 정렬 한도 도달"
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
+msgid "More settings on the web"
+msgstr "웹에서 더 많은 설정"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -4687,7 +4727,7 @@ msgstr "며칠 내로 제 여정이 델타 지역 근처를 지나게 됩니다.
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
+#: ../ui/src/settings/WorkspaceNameSection.tsx:61
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:161
 #, fuzzy
 msgid "Name"
@@ -4706,8 +4746,8 @@ msgid "Needs review"
 msgstr "검토 필요"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
 #, fuzzy
 msgid "Never"
 msgstr "안 함"
@@ -4853,7 +4893,7 @@ msgstr "아직 폴더 없음"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "연결된 Gmail 받은 편지함이 없습니다. 계정을 연결하여 동기화를 시작하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:446
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:444
 #, fuzzy
 msgid "No inbox connected to this workspace."
 msgstr "이 작업 공간에 연결된 받은 편지함이 없습니다."
@@ -4989,7 +5029,7 @@ msgstr "반드시 그럴 필요는 없습니다. Amarnai는 클릭 한 번으로
 msgid "Not set"
 msgstr "설정되지 않음"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:252
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:242
 #, fuzzy
 msgid "Not yet synced"
 msgstr "아직 동기화되지 않음"
@@ -5162,7 +5202,7 @@ msgstr "선택 사항. 받은 편지함에서 이 폴더의 칩 및 아이콘 �
 msgid "or"
 msgstr "또는"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:388
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:386
 msgid "Or connect a different inbox:"
 msgstr "또는 다른 받은 편지함 연결:"
 
@@ -5181,7 +5221,7 @@ msgstr "기타"
 msgid "outlook ai assistant"
 msgstr "Outlook AI 어시스턴트"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
 msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
 msgstr "Outlook 읽기 전용 액세스(Mail.Read)가 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해 주세요."
 
@@ -5308,8 +5348,8 @@ msgstr "이 워크스페이스와 모든 데이터(이메일, 계획, 설정, Gm
 msgid "Permanently delete your account and all associated data. This cannot be undone."
 msgstr "계정과 모든 관련 데이터를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:90
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:80
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
 msgid "Permission was granted but the feature could not be turned on. Toggle it from settings to retry."
 msgstr "권한은 부여되었으나 기능을 켤 수 없었습니다. 설정에서 다시 시도해 보세요."
 
@@ -5619,7 +5659,7 @@ msgstr "학생 질문, 숙제 제출, 교실 내 일일 지도."
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "매장의 구매 확인, 주문 상태 변경, 배송 업데이트."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "재스캔 대기 중…"
@@ -5710,7 +5750,7 @@ msgstr "최근에 시도했습니다. 나중에 다시 시도해 주세요."
 msgid "Recommended"
 msgstr "추천"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1066
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1077
 msgid "Recommended for your inbox"
 msgstr "받은 편지함 추천"
 
@@ -5719,7 +5759,7 @@ msgstr "받은 편지함 추천"
 msgid "Reconnect"
 msgstr "다시 연결"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:383
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 #, fuzzy
 msgid "Reconnect {providerName}"
@@ -5780,7 +5820,7 @@ msgstr "채용"
 msgid "Redirecting…"
 msgstr "리디렉션 중..."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:706
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:738
 #, fuzzy
 msgid "Redo"
 msgstr "다시 실행"
@@ -5904,7 +5944,7 @@ msgstr "폴더 바꾸기"
 #~ msgid "Replace taxonomy"
 #~ msgstr "분류 체계 교체"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1003
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1024
 #, fuzzy
 msgid "Replace with a template"
 msgstr "템플릿으로 교체"
@@ -5932,7 +5972,7 @@ msgid "Rescan failed"
 msgstr "재스캔 실패"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "받은편지함 재스캔"
@@ -5942,7 +5982,7 @@ msgstr "받은편지함 재스캔"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "재스캔 대기 중 - 스레드가 곧 업데이트됩니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:107
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:119
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "재스캔 대기 중: 스레드가 곧 업데이트됩니다."
@@ -6070,7 +6110,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "립-하따님께,\n\n저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n\n안녕히 계십시오,"
+msgstr "립-하따님께,\n"
+"\n"
+"저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n"
+"\n"
+"안녕히 계십시오,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6103,7 +6147,7 @@ msgstr "월간과 같음"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/settings/WorkspaceNameSection.tsx:90
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 #, fuzzy
@@ -6151,7 +6195,7 @@ msgid "Saving..."
 msgstr "저장 중..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/settings/WorkspaceNameSection.tsx:90
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 #, fuzzy
@@ -6220,7 +6264,7 @@ msgstr "작동 방식 보기"
 msgid "Select"
 msgstr "선택"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:391
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:408
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6341,7 +6385,7 @@ msgstr "Amarnai가 메일을 제대로 분류할 수 있도록 폴더를 설정�
 msgid "Set up your folders"
 msgstr "폴더 설정"
 
-#: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
+#: ../ui/src/settings/WorkspaceLanguageSection.tsx:75
 #, fuzzy
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
 msgstr "이 작업 공간의 언어를 설정합니다(인터페이스 및 AI 생성 폴더 포함)."
@@ -6351,7 +6395,8 @@ msgstr "이 작업 공간의 언어를 설정합니다(인터페이스 및 AI �
 msgid "Setting up your workspace…"
 msgstr "작업 공간 설정 중…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:47
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
 #: ../../apps/web/src/components/Sidebar.tsx:34
@@ -6465,7 +6510,7 @@ msgstr "Google 또는 Microsoft로 로그인"
 
 #: ../../apps/extension/src/App.tsx:128
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:125
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:156
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -6659,12 +6704,12 @@ msgid "Start free"
 msgstr "무료로 시작"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1004
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1025
 #, fuzzy
 msgid "Start from a template"
 msgstr "템플릿으로 시작"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:771
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:809
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "템플릿으로 시작 (현재 내용 대체)"
@@ -6709,7 +6754,7 @@ msgstr "메일 분류는 이제 그만.<0/><1>한 번만 분류하면 끝나요.
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "동기화를 중단하고 Amarnai의 이 메일함 접근 권한을 해지합니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:204
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:194
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "동기화를 중단하고 Amarnai의 이 메일함 접근 권한을 해지합니다. 나중에 다시 연결할 수 있도록 동기화된 이메일 데이터는 유지됩니다."
@@ -6845,14 +6890,14 @@ msgid "Switch theme"
 msgstr "테마 변경"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:130
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:120
 #, fuzzy
 msgid "Sync error"
 msgstr "동기화 오류"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:55
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:64
 #, fuzzy
 msgid "Sync filters"
 msgstr "필터 동기화"
@@ -6862,13 +6907,13 @@ msgstr "필터 동기화"
 #~ msgid "Synced 2m ago"
 #~ msgstr "2분 전 동기화됨"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:221
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:211
 #, fuzzy
 msgid "Synced email data was erased."
 msgstr "동기화된 이메일 데이터가 삭제되었습니다."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:129
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:119
 #, fuzzy
 msgid "Syncing…"
 msgstr "동기화 중…"
@@ -6931,7 +6976,7 @@ msgstr "팀"
 msgid "Template applied"
 msgstr "템플릿 적용 완료"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:795
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:833
 #, fuzzy
 msgid "Templates"
 msgstr "템플릿"
@@ -6954,12 +6999,12 @@ msgstr "알려주셔서 감사합니다. 금요일 좋습니다."
 msgid "That invitation link is invalid or has expired."
 msgstr "해당 초대 링크는 유효하지 않거나 만료되었습니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:76
 #, fuzzy
 msgid "That is a different Google account. Sign in with the mailbox already connected to this workspace."
 msgstr "다른 Google 계정입니다. 이 작업 공간에 이미 연결된 사서함으로 로그인하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:112
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:102
 msgid "That is a different Microsoft account. Sign in with the mailbox already connected to this workspace."
 msgstr "다른 Microsoft 계정입니다. 이 작업 공간에 이미 연결된 사서함으로 로그인하세요."
 
@@ -6976,14 +7021,14 @@ msgstr "해당 링크가 유효하지 않거나 만료되었습니다."
 msgid "The Amarnai Reply button is switched off for this workspace in settings."
 msgstr "이 워크스페이스의 설정에서 Amarnai 답장 버튼이 꺼져 있습니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
 #, fuzzy
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "인증 콜백이 완료되지 않았습니다. 다시 시도해 주세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:72
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:100
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:62
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:90
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "인증 요청이 만료되었거나 변조되었습니다. 다시 시도해 주세요."
@@ -6993,8 +7038,8 @@ msgstr "인증 요청이 만료되었거나 변조되었습니다. 다시 시도
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "'캐치올' 폴더는 삭제할 수 없습니다. 자동 발송 및 대량 메일이 이곳에 보관됩니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:84
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:110
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:74
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:100
 #, fuzzy
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "서버 오류로 인해 연결을 저장할 수 없었습니다. 다시 시도해 주세요."
@@ -7066,7 +7111,7 @@ msgstr "이 폴더들이 생성됩니다. 언제든지 편집할 수 있습니�
 #~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
 #~ msgstr "이 설정은 가져올 Gmail 스레드를 제어합니다. 휴지통은 항상 제외됩니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:57
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:67
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "이 설정은 어떤 받은 편지함 스레드를 가져올지 제어합니다. 휴지통은 항상 제외됩니다."
 
@@ -7079,7 +7124,7 @@ msgstr "이 브라우저는 {currentEmail}로 로그인되어 있지만, 확장 
 msgid "This conversation has not synced to Amarnai yet."
 msgstr "이 대화가 아직 Amarnai에 동기화되지 않았습니다."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:661
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:693
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "하위 폴더의 경로를 먼저 삭제한 후 이 폴더를 삭제하세요."
@@ -7094,7 +7139,7 @@ msgstr "이 폴더는 수신함에서 접근할 수 없으며 분류에 사용�
 #~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 #~ msgstr "이 Gmail은 {sharedNames}에서도 연결되어 있습니다. 각 작업 공간은 별도로 동기화 및 분류하며, 이로 인해 별도의 AI 할당량이 사용됩니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:231
 msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 msgstr "이 받은 편지함은 {sharedNames}에도 연결되어 있습니다. 각 작업 공간은 별도로 동기화 및 분류하며, 이는 별도의 AI 할당량을 사용합니다."
 
@@ -7255,7 +7300,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "내 형제이신 대왕께,\n\n셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n\n우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n\n미탄니의 대왕 투슈라타"
+msgstr "내 형제이신 대왕께,\n"
+"\n"
+"셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n"
+"\n"
+"우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n"
+"\n"
+"미탄니의 대왕 투슈라타"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7264,7 +7315,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "왕실 임명국 귀하,\n\n테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n\n왕실 칙령에 따라,"
+msgstr "왕실 임명국 귀하,\n"
+"\n"
+"테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n"
+"\n"
+"왕실 칙령에 따라,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7275,7 +7330,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "대왕께,\n\n수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n\n부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n\n대왕의 종, 아무르의 영주 아지루"
+msgstr "대왕께,\n"
+"\n"
+"수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n"
+"\n"
+"부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n"
+"\n"
+"대왕의 종, 아무르의 영주 아지루"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7284,7 +7345,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "대왕께,\n\n저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n\n대왕의 종, 우루샬림의 총독 압디-헤바"
+msgstr "대왕께,\n"
+"\n"
+"저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n"
+"\n"
+"대왕의 종, 우루샬림의 총독 압디-헤바"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7293,7 +7358,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "내 형제이신 대왕께,\n\n말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n\n우정을 담아,"
+msgstr "내 형제이신 대왕께,\n"
+"\n"
+"말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n"
+"\n"
+"우정을 담아,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7304,7 +7373,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "내 형제이신 대왕께,\n\n저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n\n우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n\n바빌론의 왕 부르나-부리아쉬 2세"
+msgstr "내 형제이신 대왕께,\n"
+"\n"
+"저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n"
+"\n"
+"우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n"
+"\n"
+"바빌론의 왕 부르나-부리아쉬 2세"
 
 #: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
@@ -7315,7 +7390,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n\n지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n\n일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n\n대왕의 종, 비블로스의 총독 리브-하다"
+msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n"
+"\n"
+"지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n"
+"\n"
+"일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n"
+"\n"
+"대왕의 종, 비블로스의 총독 리브-하다"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7396,7 +7477,7 @@ msgstr "다시 시도"
 msgid "Try Amarnai"
 msgstr "Amarnai 사용해보기"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:105
+#: ../ui/src/settings/LabelWritebackSection.tsx:116
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "이 기능을 켜면 라벨 관리 권한을 요청합니다."
 
@@ -7426,10 +7507,10 @@ msgstr "미분류"
 msgid "Unclassified. Change folder"
 msgstr "미분류. 폴더 변경"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:435
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:452
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:697
 #: ../ui/src/emails/MockEmailsPage.tsx:298
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
 #, fuzzy
 msgid "Undo"
 msgstr "실행 취소"
@@ -7444,7 +7525,7 @@ msgstr "대학교"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:540
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:572
 #, fuzzy
 msgid "unknown error"
 msgstr "알 수 없는 오류"
@@ -7506,7 +7587,7 @@ msgid "Up to 3 people"
 msgstr "최대 3인"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:128
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:118
 #, fuzzy
 msgid "Up to date"
 msgstr "최신 상태"
@@ -7603,7 +7684,7 @@ msgstr "공동 작업자를 초대하려면 Scribe 또는 Pharaoh 플랜으로 �
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "백필을 활성화하려면 웹 앱에서 구독을 업그레이드하세요."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:118
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:130
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "필터 설정을 변경한 후 \"받은편지함 재검색\"을 사용하여 이미 받은편지함에 있는 스레드에 적용하세요."
@@ -7623,7 +7704,7 @@ msgstr "필터를 변경한 후 \"받은편지함 재검색\"을 사용하여 �
 msgid "Use a template"
 msgstr "템플릿 사용"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1112
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1116
 #, fuzzy
 msgid "Use template"
 msgstr "템플릿 사용"
@@ -7713,7 +7794,7 @@ msgstr "자원봉사자"
 msgid "Waiting"
 msgstr "대기 중"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:261
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
 #, fuzzy
 msgid "Waiting for first sync…"
 msgstr "첫 동기화 대기 중…"
@@ -7836,7 +7917,7 @@ msgstr "직장인"
 msgid "Works with Gmail™ and Outlook."
 msgstr "Gmail™ 및 Outlook을 지원합니다."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:57
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
@@ -7846,10 +7927,14 @@ msgstr "Gmail™ 및 Outlook을 지원합니다."
 msgid "Workspace"
 msgstr "워크스페이스"
 
+#: ../ui/src/settings/WorkspaceNameSection.tsx:57
+msgid "Workspace details"
+msgstr "작업 공간 세부 정보"
+
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:12
 #, fuzzy
-msgid "Workspace Details"
-msgstr "워크스페이스 세부 정보"
+#~ msgid "Workspace Details"
+#~ msgstr "워크스페이스 세부 정보"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:206
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:60
@@ -7865,16 +7950,16 @@ msgstr "워크스페이스 이름"
 msgid "Workspace name cannot be empty"
 msgstr "워크스페이스 이름은 비워둘 수 없습니다."
 
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:27
+#: ../ui/src/settings/WorkspaceNameSection.tsx:81
 #, fuzzy
 msgid "Workspace name updated."
 msgstr "워크스페이스 이름이 업데이트되었습니다."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:44
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:47
 msgid "Workspace settings"
 msgstr "워크스페이스 설정"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:139
+#: ../../apps/web/src/app/(app)/settings/page.tsx:138
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "워크스페이스 설정"
@@ -7889,17 +7974,17 @@ msgstr "워크스페이스 유형"
 msgid "Workspaces included"
 msgstr "워크스페이스 포함"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:99
+#: ../ui/src/settings/LabelWritebackSection.tsx:110
 #, fuzzy
 msgid "Write sorted folders as Gmail labels"
 msgstr "정렬된 폴더를 Gmail 라벨로 연동"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:97
+#: ../ui/src/settings/LabelWritebackSection.tsx:108
 #, fuzzy
 msgid "Write sorted folders as Outlook categories"
 msgstr "정렬된 폴더를 Outlook 카테고리로 연동"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:111
+#: ../ui/src/settings/LabelWritebackSection.tsx:122
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "연동 활성화됨. 폴더가 사서함에 미러링되고 있습니다."
 
@@ -7926,7 +8011,7 @@ msgstr "예, 계정 삭제"
 msgid "Yes, delete workspace"
 msgstr "예, 워크스페이스 삭제"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:293
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:283
 #, fuzzy
 msgid "Yes, disconnect"
 msgstr "예, 연결 해제"
@@ -8020,12 +8105,12 @@ msgstr "{0} 후에 다시 시도하거나, 템플릿에서 시작할 수 있습�
 msgid "You can try again shortly, or start from a template."
 msgstr "잠시 후 다시 시도하거나, 템플릿에서 시작할 수 있습니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:74
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "이 워크스페이스에 Gmail 받은 편지함을 연결할 권한이 없습니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:102
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:92
 msgid "You do not have permission to connect an Outlook inbox to this workspace."
 msgstr "이 작업 공간에 Outlook 받은 편지함을 연결할 권한이 없습니다."
 
@@ -8112,12 +8197,12 @@ msgstr "내 폴더"
 msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 msgstr "폴더는 받은편지함에서 뻗어 나가는 단순한 트리 구조입니다. Amarnai가 받은편지함에서 생성하도록 하거나, 템플릿에서 시작하거나, 직접 만들 수 있습니다."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:82
+#: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
 msgid "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
 msgstr "폴더는 Gmail 라벨로 미러링되며, 스레드 정렬 시 동기화됩니다. Amarnai는 <0>Amarnai/</0> 네임스페이스의 라벨만 관리하며, 메일을 발송, 삭제 또는 이동하지 않습니다."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:76
+#: ../ui/src/settings/LabelWritebackSection.tsx:87
 msgid "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
 msgstr "폴더는 Outlook 카테고리로 미러링되며, 스레드 정렬 시 동기화됩니다. Amarnai는 <0>Amarnai</0> 네임스페이스의 카테고리만 관리하며, 메일을 발송, 삭제 또는 이동하지 않습니다."
 
@@ -8204,7 +8289,7 @@ msgstr "재시도 가져오기가 완료되었지만, {0} 플랜의 제한 사�
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "재시도 가져오기가 완료되었지만, {plan} 플랜 한도에 따라 제한됩니다. 다음 재시도는 {refreshDate}에 가능합니다."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:368
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 msgstr "{retainedAddress}에서 분류된 이메일이 저장되어 있습니다. 동일한 받은 편지함을 재연결하면 복원되지만, 다른 받은 편지함을 연결하면 영구적으로 삭제됩니다. 폴더 및 설정은 어느 경우든 유지됩니다."
 

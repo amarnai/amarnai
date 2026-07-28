@@ -929,3 +929,76 @@ body {
 .ax-auth-footer a:hover {
   text-decoration: underline;
 }
+
+/* ─── Taxonomy editor overlay ─────────────────────────────────────────────── */
+/* Reuses .ps-overlay for the backdrop; this is the card inside it. The editor
+   itself is shared (@amarnai/ui/taxonomy-editor) and brings its own tx-* CSS. */
+
+.ax-editor {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+
+.ax-editor-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+
+.ax-editor-title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* These views are pushed on top of the list rather than opened beside it, so
+   they close with a back arrow next to the title instead of a corner ✕. */
+.ax-back {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  margin-left: calc(-1 * var(--space-xs));
+  background: none;
+  border: none;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  color: var(--ink-3);
+}
+
+.ax-back:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+/* The editor sizes itself to this box; tx-root is height:100%. */
+.ax-editor-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  padding: var(--space-md);
+}
+
+/* Settings are a stack of cards, so this one scrolls instead. */
+.ax-settings-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}

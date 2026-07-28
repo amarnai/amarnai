@@ -14,6 +14,7 @@ import type {
   DisconnectResult,
   SyncStatus,
   GmailSyncSettings,
+  GmailSyncSettingsResponse,
   FolderCountsResult,
   EmailThreadListResult,
   EmailThreadDetail,
@@ -330,7 +331,7 @@ export function makeApiClient(transport: ApiTransport) {
       apiFetch<SyncStatus>(`/workspaces/${workspaceId}/sync-status`),
 
     gmailSyncSettings: (workspaceId: string) =>
-      apiFetch<GmailSyncSettings>(`/workspaces/${workspaceId}/gmail-sync-settings`),
+      apiFetch<GmailSyncSettingsResponse>(`/workspaces/${workspaceId}/gmail-sync-settings`),
 
     updateGmailSyncSettings: (workspaceId: string, patch: Partial<GmailSyncSettings>) =>
       apiMutate<GmailSyncSettings>(

@@ -6,22 +6,12 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
 import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
-import type { GmailConnection, MailProvider, SyncStatus, GmailSyncSettings } from "@/lib/api";
-import { GmailSyncSettingsSection } from "./GmailSyncSettingsSection";
-import { LabelWritebackSection } from "./LabelWritebackSection";
+import { api, type GmailConnection, type MailProvider, type SyncStatus, type GmailSyncSettings } from "@/lib/api";
+import { GmailSyncSettingsSection, LabelWritebackSection } from "@amarnai/ui/settings";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { NativeInjectionSection } from "./NativeInjectionSection";
 import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
 
-const DEFAULT_SYNC_SETTINGS: GmailSyncSettings = {
-  includeSpam: false,
-  includePromotions: false,
-  sortingPaused: false,
-  routeBulkToOther: true,
-  labelWritebackEnabled: true,
-  threadSummaryInjectionEnabled: true,
-  replyButtonInjectionEnabled: true,
-  blacklistedSenderEmails: [],
-};
 
 type Props = {
   workspaceId: string;
@@ -306,28 +296,36 @@ export function GmailConnectionSection({
           </div>
 
           <GmailSyncSettingsSection
+            api={api}
             workspaceId={workspaceId}
             provider={provider}
-            initialSettings={syncSettings ?? DEFAULT_SYNC_SETTINGS}
+            initialSettings={syncSettings ?? DEFAULT_GMAIL_SYNC_SETTINGS}
           />
 
           {labelWritebackFlagOn && (
             <LabelWritebackSection
+              api={api}
               workspaceId={workspaceId}
               provider={provider}
-              initialEnabled={(syncSettings ?? DEFAULT_SYNC_SETTINGS).labelWritebackEnabled}
+              initialEnabled={(syncSettings ?? DEFAULT_GMAIL_SYNC_SETTINGS).labelWritebackEnabled}
               hasWriteScope={hasWriteScope}
               justEnabled={writebackJustEnabled}
+              onRequestWriteScope={() => {
+                // Incremental consent: the OAuth callback stores the widened
+                // grant, enables the setting, and returns to ?writeback=enabled.
+                const path = provider === "OUTLOOK" ? "outlook" : "gmail";
+                window.location.href = `/api/${path}/connect?workspaceId=${workspaceId}&intent=writeback`;
+              }}
             />
           )}
 
           <NativeInjectionSection
             workspaceId={workspaceId}
             initialSummariesEnabled={
-              (syncSettings ?? DEFAULT_SYNC_SETTINGS).threadSummaryInjectionEnabled
+              (syncSettings ?? DEFAULT_GMAIL_SYNC_SETTINGS).threadSummaryInjectionEnabled
             }
             initialReplyButtonEnabled={
-              (syncSettings ?? DEFAULT_SYNC_SETTINGS).replyButtonInjectionEnabled
+              (syncSettings ?? DEFAULT_GMAIL_SYNC_SETTINGS).replyButtonInjectionEnabled
             }
           />
         </>

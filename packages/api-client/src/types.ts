@@ -2,6 +2,7 @@
 export type {
   TaxonomyEdge,
   GmailSyncSettings,
+  GmailSyncSettingsResponse,
   UpdateGmailSyncSettingsInput,
   GenerationEligibility,
   GenerationEligibilityReason,

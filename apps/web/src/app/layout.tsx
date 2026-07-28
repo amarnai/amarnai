@@ -11,6 +11,7 @@ import "@amarnai/ui/theme/styles";
 import "@amarnai/ui/tooltip/styles";
 import "@amarnai/ui/switch/styles";
 import "@amarnai/ui/taxonomy-editor/styles";
+import "@amarnai/ui/settings/styles";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });

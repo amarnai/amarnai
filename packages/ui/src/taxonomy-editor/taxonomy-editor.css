@@ -16,10 +16,16 @@
   min-height: 0;
   height: 100%;
   gap: var(--space-sm);
+  /* The narrow layout below keys off this box, not the viewport: the web app
+     can be wide while the editor's own column is not. */
+  container: tx-root / inline-size;
 }
 
 .tx-canvas {
   flex: 1;
+  /* ReactFlow's root is height:100%, so this box must resolve to a definite
+     height. It only ever gets one by stretching inside .tx-split's flex row,
+     which is why that row stays flex at every width. */
   min-height: 240px;
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
@@ -46,11 +52,12 @@
   min-height: 0;
 }
 
-@media (max-width: 720px) {
-  .tx-split {
-    display: block;
-  }
-
+/*
+ * Narrow surfaces (the extension panel, mobile web): the form leaves the flow
+ * and covers the canvas instead of sitting beside it. .tx-split stays flex so
+ * the canvas keeps stretching to a definite height; only the form moves.
+ */
+@container tx-root (max-width: 720px) {
   .tx-side {
     position: absolute;
     inset: 0;
@@ -464,5 +471,174 @@
 .tx-summary p + p {
   margin-top: 6px;
   font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+/* ─── Toolbar / canvas chrome ─────────────────────────────────────────────── */
+
+.tx-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  gap: var(--space-sm);
+}
+
+.tx-panel-close {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink-3);
+  font-size: var(--fs-md);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tx-panel-close:hover {
+  background: var(--bg-sunk);
+  color: var(--ink);
+}
+
+/* The routing-threshold notice and any other inline banner. */
+.tx-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-sm);
+  background: var(--warn-soft, var(--accent-soft));
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.tx-banner .tx-btn {
+  flex: none;
+}
+
+.tx-pill {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--bg-sunk);
+  color: var(--ink-3);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+}
+
+.tx-pill--accent {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.tx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+/* ─── Option cards (template picker) ──────────────────────────────────────── */
+
+.tx-option-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tx-option-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  width: 100%;
+  padding: var(--space-md);
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.tx-option-card:hover:not(:disabled) {
+  background: var(--bg-sunk);
+  border-color: var(--accent);
+}
+
+.tx-option-card:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.tx-option-card--selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tx-option-card-radio {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-3);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.tx-option-card--selected .tx-option-card-radio {
+  border-color: var(--accent);
+}
+
+.tx-option-card-radio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.tx-option-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tx-option-card-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tx-option-card-desc {
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.45;
+}
+
+.tx-readonly {
+  margin: 0;
+  padding: 8px 14px;
+  background: var(--bg-sunk);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
   color: var(--ink-3);
 }

@@ -1,0 +1,144 @@
+/* ─── Shared settings sections ────────────────────────────────────────────── */
+/* Requires the consuming app to provide Amarnai CSS custom properties.       */
+/* Prefixed st- and self-contained: the web app's settings styles live in its  */
+/* globals.css under unprefixed names the extension does not have.            */
+
+.st-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.st-section + .st-section {
+  margin-top: var(--space-md);
+}
+
+.st-title {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.st-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.st-subtitle {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.st-hint {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+.st-error {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--danger);
+  line-height: 1.5;
+}
+
+.st-ok {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--ok, var(--accent-ink));
+  line-height: 1.5;
+}
+
+/* Wrapping label so the whole row toggles the switch. */
+.st-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.st-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.st-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.st-input,
+.st-select {
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.1s;
+}
+
+.st-input:focus,
+.st-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.st-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.st-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.14s, border-color 0.14s, opacity 0.14s;
+}
+
+.st-btn:hover:not(:disabled) {
+  background: var(--bg-sunk);
+}
+
+.st-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.st-btn--primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--on-accent, #fff);
+}
+
+.st-btn--primary:hover:not(:disabled) {
+  background: var(--accent-ink);
+}

@@ -7,4 +7,6 @@ export type { NodeFormProps, NodeFormSubmit, ParentChange } from "./NodeForm.js"
 export { EdgeForm } from "./EdgeForm.js";
 export type { EdgeFormProps } from "./EdgeForm.js";
 export { DescriptionTips } from "./DescriptionTips.js";
+export { TaxonomyEditor } from "./TaxonomyEditor.js";
+export type { TaxonomyEditorProps, TaxonomyEditorMode } from "./TaxonomyEditor.js";
 export type { GraphSnapshot, HistoryState } from "./useTaxonomyHistory.js";

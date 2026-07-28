@@ -226,7 +226,7 @@ msgstr "{hiddenCount, plural, one {# папка без цепочек не от�
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} в ожидании"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
 msgid "{providerName} Inbox"
 msgstr "{providerName} Входящие"
 
@@ -242,7 +242,7 @@ msgstr "{quotaRemaining} из {0} осталось · обновится {quotaR
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{remaining} из {limit} осталось · обновится {resetDate}"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:854
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:876
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "{routableCount} из {TAXONOMY_MIN_NON_ROOT_NODES} папок подключено к вашим входящим. Для маршрутизации требуется минимум {TAXONOMY_MIN_NON_ROOT_NODES}."
@@ -306,8 +306,8 @@ msgstr "© 2026 Amarnai. Открытый исходный код под лиц�
 msgid "+ Add folder"
 msgstr "+ Добавить папку"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:685
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:694
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:717
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:726
 #, fuzzy
 msgid "+ Add Folder"
 msgstr "+ Добавить папку"
@@ -572,7 +572,9 @@ msgstr "Получена новая заявка от Хоремхеба из Ф
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n\nПросмотреть заявку можно в Доме Архивов."
+msgstr "Получена новая заявка от Хоремхеба из Фив на должность Главы корреспонденции.\n"
+"\n"
+"Просмотреть заявку можно в Доме Архивов."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -599,7 +601,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Абди-Хеба,\n\nЯ буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n\nДо встречи,"
+msgstr "Абди-Хеба,\n"
+"\n"
+"Я буду рядом с Дельтой на той же неделе. Давай встретимся на станции отдыха на второй день; я смогу выделить утро.\n"
+"\n"
+"До встречи,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -616,12 +622,12 @@ msgstr "Научный сотрудник"
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "Доступ предоставляется именно к этому аккаунту Google, поэтому если это не тот аккаунт, чью почту Gmail вы хотите упорядочить с помощью Amarnai, просто укажите правильный адрес."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
 #, fuzzy
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "Доступ запрещен. Предоставьте доступ к Gmail только для чтения, чтобы подключиться."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
 msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
 msgstr "Доступ запрещен. Для подключения предоставьте доступ только для чтения к Outlook (Mail.Read)."
 
@@ -630,12 +636,12 @@ msgstr "Доступ запрещен. Для подключения предо�
 msgid "Account"
 msgstr "Аккаунт"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:99
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #, fuzzy
 msgid "Account menu"
 msgstr "Меню аккаунта"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:114
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:145
 msgid "Account settings"
 msgstr "Настройки аккаунта"
 
@@ -671,7 +677,7 @@ msgstr "Добавить"
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "Добавьте описание (не менее {0} символов) для точной сортировки ИИ."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:719
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:755
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "Добавьте как минимум 3 подключенные папки для экспорта"
@@ -828,7 +834,7 @@ msgstr "Уже в списке."
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "Вас уже пригласили? <0>Войти</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:284
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:274
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "Также удалить синхронизированные данные почты"
@@ -1222,7 +1228,7 @@ msgid "Auto"
 msgstr "Авто"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:86
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:98
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "Автоматически перемещать уведомления в Обновления / Прочее"
@@ -1272,12 +1278,18 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Азиру,\n\nВаши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n\nС уважением,"
+msgstr "Азиру,\n"
+"\n"
+"Ваши слова дружбы дошли до нас. Мы готовы выслушать подробности предложений дома Амурру. Передайте ваши условия со следующим курьером.\n"
+"\n"
+"С уважением,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "Третья партия золота Вавилона задерживается, несмотря на двух посланников. Бурна-Буриаш просит вас отправить ее без промедления."
 
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:73
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
@@ -1392,7 +1404,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "Легко просматривайте письма в своих папках. Создавайте черновики ответов и копируйте их в свою почту."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:779
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:817
 #, fuzzy
 msgid "Browse templates"
 msgstr "Просмотреть шаблоны"
@@ -1504,11 +1516,9 @@ msgstr "Можно ли установить Amarnai на своём серве�
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1008
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1101
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:301
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:416
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:291
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1519,6 +1529,8 @@ msgstr "Можно ли установить Amarnai на своём серве�
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:213
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:338
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:354
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1029
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1105
 #, fuzzy
 msgid "Cancel"
 msgstr "Отменить"
@@ -1566,12 +1578,12 @@ msgstr "Сертифицировано CASA Tier 2"
 msgid "Catch-all"
 msgstr "Общие"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+#: ../ui/src/settings/LabelWritebackSection.tsx:83
 #, fuzzy
 msgid "Categories in Outlook"
 msgstr "Категории в Outlook"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:104
 #, fuzzy
 msgid "Category writeback needs permission to manage your Outlook mail. Try again and approve it, or leave the feature off."
 msgstr "Для обратной записи категорий требуется разрешение на управление почтой Outlook. Повторите попытку и одобрите его, иначе функция будет отключена."
@@ -1720,7 +1732,7 @@ msgstr "Клиенты"
 msgid "Close"
 msgstr "Закрыть"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:919
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:940
 #, fuzzy
 msgid "Close panel"
 msgstr "Закрыть панель"
@@ -1826,13 +1838,13 @@ msgstr "Подтвердить удаление"
 msgid "Confirm password"
 msgstr "Подтвердите пароль"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:428
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:437
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:426
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:435
 #, fuzzy
 msgid "Connect {name}"
 msgstr "Подключить {name}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:398
 #, fuzzy
 msgid "Connect {name} to this workspace?"
 msgstr "Подключить {name} к этому рабочему пространству?"
@@ -1860,7 +1872,7 @@ msgstr "Подключите почтовый ящик Gmail, чтобы нас�
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:452
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:450
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Подключить Gmail"
@@ -1927,7 +1939,7 @@ msgstr "Подключитесь и сгенерируйте папки один
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:460
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:458
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Подключить Outlook"
@@ -1972,7 +1984,7 @@ msgstr "Подключите почту, и Amarnai начнет сортиро�
 msgid "Connect your inbox to start triaging."
 msgstr "Подключите почту, чтобы начать сортировку."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:394
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:392
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "При подключении {name} будет безвозвратно удалена отсортированная почта от {retainedAddress}. Ваши папки и настройки сохранятся."
@@ -1989,7 +2001,7 @@ msgid "Connecting…"
 msgstr "Подключение…"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:188
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
 #, fuzzy
 msgid "Connection failed. Please try again."
 msgstr "Ошибка подключения. Пожалуйста, попробуйте еще раз."
@@ -2007,7 +2019,7 @@ msgstr "Продолжить"
 msgid "Continue as {incomingEmail}"
 msgstr "Продолжить как {incomingEmail}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:409
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:407
 #, fuzzy
 msgid "Continue to {name}"
 msgstr "Продолжить с {name}"
@@ -2078,12 +2090,12 @@ msgstr "Скопировано"
 msgid "Copy"
 msgstr "Копировать"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:80
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "Не удалось получить доступ к вашему почтовому ящику Gmail. Убедитесь, что Gmail API включен и область действия gmail.readonly добавлена на экран согласия OAuth в Google Cloud Console."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:108
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
 msgstr "Не удалось получить доступ к вашему почтовому ящику Outlook. Пожалуйста, попробуйте еще раз."
 
@@ -2155,18 +2167,27 @@ msgstr "Не удалось загрузить информацию о счет�
 msgid "Could not load the plan."
 msgstr "Не удалось загрузить план."
 
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:90
+#, fuzzy
+msgid "Could not load your folders. Please try again."
+msgstr "Не удалось загрузить папки. Повторите попытку."
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:92
+msgid "Could not load your settings. Please try again."
+msgstr "Не удалось загрузить настройки. Повторите попытку."
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
 #, fuzzy
 msgid "Could not open billing management."
 msgstr "Не удалось открыть управление счетами."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:583
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:615
 msgid "Could not prepare migration"
 msgstr "Не удалось подготовить миграцию"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:112
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:124
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "Не удалось поставить повторное сканирование в очередь. Пожалуйста, попробуйте еще раз."
@@ -2184,7 +2205,7 @@ msgstr "Не удалось подключиться к сервису опла�
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "Не удалось связаться с сервером. Пожалуйста, проверьте ваше подключение и попробуйте еще раз."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:533
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:565
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "Не удалось прочитать файл: некорректный JSON."
@@ -2212,6 +2233,11 @@ msgstr "Не удалось сбросить рабочее пространст
 #, fuzzy
 msgid "Could not save filter setting. Please try again."
 msgstr "Не удалось сохранить настройку фильтра. Повторите попытку."
+
+#: ../ui/src/settings/WorkspaceNameSection.tsx:48
+#, fuzzy
+msgid "Could not save. Please try again."
+msgstr "Не удалось сохранить. Повторите попытку."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:248
 msgid "Could not sign in. Please try again."
@@ -2241,8 +2267,8 @@ msgstr "Не удалось создать сводку этого обсужд�
 msgid "Could not update name. Please try again."
 msgstr "Не удалось обновить имя. Повторите попытку."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:117
 #: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:78
+#: ../ui/src/settings/LabelWritebackSection.tsx:128
 msgid "Could not update the setting. Please try again."
 msgstr "Не удалось обновить настройку. Повторите попытку."
 
@@ -2256,7 +2282,7 @@ msgstr "Не удалось обновить настройку напомина
 msgid "Could not upgrade"
 msgstr "Не удалось выполнить обновление"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:82
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:72
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "Не удалось подтвердить ваш аккаунт Google. Повторите попытку."
@@ -2368,8 +2394,8 @@ msgstr "Создание…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1062
 #: ../ui/src/demo/demo-seed.ts:34
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1073
 #, fuzzy
 msgid "Current"
 msgstr "Текущий"
@@ -2548,7 +2574,7 @@ msgid "Design your folders"
 msgstr "Настройте папки"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:101
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "Обнаруженные уведомления, рассылки и обновления сервисов помещаются в вашу общую папку без использования ИИ. Требуется папка <0>Обновления / Прочее</0> из шаблона таксономии."
@@ -2568,7 +2594,7 @@ msgstr "Отменить"
 msgid "Disconnect"
 msgstr "Отключить"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:272
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:262
 msgid "Disconnect {providerName}"
 msgstr "Отключить {providerName}"
 
@@ -2602,7 +2628,7 @@ msgstr "Отвязать почтовый ящик или удалить акк�
 msgid "Disconnected"
 msgstr "Отключено"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:341
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:339
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Отключено от этого рабочего пространства. {erasedNote} Amarnai по-прежнему имеет доступ, так как этот почтовый ящик подключен в другом рабочем пространстве. Чтобы полностью отозвать доступ, удалите Amarnai из <0/>."
@@ -2612,11 +2638,11 @@ msgstr "Отключено от этого рабочего пространст
 #~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 #~ msgstr "Отключено. {erasedNote} Не удалось подтвердить отзыв доступа в Google. Вы можете удалить Amarnai из <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:357
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:355
 msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 msgstr "Отключено. {erasedNote} Чтобы полностью отозвать доступ Amarnai, удалите его из <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:365
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "Отключено. Amarnai больше не синхронизирует этот ящик."
@@ -2626,26 +2652,26 @@ msgstr "Отключено. Amarnai больше не синхронизируе
 #~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 #~ msgstr "Отключено. Доступ Amarnai к этому почтовому ящику отозван в Google. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:350
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 msgstr "Отключено. Доступ Amarnai к этому почтовому ящику был отозван.{erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:293
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:283
 #, fuzzy
 msgid "Disconnecting…"
 msgstr "Отключение…"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:214
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:204
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Отключает это рабочее пространство. Amarnai сохраняет доступ, так как этот ящик также подключен в другом месте Amarnai. Чтобы полностью отозвать доступ, удалите Amarnai из <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:209
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:199
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Отключает это рабочее пространство. Amarnai сохраняет доступ, так как этот ящик всё ещё подключен в {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
 #: ../../apps/extension/src/panel/StatusSlot.tsx:107
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
@@ -3060,13 +3086,13 @@ msgstr "Все, что не подходит ни под одну именова
 msgid "Expenses"
 msgstr "Расходы"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:743
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:779
 #, fuzzy
 msgid "Export"
 msgstr "Экспорт"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:718
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:726
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:754
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:762
 msgid "Export folders"
 msgstr "Экспортировать папки"
 
@@ -3090,22 +3116,22 @@ msgstr "Внешние агентства, сторонние фирмы и пр
 msgid "Failed to apply"
 msgstr "Не удалось применить"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:365
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:397
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "Не удалось создать папку"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:298
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:330
 #, fuzzy
 msgid "Failed to create path"
 msgstr "Не удалось создать путь"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:436
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:468
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "Не удалось удалить папку"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:453
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:485
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "Не удалось удалить путь"
@@ -3115,12 +3141,12 @@ msgstr "Не удалось удалить путь"
 msgid "Failed to load status"
 msgstr "Не удалось загрузить статус"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:494
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:526
 #, fuzzy
 msgid "Failed to redo"
 msgstr "Не удалось повторить действие"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:265
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:297
 #, fuzzy
 msgid "Failed to save position"
 msgstr "Не удалось сохранить позицию"
@@ -3130,17 +3156,17 @@ msgstr "Не удалось сохранить позицию"
 msgid "Failed to start generation"
 msgstr "Не удалось начать генерацию"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:475
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:507
 #, fuzzy
 msgid "Failed to undo"
 msgstr "Не удалось отменить действие"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:397
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:429
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "Не удалось обновить папку"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:419
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:451
 #, fuzzy
 msgid "Failed to update path"
 msgstr "Не удалось обновить путь"
@@ -3261,7 +3287,7 @@ msgstr "Папка создана"
 msgid "Folder deleted"
 msgstr "Папка удалена"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:676
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:708
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "Лимит папок достигнут ({MAX_TAXONOMY_NON_ROOT_NODES}). Удалите папку, чтобы добавить новую."
 
@@ -3279,7 +3305,8 @@ msgstr "Папка будет игнорироваться, пока не буд
 msgid "Folder: {activeFolderName}"
 msgstr "Папка: {activeFolderName}"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:83
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
 #: ../../apps/web/src/app/(app)/folders/page.tsx:45
 #: ../../apps/web/src/components/Sidebar.tsx:33
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
@@ -3289,7 +3316,7 @@ msgstr "Папка: {activeFolderName}"
 msgid "Folders"
 msgstr "Папки"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:669
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:701
 msgid "Folders are view-only. Only workspace admins can edit them."
 msgstr "Папки доступны только для просмотра. Изменять их могут только администраторы рабочей области."
 
@@ -3525,9 +3552,9 @@ msgstr "Сгенерировать папки из вашего почтовог
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:880
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "Сгенерировать из почты"
@@ -3664,7 +3691,7 @@ msgstr "Активна синхронизация Gmail в реальном вр
 #~ msgid "Gmail marked as important"
 #~ msgstr "Помечено как важное в Gmail"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Доступ только для чтения к Gmail не был предоставлен. Повторите попытку и одобрите запрашиваемое разрешение."
@@ -3708,12 +3735,12 @@ msgstr "Золотой баланс: просрочена третья пост�
 #~ msgid "Google account email"
 #~ msgstr "Электронная почта аккаунта Google"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:50
 #, fuzzy
 msgid "Google Account permissions"
 msgstr "Разрешения аккаунта Google"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:76
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:66
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google не смог завершить авторизацию. Возможно, срок действия ссылки истек: повторите попытку. Если проблема не исчезнет, убедитесь, что URL-адрес обратного вызова Gmail зарегистрирован в Google Cloud Console."
@@ -3750,7 +3777,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Великий Царь,\n\nОтчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n\nС братством,"
+msgstr "Великий Царь,\n"
+"\n"
+"Отчеты, которые Вы запросили, будут подготовлены до созыва совета. Мои писцы составят сводки по восточным территориям и отправят их вперед с быстрым курьером.\n"
+"\n"
+"С братством,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3901,22 +3932,22 @@ msgstr "Если что-то не работает или у вас есть в�
 msgid "Ignored"
 msgstr "Проигнорировано"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:768
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:804
 #, fuzzy
 msgid "Import"
 msgstr "Импорт"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:598
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:630
 #, fuzzy
 msgid "Import failed"
 msgstr "Импорт не удался"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:751
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:787
 #, fuzzy
 msgid "Import folders"
 msgstr "Импортировать папки"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:746
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:782
 msgid "Import folders (replaces current)"
 msgstr "Импортировать папки (заменит текущие)"
 
@@ -3977,8 +4008,8 @@ msgid "Inbox import complete"
 msgstr "Импорт входящих завершен"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:247
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:237
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:250
 #, fuzzy
 msgid "Inbox sync"
 msgstr "Синхронизация входящих"
@@ -3993,13 +4024,13 @@ msgid "Incidents"
 msgstr "Инциденты"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:76
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Include Promotions"
 msgstr "Включать промоакции"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:66
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:78
 #, fuzzy
 msgid "Include spam"
 msgstr "Включать спам"
@@ -4091,12 +4122,12 @@ msgid "Invalid or missing reset link."
 msgstr "Неверная или отсутствующая ссылка для сброса."
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:547
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:579
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "Неверный файл таксономии: {0}"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:541
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:573
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Неверный файл таксономии: {detail}"
@@ -4265,17 +4296,17 @@ msgstr "Лаборатория и Сотрудники"
 msgid "Lab group updates, collaborator threads, and experiment coordination."
 msgstr "Обновления лабораторной группы, переписка с коллегами и координация экспериментов."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
 #, fuzzy
 msgid "Label writeback needs permission to manage your Gmail labels. Try again and approve it, or leave the feature off."
 msgstr "Для обратной записи ярлыков требуется разрешение на управление ярлыками Gmail. Повторите попытку и одобрите его, иначе функция будет отключена."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+#: ../ui/src/settings/LabelWritebackSection.tsx:83
 msgid "Labels in Gmail"
 msgstr "Ярлыки в Gmail"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
-#: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
+#: ../ui/src/settings/WorkspaceLanguageSection.tsx:54
 #, fuzzy
 msgid "Language"
 msgstr "Язык"
@@ -4283,7 +4314,7 @@ msgstr "Язык"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "Последняя синхронизация: {0}"
@@ -4291,7 +4322,7 @@ msgstr "Последняя синхронизация: {0}"
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
 msgid "Last verified: {0}"
 msgstr "Последняя проверка: {0}"
@@ -4381,8 +4412,12 @@ msgstr "Активно"
 msgid "Load more"
 msgstr "Загрузить ещё"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:480
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:476
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:497
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:541
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "Загрузка"
 
@@ -4413,6 +4448,7 @@ msgstr "Загрузка прошлых цепочек…"
 msgid "Loading…"
 msgstr "Загрузка…"
 
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:123
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4583,12 +4619,12 @@ msgstr "Сообщения от платящих клиентов и владе�
 msgid "Metadata"
 msgstr "Метаданные"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:54
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:44
 #, fuzzy
 msgid "Microsoft account permissions"
 msgstr "Разрешения аккаунта Microsoft"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:104
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:94
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft не удалось завершить авторизацию. Возможно, срок действия ссылки истек: пожалуйста, попробуйте еще раз. Если проблема сохраняется, убедитесь, что URI перенаправления зарегистрирован в регистрации приложения."
 
@@ -4632,6 +4668,10 @@ msgstr "Ежемесячно"
 #: ../../apps/web/src/lib/notifications.ts:112
 msgid "Monthly sorting limit reached"
 msgstr "Достигнут месячный лимит сортировки"
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
+msgid "More settings on the web"
+msgstr "Больше настроек на сайте"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -4687,7 +4727,7 @@ msgstr "Мои странствия приведут меня к Дельте в
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
+#: ../ui/src/settings/WorkspaceNameSection.tsx:61
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:161
 #, fuzzy
 msgid "Name"
@@ -4706,8 +4746,8 @@ msgid "Needs review"
 msgstr "Требует проверки"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
 #, fuzzy
 msgid "Never"
 msgstr "Никогда"
@@ -4853,7 +4893,7 @@ msgstr "Папок пока нет"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Почтовый ящик Gmail не подключен. Подключите свой аккаунт, чтобы начать синхронизацию."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:446
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:444
 #, fuzzy
 msgid "No inbox connected to this workspace."
 msgstr "К этому рабочему пространству не подключен ни один почтовый ящик."
@@ -4989,7 +5029,7 @@ msgstr "Не обязательно. Amarnai может сгенерироват
 msgid "Not set"
 msgstr "Не задано"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:252
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:242
 #, fuzzy
 msgid "Not yet synced"
 msgstr "Ещё не синхронизировано"
@@ -5162,7 +5202,7 @@ msgstr "Необязательно. Задает цвет метки и знач
 msgid "or"
 msgstr "или"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:388
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:386
 msgid "Or connect a different inbox:"
 msgstr "Или подключить другой почтовый ящик:"
 
@@ -5181,7 +5221,7 @@ msgstr "Другое"
 msgid "outlook ai assistant"
 msgstr "ИИ-ассистент для Outlook"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
 msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
 msgstr "Доступ только для чтения к Outlook (Mail.Read) не был предоставлен. Пожалуйста, попробуйте еще раз и одобрите запрошенное разрешение."
 
@@ -5308,8 +5348,8 @@ msgstr "Безвозвратно удалить это рабочее прост
 msgid "Permanently delete your account and all associated data. This cannot be undone."
 msgstr "Безвозвратно удалить ваш аккаунт и все связанные с ним данные. Это действие невозможно отменить."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:90
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:80
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
 msgid "Permission was granted but the feature could not be turned on. Toggle it from settings to retry."
 msgstr "Разрешение получено, но функцию не удалось включить. Переключите её в настройках, чтобы повторить попытку."
 
@@ -5619,7 +5659,7 @@ msgstr "Вопросы учеников, сдача домашних задан�
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "Подтверждения покупок, изменения статуса заказов и обновления по выполнению от вашего магазина."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "Повторное сканирование в очереди…"
@@ -5710,7 +5750,7 @@ msgstr "Недавно была попытка. Попробуйте позже.
 msgid "Recommended"
 msgstr "Рекомендуется"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1066
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1077
 msgid "Recommended for your inbox"
 msgstr "Рекомендовано для входящих"
 
@@ -5719,7 +5759,7 @@ msgstr "Рекомендовано для входящих"
 msgid "Reconnect"
 msgstr "Переподключить"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:383
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 #, fuzzy
 msgid "Reconnect {providerName}"
@@ -5780,7 +5820,7 @@ msgstr "Рекрутинг"
 msgid "Redirecting…"
 msgstr "Перенаправление…"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:706
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:738
 #, fuzzy
 msgid "Redo"
 msgstr "Повторить"
@@ -5904,7 +5944,7 @@ msgstr "Заменить папки"
 #~ msgid "Replace taxonomy"
 #~ msgstr "Заменить таксономию"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1003
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1024
 #, fuzzy
 msgid "Replace with a template"
 msgstr "Заменить шаблоном"
@@ -5932,7 +5972,7 @@ msgid "Rescan failed"
 msgstr "Повторное сканирование не удалось"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "Пересканировать папку «Входящие»"
@@ -5942,7 +5982,7 @@ msgstr "Пересканировать папку «Входящие»"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "Пересканирование в очереди — цепочки сообщений скоро обновятся."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:107
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:119
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "Пересканирование в очереди: цепочки сообщений скоро обновятся."
@@ -6070,7 +6110,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Риб-Хадда,\n\nМы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n\nБудьте здоровы,"
+msgstr "Риб-Хадда,\n"
+"\n"
+"Мы вас услышали. Дополнительное зерно заказано с южных складов и прибудет до праздника урожая. Просим проявить терпение до этого момента.\n"
+"\n"
+"Будьте здоровы,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6103,7 +6147,7 @@ msgstr "Как при ежемесячной оплате"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/settings/WorkspaceNameSection.tsx:90
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 #, fuzzy
@@ -6151,7 +6195,7 @@ msgid "Saving..."
 msgstr "Сохранение..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/settings/WorkspaceNameSection.tsx:90
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 #, fuzzy
@@ -6220,7 +6264,7 @@ msgstr "Посмотреть в действии"
 msgid "Select"
 msgstr "Выбрать"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:391
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:408
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6341,7 +6385,7 @@ msgstr "Настройте папки, чтобы Amarnai знал, куда р�
 msgid "Set up your folders"
 msgstr "Настроить папки"
 
-#: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
+#: ../ui/src/settings/WorkspaceLanguageSection.tsx:75
 #, fuzzy
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
 msgstr "Устанавливает язык для этого рабочего пространства, включая интерфейс и папки, сгенерированные ИИ."
@@ -6351,7 +6395,8 @@ msgstr "Устанавливает язык для этого рабочего �
 msgid "Setting up your workspace…"
 msgstr "Настройка вашего рабочего пространства…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:47
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
 #: ../../apps/web/src/components/Sidebar.tsx:34
@@ -6465,7 +6510,7 @@ msgstr "Войти через Google или Microsoft"
 
 #: ../../apps/extension/src/App.tsx:128
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:125
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:156
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -6659,12 +6704,12 @@ msgid "Start free"
 msgstr "Начать бесплатно"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1004
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1025
 #, fuzzy
 msgid "Start from a template"
 msgstr "Начать с шаблона"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:771
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:809
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "Начать с шаблона (заменит текущий)"
@@ -6709,7 +6754,7 @@ msgstr "Не сортируйте почту.<0/><1>Сортируйте оди�
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "Останавливает синхронизацию и отзывает доступ Amarnai к этому почтовому ящику."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:204
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:194
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "Останавливает синхронизацию и отзывает доступ Amarnai к этому почтовому ящику. Синхронизированные данные писем сохраняются, чтобы вы могли повторно подключиться позже."
@@ -6845,14 +6890,14 @@ msgid "Switch theme"
 msgstr "Сменить тему"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:130
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:120
 #, fuzzy
 msgid "Sync error"
 msgstr "Ошибка синхронизации"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:55
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:64
 #, fuzzy
 msgid "Sync filters"
 msgstr "Фильтры синхронизации"
@@ -6862,13 +6907,13 @@ msgstr "Фильтры синхронизации"
 #~ msgid "Synced 2m ago"
 #~ msgstr "Синхронизировано 2 мин. назад"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:221
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:211
 #, fuzzy
 msgid "Synced email data was erased."
 msgstr "Данные синхронизированных писем удалены."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:129
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:119
 #, fuzzy
 msgid "Syncing…"
 msgstr "Синхронизация…"
@@ -6931,7 +6976,7 @@ msgstr "Команда"
 msgid "Template applied"
 msgstr "Шаблон применен"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:795
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:833
 #, fuzzy
 msgid "Templates"
 msgstr "Шаблоны"
@@ -6954,12 +6999,12 @@ msgstr "Спасибо за обновление. Пятница подходи�
 msgid "That invitation link is invalid or has expired."
 msgstr "Эта ссылка-приглашение недействительна или срок ее действия истек."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:76
 #, fuzzy
 msgid "That is a different Google account. Sign in with the mailbox already connected to this workspace."
 msgstr "Это другой аккаунт Google. Войдите с помощью почтового ящика, который уже подключён к этому рабочему пространству."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:112
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:102
 msgid "That is a different Microsoft account. Sign in with the mailbox already connected to this workspace."
 msgstr "Это другой аккаунт Microsoft. Войдите с помощью почтового ящика, который уже подключён к этому рабочему пространству."
 
@@ -6976,14 +7021,14 @@ msgstr "Эта ссылка недействительна или срок ее 
 msgid "The Amarnai Reply button is switched off for this workspace in settings."
 msgstr "Кнопка Amarnai Ответ отключена для этого рабочего пространства в настройках."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
 #, fuzzy
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "Неполный ответ авторизации. Пожалуйста, попробуйте еще раз."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:72
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:100
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:62
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:90
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "Срок действия запроса на авторизацию истек или он был изменен. Пожалуйста, попробуйте еще раз."
@@ -6993,8 +7038,8 @@ msgstr "Срок действия запроса на авторизацию и�
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "Папку «Общие» нельзя удалить. Автоматические и массовые письма попадают сюда."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:84
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:110
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:74
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:100
 #, fuzzy
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "Не удалось сохранить подключение из-за ошибки сервера. Пожалуйста, попробуйте еще раз."
@@ -7066,7 +7111,7 @@ msgstr "Эти папки будут созданы. Вы можете реда�
 #~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
 #~ msgstr "Эти настройки определяют, какие цепочки писем Gmail импортируются. Корзина всегда исключается."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:57
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:67
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "Эти настройки определяют, какие переписки из входящих импортируются. Корзина всегда исключается."
 
@@ -7079,7 +7124,7 @@ msgstr "В этом браузере выполнен вход как {currentEm
 msgid "This conversation has not synced to Amarnai yet."
 msgstr "Эта переписка еще не синхронизирована с Amarnai."
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:661
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:693
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "Эта папка содержит дочерние папки. Сначала удалите их пути, затем удалите эту папку."
@@ -7094,7 +7139,7 @@ msgstr "Эта папка недоступна из входящих и не б�
 #~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 #~ msgstr "Этот аккаунт Gmail также подключен в {sharedNames}. Каждое рабочее пространство синхронизирует и классифицирует его отдельно, используя отдельную квоту ИИ."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:231
 msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 msgstr "Этот почтовый ящик также подключен в {sharedNames}. Каждое рабочее пространство синхронизирует и классифицирует его отдельно, что использует отдельную квоту AI."
 
@@ -7255,7 +7300,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Моему брату, Великому Царю,\n\nВеликий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n\nНаш союз крепок. Покажем совету, что он остается таковым.\n\nТушратта, Великий Царь Митанни"
+msgstr "Моему брату, Великому Царю,\n"
+"\n"
+"Великий совет созывается в начале Шему. Прошу тебя подготовить полный отчет по восточным территориям и отправить его вперед быстрым курьером, если возможно, до новолуния.\n"
+"\n"
+"Наш союз крепок. Покажем совету, что он остается таковым.\n"
+"\n"
+"Тушратта, Великий Царь Митанни"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7264,7 +7315,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "В Бюро по царским назначениям,\n\nМы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n\nЦарским указом,"
+msgstr "В Бюро по царским назначениям,\n"
+"\n"
+"Мы получили заявление от Горемхеба из Фив и рассмотрим его досье до следующего новолуния. Прошу вас сообщить ему, что мы отправим весть в должное время.\n"
+"\n"
+"Царским указом,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7275,7 +7330,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Великому Царю,\n\nМногие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n\nПрошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n\nАзиру, слуга Великого Царя, владыка Амурру"
+msgstr "Великому Царю,\n"
+"\n"
+"Многие годы наши дома были как братья. Пишу сейчас, чтобы предложить официально оформить эту дружбу на благо обоих наших народов: пакт о взаимной защите и общих маршрутах.\n"
+"\n"
+"Прошу лишь, чтобы ты выслушал мои условия. Пришли весть со следующим курьером, и я немедленно отправлю моего посланника.\n"
+"\n"
+"Азиру, слуга Великого Царя, владыка Амурру"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7284,7 +7345,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Великому Царю,\n\nМои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n\nТвой слуга, Абди-Хеба, наместник Урушалима"
+msgstr "Великому Царю,\n"
+"\n"
+"Мои странствия приведут меня к Дельте в ближайшие дни. Если у Великого Царя найдется свободный час, я бы приветствовал возможность поговорить лицом к лицу; есть вопросы, которые легче сказать, чем написать.\n"
+"\n"
+"Твой слуга, Абди-Хеба, наместник Урушалима"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7293,7 +7358,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Великому Царю, моему брату,\n\nЯ слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n\nВ дружбе,"
+msgstr "Великому Царю, моему брату,\n"
+"\n"
+"Я слышал твои слова. Золото будет отправлено до отбытия следующего посланника. Мы ценим связь между нашими домами и не хотим, чтобы она остыла.\n"
+"\n"
+"В дружбе,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7304,7 +7373,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Великому Царю, моему брату,\n\nЯ пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n\nПросим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n\nБурна-Буриаш II, Царь Вавилона"
+msgstr "Великому Царю, моему брату,\n"
+"\n"
+"Я пишу в дружбе, как наши отцы писали до нас. Третья партия золота, согласованная по нашему договору, не прибыла. Два посланника прошли, и мы все еще ждем.\n"
+"\n"
+"Просим вас отправить ее без дальнейших задержек, как подобает связи между нашими домами.\n"
+"\n"
+"Бурна-Буриаш II, Царь Вавилона"
 
 #: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
@@ -7315,7 +7390,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Великому Царю, моему господину, моему солнцу,\n\nЗерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n\nЯ писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n\nТвой слуга, Риб-Хадда, наместник Библа"
+msgstr "Великому Царю, моему господину, моему солнцу,\n"
+"\n"
+"Зерно, которое вы прислали в прошлом месяце, было получено с благодарностью, и я восхвалял ваше имя перед народом. Но я должен написать снова: третья партия не прибыла, и город становится беспокойным.\n"
+"\n"
+"Я писал семь раз. Я не хочу беспокоить вас, но что еще я могу сделать?\n"
+"\n"
+"Твой слуга, Риб-Хадда, наместник Библа"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7397,7 +7478,7 @@ msgstr "Повторить попытку"
 msgid "Try Amarnai"
 msgstr "Попробовать Amarnai"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:105
+#: ../ui/src/settings/LabelWritebackSection.tsx:116
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "Включение этой функции запросит разрешение на управление вашими ярлыками."
 
@@ -7427,10 +7508,10 @@ msgstr "Неклассифицированные"
 msgid "Unclassified. Change folder"
 msgstr "Без категории. Изменить папку"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:435
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:452
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:697
 #: ../ui/src/emails/MockEmailsPage.tsx:298
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
 #, fuzzy
 msgid "Undo"
 msgstr "Отменить"
@@ -7445,7 +7526,7 @@ msgstr "Университет"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:540
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:572
 #, fuzzy
 msgid "unknown error"
 msgstr "неизвестная ошибка"
@@ -7507,7 +7588,7 @@ msgid "Up to 3 people"
 msgstr "До 3 человек"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:128
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:118
 #, fuzzy
 msgid "Up to date"
 msgstr "Актуально"
@@ -7604,7 +7685,7 @@ msgstr "Обновите план до Scribe или Pharaoh, чтобы при�
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "Повысьте тариф в веб-приложении, чтобы включить обратную загрузку."
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:118
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:130
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "Используйте «Повторное сканирование входящих» после изменения настроек фильтров, чтобы применить их к уже имеющимся цепочкам писем."
@@ -7624,7 +7705,7 @@ msgstr "Используйте «Повторное сканирование в�
 msgid "Use a template"
 msgstr "Использовать шаблон"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1112
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1116
 #, fuzzy
 msgid "Use template"
 msgstr "Использовать шаблон"
@@ -7714,7 +7795,7 @@ msgstr "Волонтеры"
 msgid "Waiting"
 msgstr "Ожидание"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:261
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
 #, fuzzy
 msgid "Waiting for first sync…"
 msgstr "Ожидание первой синхронизации…"
@@ -7837,7 +7918,7 @@ msgstr "Профессионал"
 msgid "Works with Gmail™ and Outlook."
 msgstr "Работает с Gmail™ и Outlook."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:57
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
@@ -7847,10 +7928,14 @@ msgstr "Работает с Gmail™ и Outlook."
 msgid "Workspace"
 msgstr "Рабочая область"
 
+#: ../ui/src/settings/WorkspaceNameSection.tsx:57
+msgid "Workspace details"
+msgstr "Детали рабочего пространства"
+
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:12
 #, fuzzy
-msgid "Workspace Details"
-msgstr "Детали рабочей области"
+#~ msgid "Workspace Details"
+#~ msgstr "Детали рабочей области"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:206
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:60
@@ -7866,16 +7951,16 @@ msgstr "Название рабочей области"
 msgid "Workspace name cannot be empty"
 msgstr "Название рабочей области не может быть пустым"
 
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:27
+#: ../ui/src/settings/WorkspaceNameSection.tsx:81
 #, fuzzy
 msgid "Workspace name updated."
 msgstr "Название рабочей области обновлено."
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:44
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:47
 msgid "Workspace settings"
 msgstr "Настройки рабочей области"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:139
+#: ../../apps/web/src/app/(app)/settings/page.tsx:138
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "Настройки рабочей области"
@@ -7890,17 +7975,17 @@ msgstr "Тип рабочей области"
 msgid "Workspaces included"
 msgstr "Рабочих пространств включено"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:99
+#: ../ui/src/settings/LabelWritebackSection.tsx:110
 #, fuzzy
 msgid "Write sorted folders as Gmail labels"
 msgstr "Записывать отсортированные папки как ярлыки Gmail"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:97
+#: ../ui/src/settings/LabelWritebackSection.tsx:108
 #, fuzzy
 msgid "Write sorted folders as Outlook categories"
 msgstr "Записывать отсортированные папки как категории Outlook"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:111
+#: ../ui/src/settings/LabelWritebackSection.tsx:122
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "Обратная запись включена. Ваши папки дублируются в почтовом ящике."
 
@@ -7927,7 +8012,7 @@ msgstr "Да, удалить мой аккаунт"
 msgid "Yes, delete workspace"
 msgstr "Да, удалить рабочее пространство"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:293
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:283
 #, fuzzy
 msgid "Yes, disconnect"
 msgstr "Да, отключить"
@@ -8021,12 +8106,12 @@ msgstr "Вы можете повторить попытку через {0} ил�
 msgid "You can try again shortly, or start from a template."
 msgstr "Вы можете повторить попытку в ближайшее время или начать с шаблона."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:74
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "У вас нет разрешения на подключение почтового ящика Gmail к этому рабочему пространству."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:102
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:92
 msgid "You do not have permission to connect an Outlook inbox to this workspace."
 msgstr "У вас нет разрешения подключать почтовый ящик Outlook к этому рабочему пространству."
 
@@ -8113,12 +8198,12 @@ msgstr "Ваши папки"
 msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 msgstr "Ваши папки — это простое дерево, исходящее из вашего почтового ящика. Позвольте Amarnai сгенерировать их из почтового ящика, начните с шаблона или создайте их самостоятельно."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:82
+#: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
 msgid "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
 msgstr "Ваши папки дублируются как ярлыки Gmail и синхронизируются по мере сортировки цепочек. Amarnai управляет только ярлыками в пространстве имён <0>Amarnai/</0> и никогда не отправляет, не удаляет и не перемещает вашу почту."
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:76
+#: ../ui/src/settings/LabelWritebackSection.tsx:87
 msgid "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
 msgstr "Ваши папки дублируются как категории Outlook и синхронизируются по мере сортировки цепочек. Amarnai управляет только категориями в пространстве имён <0>Amarnai</0> и никогда не отправляет, не удаляет и не перемещает вашу почту."
 
@@ -8205,7 +8290,7 @@ msgstr "Ваш повторный импорт завершен и по-преж
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "Ваш повторный импорт завершен и по-прежнему ограничен лимитом вашего плана {plan}. Следующая попытка будет доступна {refreshDate}."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:368
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 msgstr "Ваша отсортированная почта от {retainedAddress} сохранена. Повторное подключение того же ящика восстановит её; подключение другого ящика безвозвратно удалит её. Папки и настройки сохранятся в любом случае."
 

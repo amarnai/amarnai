@@ -13,6 +13,8 @@ import "@amarnai/ui/switch/styles";
 import "@amarnai/ui/emails/styles";
 import "@amarnai/ui/plan-setup/styles";
 import "@amarnai/ui/upgrade/styles";
+import "@amarnai/ui/settings/styles";
+import "@amarnai/ui/taxonomy-editor/styles";
 import { applyStoredThemeSync } from "@amarnai/ui";
 import { App } from "./App";
 

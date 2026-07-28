@@ -49,12 +49,22 @@ gmailSyncSettings.get("/workspaces/:workspaceId/gmail-sync-settings", async (c) 
   });
   if (!workspace) return c.json({ error: "Workspace not found" }, 404);
 
-  const row = await db.gmailSyncSettings.findUnique({
-    where: { workspaceId: parsed.data.workspaceId },
-    select: SETTINGS_SELECT,
-  });
+  const [row, hasWritebackScope] = await Promise.all([
+    db.gmailSyncSettings.findUnique({
+      where: { workspaceId: parsed.data.workspaceId },
+      select: SETTINGS_SELECT,
+    }),
+    connectionHasWritebackScope(parsed.data.workspaceId),
+  ]);
 
-  return c.json(row ?? DEFAULT_GMAIL_SYNC_SETTINGS);
+  // The two capability flags travel with the settings because the control they
+  // gate is rendered from this one payload. Without them a client would have to
+  // guess, or discover the deployment flag by having its write rejected.
+  return c.json({
+    ...(row ?? DEFAULT_GMAIL_SYNC_SETTINGS),
+    writebackAvailable: config.mail.labelWritebackEnabled,
+    hasWritebackScope,
+  });
 });
 
 /**

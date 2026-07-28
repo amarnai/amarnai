@@ -220,7 +220,7 @@ msgstr "{hiddenCount, plural, one {#件のスレッドのないフォルダは�
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} 保留中"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:225
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
 msgid "{providerName} Inbox"
 msgstr "{providerName} 受信トレイ"
 
@@ -235,7 +235,7 @@ msgstr "{0} 中 {quotaRemaining} 残り · {quotaResetDate} にリセット"
 msgid "{remaining} of {limit} remaining · resets {resetDate}"
 msgstr "{limit} 件中 {remaining} 件利用可能 · {resetDate} にリセット"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:854
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:876
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
 msgstr "受信トレイに接続されているフォルダは {TAXONOMY_MIN_NON_ROOT_NODES} 件中 {routableCount} 件です。ルーティングには少なくとも {TAXONOMY_MIN_NON_ROOT_NODES} 件が必要です。"
@@ -297,8 +297,8 @@ msgstr "© 2026 Amarnai. AGPL-3.0ライセンスでオープンソース。"
 msgid "+ Add folder"
 msgstr "フォルダーを追加"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:685
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:694
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:717
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:726
 msgid "+ Add Folder"
 msgstr "+ フォルダを追加"
 
@@ -560,7 +560,9 @@ msgstr "「通信長」の職に、テベスのホルエムヘブ氏から新規
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "テーベのホレムヘブより、通信長官職への応募がありました。\n\n応募書類は記録の館でご確認ください。"
+msgstr "テーベのホレムヘブより、通信長官職への応募がありました。\n"
+"\n"
+"応募書類は記録の館でご確認ください。"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -586,7 +588,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "アブディ＝ヘバ殿、\n\n同週にデルタ地方近郊に参ります。二日目の午前中でしたら、宿駅でお会いできます。\n\nではまた、"
+msgstr "アブディ＝ヘバ殿、\n"
+"\n"
+"同週にデルタ地方近郊に参ります。二日目の午前中でしたら、宿駅でお会いできます。\n"
+"\n"
+"ではまた、"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -603,12 +609,12 @@ msgstr "学術研究者"
 #~ msgid "Access is granted to that exact Google account, so if it isn't the one whose Gmail you want Amarnai to organize, just submit the right address."
 #~ msgstr "アクセスは指定された Google アカウントに付与されます。Amarnai に整理させたい Gmail アカウントと異なる場合は、正しいアドレスを送信してください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
 #, fuzzy
 msgid "Access was denied. Grant read-only Gmail access to connect."
 msgstr "アクセスが拒否されました。接続するには読み取り専用の Gmail アクセスを許可してください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
 #, fuzzy
 msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
 msgstr "アクセスが拒否されました。接続するには、Outlook (Mail.Read) への読み取り専用アクセスを許可してください。"
@@ -617,12 +623,12 @@ msgstr "アクセスが拒否されました。接続するには、Outlook (Mai
 msgid "Account"
 msgstr "アカウント"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:99
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:130
 #, fuzzy
 msgid "Account menu"
 msgstr "アカウントメニュー"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:114
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:145
 msgid "Account settings"
 msgstr "アカウント設定"
 
@@ -657,7 +663,7 @@ msgstr "追加"
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
 msgstr "AIが正確に仕分けできるよう、{0}文字以上の説明を追加してください。"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:719
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:755
 #, fuzzy
 msgid "Add at least 3 connected folders to export"
 msgstr "エクスポートするには、少なくとも3つの接続済みフォルダを追加してください"
@@ -814,7 +820,7 @@ msgstr "すでにリストにあります。"
 #~ msgid "Already invited? <0>Sign in</0>"
 #~ msgstr "すでに招待されていますか？ <0>サインイン</0>"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:284
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:274
 #, fuzzy
 msgid "Also erase synced email data"
 msgstr "同期されたメールデータも消去する"
@@ -1206,7 +1212,7 @@ msgid "Auto"
 msgstr "自動"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:127
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:86
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:98
 #, fuzzy
 msgid "Auto-file notifications to Updates / Other"
 msgstr "通知を「アップデート/その他」に自動分類する"
@@ -1255,12 +1261,18 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "アジル殿、\n\n貴殿の友情の言葉、謹んで拝聴いたしました。アムル家のご提案、ぜひ詳しくお聞かせください。次回の使者にて、条件をご送付ください。\n\n敬具、"
+msgstr "アジル殿、\n"
+"\n"
+"貴殿の友情の言葉、謹んで拝聴いたしました。アムル家のご提案、ぜひ詳しくお聞かせください。次回の使者にて、条件をご送付ください。\n"
+"\n"
+"敬具、"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "バビロンの3度目の金貨の荷が2名の使者到着後も未着。ブルナ＝ブリアシュは速やかな発送を要求。"
 
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:73
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:356
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:66
@@ -1371,7 +1383,7 @@ msgid "Browse emails easily through your folders. Generate draft replies and cop
 msgstr "フォルダーでメールを簡単に閲覧。返信ドラフトを生成し、受信トレイにコピーできます。"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:779
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:817
 #, fuzzy
 msgid "Browse templates"
 msgstr "テンプレートを閲覧"
@@ -1482,11 +1494,9 @@ msgstr "Amarnaiをセルフホストできますか？"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:93
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:245
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1008
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1101
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:301
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:416
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:291
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1497,6 +1507,8 @@ msgstr "Amarnaiをセルフホストできますか？"
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:213
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:338
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:354
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1029
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1105
 #, fuzzy
 msgid "Cancel"
 msgstr "キャンセル"
@@ -1544,12 +1556,12 @@ msgstr "CASA Tier 2 認定済み"
 msgid "Catch-all"
 msgstr "キャッチオール"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+#: ../ui/src/settings/LabelWritebackSection.tsx:83
 #, fuzzy
 msgid "Categories in Outlook"
 msgstr "Outlook のカテゴリ"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:114
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:104
 msgid "Category writeback needs permission to manage your Outlook mail. Try again and approve it, or leave the feature off."
 msgstr "カテゴリの書き戻しにはOutlookメールの管理権限が必要です。再度試して承認するか、この機能をオフにしてください。"
 
@@ -1697,7 +1709,7 @@ msgstr "クライアント"
 msgid "Close"
 msgstr "閉じる"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:919
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:940
 #, fuzzy
 msgid "Close panel"
 msgstr "パネルを閉じる"
@@ -1801,13 +1813,13 @@ msgstr "削除を確定"
 msgid "Confirm password"
 msgstr "パスワードを再入力"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:428
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:437
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:426
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:435
 #, fuzzy
 msgid "Connect {name}"
 msgstr "{name}を接続"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:400
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:398
 msgid "Connect {name} to this workspace?"
 msgstr "このワークスペースに{name}を接続しますか？"
 
@@ -1835,7 +1847,7 @@ msgstr "同期フィルターを設定するには、Gmail受信トレイを接�
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:452
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:450
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Gmailを接続"
@@ -1901,7 +1913,7 @@ msgstr "一度接続し、フォルダを一度生成するだけで、Amarnai�
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:460
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:458
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Outlook を接続"
@@ -1945,7 +1957,7 @@ msgstr "受信トレイを接続すれば、Amarnaiは数分で整理を開始�
 msgid "Connect your inbox to start triaging."
 msgstr "受信トレイを連携して、トリアージを始めましょう。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:394
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:392
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "{name}を接続すると、{retainedAddress}から保存された選別済みメールは完全に削除されます。フォルダーと設定は保持されます。"
@@ -1962,7 +1974,7 @@ msgid "Connecting…"
 msgstr "接続中…"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:58
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:188
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:178
 #, fuzzy
 msgid "Connection failed. Please try again."
 msgstr "接続に失敗しました。もう一度お試しください。"
@@ -1980,7 +1992,7 @@ msgstr "続行"
 msgid "Continue as {incomingEmail}"
 msgstr "{incomingEmail}として続行"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:409
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:407
 #, fuzzy
 msgid "Continue to {name}"
 msgstr "{name}へ進む"
@@ -2047,12 +2059,12 @@ msgstr "コピーしました"
 msgid "Copy"
 msgstr "コピー"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:80
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
 msgstr "Gmail受信トレイにアクセスできませんでした。Gmail APIが有効で、Google Cloud ConsoleのOAuth同意画面にgmail.readonlyスコープが追加されていることを確認してください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:108
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
 msgstr "Outlook 受信トレイにアクセスできませんでした。もう一度お試しください。"
 
@@ -2125,17 +2137,27 @@ msgstr "請求情報を読み込めませんでした。"
 msgid "Could not load the plan."
 msgstr "プランを読み込めませんでした。"
 
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:90
+#, fuzzy
+msgid "Could not load your folders. Please try again."
+msgstr "フォルダを読み込めませんでした。もう一度お試しください。"
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:92
+#, fuzzy
+msgid "Could not load your settings. Please try again."
+msgstr "設定を読み込めませんでした。もう一度お試しください。"
+
 #: ../../apps/mobile/app/(app)/subscription.tsx:151
 #: ../../apps/mobile/app/(app)/subscription.tsx:156
 msgid "Could not open billing management."
 msgstr "請求管理を開けませんでした。"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:583
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:615
 msgid "Could not prepare migration"
 msgstr "移行の準備ができませんでした"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:89
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:112
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:124
 #, fuzzy
 msgid "Could not queue rescan. Please try again."
 msgstr "再スキャンをキューに追加できませんでした。もう一度お試しください。"
@@ -2154,7 +2176,7 @@ msgstr "決済サービスに接続できませんでした。もう一度お試
 msgid "Could not reach the server. Please check your connection and try again."
 msgstr "サーバーに接続できません。インターネット接続を確認し、再度お試しください。"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:533
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:565
 #, fuzzy
 msgid "Could not read file: invalid JSON."
 msgstr "ファイルを読み取れませんでした：無効なJSONです。"
@@ -2181,6 +2203,11 @@ msgstr "ワークスペースをリセットできませんでした"
 #, fuzzy
 msgid "Could not save filter setting. Please try again."
 msgstr "フィルター設定を保存できませんでした。もう一度お試しください。"
+
+#: ../ui/src/settings/WorkspaceNameSection.tsx:48
+#, fuzzy
+msgid "Could not save. Please try again."
+msgstr "保存できませんでした。もう一度お試しください。"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:248
 msgid "Could not sign in. Please try again."
@@ -2210,8 +2237,8 @@ msgstr "このスレッドは要約できませんでした。"
 msgid "Could not update name. Please try again."
 msgstr "名前を更新できませんでした。もう一度お試しください。"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:117
 #: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:78
+#: ../ui/src/settings/LabelWritebackSection.tsx:128
 msgid "Could not update the setting. Please try again."
 msgstr "設定を更新できませんでした。もう一度お試しください。"
 
@@ -2224,7 +2251,7 @@ msgstr "リマインダー設定を更新できませんでした。"
 msgid "Could not upgrade"
 msgstr "アップグレードできませんでした"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:82
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:72
 #, fuzzy
 msgid "Could not verify your Google account. Please try again."
 msgstr "Googleアカウントを確認できませんでした。もう一度お試しください。"
@@ -2334,8 +2361,8 @@ msgstr "作成中…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1062
 #: ../ui/src/demo/demo-seed.ts:34
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1073
 #, fuzzy
 msgid "Current"
 msgstr "現在"
@@ -2510,7 +2537,7 @@ msgid "Design your folders"
 msgstr "フォルダーをデザイン"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:137
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:89
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:101
 #, fuzzy
 msgid "Detected notifications, newsletters, and service updates are filed to your catch-all folder without using AI. Requires the <0>Updates / Other</0> folder from a taxonomy template."
 msgstr "検出された通知、ニュースレター、サービス更新は、AIを使用せずにキャッチオールフォルダに分類されます。分類テンプレートの<0>更新 / その他</0>フォルダが必要です。"
@@ -2530,7 +2557,7 @@ msgstr "破棄"
 msgid "Disconnect"
 msgstr "切断"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:272
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:262
 msgid "Disconnect {providerName}"
 msgstr "{providerName} を切断"
 
@@ -2563,7 +2590,7 @@ msgstr "受信トレイの接続を解除するか、アカウントを削除"
 msgid "Disconnected"
 msgstr "切断済み"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:341
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:339
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "このワークスペースから切断されました。{erasedNote} このメールボックスは別のワークスペースにも接続されているため、Amarnaiは引き続きアクセスできます。アクセスを完全に解除するには、<0/>からAmarnaiを削除してください。"
@@ -2573,11 +2600,11 @@ msgstr "このワークスペースから切断されました。{erasedNote} �
 #~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 #~ msgstr "切断されました。{erasedNote} Googleでの取り消しを確認できませんでした。<0/>からAmarnaiを削除できます。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:357
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:355
 msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 msgstr "切断されました。{erasedNote} Amarnai のアクセスを完全に解除するには、<0/>から削除してください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:365
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "切断されました。Amarnaiはこの受信トレイを同期していません。"
@@ -2587,26 +2614,26 @@ msgstr "切断されました。Amarnaiはこの受信トレイを同期して�
 #~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 #~ msgstr "切断されました。GoogleでAmarnaiのこのメールボックスへのアクセスが取り消されました。{erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:350
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
 msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 msgstr "切断されました。Amarnai のこのメールボックスへのアクセスは解除されました。{erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:293
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:283
 #, fuzzy
 msgid "Disconnecting…"
 msgstr "切断中…"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:214
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:204
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is also connected elsewhere in Amarnai. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "このワークスペースを切断します。このメールボックスはAmarnaiの他の場所にも接続されているため、Amarnaiは引き続きアクセスします。アクセスを完全に解除するには、<0/>からAmarnaiを削除してください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:209
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:199
 #, fuzzy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "このワークスペースを切断します。このメールボックスは{sharedNames}にも接続されているため、Amarnaiは引き続きアクセスします。"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
 #: ../../apps/extension/src/panel/StatusSlot.tsx:107
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
@@ -3014,13 +3041,13 @@ msgstr "どのフォルダにも分類されないメッセージ。"
 msgid "Expenses"
 msgstr "経費"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:743
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:779
 #, fuzzy
 msgid "Export"
 msgstr "エクスポート"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:718
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:726
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:754
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:762
 msgid "Export folders"
 msgstr "フォルダをエクスポート"
 
@@ -3043,22 +3070,22 @@ msgstr "外部機関、外部企業、専門業務パートナーとの連携"
 msgid "Failed to apply"
 msgstr "適用できませんでした"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:365
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:397
 #, fuzzy
 msgid "Failed to create folder"
 msgstr "フォルダの作成に失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:298
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:330
 #, fuzzy
 msgid "Failed to create path"
 msgstr "パスの作成に失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:436
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:468
 #, fuzzy
 msgid "Failed to delete folder"
 msgstr "フォルダの削除に失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:453
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:485
 #, fuzzy
 msgid "Failed to delete path"
 msgstr "パスの削除に失敗しました"
@@ -3068,12 +3095,12 @@ msgstr "パスの削除に失敗しました"
 msgid "Failed to load status"
 msgstr "ステータスの読み込みに失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:494
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:526
 #, fuzzy
 msgid "Failed to redo"
 msgstr "やり直しに失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:265
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:297
 #, fuzzy
 msgid "Failed to save position"
 msgstr "位置の保存に失敗しました"
@@ -3083,17 +3110,17 @@ msgstr "位置の保存に失敗しました"
 msgid "Failed to start generation"
 msgstr "生成の開始に失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:475
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:507
 #, fuzzy
 msgid "Failed to undo"
 msgstr "元に戻すのに失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:397
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:429
 #, fuzzy
 msgid "Failed to update folder"
 msgstr "フォルダの更新に失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:419
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:451
 msgid "Failed to update path"
 msgstr "パスの更新に失敗しました"
 
@@ -3211,7 +3238,7 @@ msgstr "フォルダーを作成しました"
 msgid "Folder deleted"
 msgstr "フォルダーを削除しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:676
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:708
 msgid "Folder limit reached ({MAX_TAXONOMY_NON_ROOT_NODES}). Delete a folder to add another."
 msgstr "フォルダー数の上限に達しました（{MAX_TAXONOMY_NON_ROOT_NODES}）。新しいフォルダーを追加するには、いずれかのフォルダーを削除してください。"
 
@@ -3229,7 +3256,8 @@ msgstr "接続されるまで、このフォルダーは無視されます。"
 msgid "Folder: {activeFolderName}"
 msgstr "フォルダ: {activeFolderName}"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:43
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:83
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
 #: ../../apps/web/src/app/(app)/folders/page.tsx:45
 #: ../../apps/web/src/components/Sidebar.tsx:33
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
@@ -3238,7 +3266,7 @@ msgstr "フォルダ: {activeFolderName}"
 msgid "Folders"
 msgstr "フォルダ"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:669
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:701
 msgid "Folders are view-only. Only workspace admins can edit them."
 msgstr "フォルダは閲覧専用です。ワークスペース管理者のみ編集できます。"
 
@@ -3469,9 +3497,9 @@ msgstr "受信トレイからフォルダを生成"
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:880
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
 msgstr "受信トレイから生成"
@@ -3603,7 +3631,7 @@ msgstr "Gmailライブ同期が有効"
 #~ msgid "Gmail marked as important"
 #~ msgstr "Gmailで重要としてマーク済み"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
 msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
 msgstr "Gmailの読み取り専用アクセスが許可されませんでした。もう一度お試しになり、要求された権限を承認してください。"
@@ -3646,12 +3674,12 @@ msgstr "金貨残高：第3回送付分が延滞中"
 #~ msgid "Google account email"
 #~ msgstr "Googleアカウントのメール"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:50
 #, fuzzy
 msgid "Google Account permissions"
 msgstr "Googleアカウントの権限"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:76
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:66
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Googleは認証を完了できませんでした。リンクの有効期限が切れている可能性があります。もう一度お試しください。問題が解決しない場合は、GmailコールバックURLがGoogle Cloud Consoleに登録されていることを確認してください。"
@@ -3688,7 +3716,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王陛下、\n\nご依頼の報告書は、評議会開催前に準備いたします。東方領土の記録は書記官にまとめさせ、速使にて先行してお送りいたします。\n\n敬具、"
+msgstr "大王陛下、\n"
+"\n"
+"ご依頼の報告書は、評議会開催前に準備いたします。東方領土の記録は書記官にまとめさせ、速使にて先行してお送りいたします。\n"
+"\n"
+"敬具、"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -3834,22 +3866,22 @@ msgstr "何か問題が発生した場合やご質問がある場合は、こち
 msgid "Ignored"
 msgstr "無視済み"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:768
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:804
 #, fuzzy
 msgid "Import"
 msgstr "インポート"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:598
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:630
 #, fuzzy
 msgid "Import failed"
 msgstr "インポートに失敗しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:751
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:787
 #, fuzzy
 msgid "Import folders"
 msgstr "フォルダをインポート"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:746
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:782
 msgid "Import folders (replaces current)"
 msgstr "フォルダをインポート（現在を置換）"
 
@@ -3908,8 +3940,8 @@ msgid "Inbox import complete"
 msgstr "受信トレイのインポート完了"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:247
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:260
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:237
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:250
 #, fuzzy
 msgid "Inbox sync"
 msgstr "受信トレイの同期"
@@ -3923,13 +3955,13 @@ msgid "Incidents"
 msgstr "インシデント"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:116
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:76
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:88
 #, fuzzy
 msgid "Include Promotions"
 msgstr "プロモーションを含める"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:105
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:66
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:78
 #, fuzzy
 msgid "Include spam"
 msgstr "スパムを含める"
@@ -4022,12 +4054,12 @@ msgid "Invalid or missing reset link."
 msgstr "無効な、または存在しないリセットリンクです。"
 
 #. placeholder {0}: validation.error
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:547
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:579
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
 msgstr "無効なタクソノミーファイル: {0}"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:541
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:573
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
 msgstr "無効なタクソノミーファイル: {detail}"
@@ -4190,17 +4222,17 @@ msgstr "研究室と共同研究者"
 msgid "Lab group updates, collaborator threads, and experiment coordination."
 msgstr "研究室グループの最新情報、共同研究者とのスレッド、実験調整。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
 #, fuzzy
 msgid "Label writeback needs permission to manage your Gmail labels. Try again and approve it, or leave the feature off."
 msgstr "ラベルの書き戻しにはGmailラベルの管理権限が必要です。再度試して承認するか、この機能をオフにしてください。"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:72
+#: ../ui/src/settings/LabelWritebackSection.tsx:83
 msgid "Labels in Gmail"
 msgstr "Gmail のラベル"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:244
-#: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:37
+#: ../ui/src/settings/WorkspaceLanguageSection.tsx:54
 #, fuzzy
 msgid "Language"
 msgstr "言語"
@@ -4208,7 +4240,7 @@ msgstr "言語"
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(syncStatus.lastSyncedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:154
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
 #, fuzzy
 msgid "Last synced {0}"
 msgstr "最終同期: {0}"
@@ -4216,7 +4248,7 @@ msgstr "最終同期: {0}"
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, _(msg`Never`))
 #. placeholder {0}: formatDate(connection.lastVerifiedAt, i18n)
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:140
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
 msgid "Last verified: {0}"
 msgstr "最終確認: {0}"
@@ -4310,8 +4342,12 @@ msgstr "ライブ"
 msgid "Load more"
 msgstr "さらに読み込む"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:459
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:480
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:476
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:497
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:541
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:97
+#: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 #, fuzzy
 msgid "Loading"
 msgstr "読み込み中"
@@ -4342,6 +4378,7 @@ msgstr "過去のスレッドを読み込み中…"
 msgid "Loading…"
 msgstr "読み込み中…"
 
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:123
 #: ../ui/src/emails/EmailRail.tsx:59
 msgid "Mail"
 msgstr "メール"
@@ -4508,12 +4545,12 @@ msgstr "有料顧客およびアカウント所有者からのメッセージ。
 msgid "Metadata"
 msgstr "メタデータ"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:54
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:44
 #, fuzzy
 msgid "Microsoft account permissions"
 msgstr "Microsoft アカウントのアクセス許可"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:104
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:94
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft は認証を完了できませんでした。リンクの有効期限が切れている可能性があります。もう一度お試しください。問題が解決しない場合は、リダイレクト URI がアプリ登録に登録されているか確認してください。"
 
@@ -4556,6 +4593,10 @@ msgstr "月額"
 #: ../../apps/web/src/lib/notifications.ts:112
 msgid "Monthly sorting limit reached"
 msgstr "月間ソート上限に達しました"
+
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
+msgid "More settings on the web"
+msgstr "Web版でその他の設定"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:43
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:46
@@ -4610,7 +4651,7 @@ msgstr "数日中に旅路がデルタの近くを通ります。もし偉大な
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:235
 #: ../../apps/mobile/app/(app)/account.tsx:131
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:272
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:15
+#: ../ui/src/settings/WorkspaceNameSection.tsx:61
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:161
 #, fuzzy
 msgid "Name"
@@ -4628,8 +4669,8 @@ msgid "Needs review"
 msgstr "確認が必要"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:32
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
 #, fuzzy
 msgid "Never"
 msgstr "しない"
@@ -4768,7 +4809,7 @@ msgstr "まだフォルダがありません"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Gmail受信トレイが接続されていません。同期を開始するには、アカウントを接続してください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:446
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:444
 msgid "No inbox connected to this workspace."
 msgstr "このワークスペースに受信トレイが接続されていません。"
 
@@ -4903,7 +4944,7 @@ msgstr "必ずしもそうではありません。Amarnaiは、ワンクリッ�
 msgid "Not set"
 msgstr "未設定"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:252
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:242
 #, fuzzy
 msgid "Not yet synced"
 msgstr "まだ同期されていません"
@@ -5076,7 +5117,7 @@ msgstr "任意。このフォルダのチップとアイコンの色を受信ト
 msgid "or"
 msgstr "または"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:388
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:386
 #, fuzzy
 msgid "Or connect a different inbox:"
 msgstr "または別の受信トレイを接続："
@@ -5096,7 +5137,7 @@ msgstr "その他"
 msgid "outlook ai assistant"
 msgstr "Outlook AIアシスタント"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
 msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
 msgstr "Outlook への読み取り専用アクセス (Mail.Read) が許可されませんでした。もう一度お試しいただき、要求されたアクセス許可を承認してください。"
 
@@ -5225,8 +5266,8 @@ msgstr "このワークスペースとそのすべてのデータ（メール、
 msgid "Permanently delete your account and all associated data. This cannot be undone."
 msgstr "あなたのアカウントと関連するすべてのデータを完全に削除します。これは元に戻すことはできません。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:90
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:116
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:80
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:106
 msgid "Permission was granted but the feature could not be turned on. Toggle it from settings to retry."
 msgstr "権限は付与されましたが、機能をオンにできませんでした。設定から切り替えて再試行してください。"
 
@@ -5532,7 +5573,7 @@ msgstr "生徒からの質問、宿題の提出、授業での日々の指導。
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "注文確認、注文状況の変更、ストアからの発送状況の更新。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
 msgid "Queuing rescan…"
 msgstr "再スキャンをキューに入れています…"
@@ -5620,7 +5661,7 @@ msgstr "直近で試行済みです。後でもう一度お試しください。
 msgid "Recommended"
 msgstr "おすすめ"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1066
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1077
 #, fuzzy
 msgid "Recommended for your inbox"
 msgstr "受信トレイにおすすめ"
@@ -5629,7 +5670,7 @@ msgstr "受信トレイにおすすめ"
 msgid "Reconnect"
 msgstr "再接続"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:383
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 #, fuzzy
 msgid "Reconnect {providerName}"
@@ -5690,7 +5731,7 @@ msgstr "採用活動"
 msgid "Redirecting…"
 msgstr "リダイレクト中…"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:706
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:738
 #, fuzzy
 msgid "Redo"
 msgstr "やり直し"
@@ -5813,7 +5854,7 @@ msgstr "フォルダを置換"
 #~ msgid "Replace taxonomy"
 #~ msgstr "分類法を置き換える"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1003
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1024
 #, fuzzy
 msgid "Replace with a template"
 msgstr "テンプレートに置き換える"
@@ -5844,7 +5885,7 @@ msgid "Rescan failed"
 msgstr "再スキャンに失敗しました。"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:153
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:103
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
 msgid "Rescan inbox"
 msgstr "受信トレイを再スキャン"
@@ -5853,7 +5894,7 @@ msgstr "受信トレイを再スキャン"
 #~ msgid "Rescan queued — threads will update shortly."
 #~ msgstr "再スキャンをキューに追加しました。スレッドはまもなく更新されます。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:107
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:119
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
 msgstr "再スキャンがキューに入りました: スレッドはまもなく更新されます。"
@@ -5977,7 +6018,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "リブ＝ハッダ殿、\n\nお申し出、拝承いたしました。南の倉庫から追加の穀物を発注済みです。収穫祭までには到着する予定ですので、それまでご辛抱いただけますようお願い申し上げます。\n\nご健勝を祈ります、"
+msgstr "リブ＝ハッダ殿、\n"
+"\n"
+"お申し出、拝承いたしました。南の倉庫から追加の穀物を発注済みです。収穫祭までには到着する予定ですので、それまでご辛抱いただけますようお願い申し上げます。\n"
+"\n"
+"ご健勝を祈ります、"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6010,7 +6055,7 @@ msgstr "月払いと同額"
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:66
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:74
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:450
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/settings/WorkspaceNameSection.tsx:90
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 msgid "Save"
@@ -6058,7 +6103,7 @@ msgid "Saving..."
 msgstr "保存中..."
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:77
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:29
+#: ../ui/src/settings/WorkspaceNameSection.tsx:90
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:87
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:144
 #, fuzzy
@@ -6126,7 +6171,7 @@ msgstr "動作を見る"
 msgid "Select"
 msgstr "選択"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:391
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:408
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6246,7 +6291,7 @@ msgstr "Amarnaiがメールを適切に振り分けられるよう、フォル�
 msgid "Set up your folders"
 msgstr "フォルダを設定"
 
-#: ../../apps/web/src/app/(app)/settings/WorkspaceLanguageSection.tsx:56
+#: ../ui/src/settings/WorkspaceLanguageSection.tsx:75
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
 msgstr "インターフェースやAI生成フォルダを含む、このワークスペースの言語を設定します。"
 
@@ -6255,7 +6300,8 @@ msgstr "インターフェースやAI生成フォルダを含む、このワー�
 msgid "Setting up your workspace…"
 msgstr "ワークスペースを設定中…"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:47
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:85
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
 #: ../../apps/web/src/components/Sidebar.tsx:34
@@ -6364,7 +6410,7 @@ msgstr "GoogleまたはMicrosoftでサインイン"
 
 #: ../../apps/extension/src/App.tsx:128
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:125
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:156
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
 #: ../../apps/web/src/app/verify-email/page.tsx:42
@@ -6552,12 +6598,12 @@ msgid "Start free"
 msgstr "無料で開始"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1004
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1025
 #, fuzzy
 msgid "Start from a template"
 msgstr "テンプレートから開始"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:771
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:809
 #, fuzzy
 msgid "Start from a template (replaces current)"
 msgstr "テンプレートから開始（現在のものを置き換えます）"
@@ -6601,7 +6647,7 @@ msgstr "もう仕分けは不要。<0/><1>一度で完結。</1>"
 msgid "Stops syncing and revokes Amarnai's access to this mailbox."
 msgstr "同期を停止し、このメールボックスへのAmarnaiのアクセスを取り消します。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:204
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:194
 #, fuzzy
 msgid "Stops syncing and revokes Amarnai's access to this mailbox. Synced email data is kept so you can reconnect later."
 msgstr "同期を停止し、Amarnaiのこのメールボックスへのアクセスを取り消します。同期されたメールデータは保持されるため、後で再接続できます。"
@@ -6734,14 +6780,14 @@ msgid "Switch theme"
 msgstr "テーマを切り替え"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:130
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:120
 #, fuzzy
 msgid "Sync error"
 msgstr "同期エラー"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:281
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:96
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:55
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:64
 #, fuzzy
 msgid "Sync filters"
 msgstr "同期フィルター"
@@ -6750,13 +6796,13 @@ msgstr "同期フィルター"
 #~ msgid "Synced 2m ago"
 #~ msgstr "2分前に同期済み"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:221
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:211
 #, fuzzy
 msgid "Synced email data was erased."
 msgstr "同期されたメールデータが消去されました。"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:38
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:129
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:119
 #, fuzzy
 msgid "Syncing…"
 msgstr "同期中…"
@@ -6823,7 +6869,7 @@ msgstr "チーム"
 msgid "Template applied"
 msgstr "テンプレートを適用しました"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:795
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:833
 msgid "Templates"
 msgstr "テンプレート"
 
@@ -6844,12 +6890,12 @@ msgstr "更新ありがとうございます。金曜日で大丈夫です。"
 msgid "That invitation link is invalid or has expired."
 msgstr "その招待リンクは無効であるか、有効期限が切れています。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:76
 #, fuzzy
 msgid "That is a different Google account. Sign in with the mailbox already connected to this workspace."
 msgstr "それは別のGoogleアカウントです。このワークスペースにすでに接続されているメールボックスでサインインしてください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:112
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:102
 msgid "That is a different Microsoft account. Sign in with the mailbox already connected to this workspace."
 msgstr "それは別のMicrosoftアカウントです。このワークスペースにすでに接続されているメールボックスでサインインしてください。"
 
@@ -6866,14 +6912,14 @@ msgstr "そのリンクは無効か、有効期限が切れています。"
 msgid "The Amarnai Reply button is switched off for this workspace in settings."
 msgstr "このワークスペースの設定で Amarnai 返信ボタンはオフになっています。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
 #, fuzzy
 msgid "The authorization callback was incomplete. Please try again."
 msgstr "認証コールバックが不完全でした。もう一度お試しください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:72
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:100
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:62
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:90
 #, fuzzy
 msgid "The authorization request expired or was tampered with. Please try again."
 msgstr "認証リクエストの有効期限が切れたか、改ざんされました。もう一度お試しください。"
@@ -6883,8 +6929,8 @@ msgstr "認証リクエストの有効期限が切れたか、改ざんされま
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "キャッチオールフォルダは削除できません。自動メールや一括送信メールはここに振り分けられます。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:84
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:110
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:74
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:100
 #, fuzzy
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "サーバーエラーのため、接続を保存できませんでした。もう一度お試しください。"
@@ -6955,7 +7001,7 @@ msgstr "これらのフォルダーが作成されます。いつでも編集で
 #~ msgid "These settings control which Gmail threads are imported. Trash is always excluded."
 #~ msgstr "これらの設定は、どのGmailスレッドがインポートされるかを制御します。ゴミ箱は常に除外されます。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:57
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:67
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
 msgstr "これらの設定は、どの受信トレイのスレッドをインポートするかを制御します。ゴミ箱は常に除外されます。"
 
@@ -6968,7 +7014,7 @@ msgstr "このブラウザは{currentEmail}としてサインインしていま�
 msgid "This conversation has not synced to Amarnai yet."
 msgstr "このスレッドはまだ Amarnai に同期されていません。"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:661
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:693
 #, fuzzy
 msgid "This folder has child folders. Remove their Paths first, then delete it."
 msgstr "このフォルダーには子フォルダーがあります。まずパスを削除してから、このフォルダーを削除してください。"
@@ -6982,7 +7028,7 @@ msgstr "このフォルダは受信トレイから到達できず、ルーティ
 #~ msgid "This Gmail is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 #~ msgstr "このGmailは{sharedNames}でも接続されています。各ワークスペースはそれぞれ個別に同期・分類するため、別々のAIクォータを使用します。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:241
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:231
 msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
 msgstr "この受信トレイは、{sharedNames} でも接続されています。各ワークスペースはこれを個別に同期および分類するため、AI クォータを個別に消費します。"
 
@@ -7142,7 +7188,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "我が兄弟、大王陛下へ、\n\n大評議会はシェムの月の初めに招集されます。東方領土の全会計を準備し、可能であれば新月前に速使にて先行して送っていただくようお願いいたします。\n\n我らの同盟は強固です。評議会にその事実を示しましょう。\n\nトゥシュラッタ、ミタンニの大王"
+msgstr "我が兄弟、大王陛下へ、\n"
+"\n"
+"大評議会はシェムの月の初めに招集されます。東方領土の全会計を準備し、可能であれば新月前に速使にて先行して送っていただくようお願いいたします。\n"
+"\n"
+"我らの同盟は強固です。評議会にその事実を示しましょう。\n"
+"\n"
+"トゥシュラッタ、ミタンニの大王"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7151,7 +7203,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "王室任命局殿、\n\nテーベのホレムヘブ氏からの応募を受理いたしました。次回の新月までに彼の記録を審査いたします。追って通知する旨、彼にお伝えください。\n\n王命により、"
+msgstr "王室任命局殿、\n"
+"\n"
+"テーベのホレムヘブ氏からの応募を受理いたしました。次回の新月までに彼の記録を審査いたします。追って通知する旨、彼にお伝えください。\n"
+"\n"
+"王命により、"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7162,7 +7218,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "大王陛下へ、\n\n長年にわたり、我らの家門は兄弟の如き関係にありました。今、我ら両国民の利益のため、この友好関係を正式なものとすることを提案いたします。相互防衛と通商路共有の協定です。\n\nどうか私の条件をお聞き入れください。次回の使者にてご返答いただければ、直ちに私の使節を派遣いたします。\n\nアジル、大王陛下の僕、アムルの領主"
+msgstr "大王陛下へ、\n"
+"\n"
+"長年にわたり、我らの家門は兄弟の如き関係にありました。今、我ら両国民の利益のため、この友好関係を正式なものとすることを提案いたします。相互防衛と通商路共有の協定です。\n"
+"\n"
+"どうか私の条件をお聞き入れください。次回の使者にてご返答いただければ、直ちに私の使節を派遣いたします。\n"
+"\n"
+"アジル、大王陛下の僕、アムルの領主"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7171,7 +7233,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "大王陛下へ、\n\n近々、私の旅路がデルタ地方の近くを通ります。もし大王陛下に一時間ほどお時間がありましたら、直接お話しする機会を賜りたく存じます。書面では伝えにくい事柄もございますゆえ。\n\n陛下の僕、ウルシャリム総督アブディ＝ヘバ"
+msgstr "大王陛下へ、\n"
+"\n"
+"近々、私の旅路がデルタ地方の近くを通ります。もし大王陛下に一時間ほどお時間がありましたら、直接お話しする機会を賜りたく存じます。書面では伝えにくい事柄もございますゆえ。\n"
+"\n"
+"陛下の僕、ウルシャリム総督アブディ＝ヘバ"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7180,7 +7246,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "我が兄弟、大王陛下へ、\n\n貴殿の言葉、確かに承知いたしました。黄金は、次の使者が旅立つ前に発送いたします。我らの家門間の絆を大切にしており、それが冷え込むことは望みません。\n\n友情を込めて、"
+msgstr "我が兄弟、大王陛下へ、\n"
+"\n"
+"貴殿の言葉、確かに承知いたしました。黄金は、次の使者が旅立つ前に発送いたします。我らの家門間の絆を大切にしており、それが冷え込むことは望みません。\n"
+"\n"
+"友情を込めて、"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7191,7 +7261,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "我が兄弟、大王陛下へ、\n\n我らの父祖がそうであったように、友情を込めて筆を執ります。我が条約で合意された第三の黄金の積荷が未だ到着しておりません。使者が二人も行き来したにもかかわらず、未だ我々は待ち続けております。\n\n我らの家門間の絆にふさわしく、これ以上の遅延なく発送していただくようお願いいたします。\n\nブルナ＝ブリアシュ2世、バビロンの王"
+msgstr "我が兄弟、大王陛下へ、\n"
+"\n"
+"我らの父祖がそうであったように、友情を込めて筆を執ります。我が条約で合意された第三の黄金の積荷が未だ到着しておりません。使者が二人も行き来したにもかかわらず、未だ我々は待ち続けております。\n"
+"\n"
+"我らの家門間の絆にふさわしく、これ以上の遅延なく発送していただくようお願いいたします。\n"
+"\n"
+"ブルナ＝ブリアシュ2世、バビロンの王"
 
 #: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
@@ -7201,7 +7277,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "大王陛下、我が主、我が太陽よ、\n\n先月お送りいただいた穀物は感謝をもって受け取られ、私は民衆の前で陛下の御名を称えました。しかし、再び筆を執らざるを得ません。第三便が到着せず、都は不穏な空気に包まれております。\n\nすでに七度も書簡を送りました。陛下にご迷惑をおかけしたくはありませんが、他に何をすればよろしいのでしょうか？\n\n陛下の僕、ビブロス総督リブ＝ハッダ"
+msgstr "大王陛下、我が主、我が太陽よ、\n"
+"\n"
+"先月お送りいただいた穀物は感謝をもって受け取られ、私は民衆の前で陛下の御名を称えました。しかし、再び筆を執らざるを得ません。第三便が到着せず、都は不穏な空気に包まれております。\n"
+"\n"
+"すでに七度も書簡を送りました。陛下にご迷惑をおかけしたくはありませんが、他に何をすればよろしいのでしょうか？\n"
+"\n"
+"陛下の僕、ビブロス総督リブ＝ハッダ"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7284,7 +7366,7 @@ msgstr "もう一度お試しください。"
 msgid "Try Amarnai"
 msgstr "Amarnaiを試す"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:105
+#: ../ui/src/settings/LabelWritebackSection.tsx:116
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "これをオンにすると、ラベルを管理する権限が求められます。"
 
@@ -7313,10 +7395,10 @@ msgstr "未分類"
 msgid "Unclassified. Change folder"
 msgstr "未分類。フォルダーを変更"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:435
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:452
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:697
 #: ../ui/src/emails/MockEmailsPage.tsx:298
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
 #, fuzzy
 msgid "Undo"
 msgstr "元に戻す"
@@ -7330,7 +7412,7 @@ msgstr "大学"
 msgid "Unknown"
 msgstr "不明"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:540
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:572
 #, fuzzy
 msgid "unknown error"
 msgstr "不明なエラー"
@@ -7390,7 +7472,7 @@ msgid "Up to 3 people"
 msgstr "最大3名まで"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:37
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:128
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:118
 #, fuzzy
 msgid "Up to date"
 msgstr "最新です"
@@ -7483,7 +7565,7 @@ msgstr "ScribeまたはPharaohプランにアップグレードして、コラ�
 #~ msgid "Upgrade your subscription on the web app to enable backfill."
 #~ msgstr "バックフィルを有効にするには、ウェブアプリでサブスクリプションをアップグレードしてください。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailSyncSettingsSection.tsx:118
+#: ../ui/src/settings/GmailSyncSettingsSection.tsx:130
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
 msgstr "フィルター設定を変更した後は、「受信トレイを再スキャン」を使用して、すでにあるスレッドに適用してください。"
@@ -7502,7 +7584,7 @@ msgstr "フィルター変更後、受信トレイ内の既存スレッドに適
 msgid "Use a template"
 msgstr "テンプレートを使用"
 
-#: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:1112
+#: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1116
 #, fuzzy
 msgid "Use template"
 msgstr "テンプレートを使用"
@@ -7592,7 +7674,7 @@ msgstr "ボランティア"
 msgid "Waiting"
 msgstr "待機中"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:261
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:251
 #, fuzzy
 msgid "Waiting for first sync…"
 msgstr "初回同期を待機中…"
@@ -7712,7 +7794,7 @@ msgstr "社会人"
 msgid "Works with Gmail™ and Outlook."
 msgstr "Gmail™ と Outlook™ に対応しています。"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:57
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
@@ -7721,10 +7803,14 @@ msgstr "Gmail™ と Outlook™ に対応しています。"
 msgid "Workspace"
 msgstr "ワークスペース"
 
+#: ../ui/src/settings/WorkspaceNameSection.tsx:57
+msgid "Workspace details"
+msgstr "ワークスペースの詳細"
+
 #: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:12
 #, fuzzy
-msgid "Workspace Details"
-msgstr "ワークスペースの詳細"
+#~ msgid "Workspace Details"
+#~ msgstr "ワークスペースの詳細"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:206
 #: ../../apps/mobile/src/components/RenameWorkspaceSheet.tsx:60
@@ -7740,16 +7826,16 @@ msgstr "ワークスペース名"
 msgid "Workspace name cannot be empty"
 msgstr "ワークスペース名を空にすることはできません"
 
-#: ../../apps/web/src/app/(app)/settings/WorkspaceNameSection.tsx:27
+#: ../ui/src/settings/WorkspaceNameSection.tsx:81
 #, fuzzy
 msgid "Workspace name updated."
 msgstr "ワークスペース名を更新しました。"
 
-#: ../../apps/extension/src/panel/WorkspacePicker.tsx:44
+#: ../../apps/extension/src/panel/WorkspacePicker.tsx:47
 msgid "Workspace settings"
 msgstr "ワークスペース設定"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:139
+#: ../../apps/web/src/app/(app)/settings/page.tsx:138
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "ワークスペース設定"
@@ -7763,17 +7849,17 @@ msgstr "ワークスペースの種類"
 msgid "Workspaces included"
 msgstr "含まれるワークスペース"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:99
+#: ../ui/src/settings/LabelWritebackSection.tsx:110
 #, fuzzy
 msgid "Write sorted folders as Gmail labels"
 msgstr "ソート済みフォルダーをGmailラベルに書き戻す"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:97
+#: ../ui/src/settings/LabelWritebackSection.tsx:108
 #, fuzzy
 msgid "Write sorted folders as Outlook categories"
 msgstr "ソート済みフォルダーをOutlookカテゴリに書き戻す"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:111
+#: ../ui/src/settings/LabelWritebackSection.tsx:122
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "書き戻しはオンです。フォルダーがメールボックスにミラーリングされています。"
 
@@ -7799,7 +7885,7 @@ msgstr "はい、アカウントを削除します"
 msgid "Yes, delete workspace"
 msgstr "はい、ワークスペースを削除します"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:293
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:283
 #, fuzzy
 msgid "Yes, disconnect"
 msgstr "はい、切断します"
@@ -7892,12 +7978,12 @@ msgstr "{0}後に再試行するか、テンプレートから開始できます
 msgid "You can try again shortly, or start from a template."
 msgstr "まもなく再試行するか、テンプレートから開始できます。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:74
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "このワークスペースにGmail受信トレイを接続する権限がありません。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:102
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:92
 msgid "You do not have permission to connect an Outlook inbox to this workspace."
 msgstr "このワークスペースに Outlook 受信トレイを接続する権限がありません。"
 
@@ -7984,12 +8070,12 @@ msgstr "あなたのフォルダー"
 msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 msgstr "フォルダは受信トレイから分岐するシンプルなツリー構造です。Amarnaiに受信トレイから生成させるか、テンプレートから始めるか、自分で作成することも可能です。"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:82
+#: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
 msgid "Your folders are mirrored as Gmail labels and kept in sync as threads are sorted. Amarnai only manages labels under the <0>Amarnai/</0> namespace and never sends, deletes, or moves your mail."
 msgstr "フォルダーはGmailラベルとしてミラーリングされ、スレッドがソートされると同期が維持されます。Amarnaiは<0>Amarnai/</0>ネームスペース以下のラベルのみを管理し、メールの送信、削除、移動は一切行いません。"
 
-#: ../../apps/web/src/app/(app)/settings/LabelWritebackSection.tsx:76
+#: ../ui/src/settings/LabelWritebackSection.tsx:87
 msgid "Your folders are mirrored as Outlook categories and kept in sync as threads are sorted. Amarnai only manages categories under the <0>Amarnai</0> namespace and never sends, deletes, or moves your mail."
 msgstr "フォルダーはOutlookカテゴリとしてミラーリングされ、スレッドがソートされると同期が維持されます。Amarnaiは<0>Amarnai</0>ネームスペース以下のカテゴリのみを管理し、メールの送信、削除、移動は一切行いません。"
 
@@ -8074,7 +8160,7 @@ msgstr "再試行インポートが完了しました。{0}プランの利用制
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "再試行インポートが完了しました。{plan}プランの制限は引き続き適用されます。次の再試行は{refreshDate}に利用可能になります。"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:370
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:368
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 msgstr "{retainedAddress}から選別されたメールは保存されています。同じ受信トレイを再接続すると復元されますが、別の受信トレイを接続すると完全に削除されます。いずれの場合もフォルダーと設定は保持されます。"
 

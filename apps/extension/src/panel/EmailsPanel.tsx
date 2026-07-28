@@ -35,6 +35,16 @@ const UpgradeDialog = lazy(() =>
   import("@amarnai/ui/upgrade").then((m) => ({ default: m.UpgradeDialog })),
 );
 
+// Shares the ReactFlow canvas chunk with the plan-setup preview, so opening the
+// editor after a plan has been set up costs almost nothing extra.
+const TaxonomyEditorOverlay = lazy(() =>
+  import("./TaxonomyEditorOverlay").then((m) => ({ default: m.TaxonomyEditorOverlay })),
+);
+
+const SettingsOverlay = lazy(() =>
+  import("./SettingsOverlay").then((m) => ({ default: m.SettingsOverlay })),
+);
+
 type Props = {
   api: ApiClient;
   workspaceId: string;
@@ -183,6 +193,10 @@ export function EmailsPanel({
   // The in-panel plan picker. Opened only from quota-gated CTAs, so a self-hosted
   // deployment (which never hits those) can never reach a billing screen.
   const [upgradeOpen, setUpgradeOpen] = useState(false);
+  // The full folder editor. Opened from the header, so it is owned here
+  // alongside the other full-panel overlays.
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
   const routableNodeCount = folders.length;
@@ -297,7 +311,10 @@ export function EmailsPanel({
 
   return (
     <div className="ax-panel">
-      <PanelHeader />
+      <PanelHeader
+        onOpenFolders={() => setEditorOpen(true)}
+        onOpenSettings={() => setSettingsOpen(true)}
+      />
       {inboxStatus?.kind === "no-plan-empty" ? (
         // Nothing to list and no plan yet: the whole pane becomes the plan-setup
         // entry point rather than a banner over an empty list.
@@ -468,6 +485,50 @@ export function EmailsPanel({
             onOpenWeb={(path) => void openWebApp(api, path)}
             onApplied={onPlanApplied}
             onClose={() => setPlanSetup(null)}
+          />
+        </Suspense>
+      )}
+
+      {settingsOpen && (
+        <Suspense
+          fallback={
+            <div className="ps-overlay">
+              <div className="ax-center">
+                <span className="ax-spinner" aria-label={_(msg`Loading`)} />
+              </div>
+            </div>
+          }
+        >
+          <SettingsOverlay
+            api={api}
+            workspaceId={workspaceId}
+            onClose={() => setSettingsOpen(false)}
+          />
+        </Suspense>
+      )}
+
+      {editorOpen && (
+        <Suspense
+          fallback={
+            <div className="ps-overlay">
+              <div className="ax-center">
+                <span className="ax-spinner" aria-label={_(msg`Loading`)} />
+              </div>
+            </div>
+          }
+        >
+          <TaxonomyEditorOverlay
+            api={api}
+            workspaceId={workspaceId}
+            // TriageGate only renders this panel behind an ACTIVE connection,
+            // so a mailbox is always connected by the time the editor opens.
+            mailConnected
+            onOpenPlanSetup={(mode) => {
+              setEditorOpen(false);
+              setPlanSetup(mode);
+            }}
+            onChanged={onPlanApplied}
+            onClose={() => setEditorOpen(false)}
           />
         </Suspense>
       )}

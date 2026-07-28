@@ -8,13 +8,16 @@ import { useSession } from "../auth/session";
 import { useWebAppLink } from "./openWebApp";
 import { NotificationBell } from "./NotificationBell";
 
-// Slim panel header: workspace switcher, links out to the web app (folders and
-// workspace settings), and the user menu (account settings, sign out). At
-// 320px there is no room for a full switcher UI, so a native <select> is used
-// when the user belongs to more than one workspace. Folders, settings, and
-// account pages are not replicated in the panel; the header links to the web
-// app, which opens in a new tab already signed in (see useWebAppLink).
-export function PanelHeader() {
+// Slim panel header: workspace switcher, folders, workspace settings, and the
+// user menu (account settings, sign out). At 320px there is no room for a full
+// switcher UI, so a native <select> is used when the user belongs to more than
+// one workspace. Folders open in-panel when the host supplies onOpenFolders;
+// anything with no in-panel equivalent links out to the web app, which opens in
+// a new tab already signed in (see useWebAppLink).
+export function PanelHeader({
+  onOpenFolders,
+  onOpenSettings,
+}: { onOpenFolders?: () => void; onOpenSettings?: () => void } = {}) {
   const { _ } = useLingui();
   const { user, workspaces, workspaceId, switchWorkspace, signOut } = useSession();
   const webAppLink = useWebAppLink();
@@ -68,24 +71,52 @@ export function PanelHeader() {
 
       <NotificationBell />
 
-      <a
-        className="ax-header-iconbtn"
-        {...webAppLink("/folders")}
-        title={foldersLabel}
-        aria-label={foldersLabel}
-      >
-        <NavGlyph name="taxonomy" />
-        <span className="ax-iconbtn-label">{foldersLabel}</span>
-      </a>
-      <a
-        className="ax-header-iconbtn"
-        {...webAppLink("/settings")}
-        title={settingsLabel}
-        aria-label={settingsLabel}
-      >
-        <NavGlyph name="settings" />
-        <span className="ax-iconbtn-label">{settingsShortLabel}</span>
-      </a>
+      {/* Editing folders is native to the panel; only surfaces that have no
+          in-panel equivalent still link out to the web app. */}
+      {onOpenFolders ? (
+        <button
+          type="button"
+          className="ax-header-iconbtn"
+          onClick={onOpenFolders}
+          title={foldersLabel}
+          aria-label={foldersLabel}
+        >
+          <NavGlyph name="taxonomy" />
+          <span className="ax-iconbtn-label">{foldersLabel}</span>
+        </button>
+      ) : (
+        <a
+          className="ax-header-iconbtn"
+          {...webAppLink("/folders")}
+          title={foldersLabel}
+          aria-label={foldersLabel}
+        >
+          <NavGlyph name="taxonomy" />
+          <span className="ax-iconbtn-label">{foldersLabel}</span>
+        </a>
+      )}
+      {onOpenSettings ? (
+        <button
+          type="button"
+          className="ax-header-iconbtn"
+          onClick={onOpenSettings}
+          title={settingsLabel}
+          aria-label={settingsLabel}
+        >
+          <NavGlyph name="settings" />
+          <span className="ax-iconbtn-label">{settingsShortLabel}</span>
+        </button>
+      ) : (
+        <a
+          className="ax-header-iconbtn"
+          {...webAppLink("/settings")}
+          title={settingsLabel}
+          aria-label={settingsLabel}
+        >
+          <NavGlyph name="settings" />
+          <span className="ax-iconbtn-label">{settingsShortLabel}</span>
+        </a>
+      )}
 
       <ThemeToggle className="theme-toggle--panel" />
 

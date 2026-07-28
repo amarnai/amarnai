@@ -28,6 +28,7 @@ export type {
   BackfillStatus,
   BackfillLimitState,
   GmailSyncSettings,
+  GmailSyncSettingsResponse,
   FolderCountsResult,
   FilterCounts,
   EmailTag,

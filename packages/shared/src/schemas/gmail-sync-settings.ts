@@ -34,6 +34,21 @@ export const DEFAULT_GMAIL_SYNC_SETTINGS: GmailSyncSettings = {
   blacklistedSenderEmails: [],
 };
 
+/**
+ * What the settings endpoint returns: the stored settings plus two facts the
+ * client cannot work out for itself. Both gate the label-writeback control, and
+ * both live server-side: the feature flag is deployment config, and whether the
+ * mailbox actually granted the write scope depends on provider scope lists that
+ * have no business in a browser bundle.
+ */
+export const GmailSyncSettingsResponseSchema = GmailSyncSettingsSchema.extend({
+  /** The deployment has label writeback switched on at all. */
+  writebackAvailable: z.boolean().default(false),
+  /** The connected mailbox granted the scope writeback needs. */
+  hasWritebackScope: z.boolean().default(false),
+});
+export type GmailSyncSettingsResponse = z.infer<typeof GmailSyncSettingsResponseSchema>;
+
 export const UpdateGmailSyncSettingsSchema = z.object({
   includeSpam:           z.boolean().optional(),
   includePromotions:     z.boolean().optional(),
