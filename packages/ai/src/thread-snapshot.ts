@@ -36,7 +36,17 @@ export type SnapshotMessage = {
   toEmails: string[];
   ccEmails: string[];
   subject: string | null;
-  /** Bounded plain-text excerpt for classification. Max 2000 chars. No HTML. Quoted replies stripped. */
+  /**
+   * Plain-text message body. No HTML; quoted replies stripped where the provider
+   * makes that reliable (Graph's uniqueBody for Outlook, a best-effort pass for
+   * Gmail — consumers apply the language-neutral cleaner themselves).
+   *
+   * NOT truncated by either adapter, and no consumer may assume it is. Each one
+   * budgets what it needs: classification via buildThreadEmbeddingText, summaries
+   * and drafts via allocateThreadCharBudget. A cap in an adapter is invisible to
+   * those call sites, which is how Outlook drafts came to be generated from the
+   * first 2,000 characters of a message while Gmail drafts saw all 16,000.
+   */
   bodyExcerpt: string | null;
   attachments: AttachmentMeta[];
   /**
@@ -88,9 +98,11 @@ export type ThreadSnapshot = {
  * that thread. A draft is not part of the conversation: it must never be
  * persisted, classified, summarised, or treated as the message being replied to.
  *
- * Outlook is unaffected — the Graph adapter is inbox-folder-scoped and drafts
- * live in the Drafts folder, so nothing there ever carries this label (its
- * normalizer emits `labelIds: []`, which is never a draft).
+ * Outlook is covered a folder earlier instead of here: the Graph adapter reads the
+ * mailbox and keeps only inbox + Sent Items messages, dropping anything flagged
+ * `isDraft`, so no draft ever reaches a snapshot. Its normalizer emits
+ * `labelIds: []`, which this predicate reads as "not a draft" — correct, given
+ * that guarantee.
  */
 export function isDraftMessage(msg: Pick<SnapshotMessage, "labelIds">): boolean {
   return (msg.labelIds ?? []).includes("DRAFT");

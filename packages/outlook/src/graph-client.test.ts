@@ -220,53 +220,177 @@ describe("GraphClient.listThreadsPage", () => {
 // ─── getThreadSnapshot ────────────────────────────────────────────────────────
 
 describe("GraphClient.getThreadSnapshot", () => {
-  it("fetches the conversation's INBOX messages and normalizes them", async () => {
+  const INBOX_ID = "folder-inbox";
+  const SENT_ID = "folder-sent";
+
+  /** A message in the inbox folder, oldest-first friendly. */
+  function inboxMsg(overrides: Record<string, unknown> = {}) {
+    return {
+      id: "m1",
+      conversationId: "conv-1",
+      parentFolderId: INBOX_ID,
+      from: { emailAddress: { address: "a@x.com" } },
+      subject: "Hi",
+      receivedDateTime: "2026-06-01T10:00:00Z",
+      body: { contentType: "text", content: "hello" },
+      webLink: "wl-1",
+      ...overrides,
+    };
+  }
+
+  /**
+   * Routes the two well-known folder lookups to fixed ids and the mailbox-wide
+   * message query to `messages`. `onMessagesUrl` sees the message query's URL.
+   */
+  function routeSnapshot(
+    messages: Array<Record<string, unknown>>,
+    onMessagesUrl?: (url: string) => void,
+  ): { folderLookups: number; messageQueries: number } {
+    const counts = { folderLookups: 0, messageQueries: 0 };
     routeGraph((url) => {
-      // Inbox-folder-scoped, not mailbox-wide: a message archived/moved out of
-      // the inbox must drop out of the snapshot so removals register.
-      expect(url).toContain("mailFolders/inbox/messages");
-      expect(url).toContain("conversationId");
-      expect(url).toContain("conv-1");
-      expect(url).toContain("internetMessageHeaders");
-      // Attachment ids must be selected so inline images are fetchable later.
-      expect(decodeURIComponent(url)).toContain("attachments($select=id,name,contentType,size,isInline)");
-      return jsonResponse({
-        value: [
-          {
-            id: "m1",
-            conversationId: "conv-1",
-            from: { emailAddress: { address: "a@x.com" } },
-            subject: "Hi",
-            receivedDateTime: "2026-06-01T10:00:00Z",
-            body: { contentType: "text", content: "hello" },
-            webLink: "wl-1",
-          },
-        ],
-      });
+      if (url.includes("/me/mailFolders/inbox?")) {
+        counts.folderLookups++;
+        return jsonResponse({ id: INBOX_ID });
+      }
+      if (url.includes("/me/mailFolders/sentitems?")) {
+        counts.folderLookups++;
+        return jsonResponse({ id: SENT_ID });
+      }
+      counts.messageQueries++;
+      onMessagesUrl?.(url);
+      return jsonResponse({ value: messages });
+    });
+    return counts;
+  }
+
+  it("queries the mailbox (not the inbox folder) and normalizes the conversation", async () => {
+    let seen = "";
+    routeSnapshot([inboxMsg()], (url) => {
+      seen = url;
     });
     const snap = await client().getThreadSnapshot("conv-1");
+
+    // Mailbox-wide: Sent Items lives outside the inbox, so an inbox-scoped query
+    // would never see the owner's own replies.
+    expect(seen).toContain("/me/messages?");
+    expect(seen).not.toContain("mailFolders/inbox/messages");
+    expect(seen).toContain("conversationId");
+    expect(seen).toContain("conv-1");
+    expect(seen).toContain("internetMessageHeaders");
+    // parentFolderId/isDraft drive the folder partition and must be selected.
+    expect(seen).toContain("parentFolderId");
+    expect(seen).toContain("isDraft");
+    // Attachment ids must be selected so inline images are fetchable later.
+    expect(decodeURIComponent(seen)).toContain(
+      "attachments($select=id,name,contentType,size,isInline)",
+    );
+
     expect(snap.provider).toBe("outlook");
     expect(snap.providerThreadId).toBe("conv-1");
     expect(snap.messageCount).toBe(1);
     expect(snap.webLink).toBe("wl-1");
   });
 
+  it("includes the owner's own replies from Sent Items", async () => {
+    routeSnapshot([
+      inboxMsg({ id: "in-1", receivedDateTime: "2026-06-01T10:00:00Z" }),
+      inboxMsg({
+        id: "sent-1",
+        parentFolderId: SENT_ID,
+        from: { emailAddress: { address: "me@x.com" } },
+        receivedDateTime: undefined,
+        sentDateTime: "2026-06-01T12:00:00Z",
+      }),
+    ]);
+    const snap = await client().getThreadSnapshot("conv-1");
+
+    expect(snap.messages.map((m) => m.providerMessageId)).toEqual(["in-1", "sent-1"]);
+    expect(snap.messageCount).toBe(2);
+    // The reply moves the thread's clock, matching Gmail. sentDateTime stands in
+    // for the missing receivedDateTime, so the reply never sorts to the epoch.
+    expect(snap.latestMessageAt.toISOString()).toBe("2026-06-01T12:00:00.000Z");
+    expect(snap.participants).toContain("me@x.com");
+  });
+
+  it("drops drafts, junk, trash and archived copies the mailbox-wide query now returns", async () => {
+    routeSnapshot([
+      inboxMsg({ id: "keep" }),
+      // Unsent draft: never part of the conversation, matched on isDraft as well
+      // as on its folder.
+      inboxMsg({ id: "draft-in-drafts", parentFolderId: "folder-drafts", isDraft: true }),
+      inboxMsg({ id: "draft-elsewhere", parentFolderId: SENT_ID, isDraft: true }),
+      inboxMsg({ id: "junk", parentFolderId: "folder-junk" }),
+      inboxMsg({ id: "trash", parentFolderId: "folder-deleted" }),
+      // Archived / filed into a user folder: this is a REMOVAL, so it must not
+      // come back through the widened query.
+      inboxMsg({ id: "archived", parentFolderId: "folder-archive" }),
+      inboxMsg({ id: "filed", parentFolderId: "folder-clients" }),
+    ]);
+    const snap = await client().getThreadSnapshot("conv-1");
+    expect(snap.messages.map((m) => m.providerMessageId)).toEqual(["keep"]);
+  });
+
   it("maps an empty conversation (deleted, or fully gone from the inbox) to the typed MailThreadNotFoundError", async () => {
-    // A filter query for a deleted/unknown conversationId — or one whose messages
-    // have ALL left the inbox (every message archived/moved out) — returns 200
-    // with an empty value array. Graph never 404s per-conversation on this path,
-    // so the empty set is the definitive gone-from-inbox signal the sync/classify
-    // loops skip on.
-    routeGraph(() => jsonResponse({ value: [] }));
+    // A filter query for a deleted/unknown conversationId returns 200 with an
+    // empty value array. Graph never 404s per-conversation on this path, so the
+    // empty set is the definitive gone signal the sync/classify loops skip on.
+    routeSnapshot([]);
     await expect(client().getThreadSnapshot("gone")).rejects.toBeInstanceOf(
       GmailThreadNotFoundError,
     );
   });
 
-  it("does NOT map a 404 on the messages query itself to the typed not-found (mailbox-level failure, transient)", async () => {
-    routeGraph(() =>
-      jsonResponse({ error: { code: "MailboxNotEnabledForRESTAPI" } }, { status: 404 }),
+  it("derives not-found from the INBOX partition alone, not the widened set", async () => {
+    // Every inbound message archived, leaving only the owner's Sent Items copies.
+    // The thread is gone from the inbox and must still read as not-found —
+    // otherwise archiving a thread you replied to would stop registering.
+    routeSnapshot([
+      inboxMsg({
+        id: "sent-1",
+        parentFolderId: SENT_ID,
+        from: { emailAddress: { address: "me@x.com" } },
+      }),
+      inboxMsg({ id: "archived", parentFolderId: "folder-archive" }),
+    ]);
+    await expect(client().getThreadSnapshot("conv-1")).rejects.toBeInstanceOf(
+      GmailThreadNotFoundError,
     );
+  });
+
+  it("resolves the well-known folder ids once per client, not once per thread", async () => {
+    // The snapshot path runs thousands of times during a historical backfill; the
+    // folder lookups must not scale with it.
+    const counts = routeSnapshot([inboxMsg()]);
+    const c = client();
+    await c.getThreadSnapshot("conv-1");
+    await c.getThreadSnapshot("conv-2");
+    await c.getThreadSnapshot("conv-3");
+    expect(counts.folderLookups).toBe(2); // inbox + sentitems
+    expect(counts.messageQueries).toBe(3); // one per thread, same as before
+  });
+
+  it("does not cache a failed folder resolution", async () => {
+    let failFolders = true;
+    routeGraph((url) => {
+      if (url.includes("/me/mailFolders/")) {
+        if (failFolders) return jsonResponse({ error: { code: "ServiceUnavailable" } }, { status: 503 });
+        return jsonResponse({ id: url.includes("sentitems") ? SENT_ID : INBOX_ID });
+      }
+      return jsonResponse({ value: [inboxMsg()] });
+    });
+    const c = client();
+    await expect(c.getThreadSnapshot("conv-1")).rejects.toThrow();
+    failFolders = false;
+    await expect(c.getThreadSnapshot("conv-1")).resolves.toMatchObject({ messageCount: 1 });
+  });
+
+  it("does NOT map a 404 on the messages query itself to the typed not-found (mailbox-level failure, transient)", async () => {
+    routeGraph((url) => {
+      if (url.includes("/me/mailFolders/")) {
+        return jsonResponse({ id: url.includes("sentitems") ? SENT_ID : INBOX_ID });
+      }
+      return jsonResponse({ error: { code: "MailboxNotEnabledForRESTAPI" } }, { status: 404 });
+    });
     const err = await client().getThreadSnapshot("conv-1").catch((e: unknown) => e);
     expect(err).toBeInstanceOf(Error);
     expect(err).not.toBeInstanceOf(GmailThreadNotFoundError);

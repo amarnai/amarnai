@@ -104,7 +104,10 @@ export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): Me
  *
  * Undefined or empty labels are never outbound: unknown label data must fail
  * open (fetch/import normally), never fail closed. This also keeps Outlook
- * immune — its normalizer emits `labelIds: []`, so nothing ever qualifies.
+ * immune — its normalizer emits `labelIds: []`, so nothing ever qualifies. That
+ * is deliberate even though Outlook snapshots now carry the owner's Sent Items
+ * replies: folder membership is not a Gmail label, and the identity-based rules
+ * below are what cover Outlook.
  *
  * NOTE: `packages/gmail` cannot import this worker module (and @amarnai/mail →
  * @amarnai/gmail would be circular), so gmail-client.ts keeps a private copy of

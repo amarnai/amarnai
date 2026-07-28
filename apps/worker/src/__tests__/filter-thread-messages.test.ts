@@ -188,6 +188,54 @@ describe("isSentOnlyThreadSnapshot", () => {
     ).toBe(false);
     expect(isSentOnlyThreadSnapshot([], OWNER)).toBe(false);
   });
+
+  // Outlook snapshots now carry the owner's own replies from Sent Items, so this
+  // rule sees outbound Outlook messages for the first time. Outlook messages have
+  // no labels at all, so only the identity half can fire.
+  describe("Outlook (no labels, owner replies now present)", () => {
+    const OUT = (o: Partial<SnapshotMessage> = {}) => msg({ labelIds: [], ...o });
+
+    it("is false once the owner has replied to an inbound Outlook message", () => {
+      // The whole point of widening the Graph query: inbound + the owner's Sent
+      // Items reply. Not sent-only — the owner is not the sole sender.
+      expect(
+        isSentOnlyThreadSnapshot(
+          [
+            OUT({ providerMessageId: "in-1", senderEmail: "ext@corp.com", toEmails: [OWNER] }),
+            OUT({ providerMessageId: "sent-1", senderEmail: OWNER, toEmails: ["ext@corp.com"] }),
+          ],
+          OWNER
+        )
+      ).toBe(false);
+    });
+
+    it("is true for an Outlook thread reduced to the owner's Sent Items copies alone", () => {
+      // Reachable only in principle: when every inbound message is archived, the
+      // Graph client's inbox partition is empty and it throws MailThreadNotFound
+      // before this rule runs, so an already-imported thread is skipped, not
+      // dropped. Asserted so the rule's verdict is defined if that ever changes.
+      expect(
+        isSentOnlyThreadSnapshot(
+          [OUT({ providerMessageId: "sent-1", senderEmail: OWNER, toEmails: ["ext@corp.com"] })],
+          OWNER
+        )
+      ).toBe(true);
+    });
+
+    it("is false for an Outlook note-to-self, whose inbox and Sent Items copies both appear", () => {
+      // One conversation, two folder copies with distinct ids. The owner is a
+      // recipient, so identity keeps it visible.
+      expect(
+        isSentOnlyThreadSnapshot(
+          [
+            OUT({ providerMessageId: "in-1", senderEmail: OWNER, toEmails: [OWNER] }),
+            OUT({ providerMessageId: "sent-1", senderEmail: OWNER, toEmails: [OWNER] }),
+          ],
+          OWNER
+        )
+      ).toBe(false);
+    });
+  });
 });
 
 describe("applyThreadFilter — drafts", () => {

@@ -27,16 +27,33 @@ function tokenUrl(): string {
 }
 
 // Message fields the classifier snapshot needs. internetMessageHeaders must be
-// explicitly selected (it is not returned by default).
+// explicitly selected (it is not returned by default). parentFolderId and isDraft
+// drive the snapshot's folder partition (see getThreadSnapshot); sentDateTime is
+// the timestamp fallback for Sent Items copies.
 const MESSAGE_SELECT =
-  "id,conversationId,from,sender,toRecipients,ccRecipients,subject," +
-  "receivedDateTime,bodyPreview,uniqueBody,body,hasAttachments,isRead,webLink,internetMessageHeaders";
+  "id,conversationId,parentFolderId,isDraft,from,sender,toRecipients,ccRecipients,subject," +
+  "receivedDateTime,sentDateTime,bodyPreview,uniqueBody,body,hasAttachments,isRead,webLink," +
+  "internetMessageHeaders";
 const ATTACHMENT_EXPAND = "attachments($select=id,name,contentType,size,isInline)";
 
-// The inbox folder is the sync scope: spam (Junk Email) and trash (Deleted Items)
-// live in other well-known folders and are therefore never imported, so no
-// per-message spam/trash flags are needed downstream.
+// The inbox folder is the CHANGE-DETECTION scope: listing, delta and the webhook
+// subscription all track it, so a message archived / deleted / moved out of the
+// inbox registers as a removal. Thread CONTENT is a wider set — see
+// getThreadSnapshot, which reads the mailbox and partitions by folder.
 const INBOX_MESSAGES = "/me/mailFolders/inbox/messages";
+
+// Mailbox-wide message collection, used only by getThreadSnapshot.
+const ALL_MESSAGES = "/me/messages";
+
+/**
+ * The two well-known folders whose messages make up a thread snapshot: the inbox
+ * (what the other party sent us) and Sent Items (the owner's own replies, which
+ * Gmail's `threads.get` returns natively and Outlook keeps in a separate folder).
+ *
+ * Resolved from Graph's locale-independent well-known names (`inbox`,
+ * `sentitems`), never from display names, which are localised per mailbox.
+ */
+type SnapshotFolderIds = { inbox: string; sent: string };
 
 type TokenResponse = { access_token: string; expires_in: number };
 
@@ -99,6 +116,9 @@ export class GraphClient {
   // mint a token that cannot write categories. Defaults to the read-only set.
   private readonly refreshScope: string;
 
+  /** Memoised {@link snapshotFolderIds} result; see that method for the caching rules. */
+  private folderIds: Promise<SnapshotFolderIds> | null = null;
+
   constructor(
     private readonly encryptedRefreshToken: string,
     grantedScopes?: string[],
@@ -149,6 +169,19 @@ export class GraphClient {
     accessToken: string,
     opts?: { maxPageSize?: number },
   ): Promise<GraphListResponse<T>> {
+    return this.graphGetJson<GraphListResponse<T>>(url, accessToken, opts);
+  }
+
+  /**
+   * The request/retry/error handling behind {@link graphGet}, returning the parsed
+   * body as-is. Single-entity reads (a mailFolder) use this directly rather than
+   * being forced through the collection shape.
+   */
+  private async graphGetJson<T>(
+    url: string,
+    accessToken: string,
+    opts?: { maxPageSize?: number },
+  ): Promise<T> {
     const prefer =
       'IdType="ImmutableId"' +
       (opts?.maxPageSize ? `, odata.maxpagesize=${opts.maxPageSize}` : "");
@@ -184,10 +217,64 @@ export class GraphClient {
         const detail = await describeGraphError(res);
         throw new Error(`Graph request failed: ${res.status}${detail ? ` — ${detail}` : ""}`);
       }
-      return (await res.json()) as GraphListResponse<T>;
+      return (await res.json()) as T;
     }
     // Unreachable in practice: the retry either returns or throws above.
     throw new Error("Graph request failed after retry");
+  }
+
+  /**
+   * Resolve and cache the inbox / Sent Items folder ids for this mailbox.
+   *
+   * Cached on the instance because the ids are stable for the life of the
+   * mailbox, and a client is constructed once per sync / backfill run that then
+   * snapshots many threads — so this costs two requests per run, not per thread.
+   *
+   * The ids MUST be obtained through {@link graphGetJson}, which sends
+   * `Prefer: IdType="ImmutableId"` exactly as the message query does: `id` and
+   * `parentFolderId` are only comparable when both sides were read under the same
+   * id-type preference.
+   */
+  private snapshotFolderIds(accessToken: string): Promise<SnapshotFolderIds> {
+    if (this.folderIds) return this.folderIds;
+    const pending = (async () => {
+      const [inbox, sent] = await Promise.all([
+        this.wellKnownFolderId("inbox", accessToken),
+        this.wellKnownFolderId("sentitems", accessToken),
+      ]);
+      return { inbox, sent };
+    })();
+    this.folderIds = pending;
+    // A failed resolution must not stick: clear the cache so the next call
+    // retries instead of replaying the rejection for the client's whole life.
+    pending.catch(() => {
+      if (this.folderIds === pending) this.folderIds = null;
+    });
+    return pending;
+  }
+
+  private async wellKnownFolderId(name: string, accessToken: string): Promise<string> {
+    const folder = await this.graphGetJson<{ id?: string }>(
+      `${GRAPH_BASE_URL}/me/mailFolders/${name}?$select=id`,
+      accessToken,
+    );
+    if (!folder.id) throw new Error(`Graph well-known folder '${name}' returned no id`);
+    return folder.id;
+  }
+
+  /** Follow `@odata.nextLink` until the collection is exhausted. */
+  private async fetchAllPages(firstUrl: string, accessToken: string): Promise<GraphMessage[]> {
+    const out: GraphMessage[] = [];
+    let next: string | undefined = firstUrl;
+    while (next !== undefined) {
+      const page: GraphListResponse<GraphMessage> = await this.graphGet<GraphMessage>(
+        next,
+        accessToken,
+      );
+      out.push(...(page.value ?? []));
+      next = page["@odata.nextLink"];
+    }
+    return out;
   }
 
   async getProfile(): Promise<{ emailAddress: string; syncCursor: string }> {
@@ -392,38 +479,73 @@ export class GraphClient {
       $top: "100",
     });
 
-    // Scope to the inbox folder, not the whole mailbox. The Outlook adapter is
-    // inbox-folder-scoped everywhere else (list + delta), and this keeps the
-    // snapshot in step: when a message is archived / deleted / moved out of the
-    // inbox it drops out of this result, so a thread that lost one of several
-    // messages re-sorts on the reduced set, and a thread whose messages have ALL
-    // left the inbox yields an empty set — the definitive not-found signal below.
-    // A mailbox-wide `/me/messages` query would still return the archived copies
-    // (Archive/Sent live in other folders), so removals would never register.
-    const messages: GraphMessage[] = [];
-    let next: string | undefined = `${GRAPH_BASE_URL}${INBOX_MESSAGES}?${params}`;
-    while (next !== undefined) {
-      const page: GraphListResponse<GraphMessage> = await this.graphGet<GraphMessage>(
-        next,
-        accessToken,
-      );
-      messages.push(...(page.value ?? []));
-      next = page["@odata.nextLink"];
+    // Query the MAILBOX, not the inbox folder, then partition the result locally.
+    // Outlook keeps the owner's own replies in Sent Items, so an inbox-scoped
+    // query returns only the other party's messages and every Outlook thread the
+    // user has replied to is routed, summarised and drafted against half the
+    // conversation. Gmail has no such gap (`threads.get` is thread-scoped and
+    // returns SENT messages), so this is what brings the two providers level.
+    //
+    // One request, same as the inbox-scoped query it replaces; the folder ids are
+    // resolved once per client instance. The alternative — a second folder-scoped
+    // query against sentitems — would double the request count on exactly the path
+    // that runs thousands of times during a historical backfill.
+    const [folders, raw] = await Promise.all([
+      this.snapshotFolderIds(accessToken),
+      this.fetchAllPages(`${GRAPH_BASE_URL}${ALL_MESSAGES}?${params}`, accessToken),
+    ]);
+
+    // Only the inbox and Sent Items are part of a thread. Everything else the
+    // mailbox-wide query can now return is dropped HERE, explicitly, rather than
+    // being excluded by the accident of the query's folder scope:
+    //   - Drafts        an unsent reply is not part of the conversation and must
+    //                   never be persisted, classified, summarised, or treated as
+    //                   the message being replied to. Matched on `isDraft` as well
+    //                   as on folder, since a draft can be saved outside Drafts.
+    //   - Junk Email    spam, excluded like Gmail's SPAM label.
+    //   - Deleted Items trash, excluded like Gmail's TRASH label.
+    //   - Archive and user-created folders — a message filed out of the inbox is
+    //                   a REMOVAL (see below), so it must not reappear here.
+    const inbox: GraphMessage[] = [];
+    const sent: GraphMessage[] = [];
+    for (const msg of raw) {
+      if (msg.isDraft === true) continue;
+      if (msg.parentFolderId === folders.inbox) inbox.push(msg);
+      else if (msg.parentFolderId === folders.sent) sent.push(msg);
     }
 
-    if (messages.length === 0) {
-      // Graph has no per-conversation 404 on this path: a filter query for a
-      // deleted/unknown conversationId (or one no longer present in the inbox)
-      // succeeds (200) with an empty result set, so an empty set IS the
-      // definitive not-found / gone-from-inbox signal. (A direct
-      // GET /me/messages/{id} would 404 with ErrorItemNotFound, but we never
-      // fetch that way.) Typed so the sync/classify loops skip exactly this
-      // case; a 404 on the query itself means the mailbox/endpoint is broken,
-      // stays a generic error, and propagates as transient.
+    if (inbox.length === 0) {
+      // The not-found signal is derived from the INBOX partition alone, exactly as
+      // it was when the whole query was inbox-scoped. Graph has no per-conversation
+      // 404 on this path: a filter query for a deleted/unknown conversationId
+      // succeeds (200) with an empty result set. (A direct GET /me/messages/{id}
+      // would 404 with ErrorItemNotFound, but we never fetch that way.) Typed so
+      // the sync/classify loops skip exactly this case; a 404 on the query itself
+      // means the mailbox/endpoint is broken, stays a generic error, and
+      // propagates as transient.
+      //
+      // Widening the signal to the union would break it: a thread whose inbound
+      // messages have all been archived still has its Sent Items copies, and would
+      // stop reading as gone.
+      if (raw.length > 0 && sent.length === 0 && raw.some((m) => m.isDraft !== true)) {
+        // Nothing matched either folder. Expected when the thread has been fully
+        // archived; also the shape an id-format mismatch would take, which would
+        // silently stop all Outlook imports — so say so once, with counts only.
+        console.warn(
+          `[graph] conversation matched no inbox/sent folder id (${raw.length} message(s)): ` +
+            `thread archived, or folder ids resolved under a different id type`,
+        );
+      }
       throw new MailThreadNotFoundError(`Graph conversation not found: ${conversationId}`);
     }
 
-    return normalizeGraphThread(messages, conversationId);
+    // Message REMOVAL stays inbox-derived too. A message archived, moved to a user
+    // folder, or deleted lands in neither partition, so it drops out of the
+    // snapshot and the sync job's stored-vs-snapshot diff deletes its row — the
+    // behaviour that a naive mailbox-wide query would have destroyed. The owner's
+    // sent copies are in the retained set, so persisting them does not make them
+    // look like removals on the next sync.
+    return normalizeGraphThread([...inbox, ...sent], conversationId);
   }
 
   /**

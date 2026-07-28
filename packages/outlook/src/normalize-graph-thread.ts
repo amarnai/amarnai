@@ -17,12 +17,22 @@ type GraphHeader = { name: string; value: string };
 export type GraphMessage = {
   id: string;
   conversationId?: string;
+  /**
+   * Folder the message lives in. The client partitions on this to keep a thread
+   * to the inbox + Sent Items and to drop junk / trash / archived copies; it is
+   * not used here.
+   */
+  parentFolderId?: string;
+  /** True for an unsent draft. Filtered out by the client before normalising. */
+  isDraft?: boolean;
   from?: GraphRecipient;
   sender?: GraphRecipient;
   toRecipients?: GraphRecipient[];
   ccRecipients?: GraphRecipient[];
   subject?: string | null;
   receivedDateTime?: string;
+  /** Set on Sent Items copies; the timestamp fallback when receivedDateTime is absent. */
+  sentDateTime?: string;
   bodyPreview?: string | null;
   /** Graph strips quoted history from uniqueBody — preferred for the excerpt. */
   uniqueBody?: { contentType?: string; content?: string } | null;
@@ -35,9 +45,6 @@ export type GraphMessage = {
 };
 
 // ─── Internal helpers ──────────────────────────────────────────────────────────
-
-/** Max characters kept for the classification excerpt (matches the Gmail adapter). */
-const BODY_EXCERPT_MAX = 2000;
 
 function stripHtml(html: string): string {
   return html
@@ -76,15 +83,33 @@ function recipientEmails(list: GraphRecipient[] | undefined): string[] {
     .filter((e) => e.length > 0);
 }
 
-function parseReceivedAt(value: string | undefined): Date {
-  if (!value) return new Date(0);
+function parseDate(value: string | undefined): Date | null {
+  if (!value) return null;
   const d = new Date(value);
-  return isNaN(d.getTime()) ? new Date(0) : d;
+  return isNaN(d.getTime()) ? null : d;
+}
+
+/**
+ * A message's position in the thread timeline. `receivedDateTime` is populated on
+ * Sent Items copies too, but falls back to `sentDateTime` so the owner's own reply
+ * can never sort to the epoch and drag `latestMessageAt` (or the newest-message
+ * body budget) onto the wrong message.
+ */
+function messageTimestamp(msg: GraphMessage): Date {
+  return parseDate(msg.receivedDateTime) ?? parseDate(msg.sentDateTime) ?? new Date(0);
 }
 
 function bodyExcerpt(msg: GraphMessage): string | null {
   // Prefer uniqueBody (quoted history already stripped by Graph), then body,
-  // then the plaintext bodyPreview. HTML is stripped; the result is bounded.
+  // then the plaintext bodyPreview. HTML is stripped.
+  //
+  // Deliberately NOT truncated, matching the Gmail adapter. A cap here used to
+  // read as a harmless classification bound, but this field is also what the
+  // draft route sends to the model, and drafts budget 16,000 characters for the
+  // message being replied to: an adapter-level 2,000-character cut meant Outlook
+  // drafts were written from a fraction of the message while Gmail drafts saw all
+  // of it. Every consumer (classification, summaries, drafts) applies its own
+  // budget, so a second invisible limit here can only create provider drift.
   const source = msg.uniqueBody ?? msg.body;
   let text: string | null = null;
   if (source?.content) {
@@ -92,9 +117,7 @@ function bodyExcerpt(msg: GraphMessage): string | null {
   } else if (msg.bodyPreview) {
     text = msg.bodyPreview.trim();
   }
-  if (!text) return null;
-  const bounded = text.length > BODY_EXCERPT_MAX ? text.slice(0, BODY_EXCERPT_MAX) : text;
-  return bounded || null;
+  return text || null;
 }
 
 function attachments(msg: GraphMessage): AttachmentMeta[] {
@@ -136,11 +159,14 @@ function normalizeMessage(msg: GraphMessage): SnapshotMessage {
     bodyExcerpt: bodyExcerpt(msg),
     attachments: attachments(msg),
     inlineImages: inlineImages(msg),
-    receivedAt: parseReceivedAt(msg.receivedDateTime),
-    // Outlook sync is inbox-folder-scoped, so spam/trash never reach here and
-    // there is no Gmail-category vocabulary. Left empty: the automated-mail
-    // detector then relies on the (provider-neutral) RFC header / no-reply /
-    // subject signals, which port cleanly to Graph.
+    receivedAt: messageTimestamp(msg),
+    // Outlook has no Gmail label vocabulary, and folder membership is not a label:
+    // the spam / trash / draft exclusions Gmail expresses with labels are applied
+    // by GraphClient.getThreadSnapshot, which drops those folders before calling
+    // here. Left empty, so the automated-mail detector relies on the
+    // (provider-neutral) RFC header / no-reply / subject signals, which port
+    // cleanly to Graph, and the label-based sent-only rule stays inert for Outlook
+    // (its identity-based counterpart covers Outlook instead).
     labelIds: [],
     automatedHeaders: {
       listUnsubscribe: getHeader(msg.internetMessageHeaders, "List-Unsubscribe") !== null,
@@ -158,6 +184,12 @@ function normalizeMessage(msg: GraphMessage): SnapshotMessage {
  * This is the inverse of Gmail (where one thread fetch returns all messages): the
  * caller has already gathered every message with the same `conversationId`.
  *
+ * The caller is also responsible for deciding WHICH messages belong to the thread
+ * — inbox + Sent Items, never drafts, junk, trash, or archived copies. Everything
+ * passed in is treated as part of the conversation, including the owner's own
+ * replies (which is what makes `messageCount` and `latestMessageAt` move when the
+ * user replies, matching Gmail).
+ *
  * `conversationId` is the thread key. Because it is not itself URL-resolvable, the
  * newest message's `webLink` is captured as the thread deep-link.
  */
@@ -167,7 +199,7 @@ export function normalizeGraphThread(
 ): ThreadSnapshot {
   // Oldest-first so subject/participants mirror the Gmail adapter's ordering.
   const ordered = [...rawMessages].sort(
-    (a, b) => parseReceivedAt(a.receivedDateTime).getTime() - parseReceivedAt(b.receivedDateTime).getTime(),
+    (a, b) => messageTimestamp(a).getTime() - messageTimestamp(b).getTime(),
   );
 
   const messages: SnapshotMessage[] = ordered.map(normalizeMessage);

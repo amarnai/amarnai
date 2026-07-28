@@ -51,6 +51,18 @@ describe("normalizeGraphThread — grouping + shape", () => {
     expect(snap.webLink).toBe("link-new");
   });
 
+  it("falls back to sentDateTime when a Sent Items copy has no receivedDateTime", () => {
+    // The owner's own replies come from Sent Items. Without the fallback they
+    // would parse to the epoch, sorting the newest message to the front of the
+    // thread and freezing latestMessageAt.
+    const inbound = msg({ id: "in", receivedDateTime: "2026-06-01T10:00:00Z" });
+    const reply: GraphMessage = { ...msg({ id: "reply" }), sentDateTime: "2026-06-01T14:00:00Z" };
+    delete reply.receivedDateTime;
+    const snap = normalizeGraphThread([reply, inbound], "conv-1");
+    expect(snap.messages.map((m) => m.providerMessageId)).toEqual(["in", "reply"]);
+    expect(snap.latestMessageAt.toISOString()).toBe("2026-06-01T14:00:00.000Z");
+  });
+
   it("leaves labelIds empty (Outlook has no Gmail category vocabulary)", () => {
     const snap = normalizeGraphThread([msg()], "conv-1");
     expect(snap.messages[0]!.labelIds).toEqual([]);
@@ -87,13 +99,16 @@ describe("normalizeGraphThread — body extraction", () => {
     expect(snap.messages[0]!.bodyExcerpt).toBe("preview text");
   });
 
-  it("bounds the excerpt to 2000 characters", () => {
+  it("does not truncate the excerpt, matching the Gmail adapter", () => {
+    // Truncating here is invisible to the consumers, each of which budgets what it
+    // needs. A cap meant Outlook drafts were generated from the first 2,000
+    // characters of a message while Gmail drafts saw the whole thing.
     const long = "x".repeat(5000);
     const snap = normalizeGraphThread(
       [msg({ uniqueBody: { contentType: "text", content: long } })],
       "conv-1",
     );
-    expect(snap.messages[0]!.bodyExcerpt!.length).toBe(2000);
+    expect(snap.messages[0]!.bodyExcerpt!.length).toBe(5000);
   });
 });
 
