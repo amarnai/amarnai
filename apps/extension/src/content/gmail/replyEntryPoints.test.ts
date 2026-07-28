@@ -123,6 +123,15 @@ describe("ensureReplyEntryPoints", () => {
     expect(css).toContain(':hover');
   });
 
+  it("uses an inline SVG icon on both buttons, never an extension URL", () => {
+    buildGmail();
+    ensureReplyEntryPoints();
+    for (const el of [barButton()!, headerButton()!]) {
+      expect(el.querySelector("svg")).not.toBeNull();
+      expect(el.querySelector("img")).toBeNull();
+    }
+  });
+
   it("carries the 'Reply with Amarnai' tooltip on both buttons", () => {
     buildGmail();
     ensureReplyEntryPoints();

@@ -54,7 +54,10 @@ const CONTENT_SCRIPTS = [
  * scripts, so a build with injection disabled exposes nothing.
  */
 const WEB_ACCESSIBLE_RESOURCES = [
-  { resources: ["pageWorld.js", "reply-button-icon.svg"], matches: [GMAIL_MAIL_HOST] },
+  // InboxSDK's page-world half is Gmail-only.
+  { resources: ["pageWorld.js"], matches: [GMAIL_MAIL_HOST] },
+  // The button icon renders inside both providers' own pages.
+  { resources: ["reply-button-icon.svg"], matches: MAIL_HOSTS },
 ];
 
 /**

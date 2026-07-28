@@ -2,6 +2,7 @@ import { debugLog } from "../core/debug.js";
 import { REPLY_BUTTON_STRINGS } from "../core/strings.js";
 import { detectGmailThread, findConversationRoot } from "./detectThread.js";
 import { armReply } from "./armedReply.js";
+import { createReplyIcon, REPLY_ICON_CSS } from "../core/replyIcon.js";
 
 // Chiefy-style entry points in Gmail's own reply surfaces (product decision
 // 2026-07-27, superseding the earlier no-hand-rolled-reply-bar rule):
@@ -41,6 +42,7 @@ const STYLE_ATTRIBUTE = "data-amarnai-entry-styles";
  * currentColor keeps the hover wash correct in both Gmail themes.
  */
 const ENTRY_CSS = `
+${REPLY_ICON_CSS}
 [${ENTRY_ATTRIBUTE}]::before,
 [${ENTRY_ATTRIBUTE}]::after {
   content: none !important;
@@ -113,17 +115,6 @@ function makeAccessible(el: HTMLElement, onActivate: () => void): void {
   });
 }
 
-function makeIcon(doc: Document, size: number): HTMLElement {
-  const icon = doc.createElement("img");
-  icon.src = chrome.runtime.getURL("reply-button-icon.svg");
-  icon.alt = "";
-  icon.style.width = `${size}px`;
-  icon.style.height = `${size}px`;
-  icon.style.verticalAlign = "middle";
-  icon.style.flex = "none";
-  return icon;
-}
-
 /** The bottom bar's native Reply pill — the one click target both buttons use. */
 function findNativeReply(root: Element): HTMLElement | null {
   return root.querySelector<HTMLElement>("span.ams.bkH");
@@ -164,7 +155,7 @@ function injectBarButton(root: Element, doc: Document): void {
     const value = nativeBox?.[prop];
     if (value) pill.style[prop] = value;
   }
-  pill.appendChild(makeIcon(doc, 20));
+  pill.appendChild(createReplyIcon(doc, 20));
   pill.appendChild(doc.createTextNode(REPLY_BUTTON_STRINGS.idle));
   makeAccessible(pill, () => activate(nativeReply, doc));
 
@@ -379,7 +370,7 @@ function injectHeaderButton(root: Element, doc: Document): void {
   button.style.alignItems = "center";
   button.style.justifyContent = "center";
   button.style.cursor = "pointer";
-  button.appendChild(makeIcon(doc, 20));
+  button.appendChild(createReplyIcon(doc, 20));
   makeAccessible(button, () => activate(nativeReply, doc));
   // Gmail renders the header action icons' tooltips ABOVE the icon; its
   // delegation honors data-tooltip-align ("t,c" = above, centered).

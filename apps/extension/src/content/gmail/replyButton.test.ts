@@ -125,7 +125,11 @@ describe("attachReplyButton", () => {
     await settle();
 
     expect(compose.inserted).toEqual(["<div><p>Thursday works.</p></div>"]);
-    expect(compose.latest()).toMatchObject({ title: REPLY_BUTTON_STRINGS.inserted });
+    // The label must NOT change on success — identity, not status.
+    expect(compose.latest()).toMatchObject({
+      title: REPLY_BUTTON_STRINGS.idle,
+      tooltip: REPLY_BUTTON_STRINGS.tooltips.inserted,
+    });
   });
 
   it("a second click replaces the insertion instead of stacking a duplicate", async () => {
@@ -183,7 +187,11 @@ describe("attachReplyButton", () => {
 
     release(DRAFT_OK);
     await settle();
-    expect(compose.latest()).toMatchObject({ title: REPLY_BUTTON_STRINGS.inserted });
+    // The label must NOT change on success — identity, not status.
+    expect(compose.latest()).toMatchObject({
+      title: REPLY_BUTTON_STRINGS.idle,
+      tooltip: REPLY_BUTTON_STRINGS.tooltips.inserted,
+    });
   });
 
   it("ignores a second click while generating, so one draft is never charged twice", async () => {

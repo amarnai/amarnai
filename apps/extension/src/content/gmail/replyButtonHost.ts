@@ -1,6 +1,6 @@
 import * as InboxSDK from "@inboxsdk/core";
 import { INBOXSDK_APP_ID } from "../../config.js";
-import { GENERATE_DRAFT_MESSAGE, type GenerateDraftResponse } from "../core/messaging.js";
+import { requestDraftFromBackground } from "../core/draftRequest.js";
 import { debugLog } from "../core/debug.js";
 import { attachReplyButton, type ComposeViewLike } from "./replyButton.js";
 import { consumeArmedReply } from "./armedReply.js";
@@ -28,31 +28,6 @@ function tryRead<T>(read: () => T): T | "threw" {
   } catch {
     return "threw";
   }
-}
-
-/** Ask the background for a draft. Resolves to an outcome; never rejects. */
-function requestDraft(
-  accountEmail: string,
-  providerThreadId: string,
-): Promise<GenerateDraftResponse> {
-  return new Promise((resolve) => {
-    try {
-      chrome.runtime.sendMessage(
-        { type: GENERATE_DRAFT_MESSAGE, accountEmail, providerThreadId },
-        (response: GenerateDraftResponse | undefined) => {
-          // A dead channel sets lastError and yields undefined; reading it here
-          // also stops Chrome logging an unchecked-error warning onto the page.
-          if (chrome.runtime.lastError || !response) {
-            resolve({ ok: false, reason: "error" });
-            return;
-          }
-          resolve(response);
-        },
-      );
-    } catch {
-      resolve({ ok: false, reason: "error" });
-    }
-  });
 }
 
 /**
@@ -109,7 +84,7 @@ export async function startReplyButton(deps: {
       view,
       {
         getAccountEmail: deps.getAccountEmail,
-        requestDraft,
+        requestDraft: requestDraftFromBackground,
         openPanel: () => {
           // Sign-in happens in the extension's own panel: an OAuth flow started
           // from inside a third-party page is neither reliable nor trustworthy.

@@ -74,7 +74,10 @@ function describe(state: State): { title: string; tooltip: string; enabled: bool
     case "generating":
       return { title: S.generating, tooltip: S.tooltips.generating, enabled: false };
     case "inserted":
-      return { title: S.inserted, tooltip: S.tooltips.inserted, enabled: true };
+      // The label stays "Amarnai Reply": a toolbar button is an identity, not a
+      // status readout, and renaming it after a click reads as a different
+      // control. The outcome lives in the tooltip.
+      return { title: S.idle, tooltip: S.tooltips.inserted, enabled: true };
     case "notSorted":
       return { title: S.notSorted, tooltip: S.tooltips.notSorted, enabled: true };
     case "error":
