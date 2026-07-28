@@ -88,9 +88,31 @@ describe("GET /outlook-manifest.xml", () => {
     expect(xml).not.toContain("ReadWriteItem");
   });
 
-  it("keeps a stable add-in Id — changing it orphans every install", async () => {
+  it("keeps a stable default add-in Id — changing it orphans every install", async () => {
     enable();
     expect(await body()).toContain("<Id>6f3a5b1e-9c24-4a7d-8f16-2b8d4e0c93a1</Id>");
+  });
+
+  it("lets a deployment claim its own Id, so two installs can coexist", async () => {
+    enable();
+    vi.stubEnv("OUTLOOK_ADDIN_ID", "0f1e2d3c-4b5a-4968-8776-65544332211f");
+    const xml = await body();
+    expect(xml).toContain("<Id>0f1e2d3c-4b5a-4968-8776-65544332211f</Id>");
+    expect(xml).not.toContain("6f3a5b1e-9c24-4a7d-8f16-2b8d4e0c93a1");
+  });
+
+  it("falls back to the default when the override is blank", async () => {
+    enable();
+    vi.stubEnv("OUTLOOK_ADDIN_ID", "   ");
+    expect(await body()).toContain("<Id>6f3a5b1e-9c24-4a7d-8f16-2b8d4e0c93a1</Id>");
+  });
+
+  it("500s on a malformed Id rather than serving a manifest Outlook will reject", async () => {
+    enable();
+    vi.stubEnv("OUTLOOK_ADDIN_ID", "not-a-uuid");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await GET();
+    expect(res.status).toBe(500);
   });
 
   it("requires the Mailbox 1.5 set that displayReplyForm and pinning need", async () => {

@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { appBaseUrl, isOutlookAddinEnabled, OUTLOOK_PANEL_PATH } from "@/lib/outlook-addin";
+import {
+  appBaseUrl,
+  isOutlookAddinEnabled,
+  outlookAddinId,
+  OUTLOOK_PANEL_PATH,
+} from "@/lib/outlook-addin";
 
 // The Office Add-in manifest, templated from the deployment's own base URL.
 //
@@ -22,9 +27,10 @@ import { appBaseUrl, isOutlookAddinEnabled, OUTLOOK_PANEL_PATH } from "@/lib/out
 //     opens a reply form for the user to send themselves; it must never hold a
 //     permission that would let it send or modify mail.
 //
-// A fixed Id is required and must never change for a published add-in: Outlook
-// keys installed add-ins by it, and a new Id reads as a different add-in.
-const ADDIN_ID = "6f3a5b1e-9c24-4a7d-8f16-2b8d4e0c93a1";
+// The Id is per-DEPLOYMENT, not a constant, and must never change once that
+// deployment has published: Outlook keys installed add-ins by it, so a new Id
+// reads as a different add-in and a shared Id makes two deployments mutually
+// exclusive in one mailbox. See outlookAddinId() for how it is set.
 
 function xmlEscape(value: string): string {
   return value
@@ -34,7 +40,7 @@ function xmlEscape(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function buildManifest(base: string): string {
+function buildManifest(base: string, addinId: string): string {
   const b = xmlEscape(base);
   const paneUrl = `${b}${OUTLOOK_PANEL_PATH}`;
   // The ribbon's own entry point: same pane, told to get straight to drafting.
@@ -47,7 +53,7 @@ function buildManifest(base: string): string {
   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
   xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
   xsi:type="MailApp">
-  <Id>${ADDIN_ID}</Id>
+  <Id>${addinId}</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Amarnai</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
@@ -144,7 +150,17 @@ export async function GET(): Promise<NextResponse> {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  return new NextResponse(buildManifest(appBaseUrl()), {
+  let addinId: string;
+  try {
+    addinId = outlookAddinId();
+  } catch (e) {
+    // A misconfigured Id must not ship a manifest Outlook will reject with no
+    // explanation. 500 with the reason in the log is the honest answer.
+    console.error("[outlook-manifest]", e);
+    return new NextResponse("Add-in is misconfigured", { status: 500 });
+  }
+
+  return new NextResponse(buildManifest(appBaseUrl(), addinId), {
     status: 200,
     headers: {
       "content-type": "application/xml; charset=utf-8",

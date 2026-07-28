@@ -48,13 +48,21 @@ const THREAD_DELAY_MS = 120;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * `skipped` is an expected, benign outcome (the thread is gone from the inbox,
+ * or filtered out); `failed` is not (a Graph error, most likely throttling).
+ * Counted apart on purpose: folded together, a throttled run that repaired
+ * almost nothing is indistinguishable from a clean run over an archived
+ * mailbox, and the operator has no reason to re-run.
+ */
 async function repairWorkspace(workspaceId: string): Promise<{
   scanned: number;
   repaired: number;
   added: number;
   skipped: number;
+  failed: number;
 }> {
-  const stats = { scanned: 0, repaired: 0, added: 0, skipped: 0 };
+  const stats = { scanned: 0, repaired: 0, added: 0, skipped: 0, failed: 0 };
 
   const [connection, syncSettingsRow, account] = await Promise.all([
     db.emailConnection.findUnique({
@@ -114,6 +122,14 @@ async function repairWorkspace(workspaceId: string): Promise<{
     for (const thread of page) {
       stats.scanned++;
 
+      // Paced BEFORE the fetch, not after the write: every thread costs a Graph
+      // snapshot whether or not it needs repairing, and on a re-run (or a dry
+      // run of an already-clean mailbox) none of them do. Pacing only the
+      // repaired threads left the common path unthrottled, which Graph answers
+      // with 429s that land in the generic catch below and are counted as
+      // `skipped` — an under-repair that reads as success.
+      await sleep(THREAD_DELAY_MS);
+
       let raw;
       try {
         raw = await client.getThreadSnapshot(thread.providerThreadId);
@@ -124,7 +140,7 @@ async function repairWorkspace(workspaceId: string): Promise<{
         }
         if (err instanceof MailAuthError) throw err; // reconnect needed; abort loudly
         console.log(`  thread=${thread.id} fetch failed: ${String(err).slice(0, 160)}`);
-        stats.skipped++;
+        stats.failed++;
         continue;
       }
 
@@ -166,8 +182,6 @@ async function repairWorkspace(workspaceId: string): Promise<{
           },
         });
       }
-
-      await sleep(THREAD_DELAY_MS);
     }
   }
 
@@ -185,7 +199,7 @@ async function main() {
       `${connections.length} Outlook workspace(s)`,
   );
 
-  const total = { scanned: 0, repaired: 0, added: 0, skipped: 0 };
+  const total = { scanned: 0, repaired: 0, added: 0, skipped: 0, failed: 0 };
   for (const conn of connections) {
     console.log(`\n${conn.emailAddress} (ws=${conn.workspaceId})`);
     const s = await repairWorkspace(conn.workspaceId);
@@ -193,16 +207,29 @@ async function main() {
     total.repaired += s.repaired;
     total.added += s.added;
     total.skipped += s.skipped;
+    total.failed += s.failed;
     console.log(
-      `  scanned=${s.scanned} repaired=${s.repaired} added=${s.added} skipped=${s.skipped}`,
+      `  scanned=${s.scanned} repaired=${s.repaired} added=${s.added} ` +
+        `skipped=${s.skipped} failed=${s.failed}`,
     );
   }
 
   console.log(
     `\n[repair-outlook-sent] Done. ${APPLY ? "Added" : "Would add"} ${total.added} message(s) ` +
-      `across ${total.repaired} thread(s); scanned ${total.scanned}, skipped ${total.skipped}.` +
+      `across ${total.repaired} thread(s); scanned ${total.scanned}, skipped ${total.skipped}, ` +
+      `failed ${total.failed}.` +
       (APPLY ? "" : " Re-run with --apply to write."),
   );
+
+  // The run is only complete if nothing errored. Re-running is safe (additive
+  // and idempotent), so say so rather than leaving a partial repair looking done.
+  if (total.failed > 0) {
+    console.warn(
+      `\n[repair-outlook-sent] ${total.failed} thread(s) could not be fetched — this repair is ` +
+        `INCOMPLETE. Graph throttling is the usual cause; re-run to pick them up ` +
+        `(threads already repaired are skipped).`,
+    );
+  }
 }
 
 main()
