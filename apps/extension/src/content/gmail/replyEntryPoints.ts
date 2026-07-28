@@ -145,7 +145,6 @@ function injectBarButton(root: Element, doc: Document): void {
   pill.style.alignItems = "center";
   pill.style.gap = "8px";
   pill.style.cursor = "pointer";
-  pill.style.marginLeft = "0px";
   // The rendered padding belongs partly to the action-specific class stripped
   // above (live 2026-07-27: edge gaps measured identical while the pill still
   // LOOKED wider — the extra space was inside). Copy the native pill's computed
@@ -160,7 +159,6 @@ function injectBarButton(root: Element, doc: Document): void {
   makeAccessible(pill, () => activate(nativeReply, doc));
 
   anchor.insertAdjacentElement("afterend", pill);
-  recalibrateBarPill(root, doc);
   debugLog(
     `reply entry: bottom-bar button injected (${REV}) —`,
     `pad=${pill.style.paddingLeft || "?"}/${pill.style.paddingRight || "?"}`,
@@ -184,69 +182,12 @@ function injectBarButton(root: Element, doc: Document): void {
   );
 }
 
-/** The smallest positive rendered gap between two adjacent native pills. */
-function measureNativeGap(root: Element): number | null {
-  const pills = ["span.ams.bkH", "span.ams.bkI", "span.ams.bkG"]
-    .map((sel) => root.querySelector<HTMLElement>(sel))
-    .filter((el): el is HTMLElement => el !== null && isRendered(el));
-  let best: number | null = null;
-  for (let i = 0; i < pills.length - 1; i += 1) {
-    const gap = pills[i + 1]!.getBoundingClientRect().left - pills[i]!.getBoundingClientRect().right;
-    if (Number.isFinite(gap) && gap > 0 && (best === null || gap < best)) best = gap;
-  }
-  return best;
-}
-
 /** Visibly rendered: takes layout space AND is actually painted. */
 function isRendered(el: HTMLElement): boolean {
   if (el.getBoundingClientRect().width <= 0) return false;
   const style = el.ownerDocument.defaultView?.getComputedStyle(el);
   if (!style) return true;
   return style.visibility === "visible" && style.display !== "none" && style.opacity !== "0";
-}
-
-/**
- * Keep the pill's LEFT gap equal to the native pills' own spacing — measured
- * against the nearest sibling that is actually painted, on every tick.
- *
- * Why this is not a one-shot at injection: the bar turned out to contain
- * invisible elements that still consume layout width (found by inspection,
- * 2026-07-27 — origin unknown, possibly Gmail placeholders or another
- * extension), and Gmail may reflow the bar after we inject. Edge-adjacent
- * calibration measured a perfect gap while the painted gap was wider. Bridging
- * an invisible spacer legitimately needs a negative margin; clamped so a
- * mismeasure can never drag the pill far.
- */
-function recalibrateBarPill(root: Element, doc: Document): void {
-  const pill = root.querySelector<HTMLElement>(`[${ENTRY_ATTRIBUTE}="bar"]`);
-  if (!pill) return;
-  const nativeGap = measureNativeGap(root);
-  if (nativeGap === null) return;
-
-  const skipped: string[] = [];
-  let prev = pill.previousElementSibling as HTMLElement | null;
-  while (prev && !isRendered(prev)) {
-    const width = prev.getBoundingClientRect().width;
-    skipped.push(`${prev.tagName.toLowerCase()}.${String(prev.className).split(" ")[0] || "?"}(${width.toFixed(0)}w)`);
-    prev = prev.previousElementSibling as HTMLElement | null;
-  }
-  if (!prev) return;
-
-  const gap = pill.getBoundingClientRect().left - prev.getBoundingClientRect().right;
-  const delta = nativeGap - gap;
-  if (!Number.isFinite(delta) || Math.abs(delta) <= 0.5) return;
-
-  const currentMargin = Number.parseFloat(pill.style.marginLeft || "0") || 0;
-  const next = Math.max(-48, Math.min(48, Math.round(currentMargin + delta)));
-  pill.style.marginLeft = `${next}px`;
-  debugLog(
-    `reply entry: bar gap recalibrated (${REV}) —`,
-    `nativeGap=${nativeGap.toFixed(1)}`,
-    `paintedGap=${gap.toFixed(1)}`,
-    `marginLeft=${next}px`,
-    skipped.length > 0 ? `bridged=[${skipped.join(", ")}]` : "bridged=none",
-  );
-  void doc;
 }
 
 const MESSAGE_MARKER = "[data-legacy-message-id], [data-message-id]";
@@ -395,7 +336,6 @@ export function ensureReplyEntryPoints(doc: Document = document): void {
   ensureEntryStyles(doc);
   injectBarButton(root, doc);
   injectHeaderButton(root, doc);
-  recalibrateBarPill(root, doc);
 }
 
 /**
