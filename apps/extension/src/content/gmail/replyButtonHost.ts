@@ -1,25 +1,14 @@
-import * as InboxSDK from "@inboxsdk/core";
-import { INBOXSDK_APP_ID } from "../../config.js";
 import { requestDraftFromBackground } from "../core/draftRequest.js";
 import { debugLog } from "../core/debug.js";
 import { attachReplyButton, type ComposeViewLike } from "./replyButton.js";
 import { consumeArmedReply } from "./armedReply.js";
 import { disableReplyEntryPoints, startReplyEntryPoints } from "./replyEntryPoints.js";
+import { hasInboxSdkAppId, loadInboxSDK } from "./inboxSdk.js";
 
 // Everything that touches InboxSDK or the extension runtime, kept apart from
 // replyButton.ts so the state machine there stays testable without either.
 
 const ICON_PATH = "reply-button-icon.svg";
-
-/**
- * InboxSDK.load() has a failure mode of never settling: it waits for the
- * pageWorld.js handshake, and if that injection quietly fails there is no
- * rejection to catch — just eternal silence, which reads as "the button does
- * not exist". This watchdog turns that state into one visible warning. Plain
- * console.warn, not debugLog: an install where the button cannot load should
- * say so without anyone having to know the debug flag exists.
- */
-const LOAD_WATCHDOG_MS = 20_000;
 
 /** Read a ComposeView accessor that may throw (getThreadID does, for some composes). */
 function tryRead<T>(read: () => T): T | "threw" {
@@ -40,27 +29,13 @@ function tryRead<T>(read: () => T): T | "threw" {
 export async function startReplyButton(deps: {
   getAccountEmail: () => string | null;
 }): Promise<() => void> {
-  if (!INBOXSDK_APP_ID) {
+  if (!hasInboxSdkAppId()) {
     debugLog("reply button: no VITE_INBOXSDK_APP_ID in this build — button disabled");
     return () => {};
   }
 
-  debugLog("reply button: loading InboxSDK…");
-  const watchdog = setTimeout(() => {
-    console.warn(
-      "[amarnai] Amarnai Reply: InboxSDK did not finish loading after " +
-        `${LOAD_WATCHDOG_MS / 1000}s. This usually means pageWorld.js was not ` +
-        "injected — check the extension's background console (service worker) " +
-        "and that the manifest carries the scripting permission.",
-    );
-  }, LOAD_WATCHDOG_MS);
-
-  let sdk;
-  try {
-    sdk = await InboxSDK.load(2, INBOXSDK_APP_ID);
-  } finally {
-    clearTimeout(watchdog);
-  }
+  // Shared with the injected panel: one load per page, one page-world handshake.
+  const sdk = await loadInboxSDK();
   debugLog("reply button: InboxSDK ready — watching for reply composes");
 
   const iconUrl = chrome.runtime.getURL(ICON_PATH);

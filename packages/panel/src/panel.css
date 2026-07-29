@@ -1,0 +1,249 @@
+/*
+ * The injected panel's own styles.
+ *
+ * Two hosts, two very different width budgets: Gmail's sidebar is around 344px
+ * and an Outlook task pane can be dragged down to about 280. So this sizes off
+ * container queries rather than the viewport — inside an iframe the viewport is
+ * the iframe, and inside a task pane it is the whole pane, and neither tells us
+ * how much room the panel actually has.
+ *
+ * Every color is a token. The two hosts load different token files (the
+ * extension's tokens.css, the web app's globals.css), which is exactly why
+ * nothing here may hardcode a brand value.
+ */
+
+.apn-root {
+  container-type: inline-size;
+  container-name: apn;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  min-width: 280px;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--color-foreground, #1a1a1a);
+  background: var(--color-surface, #fff);
+}
+
+/* ── Empty / blocked states ───────────────────────────────────────────────── */
+
+.apn-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 4px;
+}
+
+.apn-state-text {
+  margin: 0;
+  color: var(--color-text-secondary, #555);
+}
+
+.apn-quota {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-warning-border, #e6d8b0);
+  background: var(--color-warning-bg, #fdf6e3);
+  border-radius: 8px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+.apn-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.apn-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.apn-btn-primary {
+  background: var(--color-primary, #b4552f);
+  color: var(--color-on-primary, #fff);
+}
+
+.apn-btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover, #9c4526);
+}
+
+.apn-btn-secondary {
+  background: var(--color-bg-subtle, #f6f4f1);
+  border-color: var(--color-border, #e4e0da);
+  color: var(--color-foreground, #1a1a1a);
+}
+
+.apn-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-muted, #8a8378);
+  cursor: pointer;
+}
+
+.apn-icon-btn:hover {
+  background: var(--color-bg-subtle, #f6f4f1);
+}
+
+.apn-star.is-important {
+  color: var(--color-warning, #d8a13a);
+}
+
+.apn-link {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary, #555);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── Classification ───────────────────────────────────────────────────────── */
+
+.apn-classification {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apn-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.apn-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border, #e4e0da);
+  background: var(--color-bg-subtle, #f6f4f1);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  /* Folder names run long; the panel is narrow. Truncate rather than wrap so
+     the chip stays one line next to the star. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.apn-chip-folder {
+  cursor: pointer;
+}
+
+.apn-chip-folder:hover {
+  border-color: var(--color-primary, #b4552f);
+}
+
+/* The dot carries the folder's own color; the chip's text stays legible. */
+.apn-chip-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.apn-chip-folder.is-review {
+  border-color: var(--color-review, #c0442f);
+}
+
+.apn-chip-unsorted,
+.apn-chip-sorting {
+  color: var(--color-muted, #8a8378);
+  font-weight: 500;
+}
+
+.apn-review-note {
+  margin: 0;
+  color: var(--color-text-secondary, #555);
+}
+
+/* ── Draft ────────────────────────────────────────────────────────────────── */
+
+.apn-draft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apn-draft-loading,
+.apn-draft-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--color-text-secondary, #555);
+}
+
+.apn-quota-line {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-muted, #8a8378);
+}
+
+.apn-quota-line.is-exhausted {
+  color: var(--color-warning-text, #8a6516);
+}
+
+.apn-skeleton-pulse {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  animation: apn-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes apn-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apn-skeleton-pulse { animation: none; }
+}
+
+/* ── Narrow container ─────────────────────────────────────────────────────── */
+/*
+ * At the Outlook pane's floor the star and the chip stop fitting on one line
+ * comfortably, so the row wraps and the padding tightens. Keyed on the
+ * container, not the viewport: inside an iframe the two are unrelated.
+ */
+@container apn (max-width: 320px) {
+  .apn-root {
+    padding: 10px 8px;
+    gap: 10px;
+  }
+
+  .apn-chip {
+    padding: 5px 8px;
+  }
+}

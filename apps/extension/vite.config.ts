@@ -56,8 +56,9 @@ function emitManifest(env: Record<string, string>, mode: string): Plugin {
 // build. Vite does not surface the flag in the config callback, so read argv.
 const IS_WATCH = process.argv.includes("--watch") || process.argv.includes("-w");
 
-// Panel build: the side-panel HTML app plus the first-run welcome tab (a second
-// HTML entry; shared chunks dedupe between them). The MV3 service worker and the two mail
+// Panel build: the side-panel HTML app, the first-run welcome tab, and the panel
+// injected into Gmail's sidebar (three HTML entries; shared chunks dedupe
+// between them). The MV3 service worker and the two mail
 // content scripts are separate entries built by vite.sw.config.ts and
 // vite.content.config.ts (each must land at a fixed path with no shared hashed
 // chunks). public/icons is copied verbatim into dist/; the manifest is emitted by
@@ -92,6 +93,11 @@ export default defineConfig(({ mode }) => {
         input: {
           panel: path.resolve(__dirname, "index.html"),
           welcome: path.resolve(__dirname, "welcome.html"),
+          // The panel Gmail's sidebar embeds as an extension-origin iframe.
+          // A third HTML entry rather than a route inside index.html: it is a
+          // different document with a different host, and the shared chunks
+          // dedupe across all three anyway.
+          injected: path.resolve(__dirname, "injected.html"),
         },
       },
     },

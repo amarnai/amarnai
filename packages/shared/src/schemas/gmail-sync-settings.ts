@@ -19,6 +19,12 @@ export const GmailSyncSettingsSchema = z.object({
   // the two surfaces are independently useful, and drafting costs quota while
   // reading a summary of an already-open thread does not.
   replyButtonInjectionEnabled: z.boolean().default(true),
+  // Browser extension / Outlook add-in renders the full Amarnai panel inside the
+  // native Gmail/Outlook UI for this workspace. On by default. Its own toggle
+  // because the panel is the only injected surface that reads and mutates a
+  // thread's classification, which a workspace may want to allow or refuse
+  // independently of the read-only summary card.
+  injectedPanelEnabled: z.boolean().default(true),
   blacklistedSenderEmails: z.array(z.string().email()).default([]),
 });
 export type GmailSyncSettings = z.infer<typeof GmailSyncSettingsSchema>;
@@ -31,6 +37,7 @@ export const DEFAULT_GMAIL_SYNC_SETTINGS: GmailSyncSettings = {
   labelWritebackEnabled:   true,
   threadSummaryInjectionEnabled: true,
   replyButtonInjectionEnabled: true,
+  injectedPanelEnabled: true,
   blacklistedSenderEmails: [],
 };
 
@@ -57,6 +64,7 @@ export const UpdateGmailSyncSettingsSchema = z.object({
   labelWritebackEnabled: z.boolean().optional(),
   threadSummaryInjectionEnabled: z.boolean().optional(),
   replyButtonInjectionEnabled: z.boolean().optional(),
+  injectedPanelEnabled: z.boolean().optional(),
 });
 export type UpdateGmailSyncSettingsInput = z.infer<typeof UpdateGmailSyncSettingsSchema>;
 

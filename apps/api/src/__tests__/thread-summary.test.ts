@@ -437,7 +437,9 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/summary", () => 
 // ─── Native-injection route (resolve by provider thread id) ────────────────────
 
 describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summary", () => {
-  it("resolves the thread across the workspace's email accounts and generates", async () => {
+  // Resolution is one indexed lookup on (workspaceId, providerThreadId); the
+  // workspace filter is the tenancy boundary.
+  it("resolves the thread within the workspace and generates", async () => {
     vi.mocked(db.emailThread.findFirst)
       .mockResolvedValueOnce({ id: THREAD_ID } as never)
       .mockResolvedValueOnce(multiMessageThread() as never);
@@ -446,7 +448,7 @@ describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summa
     expect(db.emailThread.findFirst).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        where: { emailAccountId: { in: ["acc-1"] }, providerThreadId: PROVIDER_THREAD_ID },
+        where: { workspaceId: WS_ID, providerThreadId: PROVIDER_THREAD_ID },
       }),
     );
   });
@@ -456,13 +458,6 @@ describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summa
     const res = await post(`/workspaces/${WS_ID}/provider-threads/${PROVIDER_THREAD_ID}/summary`);
     expect(res.status).toBe(404);
     expect(mockGenerateThreadSummary).not.toHaveBeenCalled();
-  });
-
-  it("404s when the workspace has no email accounts", async () => {
-    vi.mocked(db.emailAccount.findMany).mockResolvedValue([] as never);
-    const res = await post(`/workspaces/${WS_ID}/provider-threads/${PROVIDER_THREAD_ID}/summary`);
-    expect(res.status).toBe(404);
-    expect(db.emailThread.findFirst).not.toHaveBeenCalled();
   });
 
   it("decodes a URL-encoded id and normalizes the EWS base64 alphabet to Graph's", async () => {
@@ -481,7 +476,7 @@ describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summa
     expect(db.emailThread.findFirst).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        where: { emailAccountId: { in: ["acc-1"] }, providerThreadId: graphFlavor },
+        where: { workspaceId: WS_ID, providerThreadId: graphFlavor },
       }),
     );
   });
@@ -531,7 +526,7 @@ describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summa
     expect(db.emailThread.findFirst).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        where: { emailAccountId: { in: ["acc-1"] }, providerThreadId: graphId },
+        where: { workspaceId: WS_ID, providerThreadId: graphId },
       }),
     );
   });

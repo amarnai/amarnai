@@ -20,25 +20,21 @@ export function normalizeProviderThreadId(id: string): string {
 }
 
 /**
- * Map a provider thread id to our internal thread id, searching every email
- * account in the workspace via the (emailAccountId, providerThreadId) unique
- * key. Returns null when the workspace has no accounts or the thread was never
- * synced — callers turn that into a 404, which the content scripts render as
- * nothing at all.
+ * Map a provider thread id to our internal thread id within a workspace.
+ * Returns null when the thread was never synced — callers turn that into a 404,
+ * which the injected surfaces render as "not synced yet" (or as nothing at all).
+ *
+ * One indexed lookup on (workspaceId, providerThreadId). It used to fan out over
+ * the workspace's email accounts because only the (emailAccountId,
+ * providerThreadId) unique key existed; the dedicated index removed the need.
  */
 export async function resolveProviderThreadId(
   workspaceId: string,
   providerThreadId: string,
 ): Promise<string | null> {
-  const accounts = await db.emailAccount.findMany({
-    where: { workspaceId },
-    select: { id: true },
-  });
-  if (accounts.length === 0) return null;
-
   const thread = await db.emailThread.findFirst({
     where: {
-      emailAccountId: { in: accounts.map((a) => a.id) },
+      workspaceId,
       providerThreadId: normalizeProviderThreadId(providerThreadId),
     },
     select: { id: true },
@@ -58,14 +54,18 @@ export async function resolveProviderThreadId(
  */
 export async function isInjectionEnabled(
   workspaceId: string,
-  surface: "threadSummary" | "replyButton",
+  surface: "threadSummary" | "replyButton" | "injectedPanel",
 ): Promise<boolean> {
   const settings = await db.gmailSyncSettings.findUnique({
     where: { workspaceId },
-    select: { threadSummaryInjectionEnabled: true, replyButtonInjectionEnabled: true },
+    select: {
+      threadSummaryInjectionEnabled: true,
+      replyButtonInjectionEnabled: true,
+      injectedPanelEnabled: true,
+    },
   });
   if (!settings) return true;
-  return surface === "threadSummary"
-    ? settings.threadSummaryInjectionEnabled
-    : settings.replyButtonInjectionEnabled;
+  if (surface === "threadSummary") return settings.threadSummaryInjectionEnabled;
+  if (surface === "replyButton") return settings.replyButtonInjectionEnabled;
+  return settings.injectedPanelEnabled;
 }

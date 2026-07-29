@@ -3,6 +3,7 @@
 import { runContentScript } from "../core/runner.js";
 import { detectGmailThread, findGmailInjectionAnchor, findAccountEmail } from "./detectThread.js";
 import { startReplyButton } from "./replyButtonHost.js";
+import { startInjectedPanel } from "./panelHost.js";
 
 try {
   runContentScript({
@@ -28,3 +29,11 @@ startReplyButton({ getAccountEmail: () => findAccountEmail() }).catch(
     console.warn("[amarnai] Amarnai Reply button failed to start:", e);
   },
 );
+
+// The sidebar panel. Independent of both features above — it shares only the one
+// memoized InboxSDK.load — so any of the three can fail without taking the
+// others down. Same .catch reasoning as the reply button: this is async, and a
+// rejection would sail past a synchronous catch block.
+startInjectedPanel().catch((e: unknown) => {
+  console.warn("[amarnai] Amarnai panel failed to start:", e);
+});

@@ -18,6 +18,7 @@ const SETTINGS_SELECT = {
   labelWritebackEnabled: true,
   threadSummaryInjectionEnabled: true,
   replyButtonInjectionEnabled: true,
+  injectedPanelEnabled: true,
   blacklistedSenderEmails: true,
 } as const;
 
@@ -110,6 +111,7 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
     labelWritebackEnabled?: boolean;
     threadSummaryInjectionEnabled?: boolean;
     replyButtonInjectionEnabled?: boolean;
+    injectedPanelEnabled?: boolean;
   } = {};
   if (bodyParsed.data.includeSpam !== undefined) updateData.includeSpam = bodyParsed.data.includeSpam;
   if (bodyParsed.data.includePromotions !== undefined) updateData.includePromotions = bodyParsed.data.includePromotions;
@@ -118,6 +120,7 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
   if (bodyParsed.data.labelWritebackEnabled !== undefined) updateData.labelWritebackEnabled = bodyParsed.data.labelWritebackEnabled;
   if (bodyParsed.data.threadSummaryInjectionEnabled !== undefined) updateData.threadSummaryInjectionEnabled = bodyParsed.data.threadSummaryInjectionEnabled;
   if (bodyParsed.data.replyButtonInjectionEnabled !== undefined) updateData.replyButtonInjectionEnabled = bodyParsed.data.replyButtonInjectionEnabled;
+  if (bodyParsed.data.injectedPanelEnabled !== undefined) updateData.injectedPanelEnabled = bodyParsed.data.injectedPanelEnabled;
 
   const updated = await db.gmailSyncSettings.upsert({
     where: { workspaceId },
@@ -132,6 +135,8 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
         updateData.threadSummaryInjectionEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.threadSummaryInjectionEnabled,
       replyButtonInjectionEnabled:
         updateData.replyButtonInjectionEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.replyButtonInjectionEnabled,
+      injectedPanelEnabled:
+        updateData.injectedPanelEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.injectedPanelEnabled,
     },
     update: updateData,
     select: SETTINGS_SELECT,

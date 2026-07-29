@@ -121,6 +121,14 @@ msgstr "{0} of {1} remaining · resets {quotaResetDate}"
 msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
 msgstr "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
 
+#: ../panel/src/states/PanelStates.tsx:92
+msgid "{accountEmail} is not connected to Amarnai."
+msgstr "{accountEmail} is not connected to Amarnai."
+
+#: ../panel/src/states/PanelStates.tsx:88
+msgid "{accountEmail} is not connected to Amarnai. You have {connected} connected."
+msgstr "{accountEmail} is not connected to Amarnai. You have {connected} connected."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:109
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 msgstr "{blacklistCount, plural, one {# blocked} other {# blocked}}"
@@ -205,8 +213,10 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
+#. placeholder {0}: quota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:465
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
+#: ../panel/src/DraftSection.tsx:224
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 
@@ -757,8 +767,12 @@ msgid "Amarnai for Android"
 msgstr "Amarnai for Android"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:185
-msgid "Amarnai has not sorted this thread yet. Try again in a moment."
-msgstr "Amarnai has not sorted this thread yet. Try again in a moment."
+#~ msgid "Amarnai has not sorted this thread yet. Try again in a moment."
+#~ msgstr "Amarnai has not sorted this thread yet. Try again in a moment."
+
+#: ../panel/src/states/PanelStates.tsx:115
+msgid "Amarnai hasn't synced this conversation yet."
+msgstr "Amarnai hasn't synced this conversation yet."
 
 #: ../../apps/site/src/components/landing/Nav.tsx:42
 msgid "Amarnai home"
@@ -857,7 +871,7 @@ msgstr "Amarnai needs access to its server and your inbox to show your emails."
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:159
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:122
 msgid "Amarnai never sends email. You review and send from Outlook."
 msgstr "Amarnai never sends email. You review and send from Outlook."
 
@@ -878,8 +892,8 @@ msgid "Amarnai reads your inbox, sorts every thread into the folders you define,
 msgstr "Amarnai reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:100
-msgid "Amarnai Reply"
-msgstr "Amarnai Reply"
+#~ msgid "Amarnai Reply"
+#~ msgstr "Amarnai Reply"
 
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:63
 msgid "Amarnai sits in a side panel next to Gmail and Outlook."
@@ -901,6 +915,10 @@ msgstr "Amarnai sorts your inbox for you, filing old and new mail where it belon
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 msgstr "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 
+#: ../panel/src/ClassificationCard.tsx:125
+msgid "Amarnai wasn't sure about this one. Move it if it's in the wrong place."
+msgstr "Amarnai wasn't sure about this one. Move it if it's in the wrong place."
+
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
 msgstr "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
@@ -910,8 +928,8 @@ msgid "Amarnai will analyze your senders, labels, and subject keywords (never me
 msgstr "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. You can review and edit before anything is applied."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:131
-msgid "Amarnai will draft a reply and open it in Outlook for you to review."
-msgstr "Amarnai will draft a reply and open it in Outlook for you to review."
+#~ msgid "Amarnai will draft a reply and open it in Outlook for you to review."
+#~ msgstr "Amarnai will draft a reply and open it in Outlook for you to review."
 
 #: ../../apps/site/src/lib/seo.ts:39
 #~ msgid "Amarnai: AI Email Sorter for Gmail"
@@ -1348,7 +1366,7 @@ msgstr "Can I self-host Amarnai?"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:291
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:417
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1437,6 +1455,10 @@ msgstr "Changing or cancelling a paid plan is done in your subscription settings
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "Channel notifications, upload analytics, and policy updates from social platforms."
+
+#: ../panel/src/states/PanelStates.tsx:111
+msgid "Check again"
+msgstr "Check again"
 
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:45
 msgid "Check your email"
@@ -1633,12 +1655,12 @@ msgstr "Confirm Delete"
 msgid "Confirm password"
 msgstr "Confirm password"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:426
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:435
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:429
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:438
 msgid "Connect {name}"
 msgstr "Connect {name}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:398
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:401
 msgid "Connect {name} to this workspace?"
 msgstr "Connect {name} to this workspace?"
 
@@ -1659,12 +1681,20 @@ msgstr "Connect {secondaryName}"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Connect a Gmail inbox to configure sync filters."
 
+#: ../panel/src/states/PanelStates.tsx:62
+msgid "Connect a mailbox"
+msgstr "Connect a mailbox"
+
+#: ../panel/src/states/PanelStates.tsx:67
+msgid "Connect a mailbox to Amarnai to start sorting your inbox."
+msgstr "Connect a mailbox to Amarnai to start sorting your inbox."
+
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:450
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:453
 msgid "Connect Gmail"
 msgstr "Connect Gmail"
 
@@ -1723,7 +1753,7 @@ msgstr "Connect once, generate your folders once, and let Amarnai handle new mai
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:458
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:461
 msgid "Connect Outlook"
 msgstr "Connect Outlook"
 
@@ -1764,7 +1794,7 @@ msgstr "Connect your inbox and Amarnai starts sorting within minutes. Pricing is
 msgid "Connect your inbox to start triaging."
 msgstr "Connect your inbox to start triaging."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:392
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:395
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 
@@ -1796,7 +1826,7 @@ msgstr "Continue"
 msgid "Continue as {incomingEmail}"
 msgstr "Continue as {incomingEmail}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:407
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:410
 msgid "Continue to {name}"
 msgstr "Continue to {name}"
 
@@ -1944,7 +1974,11 @@ msgstr "Could not prepare migration"
 msgid "Could not queue rescan. Please try again."
 msgstr "Could not queue rescan. Please try again."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:255
+#: ../panel/src/states/PanelStates.tsx:141
+msgid "Could not reach Amarnai."
+msgstr "Could not reach Amarnai."
+
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:161
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Could not reach Amarnai. Check your connection."
 
@@ -1984,7 +2018,7 @@ msgstr "Could not save filter setting. Please try again."
 msgid "Could not save. Please try again."
 msgstr "Could not save. Please try again."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:248
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:154
 msgid "Could not sign in. Please try again."
 msgstr "Could not sign in. Please try again."
 
@@ -2009,7 +2043,7 @@ msgstr "Could not summarize this thread."
 msgid "Could not update name. Please try again."
 msgstr "Could not update name. Please try again."
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:78
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:101
 #: ../ui/src/settings/LabelWritebackSection.tsx:128
 msgid "Could not update the setting. Please try again."
 msgstr "Could not update the setting. Please try again."
@@ -2325,7 +2359,7 @@ msgstr "Disconnect your inbox or delete your account"
 msgid "Disconnected"
 msgstr "Disconnected"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:339
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:342
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 
@@ -2333,11 +2367,11 @@ msgstr "Disconnected from this workspace. {erasedNote} Amarnai still has access 
 #~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 #~ msgstr "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:355
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:358
 msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 msgstr "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:366
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "Disconnected. Amarnai is no longer syncing this inbox."
 
@@ -2345,7 +2379,7 @@ msgstr "Disconnected. Amarnai is no longer syncing this inbox."
 #~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 #~ msgstr "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:351
 msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 msgstr "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 
@@ -2454,17 +2488,21 @@ msgstr "draft"
 msgid "Draft"
 msgstr "Draft"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:134
+#: ../panel/src/DraftSection.tsx:217
 msgid "Draft a reply"
 msgstr "Draft a reply"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:151
-msgid "Draft another"
-msgstr "Draft another"
+#~ msgid "Draft another"
+#~ msgstr "Draft another"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:180
 msgid "Draft failed · tap to retry"
 msgstr "Draft failed · tap to retry"
+
+#: ../panel/src/DraftSection.tsx:249
+msgid "Draft generation failed."
+msgstr "Draft generation failed."
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:480
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
@@ -2472,8 +2510,8 @@ msgid "Draft generation failed. Try again."
 msgstr "Draft generation failed. Try again."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:170
-msgid "Draft ready in your reply. Review it, then send when you are happy."
-msgstr "Draft ready in your reply. Review it, then send when you are happy."
+#~ msgid "Draft ready in your reply. Review it, then send when you are happy."
+#~ msgstr "Draft ready in your reply. Review it, then send when you are happy."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
@@ -2491,7 +2529,6 @@ msgid "Draft style guidance"
 msgstr "Draft style guidance"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:141
 #: ../ui/src/emails/ThreadRow.tsx:291
 msgid "Drafting…"
 msgstr "Drafting…"
@@ -2553,7 +2590,7 @@ msgstr "Edit Path"
 #: ../../apps/mobile/app/sign-up.tsx:98
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:72
 #: ../../apps/web/src/app/forgot-password/page.tsx:34
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:267
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:173
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:109
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:98
 msgid "Email"
@@ -2820,6 +2857,11 @@ msgstr "Fellowship awards, funding-body deadlines, and research budget correspon
 #: ../ui/src/i18n/taxonomy-template-messages.ts:180
 msgid "Field trips, parent evenings, assemblies, and school event scheduling."
 msgstr "Field trips, parent evenings, assemblies, and school event scheduling."
+
+#. placeholder {0}: folder.name
+#: ../panel/src/ClassificationCard.tsx:82
+msgid "Filed in {0}. Move to another folder"
+msgstr "Filed in {0}. Move to another folder"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
 msgid "Filter by folder"
@@ -3487,7 +3529,7 @@ msgstr "Important"
 #~ msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
 #~ msgstr "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:56
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:70
 msgid "In Gmail and Outlook"
 msgstr "In Gmail and Outlook"
 
@@ -3541,7 +3583,7 @@ msgstr "Include spam"
 msgid "Included"
 msgstr "Included"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:247
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:153
 msgid "Incorrect email or password."
 msgstr "Incorrect email or password."
 
@@ -3560,6 +3602,14 @@ msgstr "Initial backfill"
 #: ../ui/src/emails/MessageCard.tsx:80
 msgid "Inline image"
 msgstr "Inline image"
+
+#: ../panel/src/DraftSection.tsx:265
+msgid "Insert again"
+msgstr "Insert again"
+
+#: ../panel/src/DraftSection.tsx:265
+msgid "Insert into reply"
+msgstr "Insert into reply"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:217
 msgid "Inspections & Appraisals"
@@ -3898,8 +3948,9 @@ msgstr "Loading past threads…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:105
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:86
 #: ../../apps/web/src/components/NotificationBell.tsx:161
+#: ../panel/src/states/PanelStates.tsx:151
 #: ../ui/src/emails/MessageCard.tsx:68
 #: ../ui/src/emails/ThreadList.tsx:265
 msgid "Loading…"
@@ -3962,6 +4013,7 @@ msgstr "Mark as done"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
+#: ../panel/src/ClassificationCard.tsx:107
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -4133,7 +4185,7 @@ msgstr "Move threads to"
 msgid "Move to folder"
 msgstr "Move to folder"
 
-#: ../ui/src/emails/ReroutePopover.tsx:130
+#: ../ui/src/emails/ReroutePopover.tsx:150
 msgid "Move to folder…"
 msgstr "Move to folder…"
 
@@ -4255,6 +4307,7 @@ msgstr "No drafts remaining"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
+#: ../panel/src/DraftSection.tsx:222
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "No drafts remaining · resets {quotaResetDate}"
@@ -4280,7 +4333,7 @@ msgstr "No folders available"
 msgid "No folders defined"
 msgstr "No folders defined"
 
-#: ../ui/src/emails/ReroutePopover.tsx:140
+#: ../ui/src/emails/ReroutePopover.tsx:160
 msgid "No folders match"
 msgstr "No folders match"
 
@@ -4297,7 +4350,7 @@ msgstr "No folders yet"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "No Gmail inbox connected. Connect your account to start syncing."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:444
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:447
 msgid "No inbox connected to this workspace."
 msgstr "No inbox connected to this workspace."
 
@@ -4397,6 +4450,10 @@ msgstr "Nonprofit Leader"
 msgid "Not connected"
 msgstr "Not connected"
 
+#: ../panel/src/ClassificationCard.tsx:96
+msgid "Not filed"
+msgstr "Not filed"
+
 #: ../ui/src/PricingPlans.tsx:94
 msgid "Not included"
 msgstr "Not included"
@@ -4481,9 +4538,13 @@ msgstr "Only the workspace owner can manage billing."
 msgid "Open"
 msgstr "Open"
 
+#: ../panel/src/states/PanelStates.tsx:101
+msgid "Open a conversation to see how Amarnai sorted it."
+msgstr "Open a conversation to see how Amarnai sorted it."
+
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:117
-msgid "Open a message first, then choose Amarnai Reply."
-msgstr "Open a message first, then choose Amarnai Reply."
+#~ msgid "Open a message first, then choose Amarnai Reply."
+#~ msgstr "Open a message first, then choose Amarnai Reply."
 
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:181
 msgid "Open all settings in a new tab"
@@ -4496,6 +4557,10 @@ msgstr "Open Amarnai"
 #: ../../apps/site/src/components/support/SupportContent.tsx:94
 msgid "Open an issue on GitHub"
 msgstr "Open an issue on GitHub"
+
+#: ../panel/src/InjectedThreadPanel.tsx:327
+msgid "Open in Amarnai"
+msgstr "Open in Amarnai"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:397
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -4524,9 +4589,13 @@ msgstr "Open the folder editor"
 #~ msgid "Open the plan editor"
 #~ msgstr "Open the plan editor"
 
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:96
+msgid "Open this from the Amarnai button in Outlook."
+msgstr "Open this from the Amarnai button in Outlook."
+
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:111
-msgid "Open this from the Amarnai Reply button in Outlook."
-msgstr "Open this from the Amarnai Reply button in Outlook."
+#~ msgid "Open this from the Amarnai Reply button in Outlook."
+#~ msgstr "Open this from the Amarnai Reply button in Outlook."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
@@ -4581,7 +4650,7 @@ msgstr "Optional. Sets this folder’s chip and icon color across your inbox. De
 msgid "or"
 msgstr "or"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:386
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:389
 msgid "Or connect a different inbox:"
 msgstr "Or connect a different inbox:"
 
@@ -4635,7 +4704,7 @@ msgstr "Passing through the Delta: free to meet?"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:144
 #: ../../apps/mobile/app/sign-in.tsx:106
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:277
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:183
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
 msgid "Password"
 msgstr "Password"
@@ -4996,7 +5065,7 @@ msgstr "Rated 5 out of 5"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Re-route {unclassifiedCount} unclassified"
 
-#: ../ui/src/emails/ReroutePopover.tsx:121
+#: ../ui/src/emails/ReroutePopover.tsx:141
 msgid "Re-route thread"
 msgstr "Re-route thread"
 
@@ -5069,7 +5138,7 @@ msgstr "Recommended for your inbox"
 msgid "Reconnect"
 msgstr "Reconnect"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:384
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 msgid "Reconnect {providerName}"
 msgstr "Reconnect {providerName}"
@@ -5171,6 +5240,7 @@ msgstr "Remove {email} from blacklist"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
+#: ../panel/src/ClassificationCard.tsx:106
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:148
@@ -5330,6 +5400,7 @@ msgstr "Resources"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
+#: ../panel/src/DraftSection.tsx:252
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
 msgid "Retry"
 msgstr "Retry"
@@ -5473,7 +5544,7 @@ msgid "Search {threadCount} threads"
 msgstr "Search {threadCount} threads"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:134
+#: ../ui/src/emails/ReroutePopover.tsx:154
 msgid "Search folders"
 msgstr "Search folders"
 
@@ -5657,7 +5728,7 @@ msgstr "Shared plan"
 msgid "Shipping"
 msgstr "Shipping"
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:64
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:87
 msgid "Show AI thread summaries in Gmail and Outlook"
 msgstr "Show AI thread summaries in Gmail and Outlook"
 
@@ -5669,7 +5740,11 @@ msgstr "Show Gmail"
 msgid "Show Outlook"
 msgstr "Show Outlook"
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:73
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:78
+msgid "Show the Amarnai panel next to the thread you are reading"
+msgstr "Show the Amarnai panel next to the thread you are reading"
+
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:96
 msgid "Show the Amarnai Reply button for drafting replies"
 msgstr "Show the Amarnai Reply button for drafting replies"
 
@@ -5679,9 +5754,10 @@ msgstr "Showing requests, buyer tours, open-house sign-ups, and written offers."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:155
 #: ../../apps/mobile/app/sign-in.tsx:133
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:288
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:146
+#: ../panel/src/states/PanelStates.tsx:46
 msgid "Sign in"
 msgstr "Sign in"
 
@@ -5689,11 +5765,15 @@ msgstr "Sign in"
 msgid "Sign in to accept your workspace invitation."
 msgstr "Sign in to accept your workspace invitation."
 
+#: ../panel/src/states/PanelStates.tsx:51
+msgid "Sign in to Amarnai to see how this thread was sorted."
+msgstr "Sign in to Amarnai to see how this thread was sorted."
+
 #: ../../apps/mobile/app/sign-in.tsx:85
 msgid "Sign in to triage your inbox"
 msgstr "Sign in to triage your inbox"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:264
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:170
 msgid "Sign in to your Amarnai account."
 msgstr "Sign in to your Amarnai account."
 
@@ -5755,7 +5835,7 @@ msgstr "Sign-in failed. Please try again."
 msgid "Sign-up failed. Please try again."
 msgstr "Sign-up failed. Please try again."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:288
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:146
 msgid "Signing in…"
 msgstr "Signing in…"
@@ -5786,7 +5866,6 @@ msgstr "Something went wrong"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:85
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:89
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:98
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:209
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:84
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:90
 #: ../ui/src/upgrade/UpgradeDialog.tsx:133
@@ -5806,9 +5885,13 @@ msgstr "Sort"
 msgid "Sort emails your way."
 msgstr "Sort emails your way."
 
-#: ../../apps/extension/src/panel/SortNowButton.tsx:28
-#~ msgid "Sort now"
-#~ msgstr "Sort now"
+#: ../panel/src/ClassificationCard.tsx:131
+msgid "Sort now"
+msgstr "Sort now"
+
+#: ../panel/src/DraftSection.tsx:242
+msgid "Sort this thread first, then Amarnai can draft a reply for it."
+msgstr "Sort this thread first, then Amarnai can draft a reply for it."
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
@@ -5848,6 +5931,7 @@ msgid "Sorting volume"
 msgstr "Sorting volume"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
+#: ../panel/src/ClassificationCard.tsx:71
 #: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 msgid "Sorting…"
@@ -6172,9 +6256,13 @@ msgstr "That link is invalid or has expired."
 #~ msgid "The Amarna letters were the world's first overloaded inbox. These two lived it."
 #~ msgstr "The Amarna letters were the world's first overloaded inbox. These two lived it."
 
+#: ../panel/src/states/PanelStates.tsx:127
+msgid "The Amarnai panel is switched off for this workspace."
+msgstr "The Amarnai panel is switched off for this workspace."
+
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:203
-msgid "The Amarnai Reply button is switched off for this workspace in settings."
-msgstr "The Amarnai Reply button is switched off for this workspace in settings."
+#~ msgid "The Amarnai Reply button is switched off for this workspace in settings."
+#~ msgstr "The Amarnai Reply button is switched off for this workspace in settings."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
@@ -6266,8 +6354,8 @@ msgid "This browser is signed in as {currentEmail}, but your extension is signed
 msgstr "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:191
-msgid "This conversation has not synced to Amarnai yet."
-msgstr "This conversation has not synced to Amarnai yet."
+#~ msgid "This conversation has not synced to Amarnai yet."
+#~ msgstr "This conversation has not synced to Amarnai yet."
 
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:693
 msgid "This folder has child folders. Remove their Paths first, then delete it."
@@ -6294,8 +6382,8 @@ msgid "This invitation was sent to a different account. Sign in with that accoun
 msgstr "This invitation was sent to a different account. Sign in with that account to accept it."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:197
-msgid "This mailbox is not connected to any of your Amarnai workspaces."
-msgstr "This mailbox is not connected to any of your Amarnai workspaces."
+#~ msgid "This mailbox is not connected to any of your Amarnai workspaces."
+#~ msgstr "This mailbox is not connected to any of your Amarnai workspaces."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:285
 msgid "This month"
@@ -6581,7 +6669,7 @@ msgstr "Triage your inbox on the go."
 #~ msgid "Triaging 412 threads"
 #~ msgstr "Triaging 412 threads"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:152
+#: ../panel/src/states/PanelStates.tsx:137
 msgid "Try again"
 msgstr "Try again"
 
@@ -6717,6 +6805,7 @@ msgid "Updating…"
 msgstr "Updating…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
+#: ../panel/src/states/PanelStates.tsx:170
 #: ../ui/src/emails/AssigneePicker.tsx:136
 #: ../ui/src/settings/PlanSection.tsx:49
 #: ../ui/src/upgrade/UpgradeDialog.tsx:175
@@ -7039,6 +7128,7 @@ msgstr "Writeback is on. Your folders are being mirrored into your mailbox."
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:474
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
+#: ../panel/src/DraftSection.tsx:236
 #: ../ui/src/emails/ThreadPreview.tsx:250
 msgid "Writing draft reply…"
 msgstr "Writing draft reply…"
@@ -7152,8 +7242,8 @@ msgstr "You do not have permission to connect an Outlook inbox to this workspace
 #. placeholder {0}: outcome.limit
 #. placeholder {1}: new Date(outcome.resetsAt).toLocaleDateString()
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:176
-msgid "You have used all {0} drafts in your plan this month. They reset on {1}."
-msgstr "You have used all {0} drafts in your plan this month. They reset on {1}."
+#~ msgid "You have used all {0} drafts in your plan this month. They reset on {1}."
+#~ msgstr "You have used all {0} drafts in your plan this month. They reset on {1}."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 msgid "You stay in control"
@@ -7183,6 +7273,10 @@ msgstr "You've used all of your {0} plan's email imports this month, including o
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
+
+#: ../panel/src/states/PanelStates.tsx:166
+msgid "You've used all your sorting for this month, so this thread is waiting."
+msgstr "You've used all your sorting for this month, so this thread is waiting."
 
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 msgid "You've used your generations for now."
@@ -7319,7 +7413,7 @@ msgstr "Your retry import finished and is still capped by your {0} plan. Your ne
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:368
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:371
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 msgstr "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 

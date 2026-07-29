@@ -286,6 +286,23 @@ export type EmailThreadDetail = {
   assignment: ThreadAssignment | null;
 };
 
+/**
+ * One connected mailbox, with the workspace it belongs to.
+ *
+ * The answer every injected mail-client surface needs before it can do anything:
+ * the page knows the open mailbox's address, the API is keyed by workspace.
+ * `email` arrives lowercased so callers can compare without re-normalizing.
+ */
+export type MailAccount = {
+  email: string;
+  workspaceId: string;
+  workspaceName: string;
+  provider: MailProvider;
+  status: "ACTIVE" | "DISCONNECTED";
+};
+
+export type MailAccountsResult = { accounts: MailAccount[] };
+
 // ── Notifications ──────────────────────────────────────────────────────────────
 
 // Generic in-app notification. `type` + `params` are producer-defined; the

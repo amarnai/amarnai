@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 88">
+  <!-- The full Amarnai logomark (three wedges) — the brand mark, not the reply
+       button's derived, mirrored single wedge.
+       Sole consumer: InboxSDK's addSidebarContentPanel `iconUrl`, which takes a
+       URL and cannot take a node. The in-page buttons draw the same geometry
+       inline from content/core/logoMark.ts — keep the two in step.
+       Colors are baked in rather than currentColor because currentColor does
+       not inherit into a URL-loaded SVG; it would render black.
+       Clay brand: #BB5B33 on light surfaces, #CD6A3F on dark; the media query
+       is honored inside <img> SVGs and tracks the OS scheme.
+       No width/height attributes: the rail slot is square and the mark is
+       portrait, so the sizing is left to whatever CSS InboxSDK applies and the
+       default preserveAspectRatio letterboxes it rather than squashing it. -->
+  <style>
+    polygon { fill: #BB5B33; }
+    @media (prefers-color-scheme: dark) {
+      polygon { fill: #CD6A3F; }
+    }
+  </style>
+  <polygon points="36.1,0 54,13.2 72,0 54,87.6"/>
+  <polygon points="41.3,36 0,22.8 9.9,36 0,49"/>
+  <polygon points="41.2,66.4 0,53.2 9.9,66.4 0.1,79.5"/>
+</svg>

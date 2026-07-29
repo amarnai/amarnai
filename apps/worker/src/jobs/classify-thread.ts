@@ -47,6 +47,7 @@ import {
 import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
 import { isTaxonomyRoutable } from "@amarnai/shared";
 import { notifyThreadNeedsAttention } from "../notifications/notify-threads.js";
+import { publishThreadEvent } from "../redis-publisher.js";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -246,6 +247,13 @@ export function createClassifyThreadWorker(): Worker {
                     notifyErr instanceof Error ? notifyErr.message : notifyErr,
                   ),
               );
+              // Tell any live surface watching this exact thread. Fire-and-forget:
+              // a Redis hiccup must never fail or retry classification.
+              void publishThreadEvent(workspaceId, {
+                type: "quota_blocked",
+                threadId: emailThreadId,
+                providerThreadId: thread.providerThreadId,
+              }).catch(() => {});
               return;
             }
           }
@@ -447,6 +455,11 @@ export function createClassifyThreadWorker(): Worker {
             console.log(
               `[classify-thread] Thread ${emailThreadId} has no text content — routed to NEEDS_REVIEW`
             );
+            void publishThreadEvent(workspaceId, {
+              type: "classified",
+              threadId: emailThreadId,
+              providerThreadId: thread.providerThreadId,
+            }).catch(() => {});
             void notifyThreadNeedsAttention({
               workspaceId,
               emailThreadId,
@@ -678,6 +691,16 @@ export function createClassifyThreadWorker(): Worker {
             // successfully, so it is no longer eligible for failure recovery.
             data: { triageStatus, classifyFailedAt: null, classifyAttempts: 0 },
           });
+
+          // Tell any live surface watching this exact thread that its sort
+          // landed — the panel injected into Gmail/Outlook has one thread open
+          // and would otherwise poll for it. Fire-and-forget: a Redis hiccup
+          // must never fail or retry classification.
+          void publishThreadEvent(workspaceId, {
+            type: "classified",
+            threadId: emailThreadId,
+            providerThreadId: thread.providerThreadId,
+          }).catch(() => {});
 
           // ── Folder-label writeback (opt-in) ───────────────────────────────
           // Reconcile the thread's Amarnai label/category to its new folder.

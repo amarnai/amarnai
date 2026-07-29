@@ -47,15 +47,37 @@ const CONTENT_SCRIPTS = [
  * Resources Gmail's own page is allowed to load from the extension:
  *   - pageWorld.js: InboxSDK's page-world half, which it injects into Gmail.
  *   - the button icon, which InboxSDK's compose button loads by URL.
+ *   - the panel icon (the full logomark), which InboxSDK's sidebar loads by URL.
+ *   - injected.html and its assets: the Amarnai panel, which Gmail's sidebar
+ *     embeds as an extension-origin iframe. The document has to be reachable
+ *     from mail.google.com for the iframe to load at all, and `assets/*` with
+ *     it because the built page links its own hashed JS and CSS from there.
  *
- * Gmail alone, and only these two. The hand-rolled buttons on both providers
- * build their icon as an inline SVG node instead (see content/core/replyIcon),
- * so nothing here needs to be reachable from OWA. Narrow on purpose: every site
- * not listed remains unable to probe for the extension. Emitted only alongside
- * the content scripts, so a build with injection disabled exposes nothing.
+ * Gmail alone. The hand-rolled buttons on both providers build their icon as an
+ * inline SVG node instead (see content/core/replyIcon), and Outlook gets the
+ * panel through the Office add-in rather than an injected iframe, so nothing
+ * here needs to be reachable from OWA. Narrow on purpose: every site not listed
+ * remains unable to probe for the extension. Emitted only alongside the content
+ * scripts, so a build with injection disabled exposes nothing.
+ *
+ * `assets/*` is the widest entry here and deserves the caveat: it exposes the
+ * extension's built bundles to mail.google.com. They are already shipped to the
+ * user's disk and contain no secrets (every credential lives in chrome.storage,
+ * which a web page cannot reach), and the alternative — a separate unhashed
+ * output just for this page — trades a real build simplification for no security
+ * gain, since the page it loads is web-accessible either way.
  */
 const WEB_ACCESSIBLE_RESOURCES = [
-  { resources: ["pageWorld.js", "reply-button-icon.svg"], matches: [GMAIL_MAIL_HOST] },
+  {
+    resources: [
+      "pageWorld.js",
+      "reply-button-icon.svg",
+      "panel-icon.svg",
+      "injected.html",
+      "assets/*",
+    ],
+    matches: [GMAIL_MAIL_HOST],
+  },
 ];
 
 /**

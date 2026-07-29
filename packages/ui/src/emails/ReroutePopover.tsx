@@ -78,11 +78,31 @@ export function ReroutePopover({
     if (!anchor || !panelRef.current) return;
     const rect = anchor.getBoundingClientRect();
     const panel = panelRef.current;
-    panel.style.top = `${rect.bottom + 6}px`;
-    panel.style.left = `${rect.left}px`;
     // Full-width bar switcher: match the anchor so the dropdown lines up with
-    // the field it opened from, instead of the fixed reroute width.
+    // the field it opened from, instead of the fixed reroute width. Applied
+    // before measuring, so the clamp below reads the width it will actually have.
     if (matchAnchorWidth) panel.style.width = `${rect.width}px`;
+
+    // Clamp to the viewport in both axes. The panel is position:fixed with the
+    // anchor's own coordinates, which is fine in a full-width app but not in the
+    // panel injected into Gmail/Outlook, where the whole surface can be 280px
+    // wide and sit against the right edge of the window: an unclamped rect.left
+    // would put most of the picker off-screen with no way to scroll to it.
+    // AssigneePicker already clamps this way; keep the two consistent.
+    const GUTTER = 8;
+    const left = Math.max(
+      GUTTER,
+      Math.min(rect.left, window.innerWidth - panel.offsetWidth - GUTTER),
+    );
+    panel.style.left = `${left}px`;
+
+    // Flip above the anchor when there is not enough room below it — the panel
+    // is tall relative to a short viewport, which is the common case in a mail
+    // client's side rail.
+    const below = rect.bottom + 6;
+    const flip = below + panel.offsetHeight + GUTTER > window.innerHeight
+      && rect.top - panel.offsetHeight - 6 >= GUTTER;
+    panel.style.top = `${flip ? rect.top - panel.offsetHeight - 6 : below}px`;
   }, [anchor, matchAnchorWidth]);
 
   useEffect(() => {

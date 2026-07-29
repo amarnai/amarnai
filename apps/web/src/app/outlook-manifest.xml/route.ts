@@ -21,11 +21,16 @@ import {
 //
 //   - The ribbon Action is ShowTaskpane, not ExecuteFunction. Signing in, quota
 //     exhaustion and "not sorted yet" all need somewhere to be said, and a
-//     headless function file has no UI to say them in. A fast path can be added
-//     later without changing the manifest's shape.
+//     headless function file has no UI to say them in. Doubly true now that the
+//     pane is the full Amarnai panel rather than a one-shot draft action.
+//   - RequestedHeight is sized for that panel (classification, summary, draft),
+//     not for the two lines the draft-only pane needed. SupportsPinning stays on:
+//     a pinned pane follows the reader from conversation to conversation, which
+//     the pane handles via Office.EventType.ItemChanged (see officeHost.ts).
 //   - Permissions stay at ReadItem. Amarnai reads the open conversation's id and
 //     opens a reply form for the user to send themselves; it must never hold a
-//     permission that would let it send or modify mail.
+//     permission that would let it send or modify mail. The panel does not widen
+//     this: everything it shows comes from Amarnai's own API, keyed by that id.
 //
 // The Id is per-DEPLOYMENT, not a constant, and must never change once that
 // deployment has published: Outlook keys installed add-ins by it, so a new Id
@@ -44,6 +49,9 @@ function buildManifest(base: string, addinId: string): string {
   const b = xmlEscape(base);
   const paneUrl = `${b}${OUTLOOK_PANEL_PATH}`;
   // The ribbon's own entry point: same pane, told to get straight to drafting.
+  // The button used to be the whole feature; it is now one action inside the
+  // panel, but the deep link is kept because clicking a ribbon button IS the
+  // request — making the user press a second button in the pane asks twice.
   const draftUrl = `${paneUrl}?focus=draft`;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -58,7 +66,7 @@ function buildManifest(base: string, addinId: string): string {
   <ProviderName>Amarnai</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Amarnai" />
-  <Description DefaultValue="Draft replies with Amarnai without leaving Outlook. Amarnai never sends email: you review and send." />
+  <Description DefaultValue="See how Amarnai sorted the conversation you are reading, move it, and draft a reply — without leaving Outlook. Amarnai never sends email: you review and send." />
   <IconUrl DefaultValue="${b}/outlook/icon-64.png" />
   <HighResolutionIconUrl DefaultValue="${b}/outlook/icon-128.png" />
   <SupportUrl DefaultValue="${b}/settings" />
@@ -77,7 +85,7 @@ function buildManifest(base: string, addinId: string): string {
     <Form xsi:type="ItemRead">
       <DesktopSettings>
         <SourceLocation DefaultValue="${paneUrl}" />
-        <RequestedHeight>280</RequestedHeight>
+        <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
   </FormSettings>
@@ -100,11 +108,11 @@ function buildManifest(base: string, addinId: string): string {
             <OfficeTab id="TabDefault">
               <Group id="amarnaiGroup">
                 <Label resid="groupLabel" />
-                <Control xsi:type="Button" id="amarnaiReplyButton">
-                  <Label resid="replyLabel" />
+                <Control xsi:type="Button" id="amarnaiPanelButton">
+                  <Label resid="panelLabel" />
                   <Supertip>
-                    <Title resid="replyLabel" />
-                    <Description resid="replyTip" />
+                    <Title resid="panelLabel" />
+                    <Description resid="panelTip" />
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="icon16" />
@@ -134,10 +142,10 @@ function buildManifest(base: string, addinId: string): string {
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="groupLabel" DefaultValue="Amarnai" />
-        <bt:String id="replyLabel" DefaultValue="Amarnai Reply" />
+        <bt:String id="panelLabel" DefaultValue="Amarnai" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="replyTip" DefaultValue="Draft a reply to this conversation with Amarnai. You review and send it yourself." />
+        <bt:String id="panelTip" DefaultValue="Open the Amarnai panel for this conversation: where it was filed, what it says, and a draft reply you review and send yourself." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

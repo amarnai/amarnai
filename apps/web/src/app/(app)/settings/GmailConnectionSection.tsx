@@ -327,6 +327,9 @@ export function GmailConnectionSection({
             initialReplyButtonEnabled={
               (syncSettings ?? DEFAULT_GMAIL_SYNC_SETTINGS).replyButtonInjectionEnabled
             }
+            initialPanelEnabled={
+              (syncSettings ?? DEFAULT_GMAIL_SYNC_SETTINGS).injectedPanelEnabled
+            }
           />
         </>
       ) : connection?.status === "DISCONNECTED" ? (

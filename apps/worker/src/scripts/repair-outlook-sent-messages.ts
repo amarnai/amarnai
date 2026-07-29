@@ -96,6 +96,7 @@ async function repairWorkspace(workspaceId: string): Promise<{
     labelWritebackEnabled: false,
     threadSummaryInjectionEnabled: true,
     replyButtonInjectionEnabled: true,
+    injectedPanelEnabled: true,
     blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
   };
 

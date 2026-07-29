@@ -37,6 +37,8 @@ export type {
   EmailThreadSummary,
   EmailThreadListResult,
   EmailThreadDetail,
+  MailAccount,
+  MailAccountsResult,
   TriageStatus,
   DoneMark,
   ThreadAssignment,

@@ -4,8 +4,7 @@ import { THREAD_SUMMARY_MESSAGE, isThreadSummaryRequest } from "../content/core/
 
 const { mockClient } = vi.hoisted(() => ({
   mockClient: {
-    workspaces: vi.fn(),
-    gmailConnection: vi.fn(),
+    mailAccounts: vi.fn(),
     providerThreadSummary: vi.fn(),
   },
 }));
@@ -48,8 +47,9 @@ beforeEach(() => {
   resetChromeStorage();
   resetSummaryClient();
   mockTokenStore.get.mockResolvedValue({ accessToken: "a", refreshToken: "r" });
-  mockClient.workspaces.mockResolvedValue([{ id: "ws-1" }]);
-  mockClient.gmailConnection.mockResolvedValue({ gmailAddress: "ada@example.com" });
+  mockClient.mailAccounts.mockResolvedValue({
+    accounts: [{ email: "ada@example.com", workspaceId: "ws-1" }],
+  });
   mockClient.providerThreadSummary.mockResolvedValue({
     kind: "summary",
     summary: { text: "Ana needs the kickoff date.", locale: "en", generatedAt: null },
@@ -86,11 +86,13 @@ describe("handleThreadSummaryRequest", () => {
       ok: false,
       reason: "signedOut",
     });
-    expect(mockClient.workspaces).not.toHaveBeenCalled();
+    expect(mockClient.mailAccounts).not.toHaveBeenCalled();
   });
 
   it("answers noWorkspace when the visible mailbox is not connected anywhere", async () => {
-    mockClient.gmailConnection.mockResolvedValue({ gmailAddress: "someone.else@example.com" });
+    mockClient.mailAccounts.mockResolvedValue({
+      accounts: [{ email: "someone.else@example.com", workspaceId: "ws-1" }],
+    });
     await expect(handleThreadSummaryRequest(REQUEST)).resolves.toEqual({
       ok: false,
       reason: "noWorkspace",
@@ -145,7 +147,7 @@ describe("handleThreadSummaryRequest", () => {
   });
 
   it("answers error when the workspace lookup fails", async () => {
-    mockClient.workspaces.mockRejectedValue(new Error("offline"));
+    mockClient.mailAccounts.mockRejectedValue(new Error("offline"));
     await expect(handleThreadSummaryRequest(REQUEST)).resolves.toEqual({
       ok: false,
       reason: "error",
@@ -155,7 +157,9 @@ describe("handleThreadSummaryRequest", () => {
 
 describe("resolveWorkspaceForAccount", () => {
   it("matches the mailbox case-insensitively", async () => {
-    mockClient.gmailConnection.mockResolvedValue({ gmailAddress: "Ada@Example.com" });
+    mockClient.mailAccounts.mockResolvedValue({
+      accounts: [{ email: "Ada@Example.com", workspaceId: "ws-1" }],
+    });
     await expect(resolveWorkspaceForAccount(mockClient as never, "ada@example.com")).resolves.toBe(
       "ws-1",
     );
@@ -163,13 +167,13 @@ describe("resolveWorkspaceForAccount", () => {
 
   it("caches the mapping so a second lookup does no API calls", async () => {
     await resolveWorkspaceForAccount(mockClient as never, "ada@example.com");
-    expect(mockClient.workspaces).toHaveBeenCalledOnce();
+    expect(mockClient.mailAccounts).toHaveBeenCalledOnce();
     await resolveWorkspaceForAccount(mockClient as never, "ada@example.com");
-    expect(mockClient.workspaces).toHaveBeenCalledOnce();
+    expect(mockClient.mailAccounts).toHaveBeenCalledOnce();
   });
 
   it("returns null when no workspace has that mailbox connected", async () => {
-    mockClient.gmailConnection.mockResolvedValue(null);
+    mockClient.mailAccounts.mockResolvedValue({ accounts: [] });
     await expect(
       resolveWorkspaceForAccount(mockClient as never, "ada@example.com"),
     ).resolves.toBeNull();

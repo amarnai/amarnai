@@ -135,6 +135,15 @@ msgstr "{0} / {1} kaldı · sıfırlanır {quotaResetDate}"
 msgid "{0}<0>{resortLive}</0> threads will be re-sorted by AI."
 msgstr "Yapay zeka, {0}<0>{resortLive}</0> konuyu yeniden sıralayacak."
 
+#: ../panel/src/states/PanelStates.tsx:92
+#, fuzzy
+msgid "{accountEmail} is not connected to Amarnai."
+msgstr "{accountEmail} Amarnai'ye bağlı değil."
+
+#: ../panel/src/states/PanelStates.tsx:88
+msgid "{accountEmail} is not connected to Amarnai. You have {connected} connected."
+msgstr "{accountEmail} Amarnai'ye bağlı değil. {connected} bağlı hesabınız var."
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:109
 #, fuzzy
 msgid "{blacklistCount, plural, one {# blocked} other {# blocked}}"
@@ -231,8 +240,10 @@ msgid "{providerName} Inbox"
 msgstr "{providerName} Gelen Kutusu"
 
 #. placeholder {0}: draftQuota.limit
+#. placeholder {0}: quota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:465
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
+#: ../panel/src/DraftSection.tsx:224
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} / {0} kaldı · sıfırlanır {quotaResetDate}"
@@ -576,9 +587,7 @@ msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n"
-"\n"
-"Başvuruyu Kayıtlar Evi'nde görüntüleyin."
+msgstr "Thebes'li Horemheb'den Yazışma Şefi pozisyonu için yeni bir başvuru alındı.\n\nBaşvuruyu Kayıtlar Evi'nde görüntüleyin."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -605,11 +614,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Aynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n"
-"\n"
-"O zamana dek,"
+msgstr "Abdi-Heba,\n\nAynı hafta Delta yakınında olacağım. İkinci gün menzil istasyonunda buluşalım; sabahı ayırabilirim.\n\nO zamana dek,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -870,8 +875,12 @@ msgid "Amarnai for Android"
 msgstr "Android için Amarnai"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:185
-msgid "Amarnai has not sorted this thread yet. Try again in a moment."
-msgstr "Amarnai bu sohbeti henüz işlemedi. Bir süre sonra tekrar deneyin."
+#~ msgid "Amarnai has not sorted this thread yet. Try again in a moment."
+#~ msgstr "Amarnai bu sohbeti henüz işlemedi. Bir süre sonra tekrar deneyin."
+
+#: ../panel/src/states/PanelStates.tsx:115
+msgid "Amarnai hasn't synced this conversation yet."
+msgstr "Amarnai bu sohbeti henüz senkronize etmedi."
 
 #: ../../apps/site/src/components/landing/Nav.tsx:42
 #, fuzzy
@@ -981,7 +990,7 @@ msgstr "Amarnai'nin e-postalarınızı gösterebilmesi için sunucusuna ve gelen
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai'nin çalışabilmesi için sunucusuna ve gelen kutunuza erişmesi gerekir. Lütfen erişim izni verin ve tekrar deneyin."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:159
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:122
 msgid "Amarnai never sends email. You review and send from Outlook."
 msgstr "Amarnai asla e-posta göndermez. Outlook'tan inceler ve gönderirsiniz."
 
@@ -1004,8 +1013,8 @@ msgid "Amarnai reads your inbox, sorts every thread into the folders you define,
 msgstr "Amarnai gelen kutunuzu okur, her yazışmayı belirlediğiniz klasörlere ayırır ve onayınız için yanıt taslakları oluşturur. Yoğunluğa gerek kalmadan gelen kutunuzu sıfırlayın."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:100
-msgid "Amarnai Reply"
-msgstr "Amarnai Yanıtla"
+#~ msgid "Amarnai Reply"
+#~ msgstr "Amarnai Yanıtla"
 
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:63
 msgid "Amarnai sits in a side panel next to Gmail and Outlook."
@@ -1029,6 +1038,10 @@ msgstr "Amarnai, gelen kutunuzu sizin için düzenler; eski ve yeni e-postaları
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 msgstr "Amarnai gelen kutunuzu belirlediğiniz klasörlere ayırır, onayınız için yanıt taslakları oluşturur ve her kararı açıklayarak gelen kutunuzu daha hızlı sıfırlamanızı sağlar."
 
+#: ../panel/src/ClassificationCard.tsx:125
+msgid "Amarnai wasn't sure about this one. Move it if it's in the wrong place."
+msgstr "Amarnai bu konuda emin olamadı. Yanlış yerdeyse taşıyın."
+
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:104
 #, fuzzy
 msgid "Amarnai will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
@@ -1041,8 +1054,8 @@ msgstr "Amarnai, göndericilerinizi, etiketlerinizi ve konu anahtar kelimelerini
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:131
 #, fuzzy
-msgid "Amarnai will draft a reply and open it in Outlook for you to review."
-msgstr "Amarnai bir yanıt taslağı oluşturur ve incelemeniz için Outlook'ta açar."
+#~ msgid "Amarnai will draft a reply and open it in Outlook for you to review."
+#~ msgstr "Amarnai bir yanıt taslağı oluşturur ve incelemeniz için Outlook'ta açar."
 
 #: ../../apps/site/src/lib/seo.ts:39
 #~ msgid "Amarnai: AI Email Sorter for Gmail"
@@ -1290,11 +1303,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Dostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n"
-"\n"
-"Saygılarımızla,"
+msgstr "Aziru,\n\nDostluk sözleriniz bize ulaştı. Amurru hanedanının ne önerdiğini daha fazla duymaya açığız. Koşullarınızı bir sonraki kurye ile gönderin.\n\nSaygılarımızla,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1538,7 +1547,7 @@ msgstr "Amarnai'yi kendi sunucumda barındırabilir miyim?"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:150
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:64
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:291
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:414
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:417
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
@@ -1639,6 +1648,11 @@ msgstr "Ücretli bir planı değiştirme veya iptal etme, abonelik ayarlarınız
 #: ../ui/src/i18n/taxonomy-template-messages.ts:157
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "Sosyal platformlardan gelen kanal bildirimleri, yükleme analizleri ve politika güncellemeleri."
+
+#: ../panel/src/states/PanelStates.tsx:111
+#, fuzzy
+msgid "Check again"
+msgstr "Tekrar kontrol et"
 
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:45
 msgid "Check your email"
@@ -1863,13 +1877,13 @@ msgstr "Silmeyi Onayla"
 msgid "Confirm password"
 msgstr "Parolayı onayla"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:426
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:435
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:429
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:438
 #, fuzzy
 msgid "Connect {name}"
 msgstr "{name} Bağla"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:398
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:401
 #, fuzzy
 msgid "Connect {name} to this workspace?"
 msgstr "{name} bu çalışma alanına bağlansın mı?"
@@ -1892,12 +1906,21 @@ msgstr "{secondaryName} ile Bağlan"
 msgid "Connect a Gmail inbox to configure sync filters."
 msgstr "Senkronizasyon filtrelerini yapılandırmak için bir Gmail gelen kutusu bağlayın."
 
+#: ../panel/src/states/PanelStates.tsx:62
+#, fuzzy
+msgid "Connect a mailbox"
+msgstr "Bir e-posta kutusu bağla"
+
+#: ../panel/src/states/PanelStates.tsx:67
+msgid "Connect a mailbox to Amarnai to start sorting your inbox."
+msgstr "Gelen kutunuzu düzenlemeye başlamak için Amarnai'ye bir e-posta kutusu bağlayın."
+
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:450
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:453
 #, fuzzy
 msgid "Connect Gmail"
 msgstr "Gmail'i Bağla"
@@ -1964,7 +1987,7 @@ msgstr "Bir kez bağlayın, klasörlerinizi oluşturun ve yeni e-postaları, gel
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:458
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:461
 #, fuzzy
 msgid "Connect Outlook"
 msgstr "Outlook Bağla"
@@ -2010,7 +2033,7 @@ msgstr "Gelen kutunuzu bağlayın ve Amarnai dakikalar içinde sıralamaya başl
 msgid "Connect your inbox to start triaging."
 msgstr "Gelen kutunuzu bağlayın, düzenlemeye başlayın."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:392
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:395
 #, fuzzy
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "{name} bağlandığında, {retainedAddress} adresinden kaydedilen sıralanmış e-postalarınız kalıcı olarak silinir. Klasörleriniz ve ayarlarınız korunur."
@@ -2045,7 +2068,7 @@ msgstr "Devam et"
 msgid "Continue as {incomingEmail}"
 msgstr "{incomingEmail} olarak devam et"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:407
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:410
 #, fuzzy
 msgid "Continue to {name}"
 msgstr "{name}'e devam et"
@@ -2218,7 +2241,12 @@ msgstr "Taşıma hazırlanamadı"
 msgid "Could not queue rescan. Please try again."
 msgstr "Yeniden tarama sıraya alınamadı. Lütfen tekrar deneyin."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:255
+#: ../panel/src/states/PanelStates.tsx:141
+#, fuzzy
+msgid "Could not reach Amarnai."
+msgstr "Amarnai'ye ulaşılamadı."
+
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:161
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Amarnai'ye ulaşılamadı. Bağlantınızı kontrol edin."
 
@@ -2265,7 +2293,7 @@ msgstr "Filtre ayarı kaydedilemedi. Lütfen tekrar deneyin."
 msgid "Could not save. Please try again."
 msgstr "Kaydedilemedi. Lütfen tekrar deneyin."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:248
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:154
 msgid "Could not sign in. Please try again."
 msgstr "Giriş yapılamadı. Lütfen tekrar deneyin."
 
@@ -2293,7 +2321,7 @@ msgstr "Bu konu özetlenemedi."
 msgid "Could not update name. Please try again."
 msgstr "Ad güncellenemedi. Lütfen tekrar deneyin."
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:78
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:101
 #: ../ui/src/settings/LabelWritebackSection.tsx:128
 msgid "Could not update the setting. Please try again."
 msgstr "Ayar güncellenemedi. Lütfen tekrar deneyin."
@@ -2658,7 +2686,7 @@ msgstr "Gelen kutunuzun bağlantısını kesin veya hesabınızı silin"
 msgid "Disconnected"
 msgstr "Bağlantı Kesildi"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:339
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:342
 #, fuzzy
 msgid "Disconnected from this workspace. {erasedNote} Amarnai still has access because this mailbox is connected in another workspace. To fully revoke access, remove Amarnai from your <0/>."
 msgstr "Bu çalışma alanından bağlantı kesildi. {erasedNote} Bu posta kutusu başka bir çalışma alanında bağlı olduğu için Amarnai'nin erişimi devam ediyor. Erişimi tamamen iptal etmek için Amarnai'yi <0/> adresinden kaldırın."
@@ -2668,11 +2696,11 @@ msgstr "Bu çalışma alanından bağlantı kesildi. {erasedNote} Bu posta kutus
 #~ msgid "Disconnected. {erasedNote} Revocation at Google could not be confirmed. You can remove Amarnai from your <0/>."
 #~ msgstr "Bağlantı kesildi. {erasedNote} Google'daki erişim iptali doğrulanamadı. Amarnai'yi <0/> adresinden kaldırabilirsiniz."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:355
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:358
 msgid "Disconnected. {erasedNote} To fully revoke Amarnai's access, remove it from your <0/>."
 msgstr "Bağlantı kesildi. {erasedNote} Amarnai'nin erişimini tamamen iptal etmek için, onu <0/> adresinizden kaldırın."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:363
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:366
 #, fuzzy
 msgid "Disconnected. Amarnai is no longer syncing this inbox."
 msgstr "Bağlantı kesildi. Amarnai artık bu gelen kutusunu senkronize etmiyor."
@@ -2682,7 +2710,7 @@ msgstr "Bağlantı kesildi. Amarnai artık bu gelen kutusunu senkronize etmiyor.
 #~ msgid "Disconnected. Amarnai's access to this mailbox was revoked at Google. {erasedNote}"
 #~ msgstr "Bağlantı kesildi. Amarnai'nin bu posta kutusuna erişimi Google'da iptal edildi. {erasedNote}"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:348
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:351
 msgid "Disconnected. Amarnai's access to this mailbox was revoked.{erasedNote}"
 msgstr "Bağlantı kesildi. Amarnai'nin bu posta kutusuna erişimi iptal edildi.{erasedNote}"
 
@@ -2803,19 +2831,23 @@ msgstr "taslak"
 msgid "Draft"
 msgstr "Taslak"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:134
+#: ../panel/src/DraftSection.tsx:217
 #, fuzzy
 msgid "Draft a reply"
 msgstr "Yanıt taslağı oluştur"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:151
-msgid "Draft another"
-msgstr "Başka bir taslak oluştur"
+#~ msgid "Draft another"
+#~ msgstr "Başka bir taslak oluştur"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:180
 #, fuzzy
 msgid "Draft failed · tap to retry"
 msgstr "Taslak oluşturulamadı · yeniden denemek için dokunun"
+
+#: ../panel/src/DraftSection.tsx:249
+msgid "Draft generation failed."
+msgstr "Taslak oluşturma başarısız oldu."
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:480
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
@@ -2824,8 +2856,8 @@ msgid "Draft generation failed. Try again."
 msgstr "Taslak oluşturulamadı. Tekrar deneyin."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:170
-msgid "Draft ready in your reply. Review it, then send when you are happy."
-msgstr "Yanıt taslağınız hazır. İnceleyin, ardından memnun kaldığınızda gönderin."
+#~ msgid "Draft ready in your reply. Review it, then send when you are happy."
+#~ msgstr "Yanıt taslağınız hazır. İnceleyin, ardından memnun kaldığınızda gönderin."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
@@ -2846,7 +2878,6 @@ msgid "Draft style guidance"
 msgstr "Taslak stil yönergeleri"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:141
 #: ../ui/src/emails/ThreadRow.tsx:291
 #, fuzzy
 msgid "Drafting…"
@@ -2917,7 +2948,7 @@ msgstr "Yolu Düzenle"
 #: ../../apps/mobile/app/sign-up.tsx:98
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:72
 #: ../../apps/web/src/app/forgot-password/page.tsx:34
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:267
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:173
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:109
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:98
 #, fuzzy
@@ -3232,6 +3263,11 @@ msgstr "Burs ödülleri, fon sağlayıcı son tarihleri ve araştırma bütçesi
 #: ../ui/src/i18n/taxonomy-template-messages.ts:180
 msgid "Field trips, parent evenings, assemblies, and school event scheduling."
 msgstr "Saha gezileri, veli toplantıları, öğrenci buluşmaları ve okul etkinliği planlaması."
+
+#. placeholder {0}: folder.name
+#: ../panel/src/ClassificationCard.tsx:82
+msgid "Filed in {0}. Move to another folder"
+msgstr "{0} klasörüne kaydedildi. Başka bir klasöre taşı"
 
 #: ../../apps/mobile/src/components/emails/FolderFilterSheet.tsx:33
 #, fuzzy
@@ -3809,11 +3845,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Ulu Kralım,\n"
-"\n"
-"İstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n"
-"\n"
-"Kardeşlik içerisinde,"
+msgstr "Ulu Kralım,\n\nİstediğiniz raporlar konsey toplanmadan önce hazırlanacaktır. Katiplerime doğu topraklarının hesaplarını derletecek ve hızlı kurye ile önceden göndereceğim.\n\nKardeşlik içerisinde,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4011,7 +4043,7 @@ msgstr "Önemli"
 #~ msgid "Importing will replace your current plan with <0>{0} folders</0> and <1>{1} paths</1> from the file. Threads that were sorted into removed folders will become unsorted. This cannot be undone."
 #~ msgstr "İçe aktarma işlemi, mevcut planınızı dosyadan gelen <0>{0} klasör</0> ve <1>{1} yol</1> ile değiştirecektir. Kaldırılan klasörlere sıralanan e-postalar sırasız hale gelecektir. Bu işlem geri alınamaz."
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:56
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:70
 msgid "In Gmail and Outlook"
 msgstr "Gmail ve Outlook'ta"
 
@@ -4072,7 +4104,7 @@ msgstr "Spam'i Dahil Et"
 msgid "Included"
 msgstr "Dahil Edildi"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:247
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:153
 msgid "Incorrect email or password."
 msgstr "Yanlış e-posta veya parola."
 
@@ -4093,6 +4125,15 @@ msgstr "İlk geriye dönük doldurma"
 #: ../ui/src/emails/MessageCard.tsx:80
 msgid "Inline image"
 msgstr "Satır içi görsel"
+
+#: ../panel/src/DraftSection.tsx:265
+#, fuzzy
+msgid "Insert again"
+msgstr "Tekrar ekle"
+
+#: ../panel/src/DraftSection.tsx:265
+msgid "Insert into reply"
+msgstr "Yanıtın içine ekle"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:217
 #, fuzzy
@@ -4476,8 +4517,9 @@ msgstr "Geçmiş yazışmalar yükleniyor…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:105
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:86
 #: ../../apps/web/src/components/NotificationBell.tsx:161
+#: ../panel/src/states/PanelStates.tsx:151
 #: ../ui/src/emails/MessageCard.tsx:68
 #: ../ui/src/emails/ThreadList.tsx:265
 #, fuzzy
@@ -4548,6 +4590,7 @@ msgstr "Tamamlandı olarak işaretle"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
+#: ../panel/src/ClassificationCard.tsx:107
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -4740,7 +4783,7 @@ msgstr "İletileri şuraya taşı"
 msgid "Move to folder"
 msgstr "Klasöre taşı"
 
-#: ../ui/src/emails/ReroutePopover.tsx:130
+#: ../ui/src/emails/ReroutePopover.tsx:150
 #, fuzzy
 msgid "Move to folder…"
 msgstr "Klasöre taşı…"
@@ -4881,6 +4924,7 @@ msgstr "Kalan taslak yok"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
+#: ../panel/src/DraftSection.tsx:222
 #: ../ui/src/emails/SuggestedDraftCard.tsx:97
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -4912,7 +4956,7 @@ msgstr "Kullanılabilir klasör yok"
 msgid "No folders defined"
 msgstr "Tanımlanmış klasör yok"
 
-#: ../ui/src/emails/ReroutePopover.tsx:140
+#: ../ui/src/emails/ReroutePopover.tsx:160
 #, fuzzy
 msgid "No folders match"
 msgstr "Eşleşen klasör yok"
@@ -4933,7 +4977,7 @@ msgstr "Henüz klasör yok"
 msgid "No Gmail inbox connected. Connect your account to start syncing."
 msgstr "Bağlı bir Gmail gelen kutusu yok. Senkronizasyonu başlatmak için hesabınızı bağlayın."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:444
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:447
 #, fuzzy
 msgid "No inbox connected to this workspace."
 msgstr "Bu çalışma alanına bağlı hiçbir gelen kutusu yok."
@@ -5045,6 +5089,10 @@ msgstr "STK Lideri"
 msgid "Not connected"
 msgstr "Bağlı değil"
 
+#: ../panel/src/ClassificationCard.tsx:96
+msgid "Not filed"
+msgstr "Dosyalanmadı"
+
 #: ../ui/src/PricingPlans.tsx:94
 #, fuzzy
 msgid "Not included"
@@ -5138,10 +5186,14 @@ msgstr "Faturalandırmayı yalnızca çalışma alanı sahibi yönetebilir."
 msgid "Open"
 msgstr "Aç"
 
+#: ../panel/src/states/PanelStates.tsx:101
+msgid "Open a conversation to see how Amarnai sorted it."
+msgstr "Amarnai'nin nasıl sıraladığını görmek için bir görüşme açın."
+
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:117
 #, fuzzy
-msgid "Open a message first, then choose Amarnai Reply."
-msgstr "Önce bir mesaj açın, ardından Amarnai Yanıtı'nı seçin."
+#~ msgid "Open a message first, then choose Amarnai Reply."
+#~ msgstr "Önce bir mesaj açın, ardından Amarnai Yanıtı'nı seçin."
 
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:181
 msgid "Open all settings in a new tab"
@@ -5155,6 +5207,10 @@ msgstr "Amarnai'yi Aç"
 #: ../../apps/site/src/components/support/SupportContent.tsx:94
 msgid "Open an issue on GitHub"
 msgstr "GitHub'da bir sorun açın"
+
+#: ../panel/src/InjectedThreadPanel.tsx:327
+msgid "Open in Amarnai"
+msgstr "Amarnai'de aç"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:397
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
@@ -5187,9 +5243,13 @@ msgstr "Klasör düzenleyiciyi aç"
 #~ msgid "Open the plan editor"
 #~ msgstr "Plan düzenleyiciyi açın"
 
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:96
+msgid "Open this from the Amarnai button in Outlook."
+msgstr "Bunu Outlook'taki Amarnai düğmesinden açın."
+
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:111
-msgid "Open this from the Amarnai Reply button in Outlook."
-msgstr "Bunu Outlook'taki Amarnai Yanıtla düğmesinden açın."
+#~ msgid "Open this from the Amarnai Reply button in Outlook."
+#~ msgstr "Bunu Outlook'taki Amarnai Yanıtla düğmesinden açın."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:228
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:281
@@ -5250,7 +5310,7 @@ msgstr "İsteğe bağlı. Bu klasörün rozet ve simge rengini tüm gelen kutunu
 msgid "or"
 msgstr "veya"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:386
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:389
 msgid "Or connect a different inbox:"
 msgstr "Ya da farklı bir gelen kutusu bağla:"
 
@@ -5311,7 +5371,7 @@ msgstr "Delta'dan geçerken: buluşmaya müsait misin?"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:144
 #: ../../apps/mobile/app/sign-in.tsx:106
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:277
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:183
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
 #, fuzzy
 msgid "Password"
@@ -5728,7 +5788,7 @@ msgstr "5 üzerinden 5 puan"
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount} sınıflandırılmamışı yeniden yönlendir"
 
-#: ../ui/src/emails/ReroutePopover.tsx:121
+#: ../ui/src/emails/ReroutePopover.tsx:141
 #, fuzzy
 msgid "Re-route thread"
 msgstr "İleti dizisini yeniden yönlendir"
@@ -5814,7 +5874,7 @@ msgstr "Gelen Kutunuz İçin Önerilenler"
 msgid "Reconnect"
 msgstr "Yeniden bağlan"
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:381
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:384
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:121
 #, fuzzy
 msgid "Reconnect {providerName}"
@@ -5931,6 +5991,7 @@ msgstr "Kara listeden {email} adresini kaldır"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
+#: ../panel/src/ClassificationCard.tsx:106
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:148
@@ -6117,6 +6178,7 @@ msgstr "Kaynaklar"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
+#: ../panel/src/DraftSection.tsx:252
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
 #, fuzzy
 msgid "Retry"
@@ -6165,11 +6227,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Seni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n"
-"\n"
-"Esen kal,"
+msgstr "Rib-Hadda,\n\nSeni duyuyoruz. Güneydeki depolardan ek tahıl sipariş edildi ve hasat festivalinden önce ulaşacak. O zamana kadar sabrınızı rica ediyoruz.\n\nEsen kal,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6279,7 +6337,7 @@ msgid "Search {threadCount} threads"
 msgstr "{threadCount} iletiyi ara"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:322
-#: ../ui/src/emails/ReroutePopover.tsx:134
+#: ../ui/src/emails/ReroutePopover.tsx:154
 #, fuzzy
 msgid "Search folders"
 msgstr "Klasörlerde ara"
@@ -6492,7 +6550,7 @@ msgstr "Paylaşılan plan"
 msgid "Shipping"
 msgstr "Kargo"
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:64
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:87
 msgid "Show AI thread summaries in Gmail and Outlook"
 msgstr "Gmail ve Outlook'ta YZ konu özetlerini göster"
 
@@ -6505,7 +6563,11 @@ msgstr "Gmail'i Göster"
 msgid "Show Outlook"
 msgstr "Outlook'u Göster"
 
-#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:73
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:78
+msgid "Show the Amarnai panel next to the thread you are reading"
+msgstr "Okuduğunuz ileti dizisinin yanında Amarnai panelini göster"
+
+#: ../../apps/web/src/app/(app)/settings/NativeInjectionSection.tsx:96
 #, fuzzy
 msgid "Show the Amarnai Reply button for drafting replies"
 msgstr "Yanıt taslakları oluşturmak için Amarnai Yanıtla düğmesini göster"
@@ -6516,9 +6578,10 @@ msgstr "Gösterim talepleri, alıcı turları, açık ev kayıtları ve yazılı
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:155
 #: ../../apps/mobile/app/sign-in.tsx:133
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:288
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:146
+#: ../panel/src/states/PanelStates.tsx:46
 #, fuzzy
 msgid "Sign in"
 msgstr "Giriş yap"
@@ -6527,12 +6590,16 @@ msgstr "Giriş yap"
 msgid "Sign in to accept your workspace invitation."
 msgstr "Çalışma alanı davetini kabul etmek için giriş yap."
 
+#: ../panel/src/states/PanelStates.tsx:51
+msgid "Sign in to Amarnai to see how this thread was sorted."
+msgstr "Bu ileti dizisinin nasıl sıralandığını görmek için Amarnai'de oturum açın."
+
 #: ../../apps/mobile/app/sign-in.tsx:85
 #, fuzzy
 msgid "Sign in to triage your inbox"
 msgstr "Gelen kutunuzu tasnif etmek için giriş yapın"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:264
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:170
 #, fuzzy
 msgid "Sign in to your Amarnai account."
 msgstr "Amarnai hesabınıza giriş yapın."
@@ -6601,7 +6668,7 @@ msgstr "Giriş yapılamadı. Lütfen tekrar deneyin."
 msgid "Sign-up failed. Please try again."
 msgstr "Kaydolma başarısız. Lütfen tekrar deneyin."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:288
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:146
 #, fuzzy
 msgid "Signing in…"
@@ -6636,7 +6703,6 @@ msgstr "Bir sorun oluştu"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:85
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:89
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:98
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:209
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:84
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:90
 #: ../ui/src/upgrade/UpgradeDialog.tsx:133
@@ -6659,9 +6725,13 @@ msgstr "Sıralayın"
 msgid "Sort emails your way."
 msgstr "E-postaları istediğiniz gibi sıralayın."
 
-#: ../../apps/extension/src/panel/SortNowButton.tsx:28
-#~ msgid "Sort now"
-#~ msgstr "Şimdi Sırala"
+#: ../panel/src/ClassificationCard.tsx:131
+msgid "Sort now"
+msgstr "Şimdi Sırala"
+
+#: ../panel/src/DraftSection.tsx:242
+msgid "Sort this thread first, then Amarnai can draft a reply for it."
+msgstr "Önce bu ileti dizisini sıralayın, sonra Amarnai bunun için bir yanıt taslağı hazırlayabilir."
 
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:50
 #: ../ui/src/emails/BackfillCard.tsx:23
@@ -6709,6 +6779,7 @@ msgid "Sorting volume"
 msgstr "Sıralama hacmi"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
+#: ../panel/src/ClassificationCard.tsx:71
 #: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 #, fuzzy
@@ -7081,9 +7152,13 @@ msgstr "Bu bağlantı geçersiz veya süresi dolmuş."
 #~ msgid "The Amarna letters were the world's first overloaded inbox. These two lived it."
 #~ msgstr ""
 
+#: ../panel/src/states/PanelStates.tsx:127
+msgid "The Amarnai panel is switched off for this workspace."
+msgstr "Amarnai paneli bu çalışma alanı için kapatıldı."
+
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:203
-msgid "The Amarnai Reply button is switched off for this workspace in settings."
-msgstr "Amarnai Yanıtla düğmesi bu çalışma alanı için ayarlarda kapalı."
+#~ msgid "The Amarnai Reply button is switched off for this workspace in settings."
+#~ msgstr "Amarnai Yanıtla düğmesi bu çalışma alanı için ayarlarda kapalı."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:60
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:88
@@ -7189,8 +7264,8 @@ msgid "This browser is signed in as {currentEmail}, but your extension is signed
 msgstr "Bu tarayıcı {currentEmail} olarak oturum açmış, ancak eklentiniz {incomingEmail} olarak oturum açmış."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:191
-msgid "This conversation has not synced to Amarnai yet."
-msgstr "Bu konuşma henüz Amarnai ile senkronize edilmedi."
+#~ msgid "This conversation has not synced to Amarnai yet."
+#~ msgstr "Bu konuşma henüz Amarnai ile senkronize edilmedi."
 
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:693
 #, fuzzy
@@ -7221,8 +7296,8 @@ msgid "This invitation was sent to a different account. Sign in with that accoun
 msgstr "Bu davet farklı bir hesaba gönderildi. Kabul etmek için o hesapla giriş yap."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:197
-msgid "This mailbox is not connected to any of your Amarnai workspaces."
-msgstr "Bu posta kutusu, Amarnai çalışma alanlarınızdan hiçbirine bağlı değil."
+#~ msgid "This mailbox is not connected to any of your Amarnai workspaces."
+#~ msgstr "Bu posta kutusu, Amarnai çalışma alanlarınızdan hiçbirine bağlı değil."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:285
 #, fuzzy
@@ -7372,13 +7447,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Büyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n"
-"\n"
-"İttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n"
-"\n"
-"Mitanni Büyük Kralı Tuşratta"
+msgstr "Büyük Kral kardeşim,\n\nBüyük konsey Şemu'nun başında toplanacak. Doğu topraklarının tam bir muhasebesini hazırlamanızı ve mümkünse yeni aydan önce hızlı bir kurye ile göndermenizi rica ediyorum.\n\nİttifakımız güçlüdür. Konseye bunun böyle kaldığını gösterelim.\n\nMitanni Büyük Kralı Tuşratta"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7387,11 +7456,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kraliyet Atama Bürosu'na,\n"
-"\n"
-"Thebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n"
-"\n"
-"Kraliyet fermanıyla,"
+msgstr "Kraliyet Atama Bürosu'na,\n\nThebesli Horemheb'in başvurusunu aldık ve sonraki yeni aydan önce sicilini gözden geçireceğiz. Lütfen kendisine zamanı geldiğinde haber vereceğimizi bildirin.\n\nKraliyet fermanıyla,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7402,13 +7467,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n"
-"\n"
-"Sadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n"
-"\n"
-"Amurru lordu, Büyük Kral'ın hizmetkarı Aziru"
+msgstr "Büyük Kral'a,\n\nYıllardır hanelerimiz kardeş gibidir. Şimdi, bu dostluğumuzu her iki halkımızın da yararına resmileştirmeyi teklif etmek için yazıyorum: karşılıklı koruma ve ortak ticaret yolları anlaşması.\n\nSadece şartlarımı dinlemenizi rica ediyorum. Sonraki kurye ile haber gönderin, elçimi derhal yola çıkaracağım.\n\nAmurru lordu, Büyük Kral'ın hizmetkarı Aziru"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7417,11 +7476,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Büyük Kral'a,\n"
-"\n"
-"Yolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n"
-"\n"
-"Kulunuz, Urushalim Valisi Abdi-Heba"
+msgstr "Büyük Kral'a,\n\nYolculuklarım beni önümüzdeki günlerde Delta'ya yakın bir yere getirecek. Büyük Kral'ın ayıracak bir saati varsa, yüz yüze konuşma fırsatını memnuniyetle karşılarım; yazmaktan daha kolay anlatılacak meseleler var.\n\nKulunuz, Urushalim Valisi Abdi-Heba"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7430,11 +7485,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Sözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n"
-"\n"
-"Dostlukla,"
+msgstr "Büyük Kral kardeşim,\n\nSözlerinizi duydum. Altın, bir sonraki elçi ayrılmadan önce gönderilecektir. Hanelerimiz arasındaki bağı değerli buluyoruz ve soğumasını istemiyoruz.\n\nDostlukla,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7445,13 +7496,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Büyük Kral kardeşim,\n"
-"\n"
-"Atalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n"
-"\n"
-"Hanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n"
-"\n"
-"Babil Kralı II. Burna-Buriash"
+msgstr "Büyük Kral kardeşim,\n\nAtalarımızın yazdığı gibi, dostlukla yazıyorum. Antlaşmamız kapsamında üzerinde anlaşılan üçüncü altın sevkiyatı gelmedi. İki elçi geçti ve hâlâ bekliyoruz.\n\nHanelerimiz arasındaki bağa yakışır şekilde, gecikmeksizin göndermenizi rica ediyoruz.\n\nBabil Kralı II. Burna-Buriash"
 
 #: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
@@ -7462,13 +7507,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Büyük Kral'ım, efendim, güneşim,\n"
-"\n"
-"Geçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n"
-"\n"
-"Yedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n"
-"\n"
-"Kulunuz, Byblos Valisi Rib-Hadda"
+msgstr "Büyük Kral'ım, efendim, güneşim,\n\nGeçen ay gönderdiğiniz tahıl şükranla alındı ve adınızı halkın önünde övdüm. Ancak tekrar yazmak zorundayım: üçüncü sevkiyat gelmedi ve şehir huzursuzlanıyor.\n\nYedi kez yazdım. Sizi rahatsız etmek istemem ama başka ne yapabilirim?\n\nKulunuz, Byblos Valisi Rib-Hadda"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7541,7 +7580,7 @@ msgstr "Anında gelen kutusu ayıklama."
 #~ msgid "Triaging 412 threads"
 #~ msgstr "412 ileti dizisi ayıklanıyor"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:152
+#: ../panel/src/states/PanelStates.tsx:137
 msgid "Try again"
 msgstr "Tekrar dene"
 
@@ -7699,6 +7738,7 @@ msgid "Updating…"
 msgstr "Güncelleniyor…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
+#: ../panel/src/states/PanelStates.tsx:170
 #: ../ui/src/emails/AssigneePicker.tsx:136
 #: ../ui/src/settings/PlanSection.tsx:49
 #: ../ui/src/upgrade/UpgradeDialog.tsx:175
@@ -8069,6 +8109,7 @@ msgstr "Geri yazma etkin. Klasörleriniz posta kutunuza yansıtılıyor."
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:474
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
+#: ../panel/src/DraftSection.tsx:236
 #: ../ui/src/emails/ThreadPreview.tsx:250
 #, fuzzy
 msgid "Writing draft reply…"
@@ -8199,8 +8240,8 @@ msgstr "Bu çalışma alanına bir Outlook gelen kutusu bağlama izniniz yok."
 #. placeholder {0}: outcome.limit
 #. placeholder {1}: new Date(outcome.resetsAt).toLocaleDateString()
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:176
-msgid "You have used all {0} drafts in your plan this month. They reset on {1}."
-msgstr "Bu ay planınızdaki tüm {0} taslağı kullandınız. Sıfırlanma tarihi: {1}."
+#~ msgid "You have used all {0} drafts in your plan this month. They reset on {1}."
+#~ msgstr "Bu ay planınızdaki tüm {0} taslağı kullandınız. Sıfırlanma tarihi: {1}."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:58
 #, fuzzy
@@ -8234,6 +8275,10 @@ msgstr "{0} planınızın bu ayki tüm e-posta içe aktarma haklarını, bir yen
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:36
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "{plan} planınızın bu ayki tüm e-posta içe aktarım haklarını, bir yeniden deneme dahil, kullandınız. İçe aktarımlar {refreshDate} tarihinde yenilenir."
+
+#: ../panel/src/states/PanelStates.tsx:166
+msgid "You've used all your sorting for this month, so this thread is waiting."
+msgstr "Bu ay için tüm sıralama hakkınızı kullandınız, bu nedenle bu ileti dizisi bekliyor."
 
 #: ../ui/src/i18n/generation-reason-messages.ts:20
 #, fuzzy
@@ -8385,7 +8430,7 @@ msgstr "Yeniden deneme içe aktarımınız tamamlandı ve hala {0} planınızın
 msgid "Your retry import finished and is still capped by your {plan} plan. Your next retry is available {refreshDate}."
 msgstr "Yeniden deneme içe aktarımınız tamamlandı ve hala {plan} planınızın limitiyle sınırlı. Bir sonraki yeniden denemeniz {refreshDate} tarihinde kullanılabilir."
 
-#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:368
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:371
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
 msgstr "{retainedAddress} adresinden sıralanmış e-postalarınız kaydedildi. Aynı gelen kutusunu yeniden bağladığınızda geri yüklenir; farklı bir gelen kutusu bağladığınızda ise kalıcı olarak silinir. Klasörleriniz ve ayarlarınız her iki durumda da korunur."
 

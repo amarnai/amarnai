@@ -63,8 +63,8 @@ describe("GET /outlook-manifest.xml", () => {
     enable();
     const xml = await body();
     expect(xml).toContain('xsi:type="MessageReadCommandSurface"');
-    expect(xml).toContain('<Control xsi:type="Button" id="amarnaiReplyButton">');
-    expect(xml).toContain('<bt:String id="replyLabel" DefaultValue="Amarnai Reply" />');
+    expect(xml).toContain('<Control xsi:type="Button" id="amarnaiPanelButton">');
+    expect(xml).toContain('<bt:String id="panelLabel" DefaultValue="Amarnai" />');
   });
 
   it("opens the task pane rather than running a headless function", async () => {

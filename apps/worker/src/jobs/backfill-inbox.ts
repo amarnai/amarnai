@@ -146,6 +146,7 @@ export function createBackfillInboxWorker(): Worker {
         // native injection paths. Kept true here to satisfy the shared type.
         threadSummaryInjectionEnabled: true,
         replyButtonInjectionEnabled: true,
+        injectedPanelEnabled: true,
         blacklistedSenderEmails: syncSettingsRow?.blacklistedSenderEmails ?? [],
       };
       const sortingPaused = settings.sortingPaused;

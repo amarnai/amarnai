@@ -386,6 +386,7 @@ export default function SettingsScreen() {
                       // govern the browser extension, which mobile has no part in.
                       threadSummaryInjectionEnabled: true,
                       replyButtonInjectionEnabled: true,
+                      injectedPanelEnabled: true,
                       blacklistedSenderEmails: emails,
                     },
               )

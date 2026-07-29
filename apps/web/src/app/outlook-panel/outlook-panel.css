@@ -16,10 +16,16 @@
   color: var(--color-ink, #1a1a1a);
 }
 
-.outlook-pane-title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
+/* The panel brings its own padding (.apn-root), and stacking the two eats most
+ * of a 320px pane's width. Applied only when the panel is what is rendered; the
+ * sign-in and status screens keep the pane's own padding. */
+.outlook-pane--panel {
+  padding: 0;
+  gap: 0;
+}
+
+.outlook-pane--panel .outlook-pane-footnote {
+  padding: 0 var(--space-4, 1rem) var(--space-4, 1rem);
 }
 
 .outlook-pane-status {

@@ -1,0 +1,42 @@
+{
+  "name": "@amarnai/panel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles": "./src/panel.css",
+    "./realtime": "./src/realtime/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@amarnai/api-client": "workspace:*",
+    "@amarnai/core": "workspace:*",
+    "@amarnai/i18n": "workspace:*",
+    "@amarnai/shared": "workspace:*",
+    "@amarnai/tokens": "workspace:*",
+    "@amarnai/ui": "workspace:*",
+    "@lingui/core": "^6.4.0",
+    "@lingui/react": "^6.4.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "^6.4.0",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "^29.1.1",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+  }
+}

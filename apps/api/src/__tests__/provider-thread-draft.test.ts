@@ -121,24 +121,19 @@ describe("POST provider-threads/:id/generate-draft", () => {
     expect(mockCreateAIProvider).not.toHaveBeenCalled();
   });
 
-  it("404s when the workspace has no email accounts at all", async () => {
-    vi.mocked(db.emailAccount.findMany).mockResolvedValue([] as never);
-
-    const res = await post(STORED_CONVERSATION_ID);
-    expect(res.status).toBe(404);
-    expect(db.emailThread.findFirst).not.toHaveBeenCalled();
-  });
-
-  it("scopes resolution to the requesting workspace's accounts", async () => {
+  // Resolution is a single indexed lookup on (workspaceId, providerThreadId).
+  // The workspace filter is the tenancy boundary: without it, any member of any
+  // workspace could name another tenant's conversation id and get a draft.
+  it("scopes resolution to the requesting workspace", async () => {
     await post(STORED_CONVERSATION_ID);
 
-    expect(db.emailAccount.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { workspaceId: WS_ID } })
-    );
     const lookup = vi.mocked(db.emailThread.findFirst).mock.calls[0]?.[0] as {
-      where: { emailAccountId: { in: string[] } };
+      where: { workspaceId: string; providerThreadId: string };
     };
-    expect(lookup.where.emailAccountId.in).toEqual([ACCOUNT_ID]);
+    expect(lookup.where).toMatchObject({
+      workspaceId: WS_ID,
+      providerThreadId: STORED_CONVERSATION_ID,
+    });
   });
 
   describe("workspace kill-switch", () => {

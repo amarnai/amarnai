@@ -133,13 +133,22 @@ describe("buildManifest — native summary injection", () => {
   // InboxSDK's page-world half and the button icon are loaded by Gmail's own
   // page, so they must be web-accessible — but only to Gmail. Any wider match
   // would let unrelated sites probe for the extension.
-  it("exposes only InboxSDK's two files, to Gmail alone", () => {
-    // The injected buttons use an inline SVG, so OWA needs nothing exposed.
+  it("exposes only InboxSDK's files and the panel iframe, to Gmail alone", () => {
+    // The injected buttons use an inline SVG, so OWA needs nothing exposed —
+    // Outlook gets the panel through the Office add-in, not an iframe.
+    // `assets/*` is here because the built injected.html links its own hashed
+    // JS and CSS from that directory; without it the iframe loads blank.
     for (const browser of ["chrome", "firefox"] as const) {
       const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser }) as Record<string, unknown>;
       expect(m["web_accessible_resources"]).toEqual([
         {
-          resources: ["pageWorld.js", "reply-button-icon.svg"],
+          resources: [
+            "pageWorld.js",
+            "reply-button-icon.svg",
+            "panel-icon.svg",
+            "injected.html",
+            "assets/*",
+          ],
           matches: ["https://mail.google.com/*"],
         },
       ]);

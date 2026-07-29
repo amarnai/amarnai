@@ -14,6 +14,7 @@ const {
   mockGetInboxPlanCeiling,
   mockRecordMeterUsage,
   mockNotifyThreadNeedsAttention,
+  mockPublishThreadEvent,
 } = vi.hoisted(() => ({
   mockEmbed: vi.fn(),
   mockSortThreadByEmbedding: vi.fn(),
@@ -26,6 +27,7 @@ const {
   mockGetInboxPlanCeiling: vi.fn(),
   mockRecordMeterUsage: vi.fn(),
   mockNotifyThreadNeedsAttention: vi.fn(),
+  mockPublishThreadEvent: vi.fn().mockResolvedValue(undefined),
 }));
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
@@ -64,6 +66,14 @@ vi.mock("@amarnai/db", () => {
 // Quota enforcement is on by default; individual tests flip it as needed.
 vi.mock("@amarnai/config", () => ({
   config: { billing: { enforceThreadSortQuota: true } },
+}));
+
+// Stubbed out rather than given a redis url: importing the real module would
+// open a Redis connection at module load, and what these tests care about is
+// that the event fires on the terminal outcomes, not how it reaches Redis.
+vi.mock("../redis-publisher.js", () => ({
+  publishThreadEvent: mockPublishThreadEvent,
+  publishWorkspaceSynced: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock("@amarnai/ai", () => ({
@@ -400,6 +410,59 @@ describe("createClassifyThreadWorker — UNCLASSIFIED detection", () => {
         data: expect.objectContaining({ triageStatus: "NEEDS_REVIEW" }),
       })
     );
+  });
+});
+
+// ─── Live thread events ────────────────────────────────────────────────────────
+//
+// The panel injected into Gmail/Outlook watches one thread and knows it only by
+// the provider's id, so both ids have to travel with the event. Fire-and-forget
+// everywhere: a Redis hiccup must never fail or retry a classification.
+
+describe("createClassifyThreadWorker — thread events", () => {
+  it("publishes a classified event on a committed sort", async () => {
+    mockSortThreadByEmbedding.mockResolvedValue({
+      ...BASE_SORT_RESULT,
+      finalNodeId: "node-1",
+      needsHumanReview: false,
+    });
+
+    createClassifyThreadWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID }));
+
+    expect(mockPublishThreadEvent).toHaveBeenCalledWith(WS_ID, {
+      type: "classified",
+      threadId: THREAD_ID,
+      providerThreadId: "gmail-t1",
+    });
+  });
+
+  it("publishes a quota_blocked event when the sort is deferred", async () => {
+    mockGetMeterUsed.mockResolvedValue(FREE_LIMIT);
+
+    createClassifyThreadWorker();
+    await getProcessor()(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID, source: "LIVE" }));
+
+    expect(mockPublishThreadEvent).toHaveBeenCalledWith(WS_ID, {
+      type: "quota_blocked",
+      threadId: THREAD_ID,
+      providerThreadId: "gmail-t1",
+    });
+  });
+
+  it("still completes the sort when publishing fails", async () => {
+    mockPublishThreadEvent.mockRejectedValueOnce(new Error("redis down"));
+    mockSortThreadByEmbedding.mockResolvedValue({
+      ...BASE_SORT_RESULT,
+      finalNodeId: "node-1",
+      needsHumanReview: false,
+    });
+
+    createClassifyThreadWorker();
+    await expect(
+      getProcessor()(makeJob({ workspaceId: WS_ID, emailThreadId: THREAD_ID })),
+    ).resolves.not.toThrow();
+    expect(db.emailClassification.create).toHaveBeenCalledOnce();
   });
 });
 

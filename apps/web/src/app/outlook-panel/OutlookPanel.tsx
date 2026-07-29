@@ -1,13 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { makeApiClient, makeBearerTransport, type ApiClient } from "@amarnai/api-client";
+import { InjectedThreadPanel } from "@amarnai/panel";
+import "@amarnai/ui/emails/styles";
+import "@amarnai/panel/styles";
 import { paneTokenStore } from "@/lib/outlook/paneTokenStore";
-import { whenOfficeReady, readOutlookContext, type OutlookContext } from "@/lib/outlook/officeHost";
-import { generateAndInsertReply, type PaneOutcome } from "@/lib/outlook/paneFlow";
+import { whenOfficeReady, type OfficeLike } from "@/lib/outlook/officeHost";
+import { createOutlookPanelHost } from "@/lib/outlook/panelHost";
 import "./outlook-panel.css";
 
 const API_BASE_URL = (process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001").replace(
@@ -18,198 +20,109 @@ const API_BASE_URL = (process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:30
 type Stage =
   | { kind: "loading" }
   | { kind: "outsideOutlook" }
-  | { kind: "signedOut"; error?: string }
-  | { kind: "noMessage" }
-  | { kind: "ready" }
-  | { kind: "working" }
-  | { kind: "done"; outcome: PaneOutcome };
+  | { kind: "signedOut" }
+  | { kind: "ready"; office: OfficeLike };
 
 /**
- * The Amarnai Reply task pane.
+ * The Amarnai task pane.
  *
- * Deliberately one job: draft a reply to the open conversation and hand it to
- * Outlook's own reply form. It never sends, and it holds no mail state of its
- * own — the ribbon button opens it, it does the thing, Outlook takes over.
+ * Everything of substance is @amarnai/panel, the same component Gmail's sidebar
+ * renders — so an Outlook user and a Gmail user see the same panel, with the
+ * same states, and neither provider can quietly fall behind the other. What is
+ * Outlook-specific and lives here: waiting for Office.js, the pane's own
+ * password sign-in (it cannot use the web app's cookie session — inside Outlook
+ * this is a third-party frame), and the ribbon's ?focus=draft deep link.
+ *
+ * The pane still never sends. Its one mailbox write is `displayReplyForm`, which
+ * opens Outlook's own compose for the user to review and send themselves.
  */
 export function OutlookPanel({ autoStart }: { autoStart: boolean }) {
-  const { _ } = useLingui();
   const [stage, setStage] = useState<Stage>({ kind: "loading" });
-  const [context, setContext] = useState<OutlookContext | null>(null);
-  const officeRef = useRef<Awaited<ReturnType<typeof whenOfficeReady>> | null>(null);
-  // A deep link must generate once, not again on every re-render.
-  const autoStarted = useRef(false);
-
-  const api: ApiClient = useMemo(
-    () =>
-      makeApiClient(
-        makeBearerTransport({
-          baseUrl: API_BASE_URL,
-          tokenStore: paneTokenStore,
-          onAuthFailure: () => setStage({ kind: "signedOut" }),
-        }),
-      ),
-    [],
-  );
+  // Bumped by the sign-in form so the panel re-reads the token store, which is
+  // the only signal it has that a session appeared.
+  const [sessionKey, setSessionKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      let office;
+      let office: OfficeLike;
       try {
         office = await whenOfficeReady();
       } catch {
+        // Someone opened the pane URL directly in a browser. Say so, rather
+        // than spinning forever on an Office that will never initialise.
         if (!cancelled) setStage({ kind: "outsideOutlook" });
         return;
       }
       if (cancelled) return;
-      officeRef.current = office;
-
-      const ctx = readOutlookContext(office);
-      if (!ctx) {
-        setStage({ kind: "noMessage" });
-        return;
-      }
-      setContext(ctx);
-      setStage((await paneTokenStore.get()) ? { kind: "ready" } : { kind: "signedOut" });
+      setStage(
+        (await paneTokenStore.get()) ? { kind: "ready", office } : { kind: "signedOut" },
+      );
     })();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [sessionKey]);
 
-  const run = useCallback(async () => {
-    const office = officeRef.current;
-    if (!office || !context) return;
-    setStage({ kind: "working" });
-    const outcome = await generateAndInsertReply(api, office, context);
-    setStage({ kind: "done", outcome });
-  }, [api, context]);
+  const handleRequestSignIn = useCallback(() => setStage({ kind: "signedOut" }), []);
 
-  // Deep link from the ribbon: the user already expressed intent by clicking it,
-  // so do not make them click a second button in the pane.
-  useEffect(() => {
-    if (!autoStart || autoStarted.current) return;
-    if (stage.kind !== "ready") return;
-    autoStarted.current = true;
-    void run();
-  }, [autoStart, stage.kind, run]);
+  const office = stage.kind === "ready" ? stage.office : null;
+  const host = useMemo(
+    () =>
+      office
+        ? createOutlookPanelHost({
+            office,
+            apiBaseUrl: API_BASE_URL,
+            onRequestSignIn: handleRequestSignIn,
+          })
+        : null,
+    [office, handleRequestSignIn],
+  );
 
-  return (
-    <main className="outlook-pane">
-      <h1 className="outlook-pane-title">
-        <Trans>Amarnai Reply</Trans>
-      </h1>
-
-      {stage.kind === "loading" && (
+  if (stage.kind === "loading") {
+    return (
+      <main className="outlook-pane">
         <p className="outlook-pane-status">
           <Trans>Loading…</Trans>
         </p>
-      )}
+      </main>
+    );
+  }
 
-      {stage.kind === "outsideOutlook" && (
+  if (stage.kind === "outsideOutlook") {
+    return (
+      <main className="outlook-pane">
         <p className="outlook-pane-status">
-          <Trans>Open this from the Amarnai Reply button in Outlook.</Trans>
+          <Trans>Open this from the Amarnai button in Outlook.</Trans>
         </p>
-      )}
+      </main>
+    );
+  }
 
-      {stage.kind === "noMessage" && (
-        <p className="outlook-pane-status">
-          <Trans>Open a message first, then choose Amarnai Reply.</Trans>
-        </p>
-      )}
+  if (stage.kind === "signedOut" || !host) {
+    return (
+      <main className="outlook-pane">
+        <SignInForm onSignedIn={() => setSessionKey((k) => k + 1)} />
+      </main>
+    );
+  }
 
-      {stage.kind === "signedOut" && (
-        <SignInForm
-          initialError={stage.error}
-          onSignedIn={() => setStage({ kind: "ready" })}
-        />
-      )}
-
-      {stage.kind === "ready" && (
-        <>
-          <p className="outlook-pane-status">
-            <Trans>Amarnai will draft a reply and open it in Outlook for you to review.</Trans>
-          </p>
-          <button type="button" className="outlook-pane-button" onClick={() => void run()}>
-            <Trans>Draft a reply</Trans>
-          </button>
-        </>
-      )}
-
-      {stage.kind === "working" && (
-        <p className="outlook-pane-status" aria-live="polite">
-          <Trans>Drafting…</Trans>
-        </p>
-      )}
-
-      {stage.kind === "done" && (
-        <>
-          <Outcome outcome={stage.outcome} />
-          {stage.outcome.kind !== "injectionDisabled" && (
-            <button type="button" className="outlook-pane-button" onClick={() => void run()}>
-              {stage.outcome.kind === "inserted"
-                ? _( msg`Draft another`)
-                : _( msg`Try again`)}
-            </button>
-          )}
-        </>
-      )}
-
+  return (
+    <main className="outlook-pane outlook-pane--panel">
+      {/* The pane is served BY the web app, so its own origin is the web app's
+          — no env var needed. Unused in practice: this host reports
+          openExternal:false, because Outlook desktop is a WebView with nowhere
+          useful for window.open to land. */}
+      <InjectedThreadPanel
+        host={host}
+        webAppUrl={window.location.origin}
+        autoDraft={autoStart}
+      />
       <p className="outlook-pane-footnote">
         <Trans>Amarnai never sends email. You review and send from Outlook.</Trans>
       </p>
     </main>
   );
-}
-
-function Outcome({ outcome }: { outcome: PaneOutcome }) {
-  switch (outcome.kind) {
-    case "inserted":
-      return (
-        <p className="outlook-pane-status" aria-live="polite">
-          <Trans>Draft ready in your reply. Review it, then send when you are happy.</Trans>
-        </p>
-      );
-    case "quota":
-      return (
-        <p className="outlook-pane-status outlook-pane-warn" aria-live="polite">
-          <Trans>
-            You have used all {outcome.limit} drafts in your plan this month. They reset on{" "}
-            {new Date(outcome.resetsAt).toLocaleDateString()}.
-          </Trans>
-        </p>
-      );
-    case "notSorted":
-      return (
-        <p className="outlook-pane-status outlook-pane-warn" aria-live="polite">
-          <Trans>Amarnai has not sorted this thread yet. Try again in a moment.</Trans>
-        </p>
-      );
-    case "noThread":
-      return (
-        <p className="outlook-pane-status outlook-pane-warn" aria-live="polite">
-          <Trans>This conversation has not synced to Amarnai yet.</Trans>
-        </p>
-      );
-    case "noWorkspace":
-      return (
-        <p className="outlook-pane-status outlook-pane-warn" aria-live="polite">
-          <Trans>This mailbox is not connected to any of your Amarnai workspaces.</Trans>
-        </p>
-      );
-    case "injectionDisabled":
-      return (
-        <p className="outlook-pane-status outlook-pane-warn" aria-live="polite">
-          <Trans>The Amarnai Reply button is switched off for this workspace in settings.</Trans>
-        </p>
-      );
-    default:
-      return (
-        <p className="outlook-pane-status outlook-pane-warn" aria-live="polite">
-          <Trans>Something went wrong. Please try again.</Trans>
-        </p>
-      );
-  }
 }
 
 /**
@@ -218,19 +131,12 @@ function Outcome({ outcome }: { outcome: PaneOutcome }) {
  * is unreliable — so this is the path that works everywhere. Google-account users
  * sign in on the web app and set a password there.
  */
-function SignInForm({
-  initialError,
-  onSignedIn,
-}: {
-  initialError: string | undefined;
-  onSignedIn: () => void;
-}) {
+function SignInForm({ onSignedIn }: { onSignedIn: () => void }) {
   const { _ } = useLingui();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | undefined>(initialError);
-
+  const [error, setError] = useState<string | undefined>(undefined);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setPending(true);
@@ -244,15 +150,15 @@ function SignInForm({
       if (!res.ok) {
         setError(
           res.status === 401
-            ? _( msg`Incorrect email or password.`)
-            : _( msg`Could not sign in. Please try again.`),
+            ? _(msg`Incorrect email or password.`)
+            : _(msg`Could not sign in. Please try again.`),
         );
         return;
       }
       await paneTokenStore.set(await res.json());
       onSignedIn();
     } catch {
-      setError(_( msg`Could not reach Amarnai. Check your connection.`));
+      setError(_(msg`Could not reach Amarnai. Check your connection.`));
     } finally {
       setPending(false);
     }
@@ -285,7 +191,7 @@ function SignInForm({
       </label>
       {error && <p className="outlook-pane-status outlook-pane-warn">{error}</p>}
       <button type="submit" className="outlook-pane-button" disabled={pending}>
-        {pending ? _( msg`Signing in…`) : _( msg`Sign in`)}
+        {pending ? _(msg`Signing in…`) : _(msg`Sign in`)}
       </button>
     </form>
   );

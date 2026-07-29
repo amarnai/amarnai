@@ -18,6 +18,7 @@ import type {
   FolderCountsResult,
   EmailThreadListResult,
   EmailThreadDetail,
+  MailAccountsResult,
   TriageStatus,
   DoneMark,
   ThreadAssignment,
@@ -471,6 +472,46 @@ export function makeApiClient(transport: ApiTransport) {
       apiFetch<EmailThreadDetail>(
         `/workspaces/${workspaceId}/email-threads/${threadId}`
       ),
+
+    // The same thread detail, addressed by the provider's own thread id. Used by
+    // the panel injected into Gmail/Outlook, which knows the mailbox's id but not
+    // ours: resolve + fetch in one round trip, on the critical path of every
+    // conversation the user opens.
+    //
+    // Null means the thread has never been synced into Amarnai (the panel shows
+    // "not synced yet" — not an error). A workspace that has turned the panel off
+    // raises InjectionDisabledError, which the panel latches on instead of
+    // retrying per thread.
+    resolveProviderThread: async (
+      workspaceId: string,
+      providerThreadId: string,
+    ): Promise<EmailThreadDetail | null> => {
+      const res = await apiRequest(
+        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}`,
+        { cache: "no-store" },
+      );
+      if (res.status === 404) return null;
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          injectionDisabled?: boolean;
+        };
+        if (res.status === 403 && err.injectionDisabled) {
+          throw new InjectionDisabledError(err.error ?? "The in-mail panel is disabled");
+        }
+        throw new ApiHttpError(
+          err.error ?? `API returned ${res.status}`,
+          res.status,
+          null,
+        );
+      }
+      return res.json() as Promise<EmailThreadDetail>;
+    },
+
+    // Every mailbox connected to a workspace this user belongs to. One call, so
+    // an injected surface can map the open mailbox to its workspace without
+    // fanning out over workspaces.
+    mailAccounts: () => apiFetch<MailAccountsResult>("/me/mail-accounts"),
 
     threadBodies: (workspaceId: string, threadId: string) =>
       apiFetch<{

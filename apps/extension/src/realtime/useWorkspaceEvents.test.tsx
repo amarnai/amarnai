@@ -125,6 +125,35 @@ describe("useWorkspaceEvents", () => {
     expect(onSynced).toHaveBeenCalledTimes(1);
   });
 
+  // The panel injected into Gmail/Outlook watches one thread, so it needs the
+  // per-thread event as well as the workspace-level "synced".
+  it("delivers thread events to the optional handler", async () => {
+    const onSynced = vi.fn();
+    const onThread = vi.fn();
+    const { client, resolveMe } = makeDeferredMeClient();
+
+    renderHook(() => useWorkspaceEvents(client, "ws-1", onSynced, onThread));
+    await flush();
+    resolveMe(0);
+    await flush();
+
+    const live = eventsCalls("ws-1");
+    act(() => {
+      live[0]!.stream.enqueue(
+        ENCODER.encode(
+          'event: thread\ndata: {"type":"classified","threadId":"t1","providerThreadId":"18f0"}\n\n',
+        ),
+      );
+    });
+    await flush();
+    expect(onThread).toHaveBeenCalledWith({
+      type: "classified",
+      threadId: "t1",
+      providerThreadId: "18f0",
+    });
+    expect(onSynced).not.toHaveBeenCalled();
+  });
+
   it("aborts the live stream on unmount", async () => {
     const onSynced = vi.fn();
     const { client, resolveMe } = makeDeferredMeClient();

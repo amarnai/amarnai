@@ -624,6 +624,10 @@ model EmailThread {
   summary         ThreadSummary?
 
   @@unique([emailAccountId, providerThreadId])
+  // Supports resolving a provider thread id straight to our thread within a
+  // workspace — the lookup every injected mail-client surface starts from, which
+  // knows the mailbox's id but not the account row it belongs to.
+  @@index([workspaceId, providerThreadId])
   // Supports the recoverFailedThreads sweep: PENDING threads that have failed.
   @@index([workspaceId, triageStatus, classifyFailedAt])
   // Supports a future "assigned to me" filter within a workspace.
@@ -1000,6 +1004,12 @@ model GmailSyncSettings {
   // separate from the summary toggle: the surfaces are independently useful, and
   // drafting spends draft quota while reading a summary does not.
   replyButtonInjectionEnabled Boolean @default(true)
+  // Whether the browser extension / Outlook add-in renders the full Amarnai
+  // panel inside the native Gmail/Outlook UI for this workspace. On by default.
+  // A third toggle rather than a reuse of the two above: the panel is the only
+  // surface that reads thread classification and mutates it, so a workspace may
+  // reasonably want the summary card without the panel, or the reverse.
+  injectedPanelEnabled    Boolean @default(true)
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
 

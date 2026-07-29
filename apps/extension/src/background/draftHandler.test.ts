@@ -4,8 +4,7 @@ import { GENERATE_DRAFT_MESSAGE, isGenerateDraftRequest } from "../content/core/
 
 const { mockClient } = vi.hoisted(() => ({
   mockClient: {
-    workspaces: vi.fn(),
-    gmailConnection: vi.fn(),
+    mailAccounts: vi.fn(),
     generateDraftByProviderThread: vi.fn(),
   },
 }));
@@ -47,8 +46,9 @@ beforeEach(() => {
   resetChromeStorage();
   resetSummaryClient();
   mockTokenStore.get.mockResolvedValue({ accessToken: "a", refreshToken: "r" });
-  mockClient.workspaces.mockResolvedValue([{ id: "ws-1" }]);
-  mockClient.gmailConnection.mockResolvedValue({ gmailAddress: "ada@example.com" });
+  mockClient.mailAccounts.mockResolvedValue({
+    accounts: [{ email: "ada@example.com", workspaceId: "ws-1", provider: "GMAIL" }],
+  });
   mockClient.generateDraftByProviderThread.mockResolvedValue({ draft: DRAFT, isNew: true });
 });
 
@@ -83,7 +83,9 @@ describe("handleGenerateDraftRequest", () => {
   });
 
   it("answers noWorkspace when no workspace has this mailbox connected", async () => {
-    mockClient.gmailConnection.mockResolvedValue({ gmailAddress: "someone-else@example.com" });
+    mockClient.mailAccounts.mockResolvedValue({
+      accounts: [{ email: "someone-else@example.com", workspaceId: "ws-1", provider: "GMAIL" }],
+    });
     await expect(handleGenerateDraftRequest(REQUEST)).resolves.toEqual({
       ok: false,
       reason: "noWorkspace",
@@ -92,20 +94,18 @@ describe("handleGenerateDraftRequest", () => {
   });
 
   it("answers error when workspace resolution itself fails", async () => {
-    mockClient.workspaces.mockRejectedValue(new Error("network down"));
+    mockClient.mailAccounts.mockRejectedValue(new Error("network down"));
     await expect(handleGenerateDraftRequest(REQUEST)).resolves.toEqual({
       ok: false,
       reason: "error",
     });
   });
 
-  it("resolves an Outlook mailbox through the same connection lookup", async () => {
-    // gmailConnection is provider-agnostic despite the name — it returns whatever
-    // address the workspace has connected. Pinned by a test so a future reader
-    // does not 'fix' the loop into a Gmail-only one.
-    mockClient.gmailConnection.mockResolvedValue({
-      provider: "OUTLOOK",
-      gmailAddress: "ada@example.com",
+  it("resolves an Outlook mailbox through the same account lookup", async () => {
+    // The lookup is provider-agnostic: it matches on the mailbox address alone.
+    // Pinned by a test so a future reader does not 'fix' it into a Gmail-only one.
+    mockClient.mailAccounts.mockResolvedValue({
+      accounts: [{ email: "ada@example.com", workspaceId: "ws-1", provider: "OUTLOOK" }],
     });
     await expect(handleGenerateDraftRequest(REQUEST)).resolves.toMatchObject({ ok: true });
   });
