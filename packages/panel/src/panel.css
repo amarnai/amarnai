@@ -17,6 +17,9 @@
   container-name: apn;
   display: flex;
   flex-direction: column;
+  /* Grow into whatever height the frame gives us, never shrink below content
+     (see "Filling the frame" below). */
+  flex: 1 0 auto;
   gap: 12px;
   padding: 12px;
   min-width: 280px;
@@ -25,6 +28,36 @@
   line-height: 1.45;
   color: var(--color-foreground, #1a1a1a);
   background: var(--color-surface, #fff);
+}
+
+/* ── Filling the frame ────────────────────────────────────────────────────── */
+/*
+ * The panel is the whole document in both hosts: an extension-origin iframe in
+ * Gmail's sidebar, a dedicated route in the Outlook task pane. Both frames are
+ * taller than the panel's content most of the time, and without this the root's
+ * surface stops where the content stops and the host document's own background
+ * paints the rest — a seam across the pane, obvious in dark mode where surface
+ * and page background differ most.
+ *
+ * Height flows down the flex chain rather than 100vh on the root: the task pane
+ * puts a footnote after the panel, and a viewport-height root would push it past
+ * the bottom edge. Scoped through `:has` for the same reason the scrollbar rules
+ * are — this stylesheet reaches documents the panel does not own.
+ */
+html:has(.apn-root) body {
+  display: flex;
+  flex-direction: column;
+  /* Both hosts already set this on body; repeated so the chain holds for any
+     host whose reset does not. */
+  min-height: 100vh;
+}
+
+/* The one wrapper between body and the root: #root in the extension's iframe,
+   <main> in the task pane. */
+html:has(.apn-root) body *:has(> .apn-root) {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 
 /* ── Scrollbars ───────────────────────────────────────────────────────────── */
