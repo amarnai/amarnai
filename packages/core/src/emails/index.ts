@@ -25,6 +25,14 @@ export {
 export { mapThreads, mapThreadDetail, mapFolders, chronologicalMessages } from "./mapThreads.js";
 export { mapMembers, type MemberRow } from "./mapMembers.js";
 export { buildThreadUrl, buildMailboxUrl, type ThreadUrlInput } from "./threadUrl.js";
+export {
+  outlookAccountTypeFromEmail,
+  outlookAccountTypeFromWebLink,
+  resolveOutlookAccountType,
+  OWA_PERSONAL_MAILBOX_URL,
+  OWA_ORGANIZATION_MAILBOX_URL,
+  type OutlookAccountType,
+} from "./outlookAccount.js";
 export { mergeThreads } from "./mergeThreads.js";
 export { appendThreads } from "./appendThreads.js";
 export {

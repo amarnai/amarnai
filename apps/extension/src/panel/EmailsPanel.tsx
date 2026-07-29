@@ -15,6 +15,7 @@ import { StatusSlot, NoPlanEmptyState } from "./StatusSlot";
 import { PanelHeader } from "./WorkspacePicker";
 import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
+import type { OutlookAccountType } from "@amarnai/core/emails";
 import { openWebApp, openWebAppTab } from "./openWebApp";
 import { focusMailTab, closeTab } from "../gmail/focusMailTab";
 import { MASCOT_SRC } from "./assets";
@@ -71,6 +72,8 @@ type Props = {
   initialSyncStatus: SyncStatus | null;
   workspaceEmail: string | null;
   gmailAddress: string | null;
+  /** Outlook only: personal vs work/school, which picks the Outlook web host. */
+  outlookAccountType: OutlookAccountType | null;
   /** A sorting plan was created in-panel; re-seed from the new taxonomy. */
   onPlanApplied: () => void;
 };
@@ -95,6 +98,7 @@ export function EmailsPanel({
   initialSyncStatus,
   workspaceEmail,
   gmailAddress,
+  outlookAccountType,
   onPlanApplied,
 }: Props) {
   const { _ } = useLingui();
@@ -406,7 +410,7 @@ export function EmailsPanel({
             ? {
                 onOpenInGmail: (threadId: string) => {
                   const t = triage.threads.find((x) => x.id === threadId);
-                  if (t) void openThreadInMail(gmailAddress, t);
+                  if (t) void openThreadInMail(gmailAddress, t, outlookAccountType);
                 },
               }
             : {})}
@@ -424,6 +428,7 @@ export function EmailsPanel({
             workspaceId={workspaceId}
             workspaceEmail={workspaceEmail}
             gmailAddress={gmailAddress}
+            outlookAccountType={outlookAccountType}
             routableNodeCount={routableNodeCount}
             onClose={closePreview}
             onDraftStarted={triage.handleDraftStarted}

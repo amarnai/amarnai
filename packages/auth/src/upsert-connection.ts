@@ -10,6 +10,10 @@ export type UpsertEmailConnectionInput = {
   emailAddress: string;
   encryptedRefreshToken: string;
   grantedScopes: string[];
+  // Personal (MSA) vs work/school, for Outlook. Decides which Outlook-on-the-web
+  // host the mailbox opens on. Null for Gmail, and null when the connect flow
+  // could not determine it (no id_token) — the backfill script fills those in.
+  outlookAccountType?: "PERSONAL" | "ORGANIZATION" | null;
 };
 
 /**
@@ -34,6 +38,7 @@ export async function upsertEmailConnection(
     emailAddress: input.emailAddress,
     encryptedRefreshToken: input.encryptedRefreshToken,
     grantedScopes: input.grantedScopes,
+    outlookAccountType: input.outlookAccountType ?? null,
     status: "ACTIVE" as const,
     lastVerifiedAt: new Date(),
     watchExpiresAt: null,

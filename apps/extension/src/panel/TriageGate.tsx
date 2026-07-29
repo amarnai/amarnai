@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { mapFolders, mapThreads, type FolderItem, type ThreadItem } from "@amarnai/core";
+import type { OutlookAccountType } from "@amarnai/core/emails";
 import type { ApiClient, FilterCounts, SyncStatus, MailProvider } from "@amarnai/api-client";
 import { EmailsPanel } from "./EmailsPanel";
 import { ConnectMailCta } from "./ConnectMailCta";
-import { revealMailboxOnce } from "../gmail/revealMailbox";
+import { revealMailbox } from "../gmail/revealMailbox";
+import { useSession } from "../auth/session";
 
 type Seed = {
   folders: FolderItem[];
@@ -22,6 +24,9 @@ type Seed = {
   // The connected mailbox's provider, so the reconnect CTA runs the right OAuth
   // flow (Google vs Microsoft). Null when no connection record exists yet.
   provider: MailProvider | null;
+  // Outlook only: personal vs work/school, which decides the Outlook web host
+  // the mailbox opens on. Null for Gmail and for connections predating it.
+  outlookAccountType: OutlookAccountType | null;
 };
 
 // Loads the triage seed (taxonomy + threads + gmail connection + sync status)
@@ -38,6 +43,7 @@ export function TriageGate({
   workspaceId: string;
   currentUserId: string;
 }) {
+  const { consumeJustConnected } = useSession();
   const [seed, setSeed] = useState<Seed | null>(null);
   const [failed, setFailed] = useState(false);
   // Bumped after a successful reconnect to re-run the loader and re-check status.
@@ -69,6 +75,7 @@ export function TriageGate({
           workspaceEmail: connection?.gmailAddress ?? null,
           gmailStatus: connection?.status ?? null,
           provider: connection?.provider ?? null,
+          outlookAccountType: connection?.outlookAccountType ?? null,
         });
       } catch {
         if (!cancelled) setFailed(true);
@@ -80,16 +87,20 @@ export function TriageGate({
     };
   }, [api, workspaceId, reloadKey]);
 
-  // First working inbox on this install: take the user to it. Driven off the
-  // seed rather than the sign-in call sites because this is where the provider
-  // and mailbox address are known for certain, and where an ACTIVE connection
-  // (not merely a completed OAuth grant) has been confirmed. revealMailboxOnce
-  // owns the once-per-install decision, so a reload or workspace switch landing
-  // here again costs nothing.
+  // The user just signed in or connected an inbox: take them to it.
+  //
+  // Two conditions, and both have to be checked here. The seed is the only place
+  // the provider and mailbox address are known for certain, and where an ACTIVE
+  // connection (rather than a merely completed OAuth grant) is confirmed. The
+  // session is the only place that knows a gesture happened at all: a seed load
+  // after sign-in and a seed load after reopening the panel are identical from
+  // the data alone, and moving someone's tab because they opened a side panel
+  // would be indefensible.
   useEffect(() => {
     if (seed?.gmailStatus !== "ACTIVE") return;
-    void revealMailboxOnce(seed.provider ?? "GMAIL", seed.gmailAddress);
-  }, [seed]);
+    if (!consumeJustConnected()) return;
+    void revealMailbox(seed.provider ?? "GMAIL", seed.gmailAddress, seed.outlookAccountType);
+  }, [seed, consumeJustConnected]);
 
   if (failed) {
     return (
@@ -136,6 +147,7 @@ export function TriageGate({
       initialFolders={seed.folders}
       initialSyncStatus={seed.syncStatus}
       workspaceEmail={seed.workspaceEmail}
+      outlookAccountType={seed.outlookAccountType}
       gmailAddress={seed.gmailAddress}
       // A plan built in-panel changes what every part of the seed means, so
       // re-run the loader rather than patching pieces of it (same as reconnect).

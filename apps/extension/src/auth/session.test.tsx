@@ -128,6 +128,33 @@ describe("SessionProvider bootstrap", () => {
 
     await waitFor(() => expect(result.current.status).toBe("signedOut"));
   });
+
+  // consumeJustConnected separates "the user just signed in" from "the panel was
+  // reopened", which the loaded data cannot distinguish. TriageGate moves the
+  // user's tab to their mailbox on the former, so a false positive here would
+  // hijack a tab every time the panel opens.
+  it("reports no connect gesture when a stored session is merely restored", async () => {
+    await seedTokens();
+    handler = async (url) => {
+      if (url.includes("/auth/me")) {
+        return res(200, {
+          userId: "user-1",
+          email: "a@b.com",
+          name: "Ada",
+          emailVerified: true,
+          lifecycleEmailsEnabled: true,
+          hasPassword: true,
+        });
+      }
+      if (url.includes("/workspaces")) return res(200, []);
+      return res(404, {});
+    };
+
+    const { result } = renderHook(() => useSession(), { wrapper });
+    await waitFor(() => expect(result.current.status).toBe("signedIn"));
+
+    expect(result.current.consumeJustConnected()).toBe(false);
+  });
 });
 
 // signInWithMicrosoft is the Outlook mirror of signInWithGoogle: it runs the
@@ -191,6 +218,11 @@ describe("signInWithMicrosoft", () => {
     await waitFor(() => expect(result.current.status).toBe("signedIn"));
     expect(result.current.userId).toBe("user-7");
     expect(await storedTokens()).not.toBeNull();
+
+    // A gesture the user performed, so the panel may take them to their mailbox.
+    // Once only: a second reader must not repeat the tab move.
+    expect(result.current.consumeJustConnected()).toBe(true);
+    expect(result.current.consumeJustConnected()).toBe(false);
   });
 
   it("surfaces the API error message and stores nothing when sign-in is refused", async () => {

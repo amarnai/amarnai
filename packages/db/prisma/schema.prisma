@@ -189,6 +189,17 @@ enum ConnectionStatus {
   DISCONNECTED
 }
 
+// Which kind of Microsoft account an Outlook connection belongs to. Personal
+// (MSA) and work/school mailboxes live on different Outlook-on-the-web hosts,
+// and the work host refuses personal accounts outright, so any mailbox URL we
+// build has to know which it is. Null on Gmail connections, and on Outlook
+// connections made before this was recorded (the URL builders fall back to an
+// address-based guess until the backfill fills them in).
+enum OutlookAccountType {
+  PERSONAL
+  ORGANIZATION
+}
+
 // Push delivery platform for a registered device. v1 ships Android only
 // (Expo Push over FCM); IOS is reserved so the column never needs widening.
 enum DevicePlatform {
@@ -949,6 +960,9 @@ model EmailConnection {
   provider              Provider         @default(GMAIL)
   subjectId             String?
   emailAddress          String
+  // Outlook only; see the enum. Captured at connect from the sign-in token's
+  // tenant claim, backfilled from a synced thread's webLink host.
+  outlookAccountType    OutlookAccountType?
   encryptedRefreshToken String
   grantedScopes         String[]
   status                ConnectionStatus @default(ACTIVE)

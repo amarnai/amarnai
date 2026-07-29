@@ -9,6 +9,7 @@ import {
   OUTLOOK_SCOPES,
   OUTLOOK_MAIL_READWRITE_SCOPE,
   OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE,
+  accountTypeFromIdToken,
   parseGrantedScopes as parseOutlookScopes,
 } from "@amarnai/outlook";
 import { db } from "@amarnai/db";
@@ -175,6 +176,10 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
           name: displayName ?? user.name ?? null,
           outlookAccessToken: hasReadonly ? accessToken : null,
           outlookRefreshToken: hasReadonly ? account.refresh_token ?? null : null,
+          // Personal (MSA) vs work/school, from the id_token's tenant claim.
+          // Unverified on purpose and used only to pick the Outlook web host the
+          // mailbox opens on — never for identity, which comes from /me above.
+          outlookAccountType: accountTypeFromIdToken(account.id_token),
           ...(scopes.length > 0 ? { grantedScopes: scopes } : {}),
           locale: await getRequestLocale(),
         });

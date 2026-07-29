@@ -37,7 +37,7 @@ export function registerWelcomeTab(): void {
 
 /**
  * The welcome tab's id if it is still showing the welcome page, consuming the
- * record either way — this is a one-shot handoff, and a second caller must not
+ * record either way: this is a one-shot handoff, and a second caller must not
  * be handed a tab that has since become something the user cares about.
  *
  * Returns null when there is no welcome tab, which is the common case: only a

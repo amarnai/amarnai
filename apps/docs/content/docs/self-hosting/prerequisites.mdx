@@ -46,7 +46,7 @@ Outlook is supported read-only via Microsoft Graph. Skip this section if you onl
 1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), register a **confidential Web app**.
 2. For **Supported account types**, choose "Accounts in any organizational directory (multitenant) and personal Microsoft accounts". The tenant/authority is then the literal string `common`.
 3. Add the redirect URI `https://mail.yourdomain.com/api/outlook/callback`.
-4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read` (none require admin consent).
+4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read`, `openid` (none require admin consent). `openid` returns the sign-in token whose tenant claim tells Amarnai whether a mailbox is a personal Microsoft account, which decides the Outlook on the web host it links to.
 5. Create a client secret, then set `MS_GRAPH_CLIENT_ID`, `MS_GRAPH_CLIENT_SECRET`, `MS_GRAPH_TENANT=common`, and `OUTLOOK_OAUTH_CALLBACK_URL`, and add `outlook` to `MAIL_PROVIDERS` (e.g. `MAIL_PROVIDERS=gmail,outlook`).
 
 For real-time Outlook sync, also set `MS_GRAPH_NOTIFICATION_URL` (a public HTTPS webhook) and `MS_GRAPH_SUBSCRIPTION_SECRET`. When unset, Outlook runs polling-only.

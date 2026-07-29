@@ -9,6 +9,7 @@ import { chronologicalMessages } from "@amarnai/core/emails";
 import { GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
+import type { OutlookAccountType } from "@amarnai/core/emails";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
 
@@ -18,6 +19,8 @@ type Props = {
   workspaceId: string;
   workspaceEmail: string | null;
   gmailAddress: string | null;
+  /** Outlook only: personal vs work/school, which picks the Outlook web host. */
+  outlookAccountType: OutlookAccountType | null;
   routableNodeCount: number;
   onClose: () => void;
   onDraftStarted: (threadId: string) => void;
@@ -43,6 +46,7 @@ export function ThreadPreviewPane({
   workspaceId,
   workspaceEmail,
   gmailAddress,
+  outlookAccountType,
   routableNodeCount,
   onClose,
   onDraftStarted,
@@ -380,7 +384,7 @@ export function ThreadPreviewPane({
           <button
             type="button"
             className="ax-btn ax-btn-secondary ax-open-gmail"
-            onClick={() => void openThreadInMail(gmailAddress, thread)}
+            onClick={() => void openThreadInMail(gmailAddress, thread, outlookAccountType)}
           >
             {thread.provider === "OUTLOOK" ? (
               <OutlookIcon variant="color" size={16} />

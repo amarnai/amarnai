@@ -336,6 +336,12 @@ export type GmailConnection = {
   // The connected mailbox address, whatever the provider. Field name kept for
   // backwards compatibility; it holds the Outlook address for Outlook connections.
   gmailAddress: string;
+  // Outlook only: whether the mailbox is a personal Microsoft account or a
+  // work/school one. The two live on different Outlook-on-the-web hosts and the
+  // work host refuses personal accounts, so any mailbox URL a client builds has
+  // to pick from this. Null for Gmail, and for Outlook connections made before
+  // it was recorded (clients then fall back to guessing from the address).
+  outlookAccountType: "PERSONAL" | "ORGANIZATION" | null;
   grantedScopes: string[];
   status: "ACTIVE" | "DISCONNECTED";
   lastVerifiedAt: string | null;

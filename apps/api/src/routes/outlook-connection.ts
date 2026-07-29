@@ -1,7 +1,12 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { config } from "@amarnai/config";
-import { parseGrantedScopes, exchangeAuthCode, MicrosoftApiError } from "@amarnai/outlook";
+import {
+  parseGrantedScopes,
+  exchangeAuthCode,
+  scopeForCodeRedemption,
+  MicrosoftApiError,
+} from "@amarnai/outlook";
 import { storeOutlookConnection } from "@amarnai/auth";
 import type { AppEnv } from "../env.js";
 import { registerOutlookSubscription } from "../services/outlook-subscription.js";
@@ -53,7 +58,10 @@ outlookConnection.post("/workspaces/:workspaceId/outlook-connection", async (c) 
     userId,
     // Redeem the code against the extension's chromiumapp.org redirect with the
     // confidential Web client (no PKCE — the redirect is registered on the app).
-    exchange: () => exchangeAuthCode(code, redirectUri),
+    // Redeem against the scope set the extension actually consented to — an
+    // older build that predates the `openid` sign-in scope must not be sent a
+    // wider redemption than its authorize request (Microsoft rejects those).
+    exchange: () => exchangeAuthCode(code, redirectUri, undefined, scopeForCodeRedemption(scope)),
     parseScopes: parseGrantedScopes,
     store: storeOutlookConnection,
     isApiError: (err) => err instanceof MicrosoftApiError,

@@ -16,6 +16,9 @@ export const connectionSelect = {
   workspaceId: true,
   provider: true,
   emailAddress: true,
+  // Personal vs work/school for Outlook; clients need it to open the right
+  // Outlook-on-the-web host (the work host refuses personal accounts).
+  outlookAccountType: true,
   grantedScopes: true,
   status: true,
   lastVerifiedAt: true,
@@ -63,7 +66,13 @@ export async function buildConnectionResponse(workspaceId: string, userId: strin
   };
 }
 
-type ProviderTokens = { accessToken: string; refreshToken: string; scope: string };
+type ProviderTokens = {
+  accessToken: string;
+  refreshToken: string;
+  scope: string;
+  /** Outlook only: personal (MSA) vs work/school, from the id_token. */
+  accountType?: "PERSONAL" | "ORGANIZATION" | null;
+};
 
 export type RunProviderConnectArgs = {
   c: Context<AppEnv>;
@@ -79,6 +88,7 @@ export type RunProviderConnectArgs = {
     accessToken: string;
     refreshToken: string;
     grantedScopes: string[];
+    outlookAccountType?: "PERSONAL" | "ORGANIZATION" | null;
   }) => Promise<{ emailAddress: string }>;
   /** Whether a thrown error is the provider's API error → maps to 502. */
   isApiError: (err: unknown) => boolean;
@@ -125,11 +135,17 @@ export async function runProviderConnect(args: RunProviderConnectArgs): Promise<
   });
 
   try {
-    const { accessToken, refreshToken, scope } = await exchange();
+    const { accessToken, refreshToken, scope, accountType } = await exchange();
     const { scopes: grantedScopes, hasReadonly } = parseScopes(scope);
     if (!hasReadonly) return c.json({ error: messages.notGranted }, 403);
 
-    const { emailAddress } = await store({ workspaceId, accessToken, refreshToken, grantedScopes });
+    const { emailAddress } = await store({
+      workspaceId,
+      accessToken,
+      refreshToken,
+      grantedScopes,
+      outlookAccountType: accountType ?? null,
+    });
 
     // Audit the connect (best-effort; never blocks the response). `replacedAddress`
     // is set only when a DIFFERENT inbox was connected before — the rotation signal.

@@ -32,7 +32,9 @@ import {
 import {
   parseGrantedScopes as parseOutlookScopes,
   exchangeAuthCode as exchangeOutlookAuthCode,
+  scopeForCodeRedemption,
   fetchOutlookProfile,
+  type OutlookAccountType,
 } from "@amarnai/outlook";
 import { RegisterEmailSchema } from "@amarnai/shared";
 import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
@@ -352,12 +354,22 @@ auth.post("/auth/microsoft", async (c) => {
   let accessToken: string;
   let refreshToken: string;
   let grantedScope: string;
+  // Personal (MSA) vs work/school, from the id_token's tenant claim. Recorded on
+  // the connection so clients open the right Outlook-on-the-web host; null when
+  // the client's grant predates the `openid` sign-in scope.
+  let accountType: OutlookAccountType | null;
   try {
     ({
       accessToken,
       refreshToken,
       scope: grantedScope,
-    } = await exchangeOutlookAuthCode(code, redirectUri));
+      accountType,
+    } = await exchangeOutlookAuthCode(
+      code,
+      redirectUri,
+      undefined,
+      scopeForCodeRedemption(scope),
+    ));
   } catch (err) {
     console.error("[auth/microsoft] exchange:", err instanceof Error ? err.message : err);
     return c.json({ error: "Could not complete Microsoft sign-in" }, 502);
@@ -386,6 +398,7 @@ auth.post("/auth/microsoft", async (c) => {
     outlookAccessToken: accessToken,
     outlookRefreshToken: refreshToken,
     grantedScopes,
+    outlookAccountType: accountType,
     // Seed the default workspace language from the caller's device locale.
     locale: localeFromAcceptLanguage(c.req.header("accept-language")),
   });

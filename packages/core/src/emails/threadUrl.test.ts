@@ -83,6 +83,29 @@ describe("buildThreadUrl", () => {
       )
     ).toBe("https://outlook.office.com/mail/?login_hint=user%40contoso.com");
   });
+
+  it("falls back to CONSUMER OWA for a personal account with no webLink", () => {
+    expect(
+      buildThreadUrl(
+        { provider: "OUTLOOK", providerThreadId: "conv-1", webLink: null },
+        "user@example.com",
+        "PERSONAL"
+      )
+    ).toBe("https://outlook.live.com/mail/0/");
+  });
+
+  it("omits login_hint on a personal webLink (consumer OWA ignores it)", () => {
+    expect(
+      buildThreadUrl(
+        {
+          provider: "OUTLOOK",
+          providerThreadId: "conv-1",
+          webLink: "https://outlook.live.com/owa/?ItemID=xyz",
+        },
+        "user@outlook.com"
+      )
+    ).toBe("https://outlook.live.com/owa/?ItemID=xyz&ispopout=0");
+  });
 });
 
 describe("buildMailboxUrl", () => {
@@ -104,5 +127,27 @@ describe("buildMailboxUrl", () => {
 
   it("opens the plain OWA inbox with no account email", () => {
     expect(buildMailboxUrl("OUTLOOK")).toBe("https://outlook.office.com/mail/");
+  });
+
+  it("sends a personal Microsoft account to consumer OWA, never the work host", () => {
+    // outlook.office.com refuses personal accounts outright (AADSTS500200).
+    expect(buildMailboxUrl("OUTLOOK", "user@example.com", "PERSONAL")).toBe(
+      "https://outlook.live.com/mail/0/"
+    );
+  });
+
+  it("keeps a work/school account on the work host even with a consumer-looking address", () => {
+    expect(buildMailboxUrl("OUTLOOK", "user@live.contoso.com", "ORGANIZATION")).toBe(
+      "https://outlook.office.com/mail/?login_hint=user%40live.contoso.com"
+    );
+  });
+
+  it("guesses from the address when the account type is unknown", () => {
+    expect(buildMailboxUrl("OUTLOOK", "user@hotmail.fr")).toBe(
+      "https://outlook.live.com/mail/0/"
+    );
+    expect(buildMailboxUrl("OUTLOOK", "user@contoso.com", null)).toBe(
+      "https://outlook.office.com/mail/?login_hint=user%40contoso.com"
+    );
   });
 });

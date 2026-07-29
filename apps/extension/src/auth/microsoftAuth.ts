@@ -2,10 +2,12 @@ import { MS_CLIENT_ID } from "../config";
 import { runAuthCodeFlow, type AuthCodeFlowResult } from "./authCodeFlow";
 
 // Delegated scopes for the read-only Outlook connection. Mirrors
-// @amarnai/outlook OUTLOOK_SCOPES (kept as a literal so the extension bundle does
-// not pull the Graph client). offline_access is required for a refresh token;
-// User.Read backs the Graph /me identity lookup.
-const SCOPES = "Mail.Read offline_access User.Read";
+// @amarnai/outlook OUTLOOK_CONSENT_SCOPES (kept as a literal so the extension
+// bundle does not pull the Graph client). offline_access is required for a
+// refresh token; User.Read backs the Graph /me identity lookup; openid returns
+// the id_token whose tenant claim tells the API whether this is a personal
+// Microsoft account, which decides the Outlook web host the panel opens.
+const SCOPES = "openid Mail.Read offline_access User.Read";
 
 // Multitenant + personal accounts, so the authority is /common (mirrors the web
 // buildOutlookAuthUrl and the API's confidential Web client).

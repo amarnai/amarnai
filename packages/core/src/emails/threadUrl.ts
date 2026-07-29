@@ -1,4 +1,10 @@
 import type { ThreadItem } from "./types.js";
+import {
+  OWA_ORGANIZATION_MAILBOX_URL,
+  OWA_PERSONAL_MAILBOX_URL,
+  resolveOutlookAccountType,
+  type OutlookAccountType,
+} from "./outlookAccount.js";
 
 // Minimal shape needed to build a provider deep link. Accepts a full ThreadItem
 // or any object carrying the same three fields (e.g. an extension triage row).
@@ -31,15 +37,26 @@ export type ThreadUrlInput = Pick<ThreadItem, "provider" | "providerThreadId" | 
  * account. OWA cannot be forced to switch an existing wrong-account session via
  * URL; in that case the item id fails to resolve rather than showing another
  * mailbox's content. Falls back to the OWA inbox when no webLink was captured.
+ *
+ * `accountType` says whether the Outlook mailbox is a personal Microsoft account
+ * or a work/school one; the two live on different OWA hosts (see
+ * outlookAccount.ts). It only matters for the no-webLink fallback here, since a
+ * `webLink` Microsoft issued is already on the right host. Callers that do not
+ * have it get the address-based guess.
  */
-export function buildThreadUrl(thread: ThreadUrlInput, accountEmail?: string | null): string {
-  const hint = accountEmail ? encodeURIComponent(accountEmail) : null;
+export function buildThreadUrl(
+  thread: ThreadUrlInput,
+  accountEmail?: string | null,
+  accountType?: OutlookAccountType | null,
+): string {
   if (thread.provider === "OUTLOOK") {
-    if (!thread.webLink) return buildMailboxUrl("OUTLOOK", accountEmail);
+    if (!thread.webLink) return buildMailboxUrl("OUTLOOK", accountEmail, accountType);
     const separator = thread.webLink.includes("?") ? "&" : "?";
     const url = `${thread.webLink}${separator}ispopout=0`;
+    const hint = outlookLoginHint(accountEmail, accountType);
     return hint ? `${url}&login_hint=${hint}` : url;
   }
+  const hint = accountEmail ? encodeURIComponent(accountEmail) : null;
   return hint
     ? `https://mail.google.com/mail/?authuser=${hint}#all/${thread.providerThreadId}`
     : `https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`;
@@ -53,18 +70,41 @@ export function buildThreadUrl(thread: ThreadUrlInput, accountEmail?: string | n
  * Used when there is no thread to point at: the extension sending a user to the
  * inbox their panel is meant to sit beside, and the no-webLink Outlook fallback
  * above.
+ *
+ * The Outlook host is chosen from `accountType`: a personal Microsoft account
+ * sent to the work/school host is refused outright with AADSTS500200, so there
+ * is no host that works for both. See outlookAccount.ts.
  */
 export function buildMailboxUrl(
   provider: ThreadUrlInput["provider"],
   accountEmail?: string | null,
+  accountType?: OutlookAccountType | null,
 ): string {
-  const hint = accountEmail ? encodeURIComponent(accountEmail) : null;
   if (provider === "OUTLOOK") {
-    return hint
-      ? `https://outlook.office.com/mail/?login_hint=${hint}`
-      : "https://outlook.office.com/mail/";
+    if (resolveOutlookAccountType(accountType, accountEmail) === "PERSONAL") {
+      return OWA_PERSONAL_MAILBOX_URL;
+    }
+    const hint = outlookLoginHint(accountEmail, accountType);
+    return hint ? `${OWA_ORGANIZATION_MAILBOX_URL}?login_hint=${hint}` : OWA_ORGANIZATION_MAILBOX_URL;
   }
+  const hint = accountEmail ? encodeURIComponent(accountEmail) : null;
   return hint
     ? `https://mail.google.com/mail/?authuser=${hint}#inbox`
     : "https://mail.google.com/mail/u/0/#inbox";
+}
+
+/**
+ * The `login_hint` value for an OWA URL, or null when there is nothing to pin.
+ *
+ * Omitted for personal accounts: consumer OWA ignores `login_hint` entirely, so
+ * appending it would only suggest an account guarantee we do not have there. A
+ * personal mailbox opens on whichever consumer session the browser holds.
+ */
+function outlookLoginHint(
+  accountEmail: string | null | undefined,
+  accountType: OutlookAccountType | null | undefined,
+): string | null {
+  if (!accountEmail) return null;
+  if (resolveOutlookAccountType(accountType, accountEmail) === "PERSONAL") return null;
+  return encodeURIComponent(accountEmail);
 }

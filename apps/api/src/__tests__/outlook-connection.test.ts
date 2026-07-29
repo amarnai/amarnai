@@ -53,7 +53,12 @@ vi.mock("../services/outlook-subscription.js", () => ({
 
 import app from "../app.js";
 import { db } from "@amarnai/db";
-import { exchangeAuthCode, fetchOutlookProfile, MicrosoftApiError } from "@amarnai/outlook";
+import {
+  exchangeAuthCode,
+  fetchOutlookProfile,
+  MicrosoftApiError,
+  OUTLOOK_SCOPES,
+} from "@amarnai/outlook";
 import { syncInboxQueue } from "../services/queue-client.js";
 
 const WS_ID = "ws-1";
@@ -109,6 +114,7 @@ beforeEach(() => {
     refreshToken: "graph-rt",
     scope: OUTLOOK_SCOPE,
     expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+    accountType: "PERSONAL",
   } as never);
 });
 
@@ -121,13 +127,24 @@ describe("POST /workspaces/:workspaceId/outlook-connection", () => {
     const body = (await res.json()) as Record<string, unknown>;
     expect(body).toMatchObject({ gmailAddress: "user@outlook.com", status: "ACTIVE", provider: "OUTLOOK" });
 
+    // Redeemed against exactly the scope set the extension consented to: this
+    // body carries no openid, so the redemption must not either (Microsoft
+    // rejects a redemption wider than the authorize request, which would break
+    // every extension build predating the sign-in scope).
     expect(vi.mocked(exchangeAuthCode)).toHaveBeenCalledWith(
       "ms-auth-code",
       "https://ext-id.chromiumapp.org/",
+      undefined,
+      OUTLOOK_SCOPES,
     );
     expect(vi.mocked(db.emailConnection.upsert)).toHaveBeenCalledWith(
       expect.objectContaining({
-        create: expect.objectContaining({ provider: "OUTLOOK", status: "ACTIVE" }),
+        create: expect.objectContaining({
+          provider: "OUTLOOK",
+          status: "ACTIVE",
+          // Personal vs work/school, so clients open the right Outlook host.
+          outlookAccountType: "PERSONAL",
+        }),
       }),
     );
     expect(vi.mocked(syncInboxQueue.add)).toHaveBeenCalledTimes(1);

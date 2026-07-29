@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "tsx src/index.ts",
     "repair-outlook-sent": "dotenv -e ../../.env.local -e ../../.env -- tsx src/scripts/repair-outlook-sent-messages.ts",
+    "backfill-outlook-account-type": "dotenv -e ../../.env.local -e ../../.env -- tsx src/scripts/backfill-outlook-account-type.ts",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"

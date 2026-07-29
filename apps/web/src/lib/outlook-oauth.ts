@@ -1,6 +1,6 @@
 import {
-  OUTLOOK_SCOPES,
-  OUTLOOK_WRITEBACK_SCOPES,
+  OUTLOOK_CONSENT_SCOPES,
+  OUTLOOK_WRITEBACK_CONSENT_SCOPES,
   MicrosoftApiError,
   exchangeAuthCode,
   fetchOutlookProfile,
@@ -43,7 +43,9 @@ function getCallbackUrl(): string {
 
 // ─── OAuth URL ────────────────────────────────────────────────────────────────
 // Requests Mail.Read + offline_access + User.Read — the read-only minimum that
-// mirrors gmail.readonly. offline_access is required for a refresh token.
+// mirrors gmail.readonly. offline_access is required for a refresh token, and
+// openid returns the id_token whose tenant claim tells us whether this is a
+// personal Microsoft account (which lives on a different Outlook web host).
 
 // Whether this OAuth round should carry the write scope: always when the
 // writeback feature is enabled (upfront grant, on-by-default product decision),
@@ -72,7 +74,7 @@ export function buildOutlookAuthUrl(
     redirect_uri: getCallbackUrl(),
     response_type: "code",
     response_mode: "query",
-    scope: wantsWriteScope(opts) ? OUTLOOK_WRITEBACK_SCOPES : OUTLOOK_SCOPES,
+    scope: wantsWriteScope(opts) ? OUTLOOK_WRITEBACK_CONSENT_SCOPES : OUTLOOK_CONSENT_SCOPES,
     state,
   });
   return `${MS_AUTH_URL}?${params.toString()}`;
@@ -90,6 +92,6 @@ export function exchangeCodeForTokens(
     code,
     getCallbackUrl(),
     undefined,
-    wantsWriteScope(opts) ? OUTLOOK_WRITEBACK_SCOPES : OUTLOOK_SCOPES,
+    wantsWriteScope(opts) ? OUTLOOK_WRITEBACK_CONSENT_SCOPES : OUTLOOK_CONSENT_SCOPES,
   );
 }

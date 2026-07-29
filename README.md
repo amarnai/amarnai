@@ -208,7 +208,7 @@ Amarnai supports Outlook read-only via Microsoft Graph, at feature parity with G
 1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), register a **confidential Web app**.
 2. For **Supported account types**, choose "Accounts in any organizational directory (multitenant) and personal Microsoft accounts". The tenant/authority is then the literal string `common`.
 3. Add the redirect URI `http://localhost:3000/api/outlook/callback` (use your domain in production).
-4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read`. None require admin consent.
+4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read`, `openid`. None require admin consent.
 5. Create a client secret.
 
 **Env vars:**

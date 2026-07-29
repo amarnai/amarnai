@@ -1,5 +1,9 @@
 import { buildGmailThreadHashUrl } from "./gmailUrl";
-import { buildThreadUrl, type ThreadUrlInput } from "@amarnai/core/emails";
+import {
+  buildThreadUrl,
+  type OutlookAccountType,
+  type ThreadUrlInput,
+} from "@amarnai/core/emails";
 
 // Full account-routed Gmail URL (`?authuser=<email>`), shared with the web app
 // via core's buildThreadUrl. The extension has no webLink at this point; Gmail
@@ -74,8 +78,19 @@ export async function openInGmail(gmailAddress: string, providerThreadId: string
 // intentionally not used here.
 //
 // Requires host_permissions for the OWA hosts (see OUTLOOK_MAIL_HOSTS).
-export async function openInOutlook(account: string, webLink: string | null): Promise<void> {
-  const url = buildThreadUrl({ provider: "OUTLOOK", providerThreadId: "", webLink }, account);
+export async function openInOutlook(
+  account: string,
+  webLink: string | null,
+  accountType: OutlookAccountType | null = null,
+): Promise<void> {
+  // A webLink Microsoft issued is already on the right OWA host; accountType
+  // only decides the host for the no-webLink fallback, where we build the
+  // mailbox URL ourselves and personal accounts are refused by the work host.
+  const url = buildThreadUrl(
+    { provider: "OUTLOOK", providerThreadId: "", webLink },
+    account,
+    accountType,
+  );
   const tabs = await ext.tabs.query({
     url: OUTLOOK_MAIL_HOSTS,
     currentWindow: true,
@@ -95,9 +110,10 @@ export async function openInOutlook(account: string, webLink: string | null): Pr
 export async function openThreadInMail(
   account: string,
   thread: ThreadUrlInput,
+  accountType: OutlookAccountType | null = null,
 ): Promise<void> {
   if (thread.provider === "OUTLOOK") {
-    await openInOutlook(account, thread.webLink);
+    await openInOutlook(account, thread.webLink, accountType);
     return;
   }
   await openInGmail(account, thread.providerThreadId);

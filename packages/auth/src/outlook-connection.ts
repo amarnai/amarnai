@@ -9,6 +9,9 @@ export type StoreOutlookConnectionInput = {
   accessToken: string;
   refreshToken: string;
   grantedScopes: string[];
+  // Personal (MSA) vs work/school, read from the sign-in token's tenant claim by
+  // the caller that redeemed it. Null when the grant carried no id_token.
+  outlookAccountType?: "PERSONAL" | "ORGANIZATION" | null;
 };
 
 // Verifies the token via Graph /me, encrypts the refresh token, and upserts the
@@ -23,6 +26,7 @@ export async function storeOutlookConnection({
   accessToken,
   refreshToken,
   grantedScopes,
+  outlookAccountType = null,
 }: StoreOutlookConnectionInput): Promise<{ emailAddress: string }> {
   await assertNoProviderConflict(workspaceId, "OUTLOOK");
 
@@ -37,6 +41,7 @@ export async function storeOutlookConnection({
     emailAddress: profile.emailAddress,
     encryptedRefreshToken: encrypt(refreshToken),
     grantedScopes,
+    outlookAccountType,
   });
 
   // Connection is ACTIVE again — clear any "reconnect your account" nudge.

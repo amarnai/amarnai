@@ -11,7 +11,14 @@ import {
 } from "@amarnai/db";
 import { apiFor, type MailProvider } from "@/lib/api";
 
-type CallbackTokens = { accessToken: string; refreshToken: string; scope: string };
+type CallbackTokens = {
+  accessToken: string;
+  refreshToken: string;
+  scope: string;
+  /** Outlook only: personal (MSA) vs work/school, from the id_token's tenant
+   *  claim. Decides which Outlook-on-the-web host this mailbox opens on. */
+  accountType?: "PERSONAL" | "ORGANIZATION" | null;
+};
 type CallbackProfile = {
   emailAddress: string;
   // Stable provider subject id (Outlook Entra object id). Null for Gmail, which
@@ -173,6 +180,7 @@ export async function handleOAuthCallback(
       emailAddress: profile.emailAddress,
       encryptedRefreshToken: encrypt(tokens.refreshToken),
       grantedScopes,
+      outlookAccountType: tokens.accountType ?? null,
     });
   } catch (err) {
     console.error(`[${cfg.source}] db_upsert:`, err instanceof Error ? err.message : err);

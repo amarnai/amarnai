@@ -32,6 +32,28 @@ export const OUTLOOK_SCOPES = "Mail.Read offline_access User.Read";
 export const OUTLOOK_WRITEBACK_SCOPES =
   "Mail.ReadWrite MailboxSettings.ReadWrite offline_access User.Read";
 
+/**
+ * `openid` makes Microsoft return an id_token alongside the access token, which
+ * is where the account's tenant claim (and so whether it is a personal Microsoft
+ * account) comes from. It is a sign-in scope: no consent prompt of its own, no
+ * admin consent, no data access.
+ *
+ * Requested at CONSENT time only, never on refresh. A refresh request may only
+ * ask for scopes at or below the original grant, so sending `openid` to refresh a
+ * connection consented before this existed would be rejected and break its sync.
+ * That is why these are separate constants rather than additions to the sets
+ * above, which GraphClient refreshes with.
+ */
+export const OUTLOOK_SIGNIN_SCOPE = "openid";
+export const OUTLOOK_CONSENT_SCOPES = `${OUTLOOK_SIGNIN_SCOPE} ${OUTLOOK_SCOPES}`;
+export const OUTLOOK_WRITEBACK_CONSENT_SCOPES = `${OUTLOOK_SIGNIN_SCOPE} ${OUTLOOK_WRITEBACK_SCOPES}`;
+
+/**
+ * The single tenant every personal Microsoft account (MSA) signs in under, fixed
+ * and published by Microsoft. Any other tenant id is a work/school account.
+ */
+export const MICROSOFT_CONSUMER_TENANT_ID = "9188040d-6c67-4c5b-b112-36a304b66dad";
+
 const GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0";
 
 function tenant(): string {
@@ -84,6 +106,23 @@ export function hasWritebackScope(grantedScopes: readonly string[]): boolean {
   );
 }
 
+/**
+ * The scope set to redeem an authorization code with, given the scope string the
+ * client says it authorized against.
+ *
+ * Microsoft refuses a redemption that asks for more than the authorize request
+ * did, so a client build that predates the `openid` sign-in scope has to be
+ * redeemed without it — otherwise every already-installed browser extension
+ * would fail to connect until it updated. The client's string only selects
+ * between two fixed constants here; it is never forwarded to Microsoft verbatim.
+ */
+export function scopeForCodeRedemption(clientScope: string): string {
+  const signedIn = clientScope
+    .split(" ")
+    .some((s) => s.toLowerCase() === OUTLOOK_SIGNIN_SCOPE);
+  return signedIn ? OUTLOOK_CONSENT_SCOPES : OUTLOOK_SCOPES;
+}
+
 // ─── Error class ────────────────────────────────────────────────────────────
 
 export class MicrosoftApiError extends Error {
@@ -114,7 +153,46 @@ export type OutlookTokens = {
   refreshToken: string;
   scope: string;
   expiresAt: Date;
+  /** Personal (MSA) vs work/school, from the id_token's tenant claim. Null when
+   *  no id_token came back (the `openid` scope was not part of the consent). */
+  accountType: OutlookAccountType | null;
 };
+
+/**
+ * Mirrors the OutlookAccountType enum in @amarnai/db and the union in
+ * @amarnai/core. Redeclared here so this package keeps its two dependencies.
+ */
+export type OutlookAccountType = "PERSONAL" | "ORGANIZATION";
+
+/**
+ * Whether the id_token's account is a personal Microsoft account, from its `tid`
+ * (tenant) claim. Returns null when there is no token or no claim.
+ *
+ * The signature is NOT verified, and deliberately so: this decides which Outlook
+ * web host to open, nothing more. Identity still comes from Graph /me, which is
+ * bound to the token we redeemed — an unverified claim from the /common
+ * authority must never be trusted for who the user is (the nOAuth class of
+ * account takeover). Nothing from the token is ever logged.
+ */
+export function accountTypeFromIdToken(
+  idToken: string | null | undefined,
+): OutlookAccountType | null {
+  if (!idToken) return null;
+  const payload = idToken.split(".")[1];
+  if (!payload) return null;
+  let claims: Record<string, unknown>;
+  try {
+    claims = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as Record<
+      string,
+      unknown
+    >;
+  } catch {
+    return null;
+  }
+  const tenantId = typeof claims["tid"] === "string" ? claims["tid"] : null;
+  if (!tenantId) return null;
+  return tenantId.toLowerCase() === MICROSOFT_CONSUMER_TENANT_ID ? "PERSONAL" : "ORGANIZATION";
+}
 
 /**
  * Exchanges an authorization code for tokens. `redirectUri` must match the one
@@ -125,7 +203,7 @@ export async function exchangeAuthCode(
   code: string,
   redirectUri: string,
   codeVerifier?: string,
-  scope: string = OUTLOOK_SCOPES,
+  scope: string = OUTLOOK_CONSENT_SCOPES,
 ): Promise<OutlookTokens> {
   const params: Record<string, string> = {
     code,
@@ -157,6 +235,8 @@ export async function exchangeAuthCode(
     refresh_token?: string;
     scope: string;
     expires_in: number;
+    /** Present when the consent included `openid`; absent otherwise. */
+    id_token?: string;
   };
   const data = (await res.json()) as TokenResponse;
 
@@ -171,6 +251,7 @@ export async function exchangeAuthCode(
     refreshToken: data.refresh_token,
     scope: data.scope,
     expiresAt: new Date(Date.now() + data.expires_in * 1000),
+    accountType: accountTypeFromIdToken(data.id_token),
   };
 }
 

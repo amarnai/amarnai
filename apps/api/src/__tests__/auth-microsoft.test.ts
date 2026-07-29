@@ -95,6 +95,7 @@ beforeEach(() => {
     refreshToken: "ms-rt",
     scope: OUTLOOK_SCOPES,
     expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+    accountType: "ORGANIZATION",
   });
   vi.mocked(fetchOutlookProfile).mockResolvedValue({
     emailAddress: "a@b.com",
@@ -119,7 +120,14 @@ describe("POST /auth/microsoft", () => {
       refreshToken: "refresh-tok",
       refreshTokenExpiresAt: "2030-01-01T00:00:00.000Z",
     });
-    expect(exchangeAuthCode).toHaveBeenCalledWith("ms-code-123", REDIRECT_URI);
+    // Redeemed against exactly what the client consented to: this body carries no
+    // openid, so neither may the redemption (Microsoft rejects a wider one).
+    expect(exchangeAuthCode).toHaveBeenCalledWith(
+      "ms-code-123",
+      REDIRECT_URI,
+      undefined,
+      OUTLOOK_SCOPES
+    );
     expect(provisionMicrosoftUser).toHaveBeenCalledWith(
       expect.objectContaining({
         email: "a@b.com",
@@ -127,9 +135,37 @@ describe("POST /auth/microsoft", () => {
         outlookAccessToken: "ms-at",
         outlookRefreshToken: "ms-rt",
         grantedScopes: ["Mail.Read", "offline_access", "User.Read"],
+        // From the id_token's tenant claim; decides which Outlook web host the
+        // mailbox opens on.
+        outlookAccountType: "ORGANIZATION",
         // Seeded from Accept-Language, so a French signup gets a French workspace.
         locale: "fr",
       })
+    );
+  });
+
+  it("redeems WITH openid, and records a personal account, once the client asks for it", async () => {
+    // Current extension builds request the sign-in scope, which is what makes
+    // the id_token (and so the account type) available at all.
+    vi.mocked(exchangeAuthCode).mockResolvedValue({
+      accessToken: "ms-at",
+      refreshToken: "ms-rt",
+      scope: OUTLOOK_SCOPES,
+      expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+      accountType: "PERSONAL",
+    });
+
+    const res = await post({ ...VALID_BODY, scope: `openid ${OUTLOOK_SCOPES}` });
+
+    expect(res.status).toBe(200);
+    expect(exchangeAuthCode).toHaveBeenCalledWith(
+      "ms-code-123",
+      REDIRECT_URI,
+      undefined,
+      `openid ${OUTLOOK_SCOPES}`
+    );
+    expect(provisionMicrosoftUser).toHaveBeenCalledWith(
+      expect.objectContaining({ outlookAccountType: "PERSONAL" })
     );
   });
 
@@ -211,6 +247,7 @@ describe("POST /auth/microsoft", () => {
       refreshToken: "ms-rt",
       scope: "offline_access User.Read",
       expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+      accountType: "ORGANIZATION",
     });
     const res = await post(VALID_BODY);
     expect(res.status).toBe(403);

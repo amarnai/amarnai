@@ -10,6 +10,9 @@ type PersistConnectionInput = {
   emailAddress: string;
   encryptedRefreshToken: string;
   grantedScopes: string[];
+  // Outlook only: personal (MSA) vs work/school. Null for Gmail, and when the
+  // grant carried no id_token to read the tenant claim from.
+  outlookAccountType?: "PERSONAL" | "ORGANIZATION" | null;
 };
 
 /**

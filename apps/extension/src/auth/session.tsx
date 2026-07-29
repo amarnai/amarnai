@@ -56,6 +56,11 @@ interface SessionValue {
   // Re-attempts session restore from the stored tokens. Used by the "error"
   // (couldn't-reach-server) screen so the user can retry without re-signing-in.
   retry(): Promise<void>;
+  // True once, for the caller that asks first, after a sign-in or mailbox
+  // connect the user actually performed in this panel. Lets the triage view tell
+  // "the user just connected" from "the panel was reopened", which look
+  // identical from the loaded data alone. See revealMailbox.
+  consumeJustConnected(): boolean;
   // Throws on invalid credentials so the sign-in screen can show the error.
   signIn(email: string, password: string): Promise<void>;
   // Runs the Google OAuth flow and provisions/signs in via /auth/google. Throws
@@ -110,6 +115,17 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setWorkspaceId(null);
     setWorkspaces([]);
   });
+  // Raised by every sign-in and connect the user drives from this panel, and
+  // lowered by whoever reads it. A ref, not state: nothing renders from it, and
+  // it must not survive the panel being closed. A stored flag would let a tab
+  // move happen on a later panel open, long after the gesture that earned it.
+  const justConnected = useRef(false);
+  const consumeJustConnected = useCallback(() => {
+    const value = justConnected.current;
+    justConnected.current = false;
+    return value;
+  }, []);
+
   const client = useMemo<ApiClient>(
     () =>
       makeApiClient(
@@ -214,6 +230,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     async (email: string, password: string) => {
       const tokens = await login(email, password);
       await extensionTokenStore.set(tokens);
+      justConnected.current = true;
       await bootstrap(tokens.accessToken);
     },
     [bootstrap],
@@ -232,6 +249,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
     const tokens = (await res.json()) as StoredTokens;
     await extensionTokenStore.set(tokens);
+    justConnected.current = true;
     await bootstrap(tokens.accessToken);
   }, [bootstrap]);
 
@@ -250,6 +268,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
     const tokens = (await res.json()) as StoredTokens;
     await extensionTokenStore.set(tokens);
+    justConnected.current = true;
     await bootstrap(tokens.accessToken);
   }, [bootstrap]);
 
@@ -263,6 +282,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       // chromiumapp.org code via the redirectUri branch (mirrors /auth/google).
       // Leaves the session tokens untouched — we're already signed in.
       await client.connectGmail(targetWorkspaceId, authResult);
+      justConnected.current = true;
       // Refresh workspaces to pick up the now-ACTIVE connection, staying on the
       // workspace the user was viewing.
       await refreshWorkspaces(targetWorkspaceId);
@@ -277,6 +297,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       // endpoint (mirrors reconnectGmail). Leaves the session tokens untouched —
       // we're already signed in.
       await client.connectOutlook(targetWorkspaceId, authResult);
+      justConnected.current = true;
       await refreshWorkspaces(targetWorkspaceId);
     },
     [client, refreshWorkspaces],
@@ -310,6 +331,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       switchWorkspace,
       refreshWorkspaces,
       retry,
+      consumeJustConnected,
       signIn,
       signInWithGoogle,
       signInWithMicrosoft,
@@ -329,6 +351,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       switchWorkspace,
       refreshWorkspaces,
       retry,
+      consumeJustConnected,
       signIn,
       signInWithGoogle,
       signInWithMicrosoft,

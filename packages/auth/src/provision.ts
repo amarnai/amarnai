@@ -41,6 +41,9 @@ export type ProvisionMicrosoftUserInput = {
   outlookRefreshToken?: string | null;
   // Scopes Microsoft actually granted. Defaults to Mail.Read (the read scope).
   grantedScopes?: string[];
+  // Personal (MSA) vs work/school, from the sign-in's id_token. Decides which
+  // Outlook-on-the-web host this mailbox opens on.
+  outlookAccountType?: "PERSONAL" | "ORGANIZATION" | null;
   // Creator's resolved locale; seeds the default workspace's language.
   locale?: string;
 };
@@ -118,6 +121,7 @@ export async function provisionMicrosoftUser(
       accessToken: input.outlookAccessToken,
       refreshToken: input.outlookRefreshToken,
       grantedScopes: input.grantedScopes ?? [OUTLOOK_MAIL_READ_SCOPE],
+      outlookAccountType: input.outlookAccountType ?? null,
     });
 
     return { userId, workspaceId: workspace.id, isNew, outlookConnected: true };
