@@ -85,9 +85,13 @@ export type PanelHost = {
 
   /**
    * Show a conversation in the mail client itself. Only called when
-   * `capabilities.openThread` is true. Fire and forget: the host answers by
-   * reporting the new conversation through `onThreadContext`, the same way it
-   * would if the user had clicked the thread themselves.
+   * `capabilities.openThread` is true.
+   *
+   * Fire and forget, and nothing depends on the answer: the host ordinarily
+   * reports the new conversation through `onThreadContext`, exactly as it would
+   * if the user had clicked the thread themselves, but it is entitled to report
+   * nothing at all — asking Gmail for the conversation it already has open is
+   * not a change. The panel has already switched screens by then.
    */
   openThread(providerThreadId: string): void;
 

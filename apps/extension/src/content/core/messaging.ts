@@ -114,6 +114,40 @@ export function isOpenPanelRequest(msg: unknown): msg is OpenPanelRequest {
   );
 }
 
+// ─── Open a conversation in the mail tab ──────────────────────────────────────
+//
+// Sent by the injected panel when the user picks a thread from its queue. The
+// panel is an extension document embedded in the mail page, so it asks the
+// background to navigate the tab it sits in — the same chrome.tabs.update path
+// Amarnai's own side panel has always used to open a thread.
+//
+// It does NOT go through the mail page: a content script can only assign
+// `location`, which is a write into a third-party SPA with no way to tell
+// whether it took, and it needs the panel's postMessage channel to have survived
+// whatever layout the page is in. Neither is true of a tab navigation.
+//
+// Fire-and-forget: the panel has already switched to the thread's screen by the
+// time this is sent, and the page catches up on its own.
+
+export const OPEN_MAIL_THREAD_MESSAGE = "amarnai:openMailThread" as const;
+
+export type OpenMailThreadRequest = {
+  type: typeof OPEN_MAIL_THREAD_MESSAGE;
+  /** The provider's own thread id. Lands in the tab's URL, hence the bound. */
+  providerThreadId: string;
+};
+
+/** Bounded because the id lands in a URL; real Gmail thread ids are far shorter. */
+const MAX_PROVIDER_THREAD_ID_LEN = 256;
+
+export function isOpenMailThreadRequest(msg: unknown): msg is OpenMailThreadRequest {
+  if (typeof msg !== "object" || msg === null) return false;
+  const m = msg as Record<string, unknown>;
+  if (m["type"] !== OPEN_MAIL_THREAD_MESSAGE) return false;
+  const id = m["providerThreadId"];
+  return typeof id === "string" && id.length > 0 && id.length <= MAX_PROVIDER_THREAD_ID_LEN;
+}
+
 export function isGenerateDraftRequest(msg: unknown): msg is GenerateDraftRequest {
   if (typeof msg !== "object" || msg === null) return false;
   const m = msg as Record<string, unknown>;

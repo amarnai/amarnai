@@ -376,6 +376,83 @@ describe("usePanelState", () => {
     expect(result.current.stage).toMatchObject({ overConversation: false });
   });
 
+  // The click this whole path exists for: the queue is open over the very
+  // conversation the user picks. Gmail is asked to open it and reports nothing
+  // back, because its hash already says so — and the panel must still switch.
+  it("shows a picked thread the mail client is already showing", async () => {
+    const api = makeApi();
+    const { host, setContext } = makeHost();
+    const { result } = render(api, host);
+
+    setContext(CONTEXT);
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+    act(() => result.current.showQueue());
+    expect(result.current.stage.kind).toBe("queue");
+
+    act(() => result.current.openThread("18f0abc"));
+
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+    expect(host.openThread).toHaveBeenCalledWith("18f0abc");
+    // Still the client's own conversation, so a draft may be inserted into it.
+    expect(result.current.threadIsOpenInClient).toBe(true);
+  });
+
+  // A host that cannot navigate at all (Outlook's task pane). The panel is the
+  // only thing that moves, and it moves anyway.
+  it("shows a picked thread a host cannot navigate to", async () => {
+    const api = makeApi();
+    const { host, setContext } = makeHost({
+      capabilities: { insertDraft: true, signIn: true, openExternal: false, openThread: false },
+    });
+    const { result } = render(api, host);
+
+    setContext({ providerThreadId: null, accountEmail: "ada@example.com" });
+    await waitFor(() => expect(result.current.stage.kind).toBe("queue"));
+
+    act(() => result.current.openThread("18f0def"));
+
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+    expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0def");
+    expect(host.openThread).not.toHaveBeenCalled();
+    // The pane is still on whatever it was: inserting here would reply to the
+    // wrong conversation, so the panel says the two do not match.
+    expect(result.current.threadIsOpenInClient).toBe(false);
+  });
+
+  // The client catching up with the pick is not a second conversation change.
+  it("does not re-resolve when the client catches up with the pick", async () => {
+    const api = makeApi();
+    const { host, setContext } = makeHost();
+    const { result } = render(api, host);
+
+    setContext({ providerThreadId: null, accountEmail: "ada@example.com" });
+    await waitFor(() => expect(result.current.stage.kind).toBe("queue"));
+
+    act(() => result.current.openThread("18f0def"));
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+    expect(api.resolveProviderThread).toHaveBeenCalledTimes(1);
+
+    setContext({ providerThreadId: "18f0def", accountEmail: "ada@example.com" });
+    await waitFor(() => expect(result.current.threadIsOpenInClient).toBe(true));
+    expect(result.current.stage.kind).toBe("thread");
+    expect(api.resolveProviderThread).toHaveBeenCalledTimes(1);
+  });
+
+  // A pick is not a pin: the page moving anywhere else takes the screen back.
+  it("follows the mail client again once it navigates elsewhere", async () => {
+    const api = makeApi();
+    const { host, setContext } = makeHost();
+    const { result } = render(api, host);
+
+    setContext({ providerThreadId: null, accountEmail: "ada@example.com" });
+    await waitFor(() => expect(result.current.stage.kind).toBe("queue"));
+    act(() => result.current.openThread("18f0def"));
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+
+    setContext({ providerThreadId: null, accountEmail: "ada@example.com" });
+    await waitFor(() => expect(result.current.stage.kind).toBe("queue"));
+  });
+
   it("patches the loaded thread in place", async () => {
     const { host, setContext } = makeHost();
     const { result } = render(makeApi(), host);

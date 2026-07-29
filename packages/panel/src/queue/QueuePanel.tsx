@@ -16,8 +16,10 @@ import type { QueueSectionKey } from "./sectionCollapse.js";
 // An action queue, not an inbox: only threads that are waiting on this user, in
 // the order they are waiting. It never tries to be the thread list a few inches
 // to its left — no folders, no search, no paging — because that list is better
-// at being itself than a 300px column could be. Each row's click hands the
-// thread back to the mail client, which is the whole point of living inside it.
+// at being itself than a 300px column could be. Each row's click opens the
+// thread on the panel's own conversation screen, and hands it to the mail client
+// as well where that client can be navigated — which is the whole point of
+// living inside it.
 //
 // Three sections, each a different reason a thread is waiting:
 //
@@ -42,6 +44,13 @@ export type QueuePanelProps = {
   accountEmail: string;
   visible: boolean;
   onInjectionDisabled: () => void;
+  /**
+   * A row was clicked. The panel switches to that thread's screen itself rather
+   * than waiting to be told the mail client moved, because it may not: an
+   * Outlook pane cannot navigate, and Gmail reports no change when asked for the
+   * conversation it already has open.
+   */
+  onOpenThread: (providerThreadId: string) => void;
 };
 
 export function QueuePanel({
@@ -51,6 +60,7 @@ export function QueuePanel({
   accountEmail,
   visible,
   onInjectionDisabled,
+  onOpenThread,
 }: QueuePanelProps) {
   const { queue, syncStatus, loading, error, refresh, toggleDone } = useQueueState({
     api,
@@ -84,6 +94,7 @@ export function QueuePanel({
           thread={thread}
           accountEmail={accountEmail}
           host={host}
+          onOpen={() => onOpenThread(thread.providerThreadId)}
           onToggleDone={() => toggleDone(thread)}
         />
       ))}

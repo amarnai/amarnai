@@ -30,6 +30,13 @@ import {
 // reading of the mail client's: the conversation stays open beside it, and the
 // override lasts only as long as that conversation does, so the panel never
 // argues with the page for longer than the user asked it to.
+//
+// Picking a row in that queue is the other. The panel shows the thread the user
+// picked without waiting for the mail client to agree, because waiting does not
+// work: an Outlook pane cannot navigate at all, and Gmail reports nothing when
+// asked to open the conversation it is already showing — which is precisely the
+// click that would otherwise leave the user staring at the queue they clicked
+// in. The pick lasts until the page itself moves, and then the page wins again.
 
 export type PanelStage =
   /** Still working out which of the below we are in. */
@@ -62,6 +69,17 @@ export type PanelStage =
 
 export type PanelState = {
   stage: PanelStage;
+  /**
+   * Whether the conversation on screen is the one the mail client itself has
+   * open. False only while a thread picked from the queue is shown over a page
+   * that has not followed — an Outlook pane, which cannot navigate, or a Gmail
+   * tab in the moment before it does.
+   *
+   * It gates inserting a draft: both hosts insert into whatever conversation the
+   * client currently has open, so offering that while the panel is showing a
+   * different one would put the reply in the wrong thread.
+   */
+  threadIsOpenInClient: boolean;
   /** Re-resolve the open conversation. Also the retry for the error stage. */
   refresh: () => void;
   /**
@@ -80,6 +98,11 @@ export type PanelState = {
   showQueue: () => void;
   /** Go back to that conversation. */
   showConversation: () => void;
+  /**
+   * Show a conversation picked from the queue, and ask the mail client to open
+   * it too where it can. The panel switches either way.
+   */
+  openThread: (providerThreadId: string) => void;
 };
 
 type Deps = {
@@ -130,13 +153,29 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
   // thread under the current conversation's header.
   const tokenRef = useRef(0);
 
+  // ── Which conversation is on screen ─────────────────────────────────────────
+  //
+  // The mail client's, unless the user picked another one from the queue.
+  const [pickedThreadId, setPickedThreadId] = useState<string | null>(null);
+
   // ── Context feed ────────────────────────────────────────────────────────────
   useEffect(() => {
     return host.onThreadContext((next) => {
       setContext(next);
       setContextKnown(true);
+      // A pick outlives the click that made it, not the mail client's next word
+      // on where it is. Both hosts report only on an actual change, so this is
+      // the user having navigated — and following the page is the panel's whole
+      // ordinary behaviour. Clearing when the report IS the picked thread (the
+      // Gmail case, a moment after it was asked to open it) costs nothing: the
+      // two then name the same conversation and nothing re-resolves.
+      setPickedThreadId(null);
     });
   }, [host]);
+
+  const accountEmail = context?.accountEmail ?? null;
+  const pageThreadId = context?.providerThreadId ?? null;
+  const providerThreadId = pickedThreadId ?? pageThreadId;
 
   // ── Resolution ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -146,7 +185,7 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
       setStage({ kind: "signedOut" });
       return;
     }
-    if (!context) {
+    if (!accountEmail) {
       setStage({ kind: "noThread" });
       return;
     }
@@ -170,18 +209,16 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
         setStage({ kind: "notConnected" });
         return;
       }
-      const match = accounts.find(
-        (a) => a.email.toLowerCase() === context.accountEmail.toLowerCase(),
-      );
+      const match = accounts.find((a) => a.email.toLowerCase() === accountEmail.toLowerCase());
       if (!match) {
-        setStage({ kind: "mismatch", accountEmail: context.accountEmail, knownAccounts: accounts });
+        setStage({ kind: "mismatch", accountEmail, knownAccounts: accounts });
         return;
       }
 
       // The thread list. Everything above still applies — an unconnected mailbox
       // is unconnected whether or not a conversation is open — which is why this
       // sits after those checks rather than before the accounts lookup.
-      if (context.providerThreadId === null) {
+      if (providerThreadId === null) {
         setStage({
           kind: "queue",
           workspaceId: match.workspaceId,
@@ -192,7 +229,7 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
       }
 
       try {
-        const thread = await api.resolveProviderThread(match.workspaceId, context.providerThreadId);
+        const thread = await api.resolveProviderThread(match.workspaceId, providerThreadId);
         if (token !== tokenRef.current) return;
         setStage(
           thread
@@ -211,7 +248,10 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
         setStage(e instanceof InjectionDisabledError ? { kind: "injectionDisabled" } : { kind: "error" });
       }
     })();
-  }, [api, context, contextKnown, signedIn, refreshKey]);
+    // Keyed on the values rather than the context object: a host that re-reports
+    // an unchanged conversation, and the pick being cleared once the page has
+    // caught up with it, must not both cost a re-resolve.
+  }, [api, accountEmail, providerThreadId, contextKnown, signedIn, refreshKey]);
 
   const refresh = useCallback(() => setRefreshKey((k) => k + 1), []);
 
@@ -229,7 +269,6 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
   // The override belongs to the conversation it was opened from. Opening
   // another one — or returning to the thread list, where the queue is the
   // screen anyway — starts from that conversation's own screen.
-  const providerThreadId = context?.providerThreadId ?? null;
   useEffect(() => {
     setQueueOverride(false);
   }, [providerThreadId]);
@@ -243,6 +282,22 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
     // stream of its own. Re-resolve rather than show what was true a minute ago.
     refresh();
   }, [refresh]);
+
+  const openThread = useCallback(
+    (nextProviderThreadId: string) => {
+      setPickedThreadId(nextProviderThreadId);
+      setQueueOverride(false);
+      // Fire and forget, and only where the host has somewhere to fire at: the
+      // panel has already decided what it is showing, so nothing here depends on
+      // the client answering — or on it being anywhere else to begin with.
+      if (host.capabilities.openThread) host.openThread(nextProviderThreadId);
+      // For the same reason showConversation does: this thread may be the one
+      // already loaded underneath the queue, and the queue's own rows can have
+      // changed it since.
+      refresh();
+    },
+    [host, refresh],
+  );
 
   const visibleStage: PanelStage =
     queueOverride && stage.kind === "thread"
@@ -310,10 +365,14 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
 
   return {
     stage: visibleStage,
+    // A pick that the page has caught up with is no longer a pick: the two name
+    // the same conversation, and the effect above is about to drop it.
+    threadIsOpenInClient: pickedThreadId === null || pickedThreadId === pageThreadId,
     refresh,
     patchThread,
     reportInjectionDisabled,
     showQueue,
     showConversation,
+    openThread,
   };
 }

@@ -7,8 +7,8 @@ import {
   PANEL_VISIBILITY,
   PANEL_INSERT_DRAFT,
   PANEL_INSERT_RESULT,
-  PANEL_OPEN_THREAD,
 } from "../content/core/panelProtocol";
+import { OPEN_MAIL_THREAD_MESSAGE } from "../content/core/messaging";
 import { createGmailPanelHost, resetGmailPanelHost } from "./gmailHost";
 
 // The handshake between the panel iframe and the Gmail content script.
@@ -36,6 +36,8 @@ beforeEach(() => {
   // The host is a per-document singleton and owns a window listener; without
   // this, one case's host keeps answering the next case's messages.
   resetGmailPanelHost();
+  // The chrome stub is shared across files, so its call history is not ours.
+  vi.mocked(chrome.runtime.sendMessage).mockClear();
   posted = [];
   parentPostMessage = vi.fn((message: unknown, targetOrigin: string) => {
     posted.push({ message, targetOrigin });
@@ -228,30 +230,33 @@ describe("createGmailPanelHost — insert draft", () => {
 });
 
 describe("createGmailPanelHost — open thread", () => {
-  it("relays the conversation the user picked from the queue", () => {
+  // Through the background rather than the embedder: this frame is an extension
+  // document, so the tab can be navigated with chrome.tabs instead of by writing
+  // Gmail's own location from a content script.
+  it("asks the background to navigate the tab", () => {
     const host = createGmailPanelHost();
     deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null }, GMAIL);
     posted.length = 0;
 
     host.openThread("18f0abc");
 
-    expect(posted).toEqual([
-      {
-        message: {
-          v: PANEL_PROTOCOL_VERSION,
-          type: PANEL_OPEN_THREAD,
-          providerThreadId: "18f0abc",
-        },
-        targetOrigin: GMAIL,
-      },
-    ]);
+    expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({
+      type: OPEN_MAIL_THREAD_MESSAGE,
+      providerThreadId: "18f0abc",
+    });
+    // Nothing goes to the page: the mail host has no part in this.
+    expect(posted).toEqual([]);
   });
 
-  // Nothing is waiting on an answer, so an unaddressable host is simply silent
-  // rather than an error the panel has to render.
-  it("stays silent before any embedder is known", () => {
-    const host = createGmailPanelHost();
-    host.openThread("18f0abc");
+  // The panel has already switched screens by the time this is sent, so it works
+  // with or without an embedder having spoken.
+  it("navigates before any embedder is known", () => {
+    createGmailPanelHost().openThread("18f0abc");
+
+    expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({
+      type: OPEN_MAIL_THREAD_MESSAGE,
+      providerThreadId: "18f0abc",
+    });
     expect(parentPostMessage).not.toHaveBeenCalled();
   });
 

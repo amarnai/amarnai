@@ -1,12 +1,13 @@
 import type { PanelHost, PanelThreadContext } from "@amarnai/panel";
 import { extensionTokenStore } from "../auth/tokenStore";
 import { API_BASE_URL } from "../config";
+import { ext } from "../platform/ext";
+import { OPEN_MAIL_THREAD_MESSAGE } from "../content/core/messaging";
 import {
   PANEL_PROTOCOL_VERSION,
   PANEL_READY,
   PANEL_INSERT_DRAFT,
   PANEL_OPEN_PANEL,
-  PANEL_OPEN_THREAD,
   isPanelInsertResultMessage,
   isPanelThreadContextMessage,
   isPanelVisibilityMessage,
@@ -190,10 +191,19 @@ function buildGmailPanelHost(): PanelHost {
     },
 
     openThread(providerThreadId) {
-      // Fire and forget: the content script changes the page's hash, and the
-      // conversation it opens is reported straight back through the ordinary
-      // context feed. There is nothing for the panel to wait on.
-      post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_OPEN_THREAD, providerThreadId });
+      // Through the background, not through the embedder: this frame is an
+      // extension document, so it can ask for the tab it is in to be navigated
+      // with chrome.tabs — the same call the side panel makes when a thread row
+      // is clicked there. Routing it through the content script instead would
+      // make opening a conversation depend on the postMessage channel and on a
+      // write into Gmail's own location that nothing here can verify.
+      //
+      // Fire and forget: the panel has already switched to this thread's screen,
+      // and the page reports itself through the ordinary context feed once it
+      // catches up. A rejection means only that nothing was listening.
+      void ext.runtime
+        .sendMessage({ type: OPEN_MAIL_THREAD_MESSAGE, providerThreadId })
+        .catch(() => {});
     },
 
     requestSignIn() {

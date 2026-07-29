@@ -93,12 +93,20 @@ export function InjectedThreadPanel({
     [client, host],
   );
 
-  const { stage, refresh, patchThread, reportInjectionDisabled, showQueue, showConversation } =
-    usePanelState({
-      api,
-      host,
-      visible,
-    });
+  const {
+    stage,
+    threadIsOpenInClient,
+    refresh,
+    patchThread,
+    reportInjectionDisabled,
+    showQueue,
+    showConversation,
+    openThread,
+  } = usePanelState({
+    api,
+    host,
+    visible,
+  });
 
   // Folders are loaded on first use, not on thread open: most readers never move
   // a thread, and it is a whole-workspace fetch that would otherwise run on
@@ -262,6 +270,7 @@ export function InjectedThreadPanel({
             accountEmail={stage.accountEmail}
             visible={visible}
             onInjectionDisabled={reportInjectionDisabled}
+            onOpenThread={openThread}
           />
         </>
       ) : stage.kind === "noThread" ? (
@@ -281,6 +290,7 @@ export function InjectedThreadPanel({
           thread={stage.thread}
           accountEmail={stage.accountEmail}
           autoDraft={autoDraft}
+          canInsertDraft={host.capabilities.insertDraft && threadIsOpenInClient}
           folders={folders}
           members={members}
           onRequestFolders={requestFolders}
@@ -321,6 +331,7 @@ function ThreadView({
   thread,
   accountEmail,
   autoDraft,
+  canInsertDraft,
   folders,
   members,
   onRequestFolders,
@@ -338,6 +349,12 @@ function ThreadView({
   thread: EmailThreadDetail;
   accountEmail: string;
   autoDraft: boolean;
+  /**
+   * False while this thread was picked from the queue and the mail client is
+   * still showing another one: both hosts insert into whatever conversation the
+   * client has open, so the draft would land in the wrong thread.
+   */
+  canInsertDraft: boolean;
   folders: FolderItem[] | null;
   members: MemberItem[] | null;
   onRequestFolders: () => void;
@@ -391,7 +408,7 @@ function ThreadView({
         thread={thread}
         accountEmail={accountEmail}
         autoDraft={autoDraft}
-        canInsert={host.capabilities.insertDraft}
+        canInsert={canInsertDraft}
         insertDraft={host.insertDraft.bind(host)}
       />
 

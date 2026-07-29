@@ -16,8 +16,8 @@
 // script while an old iframe is still alive cannot half-understand it.
 //
 // v2: the thread context carries the mailbox even when no conversation is open
-// (providerThreadId became nullable), and the iframe can ask the host to open a
-// thread. The bump is what makes the change safe rather than merely additive: a
+// (providerThreadId became nullable). The bump is what makes the change safe
+// rather than merely additive: a
 // v1 iframe's guard requires providerThreadId to be a string, so it would drop
 // a "no conversation open" context silently and keep rendering the thread the
 // user had already left. Mismatched halves now understand nothing of each
@@ -63,10 +63,13 @@ export type HostToPanelMessage =
 
 // ── Iframe → host ─────────────────────────────────────────────────────────────
 
+// Only what the page itself must do. Opening a conversation is deliberately NOT
+// here: the panel is an extension document and asks the background to navigate
+// its tab (see content/core/messaging.ts), which needs neither this channel nor
+// a write into Gmail's own location.
 export const PANEL_READY = "amarnai:panel:ready" as const;
 export const PANEL_INSERT_DRAFT = "amarnai:panel:insertDraft" as const;
 export const PANEL_OPEN_PANEL = "amarnai:panel:openPanel" as const;
-export const PANEL_OPEN_THREAD = "amarnai:panel:openThread" as const;
 
 export type PanelReadyMessage = {
   v: typeof PANEL_PROTOCOL_VERSION;
@@ -87,22 +90,10 @@ export type PanelOpenPanelMessage = {
   type: typeof PANEL_OPEN_PANEL;
 };
 
-/**
- * Show a conversation the user picked from the panel's queue. Fire and forget,
- * unlike the draft insert: nothing in the panel waits on an answer, and the
- * result is visible on the page a moment later either way.
- */
-export type PanelOpenThreadMessage = {
-  v: typeof PANEL_PROTOCOL_VERSION;
-  type: typeof PANEL_OPEN_THREAD;
-  providerThreadId: string;
-};
-
 export type PanelToHostMessage =
   | PanelReadyMessage
   | PanelInsertDraftMessage
-  | PanelOpenPanelMessage
-  | PanelOpenThreadMessage;
+  | PanelOpenPanelMessage;
 
 // ── Guards ────────────────────────────────────────────────────────────────────
 
@@ -159,14 +150,4 @@ export function isPanelInsertDraftMessage(msg: unknown): msg is PanelInsertDraft
 export function isPanelOpenPanelMessage(msg: unknown): msg is PanelOpenPanelMessage {
   const m = envelope(msg);
   return !!m && m["type"] === PANEL_OPEN_PANEL;
-}
-
-/** Bounded because the id lands in the page's URL; real ids are far shorter. */
-const MAX_PROVIDER_THREAD_ID_LEN = 256;
-
-export function isPanelOpenThreadMessage(msg: unknown): msg is PanelOpenThreadMessage {
-  const m = envelope(msg);
-  if (!m || m["type"] !== PANEL_OPEN_THREAD) return false;
-  const id = m["providerThreadId"];
-  return typeof id === "string" && id.length > 0 && id.length <= MAX_PROVIDER_THREAD_ID_LEN;
 }

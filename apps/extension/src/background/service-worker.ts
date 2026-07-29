@@ -5,7 +5,8 @@
 // page), and streaming fetches do not keep it alive. So the side-panel/sidebar
 // page owns the SSE stream and all data fetching. The script's only jobs are to
 // open the panel when the toolbar icon is clicked, open the welcome tab on
-// first install, and answer the mail-page content scripts' requests — thread
+// first install, navigate a mail tab to a thread picked in the injected panel's
+// queue, and answer the mail-page content scripts' requests — thread
 // summaries and reply drafts (they cannot call the API themselves; see
 // content/core/messaging.ts). Listeners are
 // registered synchronously at top level, as event pages require — an event page
@@ -14,6 +15,7 @@ import { ext } from "../platform/ext";
 import { registerThreadSummaryHandler } from "./summaryHandler";
 import { registerGenerateDraftHandler } from "./draftHandler";
 import { registerOpenPanelHandler } from "./openPanelHandler";
+import { registerOpenMailThreadHandler } from "./openThreadHandler";
 import { registerPageWorldHandler } from "./pageWorldHandler";
 import { registerInstallHandler } from "./installHandler";
 
@@ -22,6 +24,7 @@ import { registerInstallHandler } from "./installHandler";
 registerThreadSummaryHandler();
 registerGenerateDraftHandler();
 registerOpenPanelHandler();
+registerOpenMailThreadHandler();
 registerPageWorldHandler();
 registerInstallHandler();
 

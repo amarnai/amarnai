@@ -92,9 +92,17 @@ function makeHost(overrides: Partial<PanelHost> = {}): PanelHost {
   };
 }
 
-function renderPanel(opts: { api?: ApiClient; host?: PanelHost; onInjectionDisabled?: () => void } = {}) {
+function renderPanel(
+  opts: {
+    api?: ApiClient;
+    host?: PanelHost;
+    onInjectionDisabled?: () => void;
+    onOpenThread?: (providerThreadId: string) => void;
+  } = {},
+) {
   const host = opts.host ?? makeHost();
   const onInjectionDisabled = opts.onInjectionDisabled ?? vi.fn();
+  const onOpenThread = opts.onOpenThread ?? vi.fn();
   const view = render(
     <I18nProvider i18n={i18n}>
       <QueuePanel
@@ -104,10 +112,11 @@ function renderPanel(opts: { api?: ApiClient; host?: PanelHost; onInjectionDisab
         accountEmail="ada@example.com"
         visible
         onInjectionDisabled={onInjectionDisabled}
+        onOpenThread={onOpenThread}
       />
     </I18nProvider>,
   );
-  return { host, onInjectionDisabled, view };
+  return { host, onInjectionDisabled, onOpenThread, view };
 }
 
 describe("QueuePanel", () => {
@@ -191,16 +200,30 @@ describe("QueuePanel", () => {
     expect(await screen.findByText("Invoice")).toBeTruthy();
   });
 
-  it("asks the host to open the conversation where it can", async () => {
-    const host = makeHost();
-    renderPanel({ host });
+  // The row reports the click; the panel is what decides to show the thread and
+  // whether the mail client can be sent there too.
+  it("reports which conversation a row opens", async () => {
+    const { onOpenThread } = renderPanel();
 
     fireEvent.click(await screen.findByRole("button", { name: /Open conversation/ }));
 
-    expect(host.openThread).toHaveBeenCalledWith("18f0abc");
+    expect(onOpenThread).toHaveBeenCalledWith("18f0abc");
   });
 
-  // Outlook's task pane cannot navigate itself, so the row becomes a link out.
+  // Outlook's task pane cannot navigate itself, so the row becomes a link out —
+  // and the panel must still switch to the thread, which the link alone would
+  // not do.
+  it("reports the click from the link fallback too", async () => {
+    const host = makeHost({
+      capabilities: { insertDraft: true, signIn: true, openExternal: false, openThread: false },
+    });
+    const { onOpenThread } = renderPanel({ host });
+
+    fireEvent.click(await screen.findByRole("link", { name: /Open conversation/ }));
+
+    expect(onOpenThread).toHaveBeenCalledWith("18f0abc");
+  });
+
   it("falls back to an account-routed link when the host cannot navigate", async () => {
     const host = makeHost({
       capabilities: { insertDraft: true, signIn: true, openExternal: false, openThread: false },

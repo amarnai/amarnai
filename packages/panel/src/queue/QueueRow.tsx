@@ -31,10 +31,12 @@ export type QueueRowProps = {
   /** The mailbox reading it, so a link out lands in the right account. */
   accountEmail: string;
   host: PanelHost;
+  /** Show this thread in the panel, and in the mail client where that is possible. */
+  onOpen: () => void;
   onToggleDone: () => void;
 };
 
-export function QueueRow({ thread, accountEmail, host, onToggleDone }: QueueRowProps) {
+export function QueueRow({ thread, accountEmail, host, onOpen, onToggleDone }: QueueRowProps) {
   const { _ } = useLingui();
   const isDone = !!thread.doneMark;
   const sender = thread.senderName ?? thread.senderEmail ?? _(msg`Unknown sender`);
@@ -45,6 +47,10 @@ export function QueueRow({ thread, accountEmail, host, onToggleDone }: QueueRowP
   // ordinary link where it cannot. Both are siblings of the toggle rather than
   // its parent: a button inside a button is invalid, and a row-wide click target
   // that swallows the toggle is worse than either.
+  //
+  // Both report the click the same way, and the panel switches to the thread on
+  // the strength of that alone. The link still opens the conversation where the
+  // host cannot; it is no longer the only thing the click does.
   const open = _(msg`Open conversation: ${subject}`);
   const body = (
     <>
@@ -60,7 +66,7 @@ export function QueueRow({ thread, accountEmail, host, onToggleDone }: QueueRowP
           type="button"
           className="apn-queue-open"
           aria-label={open}
-          onClick={() => host.openThread(thread.providerThreadId)}
+          onClick={onOpen}
         >
           {body}
         </button>
@@ -71,6 +77,7 @@ export function QueueRow({ thread, accountEmail, host, onToggleDone }: QueueRowP
           href={buildThreadUrl(thread, accountEmail)}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={onOpen}
         >
           {body}
         </a>
