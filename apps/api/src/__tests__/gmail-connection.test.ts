@@ -148,7 +148,10 @@ const baseEmailAccount = { id: "acct-1" };
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+    userId: TEST_USER_ID,
+    role: "OWNER",
+  } as never);
   // Default: the requester owns the workspace, so the mount-level owner guard
   // (requireWorkspaceOwner) passes. Non-owner cases override this to null.
   vi.mocked(db.workspace.findFirst).mockResolvedValue({ id: WS_ID } as never);
@@ -388,7 +391,10 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
   });
 
   it("rejects a non-owner with 403 and stores nothing", async () => {
-    vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // requester is not the owner
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: TEST_USER_ID,
+      role: "MEMBER",
+    } as never);
     const res = await connect(VALID_CONNECT_BODY);
     expect(res.status).toBe(403);
     expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
@@ -592,7 +598,10 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
   // Owner-only is enforced at the mount for the destructive disconnect route. A
   // member who is not the owner must not be able to disconnect (or eraseData).
   it("rejects a non-owner member with 403 and disconnects nothing (Gmail)", async () => {
-    vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // member, not the owner
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: TEST_USER_ID,
+      role: "MEMBER",
+    } as never);
     vi.mocked(db.emailConnection.findUnique).mockResolvedValue(baseConnection as never);
 
     const res = await app.request(
@@ -607,7 +616,10 @@ describe("DELETE /workspaces/:workspaceId/gmail-connection", () => {
   // The single disconnect route tears down OUTLOOK connections too (disconnectGmail
   // is provider-neutral), so the owner guard must protect Outlook mailboxes as well.
   it("rejects a non-owner member with 403 and disconnects nothing (Outlook)", async () => {
-    vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // member, not the owner
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: TEST_USER_ID,
+      role: "MEMBER",
+    } as never);
     vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
       ...baseConnection,
       provider: "OUTLOOK",
@@ -656,5 +668,40 @@ describe("One GmailConnection per workspace", () => {
     const res2 = await app.request(`/workspaces/${OTHER_WS_ID}/gmail-connection`, authed());
     expect(res2.status).toBe(200);
     expect(await res2.json()).toBeNull();
+  });
+});
+
+describe("owner guard — one definition of owner", () => {
+  it("authorizes on the membership role, not Workspace.ownerUserId", async () => {
+    // The two are separate columns answering different questions. Every other
+    // owner-only path (workspace update, billing, taxonomy) reads the role, so
+    // this one does too; a user holding ownerUserId without an OWNER member row
+    // is not an owner for authorization purposes.
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: TEST_USER_ID,
+      role: "MEMBER",
+    } as never);
+    vi.mocked(db.workspace.findFirst).mockResolvedValue({ id: WS_ID } as never);
+
+    const res = await app.request(
+      `/workspaces/${WS_ID}/gmail-connection`,
+      authed({ method: "DELETE" }),
+    );
+
+    expect(res.status).toBe(403);
+  });
+
+  it("hides the workspace entirely from someone with no membership", async () => {
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(null as never);
+
+    const res = await app.request(
+      `/workspaces/${WS_ID}/gmail-connection`,
+      authed({ method: "DELETE" }),
+    );
+
+    // 404 rather than 403: the membership guard runs first and declines to
+    // confirm the workspace exists to a stranger. Only a member who is not an
+    // owner gets the 403 above.
+    expect(res.status).toBe(404);
   });
 });

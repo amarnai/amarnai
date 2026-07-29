@@ -54,6 +54,11 @@ export function usePendingCheckout({
 }): PendingCheckoutResult {
   const [sessionId, setSessionId] = useState<string | null>(null);
 
+  // The focus handler and a poll tick can fire together. Without this both read
+  // the marker before either clears it, and the host is told the upgrade landed
+  // twice.
+  const inFlightRef = useRef(false);
+
   // Held in a ref so the polling effect does not restart every time the host
   // re-renders with a new callback identity.
   const onProvisionedRef = useRef(onProvisioned);
@@ -74,25 +79,31 @@ export function usePendingCheckout({
   }, []);
 
   const confirmNow = useCallback(async () => {
-    const stored = await getPendingCheckout();
-    if (!stored) {
+    if (inFlightRef.current) return;
+    inFlightRef.current = true;
+    try {
+      const stored = await getPendingCheckout();
+      if (!stored) {
+        setSessionId(null);
+        return;
+      }
+
+      const res = await confirmCheckout(stored).catch(() => null);
+      // A failed round trip says nothing about the checkout; keep watching.
+      if (!res) return;
+      // Payment is not finished yet. Leave the marker and try again.
+      if (res.ok && res.data.pending) return;
+
+      await clearPendingCheckout();
       setSessionId(null);
-      return;
-    }
-
-    const res = await confirmCheckout(stored).catch(() => null);
-    // A failed round trip says nothing about the checkout; keep watching.
-    if (!res) return;
-    // Payment is not finished yet. Leave the marker and try again.
-    if (res.ok && res.data.pending) return;
-
-    await clearPendingCheckout();
-    setSessionId(null);
-    if (res.ok && res.data.provisioned) {
-      onProvisionedRef.current({
-        plan: res.data.plan ?? "",
-        workspaceId: res.data.workspaceId ?? "",
-      });
+      if (res.ok && res.data.provisioned) {
+        onProvisionedRef.current({
+          plan: res.data.plan ?? "",
+          workspaceId: res.data.workspaceId ?? "",
+        });
+      }
+    } finally {
+      inFlightRef.current = false;
     }
   }, []);
 

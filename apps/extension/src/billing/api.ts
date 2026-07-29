@@ -48,6 +48,13 @@ export interface StartCheckoutInput {
   cycle: BillingCycle;
   workspaceId?: string;
   newWorkspaceName?: string;
+  /**
+   * The mailbox this user works in, so Stripe's return page can offer a way
+   * back to it. Sent from here because the panel knows it directly; a workspace
+   * bought for a brand-new team has no connection for the server to infer it
+   * from.
+   */
+  mailProvider?: "GMAIL" | "OUTLOOK";
 }
 
 export type StartCheckoutResult = {
@@ -77,7 +84,10 @@ export function startCheckout(input: StartCheckoutInput) {
 export function confirmCheckout(sessionId: string) {
   return billingRequest<{
     provisioned?: boolean;
+    /** Payment is not finished; ask again later. */
     pending?: boolean;
+    /** Stripe will never complete this session; stop watching it. */
+    expired?: boolean;
     plan?: string;
     workspaceId?: string;
   }>("confirm-checkout", { method: "POST", body: { sessionId } });

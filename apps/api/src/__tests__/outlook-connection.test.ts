@@ -90,7 +90,10 @@ async function connect(body: unknown): Promise<Response> {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
+  vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+    userId: TEST_USER_ID,
+    role: "OWNER",
+  } as never);
   vi.mocked(db.workspace.findFirst).mockResolvedValue({ id: WS_ID } as never); // requester owns the ws
   vi.mocked(db.emailConnection.findUnique).mockResolvedValue(safeConnection as never);
   vi.mocked(db.emailConnection.count).mockResolvedValue(0);
@@ -131,7 +134,10 @@ describe("POST /workspaces/:workspaceId/outlook-connection", () => {
   });
 
   it("rejects a non-owner with 403 and stores nothing", async () => {
-    vi.mocked(db.workspace.findFirst).mockResolvedValue(null); // not the owner
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({
+      userId: TEST_USER_ID,
+      role: "MEMBER",
+    } as never);
     const res = await connect(VALID_BODY);
     expect(res.status).toBe(403);
     expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();

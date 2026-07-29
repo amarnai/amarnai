@@ -29,7 +29,7 @@ export default async function UpgradeSuccessPage({
 }) {
   await initServerI18n();
   const user = await requireUser();
-  const { session_id, src } = await searchParams;
+  const { session_id, src, mail } = await searchParams;
   // Marked at session creation (see create-checkout-session). The panel normally
   // closes this tab a moment after it lands, so what follows is the fallback for
   // when it cannot: the panel was closed, its polling window elapsed, or payment
@@ -79,23 +79,13 @@ export default async function UpgradeSuccessPage({
   const planLabel = planLabels[workspace.plan] ?? workspace.plan;
   const isTrialing = workspace.trialEndsAt && workspace.trialEndsAt > new Date();
 
-  // Which mailbox to offer. A workspace bought for a new team has no connection
-  // of its own yet, so fall back to any mailbox this user already has connected.
-  let mailboxProvider: string | null = null;
-  if (fromExtension) {
-    const connection =
-      (await db.emailConnection.findFirst({
-        where: { workspaceId: workspace.id, status: "ACTIVE" },
-        select: { provider: true },
-      })) ??
-      (await db.emailConnection.findFirst({
-        where: { workspace: { members: { some: { userId: user.id } } }, status: "ACTIVE" },
-        select: { provider: true },
-        orderBy: { updatedAt: "desc" },
-      }));
-    mailboxProvider = connection?.provider ?? null;
-  }
-  const mailboxUrl = mailboxProvider ? MAILBOX_URL[mailboxProvider] : null;
+  // Which mailbox to offer. Carried from the panel at session creation rather
+  // than inferred from connections: a workspace bought for a new team has none
+  // of its own, and searching the user's other workspaces could pick the wrong
+  // mailbox for someone with both Gmail and Outlook connected. Only ever used to
+  // choose between two fixed links, so a tampered value costs nothing.
+  const mailboxProvider = fromExtension && typeof mail === "string" ? mail : null;
+  const mailboxUrl = mailboxProvider ? (MAILBOX_URL[mailboxProvider] ?? null) : null;
 
   return (
     <div className="upgrade-success-page">

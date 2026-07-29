@@ -180,6 +180,13 @@ syncStatus.get("/workspaces/:workspaceId/sync-status", async (c) => {
     // "you are on the free plan" — without this it would offer an upgrade that
     // can only fail. Travels with workspacePlan because the two are always read
     // together: what you are on, and whether anything else is purchasable.
+    //
+    // Read from THIS process even though checkout runs in the web app. That is
+    // not a mismatch: account deletion here cancels subscriptions through Stripe
+    // (see cancelSubscriptionsForAccountDeletion), so any deployment selling
+    // plans must configure the key on both sides. An API without it is already
+    // unable to stop billing a deleted account, and should not be advertising
+    // upgrades either.
     billingEnabled: isStripeConfigured(),
     pushEnabled,
   });

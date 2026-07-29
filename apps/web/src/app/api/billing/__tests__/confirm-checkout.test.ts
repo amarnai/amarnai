@@ -143,3 +143,33 @@ describe("credential precedence — an explicit token beats an ambient cookie", 
     expect(res.status).toBe(200);
   });
 });
+
+describe("session outcomes the client must tell apart", () => {
+  it("reports an expired session as final, not as still-in-progress", async () => {
+    vi.mocked(auth).mockResolvedValue({ user: { id: USER_ID } } as never);
+    mockStripe.checkout.sessions.retrieve.mockResolvedValue({
+      client_reference_id: USER_ID,
+      status: "expired",
+    });
+
+    const res = await POST(makeReq({ sessionId: "cs_1" }));
+
+    // Stripe will never complete it, so a client told "pending" would retry a
+    // dead id until its own timer gave up.
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ expired: true });
+    expect(provisionFromCheckoutSession).not.toHaveBeenCalled();
+  });
+
+  it("still reports an unfinished session as pending", async () => {
+    vi.mocked(auth).mockResolvedValue({ user: { id: USER_ID } } as never);
+    mockStripe.checkout.sessions.retrieve.mockResolvedValue({
+      client_reference_id: USER_ID,
+      status: "open",
+    });
+
+    const res = await POST(makeReq({ sessionId: "cs_1" }));
+
+    expect(await res.json()).toEqual({ pending: true });
+  });
+});

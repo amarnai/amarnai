@@ -194,3 +194,51 @@ describe("usePendingCheckout — confirmNow", () => {
     expect(confirmCheckout).not.toHaveBeenCalled();
   });
 });
+
+describe("usePendingCheckout — concurrent confirmation", () => {
+  it("reports a landed upgrade once when a focus event races a poll tick", async () => {
+    vi.mocked(confirmCheckout).mockResolvedValue({
+      ok: true,
+      status: 200,
+      data: { provisioned: true },
+    } as never);
+
+    const { result, onProvisioned } = render();
+    await act(async () => {
+      await result.current.start("cs_1");
+    });
+
+    // Both triggers fire before either has cleared the marker.
+    await act(async () => {
+      await Promise.all([result.current.confirmNow(), result.current.confirmNow()]);
+    });
+
+    expect(onProvisioned).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(confirmCheckout).mock.calls.length).toBe(1);
+  });
+});
+
+describe("usePendingCheckout — an expired session", () => {
+  it("stops watching instead of retrying a session Stripe will never complete", async () => {
+    vi.mocked(confirmCheckout).mockResolvedValue({
+      ok: true,
+      status: 200,
+      data: { expired: true },
+    } as never);
+
+    const { result, onProvisioned } = render();
+    await act(async () => {
+      await result.current.start("cs_1");
+    });
+
+    await tick(POLL_MS);
+
+    expect(await getPendingCheckout()).toBeNull();
+    expect(onProvisioned).not.toHaveBeenCalled();
+
+    // And no further polling.
+    const calls = vi.mocked(confirmCheckout).mock.calls.length;
+    await tick(POLL_MS * 3);
+    expect(vi.mocked(confirmCheckout).mock.calls.length).toBe(calls);
+  });
+});

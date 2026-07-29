@@ -178,11 +178,16 @@ const requireWorkspaceOwner: MiddlewareHandler<AppEnv> = async (c, next) => {
   const userId: string = c.get("userId");
   if (!userId) return c.json({ error: "Unauthorized" }, 401);
 
-  const workspace = await db.workspace.findFirst({
-    where: { id: workspaceId, ownerUserId: userId },
-    select: { id: true },
+  // Authorization reads the membership role, the same field every other
+  // owner-only path checks (workspace update, billing, taxonomy permissions).
+  // Workspace.ownerUserId is a separate column that answers a different
+  // question — whose quota this counts against and what cascades on delete —
+  // and using it here made "owner" mean two things in one service.
+  const member = await db.workspaceMember.findUnique({
+    where: { workspaceId_userId: { workspaceId, userId } },
+    select: { role: true },
   });
-  if (!workspace) return c.json({ error: "Not authorized" }, 403);
+  if (member?.role !== "OWNER") return c.json({ error: "Not authorized" }, 403);
 
   return next();
 };

@@ -39,6 +39,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
+  // Expired is final: Stripe will never complete this session, so telling the
+  // client to keep trying leaves it retrying a dead id until its own timer gives
+  // up. Reported as its own outcome so the caller drops the session rather than
+  // holding it as if payment were still in progress.
+  if (session.status === "expired") {
+    return NextResponse.json({ expired: true });
+  }
+
   // Not finished yet (e.g. the app returned before payment completed) — tell the
   // client to try again rather than treating it as failed.
   if (session.status !== "complete") {

@@ -46,7 +46,13 @@ export function SettingsOverlay({ api, workspaceId, onUpgrade, onClose }: Props)
   // Everything below the plan is owner-only server-side: PATCH /workspaces/:id
   // and checkout both reject a member. Mirror the web settings page and hide
   // those controls rather than letting them fail on submit.
-  const isOwner = workspace?.owner.id === userId;
+  //
+  // Read from the membership role, not `workspace.owner`: those are separate
+  // columns (Workspace.ownerUserId vs WorkspaceMember.role) and every server
+  // check behind these controls consults the role. Gating on the other one
+  // renders controls the server then refuses.
+  const isOwner =
+    workspace?.members.some((m) => m.user.id === userId && m.role === "OWNER") ?? false;
 
   const [settings, setSettings] = useState<GmailSyncSettingsResponse | null>(null);
   const [connection, setConnection] = useState<GmailConnection | null>(null);

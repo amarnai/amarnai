@@ -325,3 +325,41 @@ describe("return destination — where the user came from", () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe("return destination — which mailbox", () => {
+  function extReq(mailProvider?: string) {
+    return new Request("http://localhost/api/billing/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        plan: "pro",
+        cycle: "monthly",
+        action: "upgrade",
+        workspaceId: WS_ID,
+        source: "extension",
+        ...(mailProvider ? { mailProvider } : {}),
+      }),
+    });
+  }
+
+  it("carries the caller's mailbox onto the return URL", async () => {
+    // Sent by the panel rather than inferred server-side: a workspace bought for
+    // a new team has no connection to infer from.
+    expect((await POST(extReq("OUTLOOK"))).status).toBe(200);
+    expect(sessionsCreateArg()?.success_url).toContain("mail=OUTLOOK");
+  });
+
+  it("omits it when the caller did not say", async () => {
+    expect((await POST(extReq())).status).toBe(200);
+    expect(sessionsCreateArg()?.success_url).not.toContain("mail=");
+  });
+
+  it("never marks a web-initiated checkout with a mailbox", async () => {
+    expect((await POST(upgradeReq(WS_ID))).status).toBe(200);
+    expect(sessionsCreateArg()?.success_url).not.toContain("mail=");
+  });
+
+  it("rejects an unrecognised mailbox rather than trusting it", async () => {
+    expect((await POST(extReq("YAHOO"))).status).toBe(400);
+  });
+});

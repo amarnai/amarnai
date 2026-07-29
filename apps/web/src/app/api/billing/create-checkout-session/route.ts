@@ -16,6 +16,8 @@ const bodySchema = z.object({
   // tab with the panel docked beside it, so their return page differs from a web
   // user's. Optional: absent means the web app.
   source: z.enum(["extension"]).optional(),
+  /** Which mailbox the extension user should be offered a way back to. */
+  mailProvider: z.enum(["GMAIL", "OUTLOOK"]).optional(),
 });
 
 export async function POST(request: Request) {
@@ -32,7 +34,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const { plan, cycle, action, workspaceId, newWorkspaceName, source } = parsed.data;
+  const { plan, cycle, action, workspaceId, newWorkspaceName, source, mailProvider } =
+    parsed.data;
   const stripe = getStripe();
 
   // Whether to advertise the 14-day trial on this first paid plan. This is only
@@ -140,7 +143,7 @@ export async function POST(request: Request) {
     client_reference_id: userId,
     success_url: `${baseUrl}/upgrade/success?session_id={CHECKOUT_SESSION_ID}${
       source === "extension" ? "&src=ext" : ""
-    }`,
+    }${source === "extension" && mailProvider ? `&mail=${mailProvider}` : ""}`,
     cancel_url: `${baseUrl}/upgrade?plan=${plan}`,
     allow_promotion_codes: true,
   });

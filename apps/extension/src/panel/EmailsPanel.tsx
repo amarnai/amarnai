@@ -604,7 +604,7 @@ export function EmailsPanel({
             workspaceName={workspaceName}
             mascotSrc={MASCOT_SRC}
             currentPlan={syncStatus?.workspacePlan ?? "FREE"}
-            startCheckout={startCheckout}
+            startCheckout={(input) => startCheckout({ ...input, mailProvider: provider })}
             onCheckoutStarted={handleCheckoutStarted}
             onUpgraded={() => {
               api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
