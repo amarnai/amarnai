@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useState, type ComponentType } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentType,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -118,16 +125,47 @@ export function WelcomeCarousel() {
   const { _ } = useLingui();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Auto-advance is for the visitor who is only watching. The moment someone
+  // steers it themselves it stops for good: a carousel that pulls a reader off
+  // the slide they just chose is worse than one that never moved.
+  const [steered, setSteered] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || steered) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setTimeout(
       () => setIndex((i) => (i + 1) % SLIDES.length),
       SLIDE_MS,
     );
     return () => clearTimeout(id);
-  }, [index, paused]);
+  }, [index, paused, steered]);
+
+  function goTo(next: number) {
+    setSteered(true);
+    setIndex(next);
+  }
+
+  // Relative moves update from the previous index rather than the rendered one,
+  // so two clicks landing in the same render still advance two slides.
+  function step(delta: number) {
+    setSteered(true);
+    setIndex((i) => (i + delta + SLIDES.length) % SLIDES.length);
+  }
+
+  // The dots are a tablist, and the tablist pattern owns the arrow keys: Tab
+  // reaches the group, arrows move within it. Focus follows so the roving
+  // selection stays visible.
+  function onTabKeyDown(e: ReactKeyboardEvent<HTMLDivElement>) {
+    const delta =
+      e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!delta) return;
+    e.preventDefault();
+    step(delta);
+    const next = (index + delta + SLIDES.length) % SLIDES.length;
+    const tabs = tabsRef.current?.querySelectorAll<HTMLButtonElement>(".wc-dot");
+    tabs?.[next]?.focus();
+  }
 
   const slide = SLIDES[index]!;
   const { Art } = slide;
@@ -156,25 +194,65 @@ export function WelcomeCarousel() {
         <p className="wc-slide-text">{_(slide.body)}</p>
       </div>
 
-      <div
-        className="wc-dots"
-        role="tablist"
-        aria-label={_(msg`Choose which part of Amarnai to preview`)}
-      >
-        {SLIDES.map((s, i) => (
+      <div className="wc-controls">
+        <div
+          className="wc-dots"
+          role="tablist"
+          ref={tabsRef}
+          aria-label={_(msg`Choose which part of Amarnai to preview`)}
+          onKeyDown={onTabKeyDown}
+        >
+          {SLIDES.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              role="tab"
+              id={`wc-tab-${s.id}`}
+              className={`wc-dot${i === index ? " active" : ""}`}
+              aria-selected={i === index}
+              aria-controls={`wc-panel-${s.id}`}
+              aria-label={_(s.title)}
+              tabIndex={i === index ? 0 : -1}
+              onClick={() => goTo(i)}
+            />
+          ))}
+        </div>
+
+        {/* The dots say where you are; these say you can move. Both wrap
+            around, so neither is ever a dead control. */}
+        <div className="wc-nav">
           <button
-            key={s.id}
             type="button"
-            role="tab"
-            id={`wc-tab-${s.id}`}
-            className={`wc-dot${i === index ? " active" : ""}`}
-            aria-selected={i === index}
-            aria-controls={`wc-panel-${s.id}`}
-            aria-label={_(s.title)}
-            onClick={() => setIndex(i)}
-          />
-        ))}
+            className="wc-nav-btn"
+            aria-label={_(msg`Previous preview`)}
+            onClick={() => step(-1)}
+          >
+            <ChevronIcon direction="left" />
+          </button>
+          <button
+            type="button"
+            className="wc-nav-btn"
+            aria-label={_(msg`Next preview`)}
+            onClick={() => step(1)}
+          >
+            <ChevronIcon direction="right" />
+          </button>
+        </div>
       </div>
     </section>
+  );
+}
+
+function ChevronIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path
+        d={direction === "left" ? "M10 3.5L5.5 8l4.5 4.5" : "M6 3.5L10.5 8 6 12.5"}
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

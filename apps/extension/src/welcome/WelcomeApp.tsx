@@ -1,8 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
-import { GoogleGIcon, OutlookIcon, ShieldCheckIcon } from "@amarnai/ui";
+import {
+  AmarnaiMark,
+  GoogleGIcon,
+  MicrosoftIcon,
+  ShieldCheckIcon,
+} from "@amarnai/ui";
 import { ext } from "../platform/ext";
-import { usePinnedState } from "./usePinnedState";
+import { usePinnedState, type PinState } from "./usePinnedState";
 import { WelcomeCarousel } from "./WelcomeCarousel";
 
 /**
@@ -52,35 +57,15 @@ export function WelcomeApp() {
 
   return (
     <main className="wc-page">
-      {/* Points at the puzzle-piece menu, which sits at the top right of the
-          browser chrome directly above this tab. Decorative: the callout below
-          carries the same instruction in words. */}
-      {pinned === "unpinned" ? (
-        <span className="wc-pin-pointer" aria-hidden>
-          <svg viewBox="0 0 24 40" width="24" height="40" fill="none">
-            <path
-              d="M12 39V6"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M4 13L12 4l8 9"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
-      ) : null}
-
       <div className="wc-grid">
         <WelcomeCarousel />
 
         <div className="wc-intro">
           <div className="wc-brand">
-            <img src="/icons/icon48.png" width={40} height={40} alt="" />
+            {/* The vector mark, not the shipped PNG: that one is a raster on an
+                opaque plate, which renders as a white tile on the dark theme and
+                is soft above 48px. */}
+            <AmarnaiMark size={36} className="wc-brand-mark" />
             <span className="wc-brand-name">Amarnai</span>
           </div>
 
@@ -91,11 +76,13 @@ export function WelcomeApp() {
             <p className="wc-lede">
               <Trans>
                 Amarnai files every Gmail and Outlook thread into folders you design,
-                from the side panel next to the mail you are already reading.
+                and keeps them sorted right inside your inbox.
               </Trans>
             </p>
           </div>
 
+          {/* In the order they happen. Sign-in used to sit last, after two steps
+              nobody can act on until it is done. */}
           <ol className="wc-steps">
             <li className="wc-step">
               <span className="wc-step-num" aria-hidden>
@@ -103,12 +90,12 @@ export function WelcomeApp() {
               </span>
               <div>
                 <h2 className="wc-step-title">
-                  <Trans>Design your folders</Trans>
+                  <Trans>Connect your inbox</Trans>
                 </h2>
                 <p className="wc-step-text">
                   <Trans>
-                    Amarnai files every thread into folders you choose. Generate a set from
-                    your own inbox, or start from a template.
+                    One sign-in creates your account and connects Gmail or Outlook.
+                    Amarnai never sends or deletes mail.
                   </Trans>
                 </p>
               </div>
@@ -119,12 +106,12 @@ export function WelcomeApp() {
               </span>
               <div>
                 <h2 className="wc-step-title">
-                  <Trans>Work next to your email</Trans>
+                  <Trans>Create your folders</Trans>
                 </h2>
                 <p className="wc-step-text">
                   <Trans>
-                    Amarnai lives in a side panel beside Gmail and Outlook, so you never
-                    have to leave the thread you are reading.
+                    Let Amarnai generate a set that fits your own inbox, or start from a
+                    template. One click either way, and you can change them any time.
                   </Trans>
                 </p>
               </div>
@@ -135,13 +122,12 @@ export function WelcomeApp() {
               </span>
               <div>
                 <h2 className="wc-step-title">
-                  <Trans>Sign in with Google or Microsoft</Trans>
+                  <Trans>Work in Gmail or Outlook</Trans>
                 </h2>
                 <p className="wc-step-text">
                   <Trans>
-                    One sign-in creates your account, connects your Gmail or Outlook
-                    inbox, and lets you set up your folders. Amarnai never sends or
-                    deletes mail.
+                    Your folders become Gmail labels / Outlook categories, so sorted
+                    mail is waiting in your inbox.
                   </Trans>
                 </p>
               </div>
@@ -150,6 +136,7 @@ export function WelcomeApp() {
 
           <div className="wc-cta-block">
             <button type="button" className="wc-cta" onClick={openPanel}>
+              <AmarnaiMark size={20} />
               <Trans>Open Amarnai</Trans>
             </button>
 
@@ -162,7 +149,7 @@ export function WelcomeApp() {
                 <Trans>Verified by Google</Trans>
               </li>
               <li className="wc-assurance">
-                <OutlookIcon size={14} />
+                <MicrosoftIcon size={14} />
                 <Trans>Verified by Microsoft</Trans>
               </li>
               <li className="wc-assurance">
@@ -172,41 +159,103 @@ export function WelcomeApp() {
             </ul>
           </div>
 
-          {fallback ? (
-            <p className="wc-hint" role="status">
-              <Trans>Click the Amarnai icon in your toolbar to open the panel.</Trans>
-            </p>
-          ) : null}
-
-          {/* Browsers give extensions no way to pin themselves, so this asks, then
-              watches. "unknown" is a browser that will not say (Firefox pins on
-              install), which gets the plain tip instead of a step it cannot pass. */}
-          {pinned === "unpinned" ? (
-            <div className="wc-pin" role="status">
-              <h2 className="wc-pin-title">
-                <Trans>Pin Amarnai to your toolbar</Trans>
-              </h2>
-              <p className="wc-pin-text">
-                <Trans>
-                  Click the puzzle-piece icon at the top right of your browser, then click
-                  the pin next to Amarnai. This box updates on its own once you do.
-                </Trans>
-              </p>
-            </div>
-          ) : pinned === "pinned" ? (
-            <p className="wc-pin-done" role="status">
-              <span className="wc-pin-check" aria-hidden>
-                ✓
-              </span>
-              <Trans>Amarnai is pinned. Its icon opens the panel from any tab.</Trans>
-            </p>
-          ) : (
-            <p className="wc-hint">
-              <Trans>Tip: pin the Amarnai icon in your toolbar to keep it one click away.</Trans>
-            </p>
-          )}
+          <ToolbarNote pinned={pinned} fallback={fallback} />
         </div>
       </div>
     </main>
+  );
+}
+
+/**
+ * The one thing under the CTA that changes: where the icon is, and whether it
+ * is there at all. Every state renders the same box so the slot does not swell
+ * into a callout and shrink back to grey small print as the browser answers.
+ */
+function ToolbarNote({ pinned, fallback }: { pinned: PinState; fallback: boolean }) {
+  // Opening the panel failed, so the toolbar icon is the way in and saying so
+  // outranks the pin tip — unless there is no icon yet, which the unpinned
+  // branch below already explains.
+  if (fallback && pinned !== "unpinned") {
+    return (
+      <Note mark={<PinGlyph />}>
+        <Trans>Click the Amarnai icon in your toolbar to open the panel.</Trans>
+      </Note>
+    );
+  }
+
+  // Browsers give extensions no way to pin themselves, so this asks, then
+  // watches. "unknown" is a browser that will not say (Firefox pins on
+  // install), which gets the plain tip instead of a step it cannot pass.
+  if (pinned === "unpinned") {
+    return (
+      <Note
+        accent
+        mark={<PinGlyph />}
+        title={<Trans>Pin Amarnai to your toolbar</Trans>}
+      >
+        <Trans>
+          Click the puzzle-piece icon at the top right of your browser, then click the
+          pin next to Amarnai. This box updates on its own once you do.
+        </Trans>
+      </Note>
+    );
+  }
+
+  if (pinned === "pinned") {
+    return (
+      <Note
+        mark={
+          <span className="wc-note-check" aria-hidden>
+            ✓
+          </span>
+        }
+      >
+        <Trans>Amarnai is pinned. Its icon opens the panel from any tab.</Trans>
+      </Note>
+    );
+  }
+
+  return (
+    <Note mark={<PinGlyph />}>
+      <Trans>Tip: pin the Amarnai icon in your toolbar to keep it one click away.</Trans>
+    </Note>
+  );
+}
+
+function Note({
+  accent = false,
+  mark,
+  title,
+  children,
+}: {
+  accent?: boolean;
+  mark: ReactNode;
+  title?: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <div className={`wc-note${accent ? " wc-note--accent" : ""}`} role="status">
+      <span className="wc-note-mark" aria-hidden>
+        {mark}
+      </span>
+      <div>
+        {title ? <h2 className="wc-note-title">{title}</h2> : null}
+        <p className="wc-note-text">{children}</p>
+      </div>
+    </div>
+  );
+}
+
+function PinGlyph() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path
+        d="M9.6 1.9l4.5 4.5-1.6 1.6-1.2-.3-2.9 2.9.2 1.9-1.1 1.1L3 8.5l1.1-1.1 1.9.2 2.9-2.9-.3-1.2zM5.2 10.8L2.4 13.6"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

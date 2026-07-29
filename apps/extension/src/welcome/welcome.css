@@ -20,9 +20,9 @@ body {
 }
 
 .wc-page {
-  max-width: 1240px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 48px var(--space-lg) 72px;
+  padding: 48px 32px 64px;
   box-sizing: border-box;
   /* Centered in the tab when it fits, top-anchored ("safe") when it does not,
      so a short window scrolls from the title rather than clipping it. */
@@ -31,10 +31,13 @@ body {
   align-content: safe center;
 }
 
+/* The copy column gets the larger share. The demos are capped (see
+   .wc-carousel) because a preview reads fine at 600px, while the headline, the
+   steps and the button are what the page is actually for. */
 .wc-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 420px);
-  gap: 56px;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 1.1fr);
+  gap: clamp(40px, 4.5vw, 80px);
   align-items: start;
 }
 
@@ -45,13 +48,23 @@ body {
   flex-direction: column;
   gap: var(--space-lg);
   min-width: 0;
+  width: 100%;
+  /* Same cap the emails slide already used, so all three slides are one width. */
+  max-width: 600px;
+  justify-self: center;
 }
 
-/* Fixed height so the page does not jump as slides swap. */
+/* Every slide occupies the same box, so the page does not jump as they swap and
+   the demo lines up with the headline beside it.
+
+   The height is the sorting feed card's. That card is the one rigid slide — five
+   rows, measured once at mount and pinned — so the two flexible slides match it
+   rather than the other way round; stretching the card would only pad it. Keep
+   this in step with MAX in HeroFeedCard. */
 .wc-stage {
-  height: clamp(420px, 58vh, 540px);
+  height: 400px;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   min-width: 0;
 }
 
@@ -78,6 +91,19 @@ body {
   margin-inline: auto;
 }
 
+/* The carousel is capped at 600px at every width, which is not enough for the
+   frame bar to hold breadcrumb, hint and button on one row. The hint goes: the
+   demos stay just as interactive without being told so. */
+.wc-slide-frame .ld-play-note {
+  display: none;
+}
+
+/* Two columns once the centered hint is gone, so the button stays at the right
+   edge instead of sitting in the empty middle track. */
+.wc-slide-frame .ld-frame-bar {
+  grid-template-columns: 1fr auto;
+}
+
 .wc-slide-frame .ld-demo-stage,
 .wc-slide-stage {
   flex: 1;
@@ -92,7 +118,7 @@ body {
 }
 
 .wc-slide-copy {
-  min-height: 84px;
+  min-height: 96px;
 }
 
 .wc-slide-title {
@@ -108,6 +134,13 @@ body {
   font-size: var(--fs-md);
   line-height: 1.55;
   color: var(--ink-2);
+}
+
+.wc-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
 }
 
 .wc-dots {
@@ -136,24 +169,58 @@ body {
   background: var(--accent);
 }
 
-/* ─── Right column: what it is and how to start ───────────────────────────── */
-
-.wc-intro {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-}
-
-.wc-brand {
+.wc-nav {
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
 
+.wc-nav-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background 0.14s, border-color 0.14s, color 0.14s;
+}
+
+.wc-nav-btn:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+/* ─── Right column: what it is and how to start ───────────────────────────── */
+
+/* Type here is a step up from the panel's scale: this column is the widest
+   text on the page and the only one carrying an action. */
+.wc-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.wc-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.wc-brand-mark {
+  flex: none;
+  color: var(--accent);
+}
+
 .wc-brand-name {
-  font-size: var(--fs-lg);
+  font-size: 26px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 .wc-headline {
@@ -164,8 +231,8 @@ body {
 
 .wc-title {
   margin: 0;
-  font-size: 30px;
-  line-height: 1.2;
+  font-size: clamp(30px, 2.5vw, 40px);
+  line-height: 1.15;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -173,7 +240,7 @@ body {
 
 .wc-lede {
   margin: 0;
-  font-size: var(--fs-md);
+  font-size: var(--fs-xl);
   line-height: 1.6;
   color: var(--ink-2);
 }
@@ -184,39 +251,39 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-xl);
 }
 
 .wc-step {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-md);
+  gap: var(--space-lg);
 }
 
 .wc-step-num {
   flex: none;
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background: var(--accent-soft);
   color: var(--accent-ink);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
   font-weight: 600;
 }
 
 .wc-step-title {
-  margin: 0 0 2px;
-  font-size: var(--fs-md);
+  margin: 0 0 3px;
+  font-size: var(--fs-lg);
   font-weight: 600;
   color: var(--ink);
 }
 
 .wc-step-text {
   margin: 0;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
   line-height: 1.55;
   color: var(--ink-2);
 }
@@ -224,19 +291,26 @@ body {
 .wc-cta-block {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-md);
+  align-items: stretch;
+  gap: var(--space-lg);
 }
 
+/* The only action on the page, so it takes the full column: nothing else here
+   competes for the click, and a short button in a wide column reads as one
+   option among several. */
 .wc-cta {
-  align-self: flex-start;
-  padding: var(--space-md) 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  width: 100%;
+  padding: var(--space-lg) 28px;
   border: 1px solid transparent;
   border-radius: var(--r-sm);
   background: var(--accent);
   color: var(--on-accent, #fff);
   font-family: inherit;
-  font-size: var(--fs-md);
+  font-size: var(--fs-xl);
   font-weight: 500;
   cursor: pointer;
   transition: background 0.14s;
@@ -247,21 +321,23 @@ body {
 }
 
 /* Sits directly under the CTA: the reviews Amarnai passed before it could ask
-   for a mailbox. */
+   for a mailbox. Centred under the full-width button, with a gap wide enough
+   that the three read as separate marks rather than one run-on line. */
 .wc-assurances {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-sm) var(--space-lg);
+  justify-content: center;
+  gap: var(--space-lg) var(--space-xxl);
 }
 
 .wc-assurance {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-base);
   font-weight: 500;
   color: var(--ink-3);
   white-space: nowrap;
@@ -271,52 +347,46 @@ body {
   flex-shrink: 0;
 }
 
-.wc-hint {
-  margin: 0;
-  font-size: var(--fs-sm);
-  color: var(--ink-3);
+/* The toolbar note. One box for every state the browser can report, so the slot
+   keeps its weight as the answer arrives; only the tint changes, and only for
+   the state that asks for something. See usePinnedState for why "unknown" is
+   not the same as unpinned. */
+
+.wc-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  background: var(--bg-soft);
 }
 
-/* Pin-to-toolbar step. Shown only while the browser reports the icon unpinned;
-   see usePinnedState for why "unknown" is not the same as unpinned. */
-
-.wc-pin {
-  padding: var(--space-md) var(--space-lg);
-  border: 1px solid var(--accent-line);
-  border-radius: var(--r-md);
+.wc-note--accent {
+  border-color: var(--accent-line);
   background: var(--accent-soft);
 }
 
-.wc-pin-title {
-  margin: 0 0 2px;
-  font-size: var(--fs-md);
-  font-weight: 600;
-  color: var(--accent-ink);
-}
-
-.wc-pin-text {
-  margin: 0;
-  font-size: var(--fs-md);
-  line-height: 1.55;
-  color: var(--ink-2);
-}
-
-.wc-pin-done {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin: 0;
-  font-size: var(--fs-md);
-  color: var(--ink-2);
-}
-
-.wc-pin-check {
+.wc-note-mark {
   flex: none;
-  width: 20px;
-  height: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--ink-3);
+}
+
+.wc-note--accent .wc-note-mark {
+  color: var(--accent-ink);
+}
+
+.wc-note-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--ok-soft);
   color: var(--ok-ink);
@@ -324,29 +394,21 @@ body {
   font-weight: 600;
 }
 
-/* Anchored to the viewport, not the page: it points at the browser's extensions
-   menu, which sits above the top-right corner of the tab regardless of scroll. */
-.wc-pin-pointer {
-  position: fixed;
-  top: 10px;
-  right: 26px;
-  color: var(--accent);
-  pointer-events: none;
-  animation: wc-pin-nudge 1.6s ease-in-out infinite;
+.wc-note-title {
+  margin: 0 0 3px;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--accent-ink);
 }
 
-@keyframes wc-pin-nudge {
-  0%,
-  100% {
-    transform: translateY(4px);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
+.wc-note-text {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  color: var(--ink-2);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wc-pin-pointer,
   .wc-stage > * {
     animation: none;
   }
@@ -367,41 +429,16 @@ body {
   }
 }
 
-/* Below this the frame bar cannot hold breadcrumb, hint and button on one row.
-   The hint goes: the demos stay just as interactive without being told so. */
-@media (max-width: 700px) {
-  .wc-slide-frame .ld-play-note {
-    display: none;
-  }
-
-  /* Two columns once the centered hint is gone, so the button stays at the
-     right edge instead of sitting in the empty middle track. */
-  .wc-slide-frame .ld-frame-bar {
-    grid-template-columns: 1fr auto;
-  }
-}
-
 @media (max-width: 560px) {
-  /* The extensions menu is not where the arrow would point on a narrow window,
-     and the callout says it in words anyway. */
-  .wc-pin-pointer {
-    display: none;
-  }
-
   .wc-page {
-    padding: 32px var(--space-lg) 56px;
+    padding: 32px var(--space-xl) 56px;
   }
 
   .wc-title {
-    font-size: 24px;
+    font-size: 26px;
   }
 
-  .wc-cta {
-    align-self: stretch;
-    text-align: center;
-  }
-
-  .wc-stage {
-    height: 420px;
+  .wc-brand-name {
+    font-size: 22px;
   }
 }
