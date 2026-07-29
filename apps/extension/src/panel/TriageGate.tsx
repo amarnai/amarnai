@@ -4,6 +4,7 @@ import { mapFolders, mapThreads, type FolderItem, type ThreadItem } from "@amarn
 import type { ApiClient, FilterCounts, SyncStatus, MailProvider } from "@amarnai/api-client";
 import { EmailsPanel } from "./EmailsPanel";
 import { ConnectMailCta } from "./ConnectMailCta";
+import { revealMailboxOnce } from "../gmail/revealMailbox";
 
 type Seed = {
   folders: FolderItem[];
@@ -78,6 +79,17 @@ export function TriageGate({
       cancelled = true;
     };
   }, [api, workspaceId, reloadKey]);
+
+  // First working inbox on this install: take the user to it. Driven off the
+  // seed rather than the sign-in call sites because this is where the provider
+  // and mailbox address are known for certain, and where an ACTIVE connection
+  // (not merely a completed OAuth grant) has been confirmed. revealMailboxOnce
+  // owns the once-per-install decision, so a reload or workspace switch landing
+  // here again costs nothing.
+  useEffect(() => {
+    if (seed?.gmailStatus !== "ACTIVE") return;
+    void revealMailboxOnce(seed.provider ?? "GMAIL", seed.gmailAddress);
+  }, [seed]);
 
   if (failed) {
     return (

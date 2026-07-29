@@ -19,19 +19,38 @@ import type { MailProvider } from "@amarnai/api-client";
  * origin we hold a grant for does not require the "tabs" permission.
  */
 export async function focusMailTab(provider: MailProvider): Promise<boolean> {
-  const urls = provider === "OUTLOOK" ? OUTLOOK_MAIL_HOSTS : GMAIL_MAIL_HOST;
+  const target = await findMailTab(provider);
+  if (target?.id == null) return false;
 
   try {
-    const tabs = await ext.tabs.query({ url: urls, currentWindow: true });
-    const target = tabs.find((t) => t.active) ?? tabs[0];
-    if (target?.id == null) return false;
-
     await ext.tabs.update(target.id, { active: true });
     return true;
   } catch {
     // Focusing is a courtesy at the end of a flow that has already succeeded;
     // never let it surface as a failure.
     return false;
+  }
+}
+
+/**
+ * The mailbox tab to reuse in this window, or null when none is open. Prefers
+ * the active one, so a user with several mailboxes gets the one they were last
+ * using rather than an arbitrary background tab.
+ *
+ * Says nothing about which account the tab is signed into: Gmail's `/u/<index>/`
+ * is per-profile sign-in order, not an identity, so callers that care must
+ * navigate the tab by account rather than trust what it is already showing.
+ *
+ * Returns null rather than throwing when the query is refused (missing host
+ * permission), so callers fall back to opening a tab of their own.
+ */
+export async function findMailTab(provider: MailProvider): Promise<chrome.tabs.Tab | null> {
+  const urls = provider === "OUTLOOK" ? OUTLOOK_MAIL_HOSTS : GMAIL_MAIL_HOST;
+  try {
+    const tabs = await ext.tabs.query({ url: urls, currentWindow: true });
+    return tabs.find((t) => t.active) ?? tabs[0] ?? null;
+  } catch {
+    return null;
   }
 }
 

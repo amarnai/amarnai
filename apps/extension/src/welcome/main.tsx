@@ -11,6 +11,7 @@ import "./welcome.css";
 import "@amarnai/ui/theme/styles";
 import { applyStoredThemeSync, ThemeProvider } from "@amarnai/ui";
 import { LinguiProvider } from "../i18n/LinguiProvider";
+import { registerWelcomeTab } from "../platform/welcomeTab";
 import { WelcomeApp } from "./WelcomeApp";
 
 // This page opens on install, before anyone has signed in, so there is no
@@ -18,6 +19,10 @@ import { WelcomeApp } from "./WelcomeApp";
 // Theme is read from the same storage the panel uses (empty on a fresh install,
 // which resolves to the OS preference).
 applyStoredThemeSync();
+
+// Let the panel navigate this tab to the mailbox once sign-in completes, instead
+// of leaving a finished onboarding page open beside a brand new mail tab.
+registerWelcomeTab();
 
 const container = document.getElementById("root");
 if (!container) throw new Error("#root not found");

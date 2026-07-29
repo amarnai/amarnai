@@ -35,11 +35,7 @@ export type ThreadUrlInput = Pick<ThreadItem, "provider" | "providerThreadId" | 
 export function buildThreadUrl(thread: ThreadUrlInput, accountEmail?: string | null): string {
   const hint = accountEmail ? encodeURIComponent(accountEmail) : null;
   if (thread.provider === "OUTLOOK") {
-    if (!thread.webLink) {
-      return hint
-        ? `https://outlook.office.com/mail/?login_hint=${hint}`
-        : "https://outlook.office.com/mail/";
-    }
+    if (!thread.webLink) return buildMailboxUrl("OUTLOOK", accountEmail);
     const separator = thread.webLink.includes("?") ? "&" : "?";
     const url = `${thread.webLink}${separator}ispopout=0`;
     return hint ? `${url}&login_hint=${hint}` : url;
@@ -47,4 +43,28 @@ export function buildThreadUrl(thread: ThreadUrlInput, accountEmail?: string | n
   return hint
     ? `https://mail.google.com/mail/?authuser=${hint}#all/${thread.providerThreadId}`
     : `https://mail.google.com/mail/u/0/#all/${thread.providerThreadId}`;
+}
+
+/**
+ * Build a link to the mailbox itself rather than to a thread, account-routed by
+ * the same rules as buildThreadUrl (`authuser` for Gmail, `login_hint` for OWA)
+ * so it cannot land on whichever account the browser happens to be signed into.
+ *
+ * Used when there is no thread to point at: the extension sending a user to the
+ * inbox their panel is meant to sit beside, and the no-webLink Outlook fallback
+ * above.
+ */
+export function buildMailboxUrl(
+  provider: ThreadUrlInput["provider"],
+  accountEmail?: string | null,
+): string {
+  const hint = accountEmail ? encodeURIComponent(accountEmail) : null;
+  if (provider === "OUTLOOK") {
+    return hint
+      ? `https://outlook.office.com/mail/?login_hint=${hint}`
+      : "https://outlook.office.com/mail/";
+  }
+  return hint
+    ? `https://mail.google.com/mail/?authuser=${hint}#inbox`
+    : "https://mail.google.com/mail/u/0/#inbox";
 }

@@ -41,6 +41,10 @@ const chromeStub = {
     create: vi.fn(async () => ({}) as chrome.tabs.Tab),
     // Used to close a tab the panel opened (checkout) once it is finished with.
     remove: vi.fn(async () => {}),
+    // Re-checking the welcome tab still exists before navigating it.
+    get: vi.fn(async () => ({}) as chrome.tabs.Tab),
+    // The welcome page publishing its own tab id.
+    getCurrent: vi.fn(async () => ({}) as chrome.tabs.Tab),
   },
   sidePanel: {
     setPanelBehavior: vi.fn(async () => {}),

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildThreadUrl } from "./threadUrl.js";
+import { buildThreadUrl, buildMailboxUrl } from "./threadUrl.js";
 
 describe("buildThreadUrl", () => {
   it("builds a Gmail hash deep link from the providerThreadId when no account is given", () => {
@@ -82,5 +82,27 @@ describe("buildThreadUrl", () => {
         "user@contoso.com"
       )
     ).toBe("https://outlook.office.com/mail/?login_hint=user%40contoso.com");
+  });
+});
+
+describe("buildMailboxUrl", () => {
+  it("routes Gmail by authuser so it cannot open the wrong account", () => {
+    expect(buildMailboxUrl("GMAIL", "user@example.com")).toBe(
+      "https://mail.google.com/mail/?authuser=user%40example.com#inbox"
+    );
+  });
+
+  it("falls back to the legacy /u/0/ form with no account email", () => {
+    expect(buildMailboxUrl("GMAIL")).toBe("https://mail.google.com/mail/u/0/#inbox");
+  });
+
+  it("pre-fills an OWA sign-in with the connected account", () => {
+    expect(buildMailboxUrl("OUTLOOK", "user@contoso.com")).toBe(
+      "https://outlook.office.com/mail/?login_hint=user%40contoso.com"
+    );
+  });
+
+  it("opens the plain OWA inbox with no account email", () => {
+    expect(buildMailboxUrl("OUTLOOK")).toBe("https://outlook.office.com/mail/");
   });
 });
