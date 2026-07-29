@@ -24,6 +24,10 @@ msgstr ""
 msgid "(No body)"
 msgstr "(ไม่มีเนื้อหา)"
 
+#: ../panel/src/queue/QueueRow.tsx:41
+msgid "(no subject)"
+msgstr "(ไม่มีหัวเรื่อง)"
+
 #. placeholder {0}: thread.attachmentCount
 #: ../../apps/mobile/src/components/ThreadRow.tsx:115
 #, fuzzy
@@ -219,6 +223,10 @@ msgstr "{folderCount, plural, one {# โฟลเดอร์} other {# โฟ�
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:170
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {# โฟลเดอร์ที่ไม่มีเธรดจะไม่แสดง} other {# โฟลเดอร์ที่ไม่มีเธรดจะไม่แสดง}}"
+
+#: ../panel/src/queue/SortingStrip.tsx:50
+msgid "{inFlight, plural, one {Sorting # thread…} other {Sorting # threads…}}"
+msgstr "{inFlight, plural, one {กำลังจัดเรียง {inFlight} หัวข้อ...} other {กำลังจัดเรียง {inFlight} หัวข้อ...}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -878,7 +886,7 @@ msgstr "Amarnai สำหรับ Android"
 #~ msgid "Amarnai has not sorted this thread yet. Try again in a moment."
 #~ msgstr "Amarnai ยังไม่ได้จัดเรียงเธรดนี้ โปรดลองอีกครั้งในอีกสักครู่"
 
-#: ../panel/src/states/PanelStates.tsx:115
+#: ../panel/src/states/PanelStates.tsx:121
 msgid "Amarnai hasn't synced this conversation yet."
 msgstr "Amarnai ยังไม่ได้ซิงค์การสนทนานี้"
 
@@ -1197,6 +1205,10 @@ msgstr "แจ้งเจ้าของเวิร์กสเปซให้
 msgid "Assign"
 msgstr "มอบหมาย"
 
+#: ../panel/src/queue/QueuePanel.tsx:111
+msgid "Assign a thread to yourself from any conversation and it will show up here."
+msgstr "มอบหมายหัวข้อสนทนาให้ตัวเองจากการสนทนาใดก็ได้ แล้วจะปรากฏที่นี่"
+
 #: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
 msgid "Assign thread"
@@ -1233,6 +1245,11 @@ msgstr "มอบหมายให้ {assigneeName}"
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
 msgstr "มอบหมายให้ {assigneeName} แล้ว เปลี่ยนผู้รับมอบหมาย"
+
+#: ../panel/src/queue/QueuePanel.tsx:101
+#, fuzzy
+msgid "Assigned to you"
+msgstr "ที่มอบหมายให้คุณ"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:62
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -1649,7 +1666,7 @@ msgstr "การเปลี่ยนแปลงหรือยกเลิก
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "การแจ้งเตือนช่อง, การวิเคราะห์การอัปโหลด และการอัปเดตนโยบายจากแพลตฟอร์มโซเชียล"
 
-#: ../panel/src/states/PanelStates.tsx:111
+#: ../panel/src/states/PanelStates.tsx:117
 #, fuzzy
 msgid "Check again"
 msgstr "ตรวจสอบอีกครั้ง"
@@ -2129,6 +2146,10 @@ msgstr "สัญญา"
 msgid "Controls which Gmail threads are imported. Trash is always excluded."
 msgstr "ควบคุมว่าจะนำเข้าเธรด Gmail ใดบ้าง กล่องจดหมายขยะจะถูกยกเว้นเสมอ"
 
+#: ../panel/src/InjectedThreadPanel.tsx:239
+#~ msgid "Conversation"
+#~ msgstr "การสนทนา"
+
 #: ../ui/src/emails/SuggestedDraftCard.tsx:92
 #, fuzzy
 msgid "Copied"
@@ -2241,7 +2262,7 @@ msgstr "ไม่สามารถเตรียมการย้ายข้
 msgid "Could not queue rescan. Please try again."
 msgstr "ไม่สามารถจัดคิวการสแกนซ้ำได้ โปรดลองอีกครั้ง"
 
-#: ../panel/src/states/PanelStates.tsx:141
+#: ../panel/src/states/PanelStates.tsx:147
 #, fuzzy
 msgid "Could not reach Amarnai."
 msgstr "ไม่สามารถเข้าถึง Amarnai ได้"
@@ -2886,6 +2907,10 @@ msgstr "กำลังร่าง..."
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:129
 msgid "Drafts"
 msgstr "ฉบับร่าง"
+
+#: ../panel/src/queue/QueuePanel.tsx:103
+msgid "Drafts awaiting approval"
+msgstr "ฉบับร่างที่รอการอนุมัติ"
 
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:227
 #, fuzzy
@@ -4501,6 +4526,7 @@ msgstr "กำลังโหลด"
 #: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
+#: ../panel/src/queue/SortingStrip.tsx:72
 #: ../ui/src/emails/BackfillCard.tsx:35
 #: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
@@ -4519,7 +4545,7 @@ msgstr "กำลังโหลดเธรดเก่า..."
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:86
 #: ../../apps/web/src/components/NotificationBell.tsx:161
-#: ../panel/src/states/PanelStates.tsx:151
+#: ../panel/src/states/PanelStates.tsx:157
 #: ../ui/src/emails/MessageCard.tsx:68
 #: ../ui/src/emails/ThreadList.tsx:265
 #, fuzzy
@@ -4579,6 +4605,7 @@ msgstr "ฉบับร่างต้นฉบับ, การประสา�
 msgid "Manuscripts & Peer Review"
 msgstr "ต้นฉบับและทบทวนโดยผู้ทรงคุณวุฒิ"
 
+#: ../panel/src/queue/QueueRow.tsx:42
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
 #: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
@@ -4596,6 +4623,7 @@ msgstr "ทำเครื่องหมายว่าเสร็จสิ้
 msgid "Mark as important"
 msgstr "ทำเครื่องหมายว่าสำคัญ"
 
+#: ../panel/src/queue/QueueRow.tsx:42
 #: ../ui/src/emails/ThreadRow.tsx:145
 #, fuzzy
 msgid "Mark as not done"
@@ -4818,6 +4846,7 @@ msgstr "อัปเดตชื่อแล้ว"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
 #: ../../apps/mobile/src/components/ThreadRow.tsx:39
+#: ../panel/src/queue/QueuePanel.tsx:102
 #: ../ui/src/emails/queueLabels.ts:18
 #, fuzzy
 msgid "Needs review"
@@ -4891,6 +4920,7 @@ msgstr "รหัสผ่านใหม่"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:153
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../panel/src/queue/SortingStrip.tsx:78
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
 msgid "New threads will appear as they are sorted."
@@ -5125,6 +5155,10 @@ msgstr "ยังไม่ได้จัดเรียง"
 msgid "Not yet synced"
 msgstr "ยังไม่ได้ซิงค์"
 
+#: ../panel/src/queue/QueuePanel.tsx:108
+msgid "Nothing is waiting on you right now."
+msgstr "ตอนนี้ยังไม่มีงานที่รอคุณอยู่"
+
 #: ../../apps/extension/src/panel/NotificationBell.tsx:40
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
@@ -5189,7 +5223,7 @@ msgstr "เฉพาะเจ้าของเวิร์กสเปซเท
 msgid "Open"
 msgstr "เปิด"
 
-#: ../panel/src/states/PanelStates.tsx:101
+#: ../panel/src/states/PanelStates.tsx:107
 msgid "Open a conversation to see how Amarnai sorted it."
 msgstr "เปิดการสนทนาเพื่อดูว่า Amarnai จัดเรียงอย่างไร"
 
@@ -5211,7 +5245,12 @@ msgstr "เปิด Amarnai"
 msgid "Open an issue on GitHub"
 msgstr "สร้างประเด็นบน GitHub"
 
-#: ../panel/src/InjectedThreadPanel.tsx:323
+#: ../panel/src/queue/QueueRow.tsx:48
+#, fuzzy
+msgid "Open conversation: {subject}"
+msgstr "เปิดการสนทนา: {subject}"
+
+#: ../panel/src/InjectedThreadPanel.tsx:404
 msgid "Open in Amarnai"
 msgstr "เปิดใน Amarnai"
 
@@ -5776,6 +5815,10 @@ msgstr "คำถามของนักเรียน, การส่งก�
 #: ../ui/src/i18n/taxonomy-template-messages.ts:132
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "การยืนยันการสั่งซื้อ, การเปลี่ยนแปลงสถานะคำสั่งซื้อ, และการอัปเดตการจัดส่งจากร้านค้าของคุณ"
+
+#: ../panel/src/InjectedThreadPanel.tsx:344
+#~ msgid "Queue"
+#~ msgstr "คิว"
 
 #: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
@@ -6754,12 +6797,14 @@ msgstr "จัดระเบียบแล้ว"
 #~ msgstr "จัดเรียงโดยอัตโนมัติ ตามความคล้ายคลึงของเนื้อหา"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:36
+#: ../panel/src/queue/SortingStrip.tsx:47
 #, fuzzy
 msgid "Sorting"
 msgstr "การจัดเรียง"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:144
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
+#: ../panel/src/queue/SortingStrip.tsx:69
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
 msgid "Sorting historical inbox"
@@ -7154,7 +7199,7 @@ msgstr "ลิงก์นั้นไม่ถูกต้องหรือห
 #~ msgid "The Amarna letters were the world's first overloaded inbox. These two lived it."
 #~ msgstr ""
 
-#: ../panel/src/states/PanelStates.tsx:127
+#: ../panel/src/states/PanelStates.tsx:133
 msgid "The Amarnai panel is switched off for this workspace."
 msgstr "แผง Amarnai ถูกปิดใช้งานสำหรับพื้นที่ทำงานนี้"
 
@@ -7264,6 +7309,10 @@ msgstr "การตั้งค่าเหล่านี้ควบคุม
 #, fuzzy
 msgid "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
 msgstr "เบราว์เซอร์นี้ลงชื่อเข้าใช้ในชื่อ {currentEmail} แต่ส่วนขยายของคุณลงชื่อเข้าใช้ในชื่อ {incomingEmail}"
+
+#: ../panel/src/InjectedThreadPanel.tsx:255
+msgid "This conversation"
+msgstr "การสนทนานี้"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:191
 #~ msgid "This conversation has not synced to Amarnai yet."
@@ -7423,6 +7472,11 @@ msgstr "เธรดที่ Amarnai จัดเรียงไปยังโ
 msgid "Threads that haven't been sorted yet."
 msgstr "เธรดที่ยังไม่ได้จัดเรียง"
 
+#: ../panel/src/InjectedThreadPanel.tsx:360
+#, fuzzy
+msgid "Threads to handle"
+msgstr "เธรดที่ต้องจัดการ"
+
 #: ../ui/src/emails/queueLabels.ts:27
 msgid "Threads you've marked as important."
 msgstr "เธรดที่คุณทำเครื่องหมายว่าสำคัญ"
@@ -7581,7 +7635,7 @@ msgstr "คัดแยกกล่องขาเข้าของคุณไ
 #~ msgid "Triaging 412 threads"
 #~ msgstr ""
 
-#: ../panel/src/states/PanelStates.tsx:137
+#: ../panel/src/states/PanelStates.tsx:143
 msgid "Try again"
 msgstr "ลองอีกครั้ง"
 
@@ -7642,6 +7696,10 @@ msgstr "ไม่ทราบ"
 #, fuzzy
 msgid "unknown error"
 msgstr "ข้อผิดพลาดที่ไม่รู้จัก"
+
+#: ../panel/src/queue/QueueRow.tsx:40
+msgid "Unknown sender"
+msgstr "ผู้ส่งไม่ทราบชื่อ"
 
 #: ../ui/src/pricing/planMessages.ts:92
 #, fuzzy
@@ -7739,7 +7797,7 @@ msgid "Updating…"
 msgstr "กำลังอัปเดต..."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
-#: ../panel/src/states/PanelStates.tsx:170
+#: ../panel/src/states/PanelStates.tsx:176
 #: ../ui/src/emails/AssigneePicker.tsx:136
 #: ../ui/src/settings/PlanSection.tsx:49
 #: ../ui/src/upgrade/UpgradeDialog.tsx:175
@@ -8277,7 +8335,7 @@ msgstr "คุณใช้วงเงินนำเข้าอีเมลท
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "คุณใช้โควตานำเข้าอีเมลทั้งหมดของแผน {plan} ประจำเดือนนี้แล้ว รวมถึงการนำเข้าซ้ำ 1 ครั้ง การนำเข้าจะรีเฟรชในวันที่ {refreshDate}"
 
-#: ../panel/src/states/PanelStates.tsx:166
+#: ../panel/src/states/PanelStates.tsx:172
 msgid "You've used all your sorting for this month, so this thread is waiting."
 msgstr "คุณใช้การจัดเรียงหมดโควตาสำหรับเดือนนี้แล้ว หัวข้อนี้จึงกำลังรออยู่"
 
@@ -8398,6 +8456,7 @@ msgstr "แพ็กเกจใหม่ของคุณเริ่มใช
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
+#: ../panel/src/queue/SortingStrip.tsx:76
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
 msgstr "เธรดก่อนหน้าของคุณกำลังโหลดและจะแสดงในไม่ช้า"

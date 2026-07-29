@@ -6,6 +6,7 @@ import {
   PANEL_READY,
   PANEL_INSERT_DRAFT,
   PANEL_OPEN_PANEL,
+  PANEL_OPEN_THREAD,
   isPanelInsertResultMessage,
   isPanelThreadContextMessage,
   isPanelVisibilityMessage,
@@ -152,6 +153,9 @@ function buildGmailPanelHost(): PanelHost {
       insertDraft: true,
       signIn: true,
       openExternal: true,
+      // Gmail routes on the URL fragment, so the content script can show a
+      // conversation without a reload and without leaving the tab.
+      openThread: true,
     },
 
     apiBaseUrl: API_BASE_URL,
@@ -183,6 +187,13 @@ function buildGmailPanelHost(): PanelHost {
         });
         post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_INSERT_DRAFT, requestId, html });
       });
+    },
+
+    openThread(providerThreadId) {
+      // Fire and forget: the content script changes the page's hash, and the
+      // conversation it opens is reported straight back through the ordinary
+      // context feed. There is nothing for the panel to wait on.
+      post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_OPEN_THREAD, providerThreadId });
     },
 
     requestSignIn() {

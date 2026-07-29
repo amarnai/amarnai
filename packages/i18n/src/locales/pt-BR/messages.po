@@ -24,6 +24,10 @@ msgstr ""
 msgid "(No body)"
 msgstr "(Sem corpo)"
 
+#: ../panel/src/queue/QueueRow.tsx:41
+msgid "(no subject)"
+msgstr "(sem assunto)"
+
 #. placeholder {0}: thread.attachmentCount
 #: ../../apps/mobile/src/components/ThreadRow.tsx:115
 #, fuzzy
@@ -214,6 +218,10 @@ msgstr "{folderCount, plural, one {# pasta} other {# pastas}}"
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:170
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {# pasta sem conversas não é exibida.} other {# pastas sem conversas não são exibidas.}}"
+
+#: ../panel/src/queue/SortingStrip.tsx:50
+msgid "{inFlight, plural, one {Sorting # thread…} other {Sorting # threads…}}"
+msgstr "{inFlight, plural, one {Classificando # conversa…} other {Classificando # conversas…}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -866,7 +874,7 @@ msgstr "Amarnai para Android"
 #~ msgid "Amarnai has not sorted this thread yet. Try again in a moment."
 #~ msgstr "Amarnai ainda não categorizou esta conversa. Tente novamente em instantes."
 
-#: ../panel/src/states/PanelStates.tsx:115
+#: ../panel/src/states/PanelStates.tsx:121
 #, fuzzy
 msgid "Amarnai hasn't synced this conversation yet."
 msgstr "O Amarnai ainda não sincronizou esta conversa."
@@ -1185,6 +1193,10 @@ msgstr "Peça ao proprietário do workspace para mudar o plano."
 msgid "Assign"
 msgstr "Atribuir"
 
+#: ../panel/src/queue/QueuePanel.tsx:111
+msgid "Assign a thread to yourself from any conversation and it will show up here."
+msgstr "Atribua uma conversa a você de qualquer outra e ela aparecerá aqui."
+
 #: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
 msgid "Assign thread"
@@ -1221,6 +1233,11 @@ msgstr "Atribuído a {assigneeName}"
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
 msgstr "Atribuído a {assigneeName}. Alterar responsável"
+
+#: ../panel/src/queue/QueuePanel.tsx:101
+#, fuzzy
+msgid "Assigned to you"
+msgstr "Atribuídas a você"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:62
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -1631,7 +1648,7 @@ msgstr "A alteração ou cancelamento de um plano pago é feita nas suas configu
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "Notificações de canal, análises de uploads e atualizações de política de plataformas sociais."
 
-#: ../panel/src/states/PanelStates.tsx:111
+#: ../panel/src/states/PanelStates.tsx:117
 #, fuzzy
 msgid "Check again"
 msgstr "Verificar novamente"
@@ -2102,6 +2119,10 @@ msgstr "Contratos"
 msgid "Controls which Gmail threads are imported. Trash is always excluded."
 msgstr "Controla quais conversas do Gmail são importadas. A lixeira é sempre excluída."
 
+#: ../panel/src/InjectedThreadPanel.tsx:239
+#~ msgid "Conversation"
+#~ msgstr "Conversa"
+
 #: ../ui/src/emails/SuggestedDraftCard.tsx:92
 #, fuzzy
 msgid "Copied"
@@ -2214,7 +2235,7 @@ msgstr "Não foi possível preparar a migração"
 msgid "Could not queue rescan. Please try again."
 msgstr "Não foi possível enfileirar a nova varredura. Por favor, tente novamente."
 
-#: ../panel/src/states/PanelStates.tsx:141
+#: ../panel/src/states/PanelStates.tsx:147
 msgid "Could not reach Amarnai."
 msgstr "Não foi possível conectar ao Amarnai."
 
@@ -2850,6 +2871,11 @@ msgstr "Rascunhando…"
 #, fuzzy
 msgid "Drafts"
 msgstr "Rascunhos"
+
+#: ../panel/src/queue/QueuePanel.tsx:103
+#, fuzzy
+msgid "Drafts awaiting approval"
+msgstr "Rascunhos aguardando aprovação"
 
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:227
 msgid "Drag and connect. It's fully interactive."
@@ -4437,6 +4463,7 @@ msgstr "Carregando"
 #: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
+#: ../panel/src/queue/SortingStrip.tsx:72
 #: ../ui/src/emails/BackfillCard.tsx:35
 #: ../ui/src/emails/ThreadList.tsx:200
 msgid "Loading past threads…"
@@ -4454,7 +4481,7 @@ msgstr "Carregando conversas anteriores…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:86
 #: ../../apps/web/src/components/NotificationBell.tsx:161
-#: ../panel/src/states/PanelStates.tsx:151
+#: ../panel/src/states/PanelStates.tsx:157
 #: ../ui/src/emails/MessageCard.tsx:68
 #: ../ui/src/emails/ThreadList.tsx:265
 #, fuzzy
@@ -4513,6 +4540,7 @@ msgstr "Rascunhos de manuscritos, coordenação com coautores e status de submis
 msgid "Manuscripts & Peer Review"
 msgstr "Manuscritos e Revisão por Pares"
 
+#: ../panel/src/queue/QueueRow.tsx:42
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
 #: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
@@ -4530,6 +4558,7 @@ msgstr "Marcar como concluído"
 msgid "Mark as important"
 msgstr "Marcar como importante"
 
+#: ../panel/src/queue/QueueRow.tsx:42
 #: ../ui/src/emails/ThreadRow.tsx:145
 #, fuzzy
 msgid "Mark as not done"
@@ -4747,6 +4776,7 @@ msgstr "Nome atualizado."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
 #: ../../apps/mobile/src/components/ThreadRow.tsx:39
+#: ../panel/src/queue/QueuePanel.tsx:102
 #: ../ui/src/emails/queueLabels.ts:18
 msgid "Needs review"
 msgstr "Precisa de revisão"
@@ -4818,6 +4848,7 @@ msgstr "Nova senha"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:153
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../panel/src/queue/SortingStrip.tsx:78
 #: ../ui/src/emails/BackfillCard.tsx:40
 msgid "New threads will appear as they are sorted."
 msgstr "Novas conversas aparecerão conforme forem organizadas."
@@ -5047,6 +5078,10 @@ msgstr "Ainda não classificado"
 msgid "Not yet synced"
 msgstr "Ainda não sincronizado"
 
+#: ../panel/src/queue/QueuePanel.tsx:108
+msgid "Nothing is waiting on you right now."
+msgstr "Nada está pendente para você no momento."
+
 #: ../../apps/extension/src/panel/NotificationBell.tsx:40
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
@@ -5112,7 +5147,7 @@ msgstr "Apenas o proprietário do workspace pode gerenciar o faturamento."
 msgid "Open"
 msgstr "Abrir"
 
-#: ../panel/src/states/PanelStates.tsx:101
+#: ../panel/src/states/PanelStates.tsx:107
 msgid "Open a conversation to see how Amarnai sorted it."
 msgstr "Abra uma conversa para ver como o Amarnai a classificou."
 
@@ -5134,7 +5169,12 @@ msgstr "Abrir Amarnai"
 msgid "Open an issue on GitHub"
 msgstr "Abrir uma issue no GitHub"
 
-#: ../panel/src/InjectedThreadPanel.tsx:323
+#: ../panel/src/queue/QueueRow.tsx:48
+#, fuzzy
+msgid "Open conversation: {subject}"
+msgstr "Abrir conversa: {subject}"
+
+#: ../panel/src/InjectedThreadPanel.tsx:404
 msgid "Open in Amarnai"
 msgstr "Abrir no Amarnai"
 
@@ -5697,6 +5737,10 @@ msgstr "Dúvidas de alunos, entrega de trabalhos de casa e instruções diárias
 #: ../ui/src/i18n/taxonomy-template-messages.ts:132
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "Confirmações de compra, mudanças de status de pedido e atualizações de entrega da sua loja."
+
+#: ../panel/src/InjectedThreadPanel.tsx:344
+#~ msgid "Queue"
+#~ msgstr "Fila"
 
 #: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
@@ -6659,12 +6703,14 @@ msgstr "Classificado"
 #~ msgstr "Classificado automaticamente por similaridade de conteúdo."
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:36
+#: ../panel/src/queue/SortingStrip.tsx:47
 #, fuzzy
 msgid "Sorting"
 msgstr "Classificação"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:144
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
+#: ../panel/src/queue/SortingStrip.tsx:69
 #: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
 msgstr "Organizando caixa de entrada histórica"
@@ -7052,7 +7098,7 @@ msgstr "Esse link é inválido ou expirou."
 #~ msgid "The Amarna letters were the world's first overloaded inbox. These two lived it."
 #~ msgstr ""
 
-#: ../panel/src/states/PanelStates.tsx:127
+#: ../panel/src/states/PanelStates.tsx:133
 msgid "The Amarnai panel is switched off for this workspace."
 msgstr "O painel Amarnai está desativado para esta área de trabalho."
 
@@ -7161,6 +7207,10 @@ msgstr "Estas configurações controlam quais conversas da caixa de entrada são
 #, fuzzy
 msgid "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
 msgstr "Este navegador está conectado como {currentEmail}, mas sua extensão está conectada como {incomingEmail}."
+
+#: ../panel/src/InjectedThreadPanel.tsx:255
+msgid "This conversation"
+msgstr "Esta conversa"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:191
 #~ msgid "This conversation has not synced to Amarnai yet."
@@ -7317,6 +7367,10 @@ msgstr "Conversas classificadas nesta pasta por Amarnai."
 #, fuzzy
 msgid "Threads that haven't been sorted yet."
 msgstr "Conversas que ainda não foram classificadas."
+
+#: ../panel/src/InjectedThreadPanel.tsx:360
+msgid "Threads to handle"
+msgstr "Conversas para gerenciar"
 
 #: ../ui/src/emails/queueLabels.ts:27
 #, fuzzy
@@ -7477,7 +7531,7 @@ msgstr "Organize sua caixa de entrada onde estiver."
 #~ msgid "Triaging 412 threads"
 #~ msgstr "Organizando 412 conversas"
 
-#: ../panel/src/states/PanelStates.tsx:137
+#: ../panel/src/states/PanelStates.tsx:143
 msgid "Try again"
 msgstr "Tentar novamente"
 
@@ -7536,6 +7590,10 @@ msgstr "Desconhecido"
 #, fuzzy
 msgid "unknown error"
 msgstr "erro desconhecido"
+
+#: ../panel/src/queue/QueueRow.tsx:40
+msgid "Unknown sender"
+msgstr "Remetente desconhecido"
 
 #: ../ui/src/pricing/planMessages.ts:92
 #, fuzzy
@@ -7629,7 +7687,7 @@ msgid "Updating…"
 msgstr "Atualizando…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
-#: ../panel/src/states/PanelStates.tsx:170
+#: ../panel/src/states/PanelStates.tsx:176
 #: ../ui/src/emails/AssigneePicker.tsx:136
 #: ../ui/src/settings/PlanSection.tsx:49
 #: ../ui/src/upgrade/UpgradeDialog.tsx:175
@@ -8157,7 +8215,7 @@ msgstr "Você usou todas as importações de e-mail do seu plano {0} este mês, 
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "Você esgotou todas as importações de e-mail do seu plano {plan} este mês, incluindo uma tentativa de reimportação. As importações serão renovadas em {refreshDate}."
 
-#: ../panel/src/states/PanelStates.tsx:166
+#: ../panel/src/states/PanelStates.tsx:172
 msgid "You've used all your sorting for this month, so this thread is waiting."
 msgstr "Você esgotou suas classificações deste mês, então esta conversa está aguardando."
 
@@ -8277,6 +8335,7 @@ msgstr "Seu novo plano já está ativo no painel Amarnai."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
+#: ../panel/src/queue/SortingStrip.tsx:76
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
 msgstr "Suas conversas anteriores estão sendo carregadas e aparecerão em breve."

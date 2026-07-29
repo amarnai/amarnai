@@ -754,6 +754,13 @@ model Draft {
   emailThread    EmailThread          @relation(fields: [emailThreadId], references: [id])
   emailMessage   EmailMessage?        @relation(fields: [emailMessageId], references: [id])
   classification EmailClassification? @relation(fields: [classificationId], references: [id])
+
+  // Both users of the drafts relation probe it by thread AND status: the thread
+  // list's per-row "has a draft waiting" select, and the injected panel's queue,
+  // which asks the whole workspace for threads with a PROPOSED draft. The latter
+  // is an exists-subquery over every draft in the workspace, so without this it
+  // is a sequential scan.
+  @@index([emailThreadId, status])
 }
 
 // Cached AI TL;DR of a thread, generated lazily the first time a user opens the

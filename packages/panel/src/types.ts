@@ -8,5 +8,9 @@ export type {
   Draft,
   MailAccount,
   QuotaInfo,
+  PanelQueueResult,
+  PanelQueueSection,
+  PanelQueueThread,
+  SyncStatus,
 } from "@amarnai/api-client";
 export type { MemberItem, FolderItem } from "@amarnai/ui/emails";

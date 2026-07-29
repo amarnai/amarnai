@@ -24,6 +24,10 @@ msgstr ""
 msgid "(No body)"
 msgstr "(내용 없음)"
 
+#: ../panel/src/queue/QueueRow.tsx:41
+msgid "(no subject)"
+msgstr "(제목 없음)"
+
 #. placeholder {0}: thread.attachmentCount
 #: ../../apps/mobile/src/components/ThreadRow.tsx:115
 #, fuzzy
@@ -219,6 +223,10 @@ msgstr "{folderCount, plural, one {#개 폴더} other {#개 폴더}}"
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:170
 msgid "{hiddenCount, plural, one {# folder with no threads is not shown.} other {# folders with no threads are not shown.}}"
 msgstr "{hiddenCount, plural, one {스레드가 없는 폴더 1개는 표시되지 않습니다.} other {스레드가 없는 폴더 #개는 표시되지 않습니다.}}"
+
+#: ../panel/src/queue/SortingStrip.tsx:50
+msgid "{inFlight, plural, one {Sorting # thread…} other {Sorting # threads…}}"
+msgstr "{inFlight, plural, one {#개 스레드 분류 중…} other {#개 스레드 분류 중…}}"
 
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #, fuzzy
@@ -878,7 +886,7 @@ msgstr "Android용 Amarnai"
 #~ msgid "Amarnai has not sorted this thread yet. Try again in a moment."
 #~ msgstr "Amarnai가 아직 이 스레드를 분류하지 못했습니다. 잠시 후 다시 시도해 주세요."
 
-#: ../panel/src/states/PanelStates.tsx:115
+#: ../panel/src/states/PanelStates.tsx:121
 msgid "Amarnai hasn't synced this conversation yet."
 msgstr "Amarnai가 아직 이 대화를 동기화하지 않았습니다."
 
@@ -1197,6 +1205,10 @@ msgstr "워크스페이스 소유자에게 플랜 변경을 요청하세요."
 msgid "Assign"
 msgstr "할당"
 
+#: ../panel/src/queue/QueuePanel.tsx:111
+msgid "Assign a thread to yourself from any conversation and it will show up here."
+msgstr "어떤 대화에서든 스레드를 본인에게 할당하면 이곳에 표시됩니다."
+
 #: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
 msgid "Assign thread"
@@ -1233,6 +1245,11 @@ msgstr "{assigneeName}님에게 할당됨"
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
 msgstr "{assigneeName} 님에게 할당됨. 담당자 변경"
+
+#: ../panel/src/queue/QueuePanel.tsx:101
+#, fuzzy
+msgid "Assigned to you"
+msgstr "나에게 할당됨"
 
 #: ../../apps/web/src/app/reset-password/page.tsx:62
 msgid "At least {PASSWORD_MIN_LENGTH} characters"
@@ -1649,7 +1666,7 @@ msgstr "유료 플랜 변경 또는 취소는 구독 설정에서 진행됩니�
 msgid "Channel notifications, upload analytics, and policy updates from social platforms."
 msgstr "채널 알림, 업로드 분석, 소셜 플랫폼 정책 업데이트."
 
-#: ../panel/src/states/PanelStates.tsx:111
+#: ../panel/src/states/PanelStates.tsx:117
 #, fuzzy
 msgid "Check again"
 msgstr "다시 확인"
@@ -2129,6 +2146,10 @@ msgstr "계약"
 msgid "Controls which Gmail threads are imported. Trash is always excluded."
 msgstr "가져올 Gmail 스레드를 제어합니다. 휴지통은 항상 제외됩니다."
 
+#: ../panel/src/InjectedThreadPanel.tsx:239
+#~ msgid "Conversation"
+#~ msgstr "대화"
+
 #: ../ui/src/emails/SuggestedDraftCard.tsx:92
 #, fuzzy
 msgid "Copied"
@@ -2241,7 +2262,7 @@ msgstr "마이그레이션 준비에 실패했습니다."
 msgid "Could not queue rescan. Please try again."
 msgstr "재스캔을 대기열에 추가할 수 없습니다. 다시 시도해주세요."
 
-#: ../panel/src/states/PanelStates.tsx:141
+#: ../panel/src/states/PanelStates.tsx:147
 #, fuzzy
 msgid "Could not reach Amarnai."
 msgstr "Amarnai에 연결할 수 없습니다."
@@ -2886,6 +2907,10 @@ msgstr "초안 작성 중..."
 #: ../../apps/site/src/components/landing/OutlookInboxMock.tsx:129
 msgid "Drafts"
 msgstr "임시 보관함"
+
+#: ../panel/src/queue/QueuePanel.tsx:103
+msgid "Drafts awaiting approval"
+msgstr "승인 대기 중인 초안"
 
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:227
 #, fuzzy
@@ -4501,6 +4526,7 @@ msgstr "로딩 중"
 #: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../../apps/mobile/src/components/emails/ThreadListView.tsx:122
+#: ../panel/src/queue/SortingStrip.tsx:72
 #: ../ui/src/emails/BackfillCard.tsx:35
 #: ../ui/src/emails/ThreadList.tsx:200
 #, fuzzy
@@ -4519,7 +4545,7 @@ msgstr "이전 스레드를 불러오는 중…"
 #: ../../apps/web/src/app/loading.tsx:6
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:86
 #: ../../apps/web/src/components/NotificationBell.tsx:161
-#: ../panel/src/states/PanelStates.tsx:151
+#: ../panel/src/states/PanelStates.tsx:157
 #: ../ui/src/emails/MessageCard.tsx:68
 #: ../ui/src/emails/ThreadList.tsx:265
 #, fuzzy
@@ -4579,6 +4605,7 @@ msgstr "원고 초안, 공동 저자 조율 및 논문 제출 상태"
 msgid "Manuscripts & Peer Review"
 msgstr "원고 및 피어 리뷰"
 
+#: ../panel/src/queue/QueueRow.tsx:42
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
 #: ../ui/src/emails/ThreadRow.tsx:146
 #, fuzzy
@@ -4596,6 +4623,7 @@ msgstr "완료로 표시"
 msgid "Mark as important"
 msgstr "중요 표시"
 
+#: ../panel/src/queue/QueueRow.tsx:42
 #: ../ui/src/emails/ThreadRow.tsx:145
 #, fuzzy
 msgid "Mark as not done"
@@ -4818,6 +4846,7 @@ msgstr "이름이 업데이트되었습니다."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:11
 #: ../../apps/mobile/src/components/ThreadRow.tsx:39
+#: ../panel/src/queue/QueuePanel.tsx:102
 #: ../ui/src/emails/queueLabels.ts:18
 #, fuzzy
 msgid "Needs review"
@@ -4891,6 +4920,7 @@ msgstr "새 비밀번호"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:153
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:42
+#: ../panel/src/queue/SortingStrip.tsx:78
 #: ../ui/src/emails/BackfillCard.tsx:40
 #, fuzzy
 msgid "New threads will appear as they are sorted."
@@ -5125,6 +5155,10 @@ msgstr "아직 정렬되지 않음"
 msgid "Not yet synced"
 msgstr "아직 동기화되지 않음"
 
+#: ../panel/src/queue/QueuePanel.tsx:108
+msgid "Nothing is waiting on you right now."
+msgstr "현재 대기 중인 항목이 없습니다."
+
 #: ../../apps/extension/src/panel/NotificationBell.tsx:40
 #: ../../apps/extension/src/panel/NotificationBell.tsx:125
 #: ../../apps/extension/src/panel/NotificationBell.tsx:128
@@ -5189,7 +5223,7 @@ msgstr "워크스페이스 소유자만 결제를 관리할 수 있습니다."
 msgid "Open"
 msgstr "열기"
 
-#: ../panel/src/states/PanelStates.tsx:101
+#: ../panel/src/states/PanelStates.tsx:107
 msgid "Open a conversation to see how Amarnai sorted it."
 msgstr "Amarnai가 어떻게 분류했는지 확인하려면 대화를 여세요."
 
@@ -5211,7 +5245,12 @@ msgstr "Amarnai 열기"
 msgid "Open an issue on GitHub"
 msgstr "GitHub에서 이슈 열기"
 
-#: ../panel/src/InjectedThreadPanel.tsx:323
+#: ../panel/src/queue/QueueRow.tsx:48
+#, fuzzy
+msgid "Open conversation: {subject}"
+msgstr "열린 대화: {subject}"
+
+#: ../panel/src/InjectedThreadPanel.tsx:404
 msgid "Open in Amarnai"
 msgstr "Amarnai에서 열기"
 
@@ -5776,6 +5815,10 @@ msgstr "학생 질문, 숙제 제출, 교실 내 일일 지도."
 #: ../ui/src/i18n/taxonomy-template-messages.ts:132
 msgid "Purchase confirmations, order status changes, and fulfillment updates from your store."
 msgstr "매장의 구매 확인, 주문 상태 변경, 배송 업데이트."
+
+#: ../panel/src/InjectedThreadPanel.tsx:344
+#~ msgid "Queue"
+#~ msgstr "대기열"
 
 #: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
@@ -6754,12 +6797,14 @@ msgstr "분류됨"
 #~ msgstr "콘텐츠 유사성에 따라 자동으로 분류됩니다."
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:36
+#: ../panel/src/queue/SortingStrip.tsx:47
 #, fuzzy
 msgid "Sorting"
 msgstr "분류 중"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:144
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:32
+#: ../panel/src/queue/SortingStrip.tsx:69
 #: ../ui/src/emails/BackfillCard.tsx:33
 #, fuzzy
 msgid "Sorting historical inbox"
@@ -7154,7 +7199,7 @@ msgstr "해당 링크가 유효하지 않거나 만료되었습니다."
 #~ msgid "The Amarna letters were the world's first overloaded inbox. These two lived it."
 #~ msgstr ""
 
-#: ../panel/src/states/PanelStates.tsx:127
+#: ../panel/src/states/PanelStates.tsx:133
 msgid "The Amarnai panel is switched off for this workspace."
 msgstr "이 작업 공간에서는 Amarnai 패널이 꺼져 있습니다."
 
@@ -7264,6 +7309,10 @@ msgstr "이 설정은 어떤 받은 편지함 스레드를 가져올지 제어�
 #, fuzzy
 msgid "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
 msgstr "이 브라우저는 {currentEmail}로 로그인되어 있지만, 확장 프로그램은 {incomingEmail}로 로그인되어 있습니다."
+
+#: ../panel/src/InjectedThreadPanel.tsx:255
+msgid "This conversation"
+msgstr "이 대화"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:191
 #~ msgid "This conversation has not synced to Amarnai yet."
@@ -7423,6 +7472,11 @@ msgstr "Amarnai가 이 폴더로 분류한 스레드."
 msgid "Threads that haven't been sorted yet."
 msgstr "아직 정리되지 않은 스레드."
 
+#: ../panel/src/InjectedThreadPanel.tsx:360
+#, fuzzy
+msgid "Threads to handle"
+msgstr "처리할 스레드"
+
 #: ../ui/src/emails/queueLabels.ts:27
 msgid "Threads you've marked as important."
 msgstr "중요 표시한 스레드"
@@ -7581,7 +7635,7 @@ msgstr "이동 중에도 받은편지함을 간편하게 분류하세요."
 #~ msgid "Triaging 412 threads"
 #~ msgstr ""
 
-#: ../panel/src/states/PanelStates.tsx:137
+#: ../panel/src/states/PanelStates.tsx:143
 msgid "Try again"
 msgstr "다시 시도"
 
@@ -7642,6 +7696,10 @@ msgstr "알 수 없음"
 #, fuzzy
 msgid "unknown error"
 msgstr "알 수 없는 오류"
+
+#: ../panel/src/queue/QueueRow.tsx:40
+msgid "Unknown sender"
+msgstr "알 수 없는 발신자"
 
 #: ../ui/src/pricing/planMessages.ts:92
 #, fuzzy
@@ -7739,7 +7797,7 @@ msgid "Updating…"
 msgstr "업데이트 중…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
-#: ../panel/src/states/PanelStates.tsx:170
+#: ../panel/src/states/PanelStates.tsx:176
 #: ../ui/src/emails/AssigneePicker.tsx:136
 #: ../ui/src/settings/PlanSection.tsx:49
 #: ../ui/src/upgrade/UpgradeDialog.tsx:175
@@ -8277,7 +8335,7 @@ msgstr "이번 달 {0} 플랜의 이메일 가져오기 한도를 모두 소진�
 msgid "You've used all of your {plan} plan's email imports this month, including one retry. Imports refresh {refreshDate}."
 msgstr "{plan} 플랜의 이번 달 이메일 가져오기 한도를 재시도 1회를 포함해 모두 소진했습니다. 가져오기 한도는 {refreshDate}에 갱신됩니다."
 
-#: ../panel/src/states/PanelStates.tsx:166
+#: ../panel/src/states/PanelStates.tsx:172
 msgid "You've used all your sorting for this month, so this thread is waiting."
 msgstr "이번 달 분류 할당량을 모두 사용했습니다. 이 스레드는 대기 중입니다."
 
@@ -8398,6 +8456,7 @@ msgstr "새 플랜이 Amarnai 패널에서 이미 활성화되었습니다."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
+#: ../panel/src/queue/SortingStrip.tsx:76
 #: ../ui/src/emails/BackfillCard.tsx:38
 msgid "Your past threads are being loaded and will appear shortly."
 msgstr "이전 스레드를 불러오는 중입니다. 잠시 후 표시됩니다."

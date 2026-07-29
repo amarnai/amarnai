@@ -9,6 +9,7 @@ import {
   deriveIsDrafting,
   loadThreadDetail,
 } from "../services/thread-detail.js";
+import { buildThreadVisibilityWhere } from "../services/thread-visibility.js";
 import type { AppEnv } from "../env.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
@@ -153,16 +154,7 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
   // baseWhere: visibility filters only (no status/node/cursor).
   // Used for the global counts so pill totals stay accurate regardless of
   // which filter is active.
-  const blacklist = syncSettings.blacklistedSenderEmails ?? [];
-  const baseWhere = {
-    workspaceId,
-    gmailIsTrash: false,
-    ...(syncSettings.includeSpam       ? {} : { gmailIsSpam: false }),
-    ...(syncSettings.includePromotions ? {} : { gmailIsPromotions: false }),
-    ...(blacklist.length > 0
-      ? { NOT: { messages: { some: { senderEmail: { in: blacklist } } } } }
-      : {}),
-  };
+  const baseWhere = buildThreadVisibilityWhere(workspaceId, syncSettings);
 
   // Search across the thread subject and its messages' sender + snippet.
   const searchWhere = search.length > 0

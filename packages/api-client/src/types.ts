@@ -195,6 +195,43 @@ export type Classification = {
   finalNode: { id: string; name: string } | null;
 };
 
+// ─── Injected panel queue ─────────────────────────────────────────────────────
+//
+// What the in-mail panel shows when no conversation is open. A far smaller
+// thread shape than EmailThreadSummary on purpose: a queue row is a sender, a
+// subject, and a way to open the thread in the mail client, and the panel is a
+// 300px column inside someone else's UI.
+
+export type PanelQueueThread = {
+  id: string;
+  subject: string | null;
+  provider: MailProvider;
+  providerThreadId: string;
+  /** Deep link for providers whose thread id is not URL-resolvable (Outlook). */
+  webLink: string | null;
+  latestMessageAt: string | null;
+  /** Sender of the most recent message, for the row's first line. */
+  senderName: string | null;
+  senderEmail: string | null;
+  doneMark: DoneMark | null;
+};
+
+/** `count` is the true total; `threads` is a capped preview of it. */
+export type PanelQueueSection = {
+  threads: PanelQueueThread[];
+  count: number;
+};
+
+export type PanelQueueResult = {
+  assignedToMe: PanelQueueSection;
+  needsReview: PanelQueueSection;
+  proposedDrafts: PanelQueueSection;
+  /** Threads not yet sorted, including those with a classify job in flight. */
+  pendingCount: number;
+  /** The subset with no job yet. `pendingCount - pendingWaitingCount` is in flight. */
+  pendingWaitingCount: number;
+};
+
 export type FilterCounts = {
   total: number;
   PENDING: number;

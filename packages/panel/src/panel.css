@@ -27,6 +27,34 @@
   background: var(--color-surface, #fff);
 }
 
+/* ── Scrollbars ───────────────────────────────────────────────────────────── */
+/*
+ * No rail. A classic scrollbar takes its width out of layout, and in a ~300px
+ * column that is a permanent strip of dead space plus a seam down the panel's
+ * right edge — for content that is scrolled with a wheel or a trackpad, beside
+ * a mail client whose own panes hide theirs too. The content still scrolls, by
+ * wheel, trackpad, and keyboard; only the painted bar is gone.
+ *
+ * Applied at the document root because the thing that actually scrolls is the
+ * document itself — the panel fills a dedicated iframe (Gmail) or a dedicated
+ * route (Outlook), and in neither does it own a fixed-height scroll box. `:has`
+ * keeps that from meaning "any document this stylesheet reaches". Neither
+ * scrollbar-width nor the WebKit pseudo-element inherits, so any scroller nested
+ * inside the panel has to be named too.
+ */
+html:has(.apn-root),
+.apn-root,
+.apn-root * {
+  scrollbar-width: none;
+}
+
+/* Chrome before 121 ignores scrollbar-width. */
+html:has(.apn-root)::-webkit-scrollbar,
+.apn-root::-webkit-scrollbar,
+.apn-root *::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Empty / blocked states ───────────────────────────────────────────────── */
 
 .apn-state {
@@ -85,6 +113,35 @@
   background: var(--color-bg-subtle, #f6f4f1);
   border-color: var(--color-border, #e4e0da);
   color: var(--color-foreground, #1a1a1a);
+}
+
+/*
+ * Moving between the panel's two screens. Quiet on purpose: it sits at the top
+ * of a 300px column that already carries the mail client's own back control a
+ * few inches away, so it reads as a label with an arrow rather than a second
+ * button competing with it.
+ */
+.apn-back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary, #555);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.apn-back:hover {
+  color: var(--color-foreground, #1a1a1a);
+}
+
+.apn-back-arrow {
+  font-size: 14px;
+  line-height: 1;
 }
 
 .apn-link {
@@ -210,6 +267,148 @@
   .apn-skeleton-pulse { animation: none; }
 }
 
+/* ── Queue (no conversation open) ─────────────────────────────────────────── */
+/*
+ * The sorting strip wraps the shared em-backfill block, whose own margin
+ * assumes the web app's list column. Neutralized here the same way the
+ * extension's status slot does it.
+ */
+.apn-strip > .em-backfill {
+  margin: 0;
+}
+
+.apn-queue-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.apn-queue-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 4px;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary, #555);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+}
+
+.apn-queue-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.apn-queue-count {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--color-bg-subtle, #f6f4f1);
+  color: var(--color-text-secondary, #555);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.apn-queue-chevron {
+  flex: none;
+  display: inline-flex;
+  transition: transform 0.15s ease;
+}
+
+.apn-queue-header[aria-expanded="false"] .apn-queue-chevron {
+  transform: rotate(-90deg);
+}
+
+.apn-queue-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.apn-queue-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 6px;
+}
+
+.apn-queue-row:hover {
+  background: var(--color-bg-subtle, #f6f4f1);
+}
+
+.apn-queue-row.is-done .apn-queue-open {
+  opacity: 0.55;
+}
+
+/* The row's whole text block is the open target, so a mis-aimed click opens the
+   thread rather than doing nothing. min-width: 0 is what lets the two lines
+   below actually truncate inside the flex row. */
+.apn-queue-open {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 7px 6px;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* The shared done button is hover-revealed in the web app's wide thread list.
+   That does not transfer: this row is one of a handful in a narrow column, the
+   panel is often driven by touch on a laptop trackpad, and an action nobody can
+   see until they happen to hover is an action nobody uses. */
+.apn-queue-row .em-done-btn {
+  opacity: 1;
+  margin-right: 4px;
+}
+
+.apn-queue-sender,
+.apn-queue-subject {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.apn-queue-sender {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-foreground, #1a1a1a);
+}
+
+.apn-queue-subject {
+  font-size: 12px;
+  color: var(--color-text-secondary, #555);
+}
+
+.apn-queue-hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-tertiary, #777);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apn-queue-chevron { transition: none; }
+}
+
 /* ── Narrow container ─────────────────────────────────────────────────────── */
 /*
  * At the Outlook pane's floor the star and the chip stop fitting on one line
@@ -224,5 +423,9 @@
 
   .apn-chip {
     padding: 5px 8px;
+  }
+
+  .apn-queue-open {
+    padding: 6px 4px;
   }
 }

@@ -11,10 +11,14 @@ import type { TokenStore } from "@amarnai/api-client";
 // The rule for adding to it: a method belongs here only if the two hosts must
 // implement it differently. Anything both could share belongs in the panel.
 
-/** Which conversation the mail client currently has open. */
+/** Which conversation the mail client currently has open, and in which mailbox. */
 export type PanelThreadContext = {
-  /** The provider's own thread id — the only id a mail page knows. */
-  providerThreadId: string;
+  /**
+   * The provider's own thread id — the only id a mail page knows. Null when the
+   * client is showing no conversation (a folder list), which is a state the
+   * panel acts on rather than ignores: it shows the queue there.
+   */
+  providerThreadId: string | null;
   /** The mailbox reading it, which decides the workspace. */
   accountEmail: string;
 };
@@ -33,6 +37,13 @@ export type PanelCapabilities = {
   insertDraft: boolean;
   signIn: boolean;
   openExternal: boolean;
+  /**
+   * Whether the host can show a conversation in place. Gmail can (its router
+   * reads the URL fragment); an Outlook task pane cannot, because Office.js
+   * exposes no such call. Where it is false the queue links out instead, which
+   * is why this gates an affordance rather than a whole feature.
+   */
+  openThread: boolean;
 };
 
 export type PanelHost = {
@@ -71,6 +82,14 @@ export type PanelHost = {
    * involvement ends, in both hosts, structurally.
    */
   insertDraft(html: string): Promise<boolean>;
+
+  /**
+   * Show a conversation in the mail client itself. Only called when
+   * `capabilities.openThread` is true. Fire and forget: the host answers by
+   * reporting the new conversation through `onThreadContext`, the same way it
+   * would if the user had clicked the thread themselves.
+   */
+  openThread(providerThreadId: string): void;
 
   /** Bring the user to wherever this host signs people in. */
   requestSignIn(): void;

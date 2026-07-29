@@ -7,6 +7,7 @@ import {
   PANEL_VISIBILITY,
   PANEL_INSERT_DRAFT,
   PANEL_INSERT_RESULT,
+  PANEL_OPEN_THREAD,
 } from "../content/core/panelProtocol";
 import { createGmailPanelHost, resetGmailPanelHost } from "./gmailHost";
 
@@ -223,6 +224,39 @@ describe("createGmailPanelHost — insert draft", () => {
   it("resolves false before any embedder is known", async () => {
     const host = createGmailPanelHost();
     await expect(host.insertDraft("<p>hi</p>")).resolves.toBe(false);
+  });
+});
+
+describe("createGmailPanelHost — open thread", () => {
+  it("relays the conversation the user picked from the queue", () => {
+    const host = createGmailPanelHost();
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null }, GMAIL);
+    posted.length = 0;
+
+    host.openThread("18f0abc");
+
+    expect(posted).toEqual([
+      {
+        message: {
+          v: PANEL_PROTOCOL_VERSION,
+          type: PANEL_OPEN_THREAD,
+          providerThreadId: "18f0abc",
+        },
+        targetOrigin: GMAIL,
+      },
+    ]);
+  });
+
+  // Nothing is waiting on an answer, so an unaddressable host is simply silent
+  // rather than an error the panel has to render.
+  it("stays silent before any embedder is known", () => {
+    const host = createGmailPanelHost();
+    host.openThread("18f0abc");
+    expect(parentPostMessage).not.toHaveBeenCalled();
+  });
+
+  it("declares that it can navigate", () => {
+    expect(createGmailPanelHost().capabilities.openThread).toBe(true);
   });
 });
 

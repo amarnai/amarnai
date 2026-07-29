@@ -7,12 +7,14 @@ import {
   PANEL_READY,
   PANEL_INSERT_DRAFT,
   PANEL_OPEN_PANEL,
+  PANEL_OPEN_THREAD,
   isPanelThreadContextMessage,
   isPanelVisibilityMessage,
   isPanelInsertResultMessage,
   isPanelReadyMessage,
   isPanelInsertDraftMessage,
   isPanelOpenPanelMessage,
+  isPanelOpenThreadMessage,
 } from "./panelProtocol";
 
 // These guards run on messages arriving from across an origin boundary, on a
@@ -30,8 +32,17 @@ describe("panel protocol guards", () => {
         context: { providerThreadId: "18f0", accountEmail: "ada@example.com" },
       }),
     ).toBe(true);
-    // Null context is a real state: the user navigated back to a folder list.
+    // Null context is a real state: the host cannot tell which mailbox is open.
     expect(isPanelThreadContextMessage({ v: V, type: PANEL_THREAD_CONTEXT, context: null })).toBe(true);
+    // And so is a known mailbox with no conversation: the thread list, where
+    // the panel shows its queue.
+    expect(
+      isPanelThreadContextMessage({
+        v: V,
+        type: PANEL_THREAD_CONTEXT,
+        context: { providerThreadId: null, accountEmail: "ada@example.com" },
+      }),
+    ).toBe(true);
     expect(isPanelVisibilityMessage({ v: V, type: PANEL_VISIBILITY, visible: false })).toBe(true);
     expect(
       isPanelInsertResultMessage({ v: V, type: PANEL_INSERT_RESULT, requestId: "i-1", ok: true }),
@@ -41,6 +52,9 @@ describe("panel protocol guards", () => {
       isPanelInsertDraftMessage({ v: V, type: PANEL_INSERT_DRAFT, requestId: "i-1", html: "<p>hi</p>" }),
     ).toBe(true);
     expect(isPanelOpenPanelMessage({ v: V, type: PANEL_OPEN_PANEL })).toBe(true);
+    expect(
+      isPanelOpenThreadMessage({ v: V, type: PANEL_OPEN_THREAD, providerThreadId: "18f0" }),
+    ).toBe(true);
   });
 
   it("rejects anything that is not an object", () => {
@@ -51,6 +65,7 @@ describe("panel protocol guards", () => {
       isPanelReadyMessage,
       isPanelInsertDraftMessage,
       isPanelOpenPanelMessage,
+      isPanelOpenThreadMessage,
     ]) {
       expect(guard(null)).toBe(false);
       expect(guard(undefined)).toBe(false);
@@ -76,6 +91,7 @@ describe("panel protocol guards", () => {
     expect(
       isPanelThreadContextMessage({ v: V, type: PANEL_THREAD_CONTEXT, context: { providerThreadId: "18f0" } }),
     ).toBe(false);
+    // Null is a state; a number is a bug or an attack.
     expect(
       isPanelThreadContextMessage({
         v: V,
@@ -84,6 +100,16 @@ describe("panel protocol guards", () => {
       }),
     ).toBe(false);
     expect(isPanelThreadContextMessage({ v: V, type: PANEL_THREAD_CONTEXT })).toBe(false);
+  });
+
+  // The id lands in the page's URL, so it is bounded as well as typed.
+  it("rejects an open-thread message with no usable id", () => {
+    expect(isPanelOpenThreadMessage({ v: V, type: PANEL_OPEN_THREAD })).toBe(false);
+    expect(isPanelOpenThreadMessage({ v: V, type: PANEL_OPEN_THREAD, providerThreadId: "" })).toBe(false);
+    expect(isPanelOpenThreadMessage({ v: V, type: PANEL_OPEN_THREAD, providerThreadId: 18 })).toBe(false);
+    expect(
+      isPanelOpenThreadMessage({ v: V, type: PANEL_OPEN_THREAD, providerThreadId: "x".repeat(257) }),
+    ).toBe(false);
   });
 
   it("rejects wrong-typed payload fields", () => {

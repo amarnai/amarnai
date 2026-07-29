@@ -31,6 +31,10 @@ export function createOutlookPanelHost({
       // and friends but nothing for "open this URL", so the panel simply does
       // not offer links out here.
       openExternal: false,
+      // Same reason: Office.js has no "show this conversation" call, so the
+      // queue's rows fall back to an ordinary link built from the thread's
+      // webLink instead of asking the host to navigate.
+      openThread: false,
     },
 
     apiBaseUrl,
@@ -81,6 +85,11 @@ export function createOutlookPanelHost({
     openExternal() {
       // Unreachable: capabilities.openExternal is false, so the panel never
       // renders a control that calls this.
+    },
+
+    openThread() {
+      // Unreachable for the same reason: capabilities.openThread is false, so
+      // the queue renders links rather than buttons that would call this.
     },
   };
 }

@@ -63,11 +63,16 @@ describe("createOutlookPanelHost", () => {
     );
   });
 
-  it("reports null when no conversation is open", () => {
+  // A pane opened from a folder view still knows its mailbox, which is what the
+  // panel needs to map it to a workspace and show the queue.
+  it("reports the mailbox with a null thread id when no conversation is open", () => {
     const { office } = makeOffice(null);
     const listener = vi.fn();
     makeHost(office).onThreadContext(listener);
-    expect(listener).toHaveBeenCalledWith(null);
+    expect(listener).toHaveBeenCalledWith({
+      providerThreadId: null,
+      accountEmail: "ada@contoso.com",
+    });
   });
 
   it("hands an inserted draft to Outlook's own reply form", async () => {
@@ -88,6 +93,13 @@ describe("createOutlookPanelHost", () => {
   it("declares no external-link capability", () => {
     const { office } = makeOffice();
     expect(makeHost(office).capabilities.openExternal).toBe(false);
+  });
+
+  // Office.js has no "show this conversation" call, so the queue's rows link out
+  // with the thread's own webLink instead of asking the host to navigate.
+  it("declares no in-place navigation capability", () => {
+    const { office } = makeOffice();
+    expect(makeHost(office).capabilities.openThread).toBe(false);
   });
 
   // A task pane that is not on screen is not running: Outlook tears the document

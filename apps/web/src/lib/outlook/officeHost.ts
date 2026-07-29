@@ -50,9 +50,15 @@ declare global {
   }
 }
 
-/** Where the current thread and mailbox come from, as the pane sees them. */
+/**
+ * Where the current thread and mailbox come from, as the pane sees them.
+ *
+ * A null conversation means the pane is open on a folder view: the mailbox is
+ * known, no message is selected. The panel needs the address in that case too,
+ * because that is what maps the pane to a workspace and lets it show the queue.
+ */
 export type OutlookContext = {
-  conversationId: string;
+  conversationId: string | null;
   accountEmail: string;
 };
 
@@ -73,9 +79,10 @@ export async function whenOfficeReady(timeoutMs = 10_000): Promise<OfficeLike> {
 }
 
 /**
- * The open message's conversation and the mailbox reading it. Returns null when
- * no message is selected — the pane can be opened from a folder view, where
- * there is nothing to reply to.
+ * The open message's conversation and the mailbox reading it. Returns null only
+ * when the mailbox itself is unknown; a pane opened from a folder view reports
+ * the address with a null conversation, because there the panel has a queue to
+ * show even though there is nothing to reply to.
  *
  * The conversation id is passed on verbatim. Desktop Outlook hands out the EWS
  * base64 alphabet while Graph stores the URL-safe one, and that translation is
@@ -84,10 +91,9 @@ export async function whenOfficeReady(timeoutMs = 10_000): Promise<OfficeLike> {
  */
 export function readOutlookContext(office: OfficeLike): OutlookContext | null {
   const mailbox = office.context.mailbox;
-  const conversationId = mailbox?.item?.conversationId;
   const accountEmail = mailbox?.userProfile?.emailAddress;
-  if (!conversationId || !accountEmail) return null;
-  return { conversationId, accountEmail };
+  if (!accountEmail) return null;
+  return { conversationId: mailbox?.item?.conversationId ?? null, accountEmail };
 }
 
 /**

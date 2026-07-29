@@ -69,8 +69,20 @@ describe("readOutlookContext", () => {
   });
 
   // The pane can be opened from a folder view, where there is nothing selected.
-  it("returns null when no message is selected", () => {
+  // The mailbox is still reported: that is what maps the pane to a workspace,
+  // and the panel has a queue to show there even with nothing to reply to.
+  it("reports the mailbox with no conversation when no message is selected", () => {
     const { office } = makeOffice();
+    expect(readOutlookContext(office)).toEqual({
+      conversationId: null,
+      accountEmail: "ada@contoso.com",
+    });
+  });
+
+  // Without an address there is no workspace, so there is nothing to show at all.
+  it("returns null when the mailbox itself is unknown", () => {
+    const { office } = makeOffice();
+    delete office.context.mailbox!.userProfile;
     expect(readOutlookContext(office)).toBeNull();
   });
 });
@@ -99,14 +111,17 @@ describe("subscribeOutlookContext", () => {
     });
   });
 
-  it("reports null when the user navigates away from any conversation", () => {
+  it("keeps reporting the mailbox when the user navigates away from a conversation", () => {
     const harness = makeOffice({ conversationId: "AAQkAD+abc" });
     const listener = vi.fn();
     subscribeOutlookContext(harness.office, listener);
 
     harness.selectItem(null);
 
-    expect(listener).toHaveBeenLastCalledWith(null);
+    expect(listener).toHaveBeenLastCalledWith({
+      conversationId: null,
+      accountEmail: "ada@contoso.com",
+    });
   });
 
   it("unsubscribes on teardown", () => {

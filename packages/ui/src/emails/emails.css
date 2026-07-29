@@ -432,6 +432,16 @@
   100% { transform: translateX(250%); }
 }
 
+/* A stranded 40% slice reads as a stalled 40% of progress, which is the one
+   thing this bar must never claim. Fill the track instead: still clearly "busy",
+   with no number implied. */
+@media (prefers-reduced-motion: reduce) {
+  .em-backfill-progress-bar--indeterminate {
+    width: 100%;
+    animation: none;
+  }
+}
+
 .em-backfill-progress-label {
   font-size: 10.5px;
   color: var(--ink-4);

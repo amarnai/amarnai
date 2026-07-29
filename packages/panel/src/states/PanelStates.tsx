@@ -95,6 +95,12 @@ export function MismatchState({
   );
 }
 
+/**
+ * The mail client is showing no conversation AND the host could not tell which
+ * mailbox is on screen — the only case left now that a known mailbox gets the
+ * queue instead. Rare (a Gmail layout whose account switcher we cannot read, an
+ * Outlook pane with no user profile) and unactionable, so it stays a sentence.
+ */
 export function NoThreadState() {
   return (
     <PanelMessage>

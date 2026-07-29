@@ -14,6 +14,8 @@ import { usePanelState } from "./usePanelState.js";
 import { ClassificationCard } from "./ClassificationCard.js";
 import { SummarySection } from "./SummarySection.js";
 import { DraftSection } from "./DraftSection.js";
+import { QueuePanel } from "./queue/QueuePanel.js";
+import { invalidateQueue } from "./queue/useQueueState.js";
 import type { EmailThreadDetail, FolderItem, MemberItem } from "./types.js";
 import {
   ErrorState,
@@ -29,12 +31,25 @@ import {
 
 // Amarnai, rendered inside Gmail and Outlook themselves.
 //
-// One thread at a time — whichever the user is reading — and nothing else. It
-// never lists threads, never fetches message bodies (the mail client is already
-// showing them, better than this panel could), and never sends. What it adds to
-// the page is the part the mail client does not know: where Amarnai filed this
-// thread, why that might be wrong, what it says in two lines, and a reply the
-// user can put straight into the client's own compose.
+// Two screens, decided by what the mail client is showing. On a conversation:
+// that thread and nothing else — where Amarnai filed it, why that might be
+// wrong, what it says in two lines, and a reply the user can put straight into
+// the client's own compose. On the thread list: the queue, meaning the few
+// threads actually waiting on this user, each one click from being opened or
+// marked done.
+//
+// Which screen is showing follows the mail client, with one exception: a back
+// control on each screen moves between them without touching the page, so the
+// queue can be consulted with a conversation still open beside it. It is a
+// screen change and not a history step, which is why it is offered even to a
+// reader who never came from the queue.
+//
+// The queue is where the boundary is worth stating, because it is the one place
+// this panel could drift into being a mail client. It is an action queue, not a
+// thread browser: no folder navigation, no search, no paging, nothing that
+// duplicates the list already on screen beside it. And in neither screen does
+// the panel fetch message bodies (the mail client is already showing them,
+// better than this could) or send anything.
 //
 // Everything that differs between the two mail clients is behind PanelHost, so
 // there is no branch in here on which one we are inside.
@@ -78,7 +93,12 @@ export function InjectedThreadPanel({
     [client, host],
   );
 
-  const { stage, refresh, patchThread } = usePanelState({ api, host, visible });
+  const { stage, refresh, patchThread, reportInjectionDisabled, showQueue, showConversation } =
+    usePanelState({
+      api,
+      host,
+      visible,
+    });
 
   // Folders are loaded on first use, not on thread open: most readers never move
   // a thread, and it is a whole-workspace fetch that would otherwise run on
@@ -137,8 +157,19 @@ export function InjectedThreadPanel({
   // Optimistic, then reconciled from the server's echo. These are the same
   // routes the web app calls, addressed by our own thread id, so metering and
   // audit are identical whichever surface the user happened to act from.
+  //
+  // Each one also drops the queue's cached copy, because every one of them can
+  // change which of its sections this thread belongs in: done and assign decide
+  // the assigned list outright, and a move or a re-sort decides whether it still
+  // needs review. The two screens never render together, so the queue cannot
+  // learn any of this by itself — and returning to it to find the change you
+  // just made missing reads as the change not having happened.
 
   const thread = stage.kind === "thread" ? stage.thread : null;
+
+  const dropQueueCache = useCallback(() => {
+    if (workspaceId) invalidateQueue(workspaceId);
+  }, [workspaceId]);
 
   const handleMove = useCallback(
     (nodeId: string) => {
@@ -151,12 +182,13 @@ export function InjectedThreadPanel({
         latestClassification: previous ? { ...previous, finalNode: moved } : previous,
         filedNode: moved,
       });
+      dropQueueCache();
       void api
         .triageThread(workspaceId, thread.id, { action: "move", nodeId })
         .then(refresh)
         .catch(refresh);
     },
-    [api, folders, patchThread, refresh, thread, workspaceId],
+    [api, dropQueueCache, folders, patchThread, refresh, thread, workspaceId],
   );
 
   const handleToggleDone = useCallback(async () => {
@@ -177,8 +209,9 @@ export function InjectedThreadPanel({
     const call = wasDone
       ? api.unmarkThreadDone(workspaceId, thread.id, userId)
       : api.markThreadDone(workspaceId, thread.id, userId);
+    dropQueueCache();
     void call.then(({ doneMark }) => patchThread({ doneMark })).catch(refresh);
-  }, [api, host, patchThread, refresh, thread, workspaceId]);
+  }, [api, dropQueueCache, host, patchThread, refresh, thread, workspaceId]);
 
   const handleAssign = useCallback(
     (userId: string | null) => {
@@ -186,16 +219,18 @@ export function InjectedThreadPanel({
       const call = userId
         ? api.assignThread(workspaceId, thread.id, userId)
         : api.unassignThread(workspaceId, thread.id);
+      dropQueueCache();
       void call.then(({ assignment }) => patchThread({ assignment })).catch(refresh);
     },
-    [api, patchThread, refresh, thread, workspaceId],
+    [api, dropQueueCache, patchThread, refresh, thread, workspaceId],
   );
 
   const handleSortNow = useCallback(() => {
     if (!thread || !workspaceId) return;
     patchThread({ isClassifying: true, isQueued: true });
+    dropQueueCache();
     void api.aiClassify(workspaceId, thread.id).catch(refresh);
-  }, [api, patchThread, refresh, thread, workspaceId]);
+  }, [api, dropQueueCache, patchThread, refresh, thread, workspaceId]);
 
   // ── Render ──────────────────────────────────────────────────────────────────
 
@@ -213,6 +248,22 @@ export function InjectedThreadPanel({
         <NotConnectedState onOpenApp={openApp} />
       ) : stage.kind === "mismatch" ? (
         <MismatchState accountEmail={stage.accountEmail} knownAccounts={stage.knownAccounts} />
+      ) : stage.kind === "queue" ? (
+        <>
+          {stage.overConversation && (
+            <BackButton onClick={showConversation}>
+              <Trans>This conversation</Trans>
+            </BackButton>
+          )}
+          <QueuePanel
+            api={api}
+            host={host}
+            workspaceId={stage.workspaceId}
+            accountEmail={stage.accountEmail}
+            visible={visible}
+            onInjectionDisabled={reportInjectionDisabled}
+          />
+        </>
       ) : stage.kind === "noThread" ? (
         <NoThreadState />
       ) : stage.kind === "unknownThread" ? (
@@ -238,9 +289,27 @@ export function InjectedThreadPanel({
           onToggleDone={() => void handleToggleDone()}
           onAssign={handleAssign}
           onSortNow={handleSortNow}
+          onShowQueue={showQueue}
         />
       )}
     </div>
+  );
+}
+
+/**
+ * The panel's only navigation control, in both directions between its two
+ * screens. Deliberately one component and one glyph: each screen is where the
+ * other was reached from, so both really are a way back, and giving them
+ * different shapes would suggest one of them moves the mail client too.
+ */
+function BackButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button type="button" className="apn-back" onClick={onClick}>
+      <span className="apn-back-arrow" aria-hidden>
+        ←
+      </span>
+      {children}
+    </button>
   );
 }
 
@@ -260,6 +329,7 @@ function ThreadView({
   onToggleDone,
   onAssign,
   onSortNow,
+  onShowQueue,
 }: {
   api: ApiClient;
   host: PanelHost;
@@ -276,9 +346,20 @@ function ThreadView({
   onToggleDone: () => void;
   onAssign: (userId: string | null) => void;
   onSortNow: () => void;
+  onShowQueue: () => void;
 }) {
   return (
     <>
+      {/*
+       * Back to the queue, not back in the mail client: the conversation stays
+       * open beside the panel, which is what makes this cheap to press. It is
+       * offered whether or not the user arrived from the queue, because it is
+       * navigation between the panel's two screens rather than a history step.
+       */}
+      <BackButton onClick={onShowQueue}>
+        <Trans>Threads to handle</Trans>
+      </BackButton>
+
       {thread.triageStatus === "QUOTA_BLOCKED" && (
         <QuotaUpsell
           onUpgrade={

@@ -18,6 +18,7 @@ import type {
   FolderCountsResult,
   EmailThreadListResult,
   EmailThreadDetail,
+  PanelQueueResult,
   MailAccountsResult,
   TriageStatus,
   DoneMark,
@@ -506,6 +507,31 @@ export function makeApiClient(transport: ApiTransport) {
         );
       }
       return res.json() as Promise<EmailThreadDetail>;
+    },
+
+    // What the injected panel shows when no conversation is open: the threads
+    // waiting on this user, plus the counts its sorting strip needs. One slim
+    // call instead of three to `emailThreads`, which would fetch every message
+    // of every thread to render two lines each.
+    //
+    // Raises InjectionDisabledError on a workspace that switched the panel off,
+    // exactly like resolveProviderThread — this route is the only place the
+    // no-conversation view would otherwise learn about the kill switch.
+    panelQueue: async (workspaceId: string): Promise<PanelQueueResult> => {
+      const res = await apiRequest(`/workspaces/${workspaceId}/panel-queue`, {
+        cache: "no-store",
+      });
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          injectionDisabled?: boolean;
+        };
+        if (res.status === 403 && err.injectionDisabled) {
+          throw new InjectionDisabledError(err.error ?? "The in-mail panel is disabled");
+        }
+        throw new ApiHttpError(err.error ?? `API returned ${res.status}`, res.status, null);
+      }
+      return res.json() as Promise<PanelQueueResult>;
     },
 
     // Every mailbox connected to a workspace this user belongs to. One call, so
