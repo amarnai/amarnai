@@ -98,6 +98,7 @@ function makeDetail(): EmailThreadDetail {
       },
     ],
     latestClassification: null,
+    filedNode: null,
     tags: [],
     doneMark: null,
     assignment: {
@@ -119,6 +120,23 @@ describe("mapThreadDetail", () => {
     expect(t.hasDraft).toBe(true);
     expect(t.assignment?.userId).toBe("u1");
     expect(t.attachmentCount).toBe(1);
+  });
+
+  // A needs-review re-sort records no destination; the thread stays filed where
+  // the previous run put it, and the row must keep naming that folder.
+  it("keeps the filed folder when the newest classification chose none", () => {
+    const detail = makeDetail();
+    const t = mapThreadDetail({
+      ...detail,
+      latestClassification: {
+        id: "c2",
+        confidence: 0.4,
+        needsHumanReview: true,
+        finalNode: null,
+      } as never,
+      filedNode: { id: "n1", name: "Clients" },
+    });
+    expect(t.folderId).toBe("n1");
   });
 
   it("reverses messages to newest-first so the snippet is the latest message", () => {

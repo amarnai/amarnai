@@ -118,7 +118,7 @@ msgstr "{1}개 중 {0}개 로드됨"
 
 #. placeholder {0}: quota.limit - quota.used
 #. placeholder {1}: quota.limit
-#: ../ui/src/emails/SuggestedDraftCard.tsx:98
+#: ../ui/src/emails/SuggestedDraftCard.tsx:135
 #, fuzzy
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "{1}개 중 {0}개 남음 · {quotaResetDate} 초기화"
@@ -243,7 +243,7 @@ msgstr "{providerName} 받은 편지함"
 #. placeholder {0}: quota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:465
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
-#: ../panel/src/DraftSection.tsx:224
+#: ../panel/src/DraftSection.tsx:242
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{0}개 중 {quotaRemaining}개 남음 · {quotaResetDate} 초기화"
@@ -1038,7 +1038,7 @@ msgstr "Amarnai가 받은 편지함을 자동으로 정리하여 오래된 메�
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 msgstr "Amarnai는 받은편지함을 정의한 폴더로 분류하고, 승인할 답장을 초안 작성하며, 모든 결정 과정을 설명하여 받은편지함 제로에 더 빠르게 도달하도록 돕습니다."
 
-#: ../panel/src/ClassificationCard.tsx:125
+#: ../panel/src/ClassificationCard.tsx:111
 msgid "Amarnai wasn't sure about this one. Move it if it's in the wrong place."
 msgstr "Amarnai가 이 항목을 정확히 분류하지 못했습니다. 잘못된 위치에 있다면 이동해 주세요."
 
@@ -1309,7 +1309,7 @@ msgstr "아지루,\n\n친구로서의 말씀 잘 받았습니다. 아무르 가�
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "바빌론의 세 번째 금 수송품이 두 전령이 다녀갔음에도 아직 도착하지 않고 있습니다. Burna-Buriash는 더 이상 지체하지 말고 발송해 달라고 요청합니다."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:91
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -2129,12 +2129,12 @@ msgstr "계약"
 msgid "Controls which Gmail threads are imported. Trash is always excluded."
 msgstr "가져올 Gmail 스레드를 제어합니다. 휴지통은 항상 제외됩니다."
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:57
+#: ../ui/src/emails/SuggestedDraftCard.tsx:92
 #, fuzzy
 msgid "Copied"
 msgstr "복사됨"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:65
+#: ../ui/src/emails/SuggestedDraftCard.tsx:100
 #, fuzzy
 msgid "Copy"
 msgstr "복사"
@@ -2221,7 +2221,7 @@ msgstr "플랜을 로드할 수 없습니다."
 msgid "Could not load your folders. Please try again."
 msgstr "폴더를 로드할 수 없습니다. 다시 시도해 주세요."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:110
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:122
 msgid "Could not load your settings. Please try again."
 msgstr "설정을 로드할 수 없습니다. 다시 시도해 주세요."
 
@@ -2831,7 +2831,7 @@ msgstr "초안"
 msgid "Draft"
 msgstr "초안"
 
-#: ../panel/src/DraftSection.tsx:217
+#: ../panel/src/DraftSection.tsx:235
 #, fuzzy
 msgid "Draft a reply"
 msgstr "답장 작성"
@@ -2845,7 +2845,7 @@ msgstr "답장 작성"
 msgid "Draft failed · tap to retry"
 msgstr "초안 실패 · 탭하여 다시 시도"
 
-#: ../panel/src/DraftSection.tsx:249
+#: ../panel/src/DraftSection.tsx:267
 msgid "Draft generation failed."
 msgstr "초안 생성 실패."
 
@@ -2861,7 +2861,7 @@ msgstr "초안 생성에 실패했습니다. 다시 시도해 주세요."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
-#: ../ui/src/emails/SuggestedDraftCard.tsx:47
+#: ../ui/src/emails/SuggestedDraftCard.tsx:82
 #, fuzzy
 msgid "Draft reply"
 msgstr "초안 답장"
@@ -3265,7 +3265,7 @@ msgid "Field trips, parent evenings, assemblies, and school event scheduling."
 msgstr "현장 학습, 학부모의 밤, 조회, 학교 행사 일정."
 
 #. placeholder {0}: folder.name
-#: ../panel/src/ClassificationCard.tsx:82
+#: ../panel/src/ClassificationCard.tsx:90
 msgid "Filed in {0}. Move to another folder"
 msgstr "{0}에 분류됨. 다른 폴더로 이동"
 
@@ -3587,7 +3587,7 @@ msgstr "생성"
 #~ msgid "Generate a new draft — uses one from your monthly allowance"
 #~ msgstr "새 초안 생성 (월별 허용량에서 하나 사용)"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 msgid "Generate a new draft. Uses one from your monthly allowance"
 msgstr "새 초안 생성. 월간 할당량 1회가 소진됩니다."
 
@@ -4126,12 +4126,12 @@ msgstr "초기 백필"
 msgid "Inline image"
 msgstr "인라인 이미지"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 #, fuzzy
 msgid "Insert again"
 msgstr "다시 삽입"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 msgid "Insert into reply"
 msgstr "답장에 삽입"
 
@@ -4493,7 +4493,7 @@ msgstr "더 보기"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:536
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:558
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:602
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:127
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "로딩 중"
@@ -4526,7 +4526,7 @@ msgstr "이전 스레드를 불러오는 중…"
 msgid "Loading…"
 msgstr "불러오는 중…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:164
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4590,7 +4590,6 @@ msgstr "완료로 표시"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:107
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -4609,7 +4608,7 @@ msgid "Mark as read"
 msgstr "읽음으로 표시"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 #, fuzzy
 msgid "Mark as sent"
 msgstr "보낸 것으로 표시"
@@ -4621,7 +4620,7 @@ msgid "Mark as unread"
 msgstr "안 읽음으로 표시"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 #, fuzzy
 msgid "Mark as unsent"
 msgstr "보내지 않은 것으로 표시"
@@ -4924,8 +4923,8 @@ msgstr "남은 초안 없음"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
-#: ../panel/src/DraftSection.tsx:222
-#: ../ui/src/emails/SuggestedDraftCard.tsx:97
+#: ../panel/src/DraftSection.tsx:240
+#: ../ui/src/emails/SuggestedDraftCard.tsx:134
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "남은 초안 없음 · {quotaResetDate}에 재설정"
@@ -4936,7 +4935,7 @@ msgid "No drafts remaining · resets {resetDate}"
 msgstr "남은 초안 없음 · {resetDate}에 재설정"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:470
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 #, fuzzy
 msgid "No drafts remaining this month"
 msgstr "이번 달에는 남은 초안 없음"
@@ -5090,8 +5089,8 @@ msgid "Not connected"
 msgstr "연결되지 않음"
 
 #: ../panel/src/ClassificationCard.tsx:96
-msgid "Not filed"
-msgstr "미분류됨"
+#~ msgid "Not filed"
+#~ msgstr "미분류됨"
 
 #: ../ui/src/PricingPlans.tsx:94
 #, fuzzy
@@ -5116,6 +5115,10 @@ msgstr "반드시 그럴 필요는 없습니다. Amarnai는 클릭 한 번으로
 #, fuzzy
 msgid "Not set"
 msgstr "설정되지 않음"
+
+#: ../panel/src/ClassificationCard.tsx:104
+msgid "Not sorted yet"
+msgstr "아직 정렬되지 않음"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:242
 #, fuzzy
@@ -5195,7 +5198,7 @@ msgstr "Amarnai가 어떻게 분류했는지 확인하려면 대화를 여세요
 #~ msgid "Open a message first, then choose Amarnai Reply."
 #~ msgstr "먼저 메시지를 열고 Amarnai 답장 기능을 선택하세요."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:181
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:200
 msgid "Open all settings in a new tab"
 msgstr "새 탭에서 모든 설정 열기"
 
@@ -5208,7 +5211,7 @@ msgstr "Amarnai 열기"
 msgid "Open an issue on GitHub"
 msgstr "GitHub에서 이슈 열기"
 
-#: ../panel/src/InjectedThreadPanel.tsx:327
+#: ../panel/src/InjectedThreadPanel.tsx:323
 msgid "Open in Amarnai"
 msgstr "Amarnai에서 열기"
 
@@ -5956,7 +5959,7 @@ msgstr "새로 고침"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:348
-#: ../ui/src/emails/SuggestedDraftCard.tsx:89
+#: ../ui/src/emails/SuggestedDraftCard.tsx:126
 #, fuzzy
 msgid "Regenerate"
 msgstr "재생성"
@@ -5991,7 +5994,6 @@ msgstr "{email}을(를) 블랙리스트에서 제거"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:106
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:148
@@ -6178,7 +6180,7 @@ msgstr "자료"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
-#: ../panel/src/DraftSection.tsx:252
+#: ../panel/src/DraftSection.tsx:270
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
 #, fuzzy
 msgid "Retry"
@@ -6508,7 +6510,7 @@ msgstr "이 작업 공간의 언어를 설정합니다(인터페이스 및 AI �
 msgid "Setting up your workspace…"
 msgstr "작업 공간 설정 중…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6725,11 +6727,11 @@ msgstr "정렬"
 msgid "Sort emails your way."
 msgstr "원하는 방식으로 이메일을 분류하세요."
 
-#: ../panel/src/ClassificationCard.tsx:131
+#: ../panel/src/ClassificationCard.tsx:117
 msgid "Sort now"
 msgstr "지금 정리"
 
-#: ../panel/src/DraftSection.tsx:242
+#: ../panel/src/DraftSection.tsx:260
 msgid "Sort this thread first, then Amarnai can draft a reply for it."
 msgstr "이 스레드를 먼저 분류해야 Amarnai가 답장을 작성할 수 있습니다."
 
@@ -6779,7 +6781,7 @@ msgid "Sorting volume"
 msgstr "분류량"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../panel/src/ClassificationCard.tsx:71
+#: ../panel/src/ClassificationCard.tsx:79
 #: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 #, fuzzy
@@ -8076,7 +8078,7 @@ msgstr "워크스페이스 이름이 업데이트되었습니다."
 msgid "Workspace settings"
 msgstr "워크스페이스 설정"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:138
+#: ../../apps/web/src/app/(app)/settings/page.tsx:152
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "워크스페이스 설정"
@@ -8108,7 +8110,7 @@ msgstr "연동 활성화됨. 폴더가 사서함에 미러링되고 있습니다
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:474
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
-#: ../panel/src/DraftSection.tsx:236
+#: ../panel/src/DraftSection.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:250
 #, fuzzy
 msgid "Writing draft reply…"

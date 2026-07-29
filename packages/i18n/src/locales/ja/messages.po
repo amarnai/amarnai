@@ -116,7 +116,7 @@ msgstr "読み込み済み: {0}/{1}"
 
 #. placeholder {0}: quota.limit - quota.used
 #. placeholder {1}: quota.limit
-#: ../ui/src/emails/SuggestedDraftCard.tsx:98
+#: ../ui/src/emails/SuggestedDraftCard.tsx:135
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "残り {0}/{1} · {quotaResetDate} にリセット"
 
@@ -238,7 +238,7 @@ msgstr "{providerName} 受信トレイ"
 #. placeholder {0}: quota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:465
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
-#: ../panel/src/DraftSection.tsx:224
+#: ../panel/src/DraftSection.tsx:242
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{0} 中 {quotaRemaining} 残り · {quotaResetDate} にリセット"
@@ -1026,7 +1026,7 @@ msgstr "Amarnaiが受信トレイを整理し、新旧のメールを適切な�
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 msgstr "Amarnaiは受信トレイを指定したフォルダーに整理し、承認用の返信を作成し、すべての判断理由を説明するので、より速く受信トレイをゼロにできます。"
 
-#: ../panel/src/ClassificationCard.tsx:125
+#: ../panel/src/ClassificationCard.tsx:111
 #, fuzzy
 msgid "Amarnai wasn't sure about this one. Move it if it's in the wrong place."
 msgstr "Amarnai はこのスレッドの分類を確定できませんでした。もし場所が違う場合は移動してください。"
@@ -1295,7 +1295,7 @@ msgstr "アジル殿、\n\n貴殿の友情の言葉、謹んで拝聴いたし�
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "バビロンの3度目の金貨の荷が2名の使者到着後も未着。ブルナ＝ブリアシュは速やかな発送を要求。"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:91
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -2102,12 +2102,12 @@ msgstr "契約"
 msgid "Controls which Gmail threads are imported. Trash is always excluded."
 msgstr "インポートするGmailスレッドを制御します。ゴミ箱は常に除外されます。"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:57
+#: ../ui/src/emails/SuggestedDraftCard.tsx:92
 #, fuzzy
 msgid "Copied"
 msgstr "コピーしました"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:65
+#: ../ui/src/emails/SuggestedDraftCard.tsx:100
 msgid "Copy"
 msgstr "コピー"
 
@@ -2194,7 +2194,7 @@ msgstr "プランを読み込めませんでした。"
 msgid "Could not load your folders. Please try again."
 msgstr "フォルダを読み込めませんでした。もう一度お試しください。"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:110
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:122
 #, fuzzy
 msgid "Could not load your settings. Please try again."
 msgstr "設定を読み込めませんでした。もう一度お試しください。"
@@ -2796,7 +2796,7 @@ msgstr "下書き"
 msgid "Draft"
 msgstr "下書き"
 
-#: ../panel/src/DraftSection.tsx:217
+#: ../panel/src/DraftSection.tsx:235
 #, fuzzy
 msgid "Draft a reply"
 msgstr "返信を作成"
@@ -2810,7 +2810,7 @@ msgstr "返信を作成"
 msgid "Draft failed · tap to retry"
 msgstr "下書きの送信に失敗しました · タップして再試行"
 
-#: ../panel/src/DraftSection.tsx:249
+#: ../panel/src/DraftSection.tsx:267
 msgid "Draft generation failed."
 msgstr "下書きの生成に失敗しました。"
 
@@ -2827,7 +2827,7 @@ msgstr "下書きの生成に失敗しました。もう一度お試しくださ
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
-#: ../ui/src/emails/SuggestedDraftCard.tsx:47
+#: ../ui/src/emails/SuggestedDraftCard.tsx:82
 msgid "Draft reply"
 msgstr "返信の下書き"
 
@@ -3221,7 +3221,7 @@ msgid "Field trips, parent evenings, assemblies, and school event scheduling."
 msgstr "遠足、保護者会、集会、学校行事の計画"
 
 #. placeholder {0}: folder.name
-#: ../panel/src/ClassificationCard.tsx:82
+#: ../panel/src/ClassificationCard.tsx:90
 #, fuzzy
 msgid "Filed in {0}. Move to another folder"
 msgstr "{0} に分類されました。別のフォルダーに移動"
@@ -3535,7 +3535,7 @@ msgstr "生成"
 #~ msgid "Generate a new draft — uses one from your monthly allowance"
 #~ msgstr "新しい下書きを生成 — 月間利用枠を1つ使用します"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 msgid "Generate a new draft. Uses one from your monthly allowance"
 msgstr "新しい下書きを作成します。月間利用枠を1消費します。"
 
@@ -4061,12 +4061,12 @@ msgstr "初回バックフィル"
 msgid "Inline image"
 msgstr "インライン画像"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 #, fuzzy
 msgid "Insert again"
 msgstr "再度挿入"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 #, fuzzy
 msgid "Insert into reply"
 msgstr "返信に挿入"
@@ -4428,7 +4428,7 @@ msgstr "さらに読み込む"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:536
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:558
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:602
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:127
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 #, fuzzy
 msgid "Loading"
@@ -4461,7 +4461,7 @@ msgstr "過去のスレッドを読み込み中…"
 msgid "Loading…"
 msgstr "読み込み中…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:164
 #: ../ui/src/emails/EmailRail.tsx:59
 msgid "Mail"
 msgstr "メール"
@@ -4524,7 +4524,6 @@ msgstr "完了としてマーク"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:107
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -4543,7 +4542,7 @@ msgid "Mark as read"
 msgstr "既読にする"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 #, fuzzy
 msgid "Mark as sent"
 msgstr "送信済みとしてマーク"
@@ -4556,7 +4555,7 @@ msgid "Mark as unread"
 msgstr "未読にする"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 msgid "Mark as unsent"
 msgstr "未送信としてマーク"
 
@@ -4850,8 +4849,8 @@ msgstr "残りの下書きはありません"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
-#: ../panel/src/DraftSection.tsx:222
-#: ../ui/src/emails/SuggestedDraftCard.tsx:97
+#: ../panel/src/DraftSection.tsx:240
+#: ../ui/src/emails/SuggestedDraftCard.tsx:134
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "下書きは残っていません · {quotaResetDate}にリセットされます"
@@ -4861,7 +4860,7 @@ msgid "No drafts remaining · resets {resetDate}"
 msgstr "残りの下書きはありません · {resetDate} にリセット"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:470
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 #, fuzzy
 msgid "No drafts remaining this month"
 msgstr "今月分の下書きが残っていません"
@@ -5014,8 +5013,8 @@ msgstr "未接続"
 
 #: ../panel/src/ClassificationCard.tsx:96
 #, fuzzy
-msgid "Not filed"
-msgstr "未分類"
+#~ msgid "Not filed"
+#~ msgstr "未分類"
 
 #: ../ui/src/PricingPlans.tsx:94
 msgid "Not included"
@@ -5038,6 +5037,10 @@ msgstr "必ずしもそうではありません。Amarnaiは、ワンクリッ�
 #: ../../apps/mobile/app/(app)/account.tsx:133
 msgid "Not set"
 msgstr "未設定"
+
+#: ../panel/src/ClassificationCard.tsx:104
+msgid "Not sorted yet"
+msgstr "未ソート"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:242
 #, fuzzy
@@ -5118,7 +5121,7 @@ msgstr "Amarnai がスレッドをどのように仕分けたかを確認する�
 #~ msgid "Open a message first, then choose Amarnai Reply."
 #~ msgstr "まずメッセージを開いてから、Amarnai 返信を選択してください。"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:181
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:200
 msgid "Open all settings in a new tab"
 msgstr "すべての設定を新しいタブで開く"
 
@@ -5131,7 +5134,7 @@ msgstr "Amarnaiを開く"
 msgid "Open an issue on GitHub"
 msgstr "GitHubでissueを作成する"
 
-#: ../panel/src/InjectedThreadPanel.tsx:327
+#: ../panel/src/InjectedThreadPanel.tsx:323
 msgid "Open in Amarnai"
 msgstr "Amarnai で開く"
 
@@ -5874,7 +5877,7 @@ msgstr "更新"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:348
-#: ../ui/src/emails/SuggestedDraftCard.tsx:89
+#: ../ui/src/emails/SuggestedDraftCard.tsx:126
 #, fuzzy
 msgid "Regenerate"
 msgstr "再生成"
@@ -5909,7 +5912,6 @@ msgstr "ブラックリストから{email}を削除"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:106
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:148
@@ -6094,7 +6096,7 @@ msgstr "リソース"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
-#: ../panel/src/DraftSection.tsx:252
+#: ../panel/src/DraftSection.tsx:270
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
 #, fuzzy
 msgid "Retry"
@@ -6420,7 +6422,7 @@ msgstr "インターフェースやAI生成フォルダを含む、このワー�
 msgid "Setting up your workspace…"
 msgstr "ワークスペースを設定中…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6630,11 +6632,11 @@ msgstr "振り分け"
 msgid "Sort emails your way."
 msgstr "あなたのやり方でメールを整理。"
 
-#: ../panel/src/ClassificationCard.tsx:131
+#: ../panel/src/ClassificationCard.tsx:117
 msgid "Sort now"
 msgstr "今すぐソート"
 
-#: ../panel/src/DraftSection.tsx:242
+#: ../panel/src/DraftSection.tsx:260
 msgid "Sort this thread first, then Amarnai can draft a reply for it."
 msgstr "まずこのスレッドを仕分けてください。そうすれば Amarnai が返信の下書きを作成できます。"
 
@@ -6683,7 +6685,7 @@ msgid "Sorting volume"
 msgstr "ソート量"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../panel/src/ClassificationCard.tsx:71
+#: ../panel/src/ClassificationCard.tsx:79
 #: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 msgid "Sorting…"
@@ -7959,7 +7961,7 @@ msgstr "ワークスペース名を更新しました。"
 msgid "Workspace settings"
 msgstr "ワークスペース設定"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:138
+#: ../../apps/web/src/app/(app)/settings/page.tsx:152
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "ワークスペース設定"
@@ -7990,7 +7992,7 @@ msgstr "書き戻しはオンです。フォルダーがメールボックスに
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:474
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
-#: ../panel/src/DraftSection.tsx:236
+#: ../panel/src/DraftSection.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:250
 #, fuzzy
 msgid "Writing draft reply…"

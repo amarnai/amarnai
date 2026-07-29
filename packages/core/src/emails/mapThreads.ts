@@ -71,7 +71,11 @@ export function mapThreadDetail(detail: EmailThreadDetail): ThreadItem {
           urgency: detail.latestClassification.urgency ?? "",
           confidence: detail.latestClassification.confidence,
           needsHumanReview: detail.latestClassification.needsHumanReview,
-          finalNode: detail.latestClassification.finalNode,
+          // A run that ended in needs-review chose no destination while the
+          // thread stayed filed where the run before it put it, so the folder
+          // comes from the detail's own answer to "where is this filed" rather
+          // than from the last run alone.
+          finalNode: detail.latestClassification.finalNode ?? detail.filedNode,
         }
       : null,
     hasDraft: detail.hasDraft,

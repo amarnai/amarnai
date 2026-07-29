@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { requireUser, getUserWorkspaceRole } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
@@ -40,6 +41,11 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
   const billingCancelled = params["cancelled"] === "true";
   const labelWritebackFlagOn = isLabelWritebackEnabled();
   const writebackJustEnabled = params["writeback"] === "enabled";
+  // The extension panel has no consent route of its own, so its writeback
+  // toggle sends the user here with ?writeback=connect. Start the grant for
+  // them: landing on this page and hunting for the same toggle a second time
+  // reads as the click having done nothing.
+  const writebackRequested = params["writeback"] === "connect";
 
   let connection = null;
   let syncStatus = null;
@@ -73,6 +79,14 @@ export default async function SettingsPage({ searchParams }: { searchParams: Sea
           ? outlookHasWriteback(conn.grantedScopes)
           : gmailHasWriteback(conn.grantedScopes);
     }
+  }
+
+  // Only when the grant is actually missing: with the scope already held there
+  // is nothing to consent to, and the page renders normally so the toggle can
+  // be flipped directly. Owner-only, because the connect route refuses members.
+  if (writebackRequested && labelWritebackFlagOn && isAdmin && !hasWriteScope && connection?.status === "ACTIVE") {
+    const providerPath = connection.provider === "OUTLOOK" ? "outlook" : "gmail";
+    redirect(`/api/${providerPath}/connect?workspaceId=${workspace.id}&intent=writeback`);
   }
 
   // Billing state, reconciled with Stripe on portal return. Computed before the

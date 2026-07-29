@@ -118,7 +118,7 @@ msgstr "Załadowano {0} z {1}"
 
 #. placeholder {0}: quota.limit - quota.used
 #. placeholder {1}: quota.limit
-#: ../ui/src/emails/SuggestedDraftCard.tsx:98
+#: ../ui/src/emails/SuggestedDraftCard.tsx:135
 #, fuzzy
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "Pozostało {0} z {1} · resetuje się {quotaResetDate}"
@@ -243,7 +243,7 @@ msgstr "Skrzynka odbiorcza {providerName}"
 #. placeholder {0}: quota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:465
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
-#: ../panel/src/DraftSection.tsx:224
+#: ../panel/src/DraftSection.tsx:242
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "Pozostało {quotaRemaining} z {0} · resetuje się {quotaResetDate}"
@@ -1038,7 +1038,7 @@ msgstr "Amarnai sam porządkuje Twoją skrzynkę odbiorczą, katalogując stare 
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 msgstr "Amarnai sortuje Twoją skrzynkę do zdefiniowanych folderów, tworzy wersje robocze odpowiedzi do Twojej akceptacji i wyjaśnia każdą decyzję, abyś szybciej osiągnął inbox zero."
 
-#: ../panel/src/ClassificationCard.tsx:125
+#: ../panel/src/ClassificationCard.tsx:111
 msgid "Amarnai wasn't sure about this one. Move it if it's in the wrong place."
 msgstr "Amarnai nie był pewien co do tej wiadomości. Przenieś ją, jeśli jest w złym miejscu."
 
@@ -1309,7 +1309,7 @@ msgstr "Aziru,\n\nSłowa Twojej przyjaźni dotarły do nas pomyślnie. Jesteśmy
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "Trzecia dostawa złota z Babilonu jest opóźniona po dwóch posłańcach. Burna-Buriash prosi o jej wysłanie bez dalszej zwłoki."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:91
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -2129,12 +2129,12 @@ msgstr "Umowy"
 msgid "Controls which Gmail threads are imported. Trash is always excluded."
 msgstr "Kontroluje, które wątki Gmail są importowane. Kosz jest zawsze wykluczony."
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:57
+#: ../ui/src/emails/SuggestedDraftCard.tsx:92
 #, fuzzy
 msgid "Copied"
 msgstr "Skopiowano"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:65
+#: ../ui/src/emails/SuggestedDraftCard.tsx:100
 #, fuzzy
 msgid "Copy"
 msgstr "Kopiuj"
@@ -2221,7 +2221,7 @@ msgstr "Nie udało się wczytać planu."
 msgid "Could not load your folders. Please try again."
 msgstr "Nie udało się wczytać Twoich folderów. Spróbuj ponownie."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:110
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:122
 msgid "Could not load your settings. Please try again."
 msgstr "Nie udało się wczytać Twoich ustawień. Spróbuj ponownie."
 
@@ -2831,7 +2831,7 @@ msgstr "szkic"
 msgid "Draft"
 msgstr "Szkic"
 
-#: ../panel/src/DraftSection.tsx:217
+#: ../panel/src/DraftSection.tsx:235
 #, fuzzy
 msgid "Draft a reply"
 msgstr "Przygotuj odpowiedź"
@@ -2845,7 +2845,7 @@ msgstr "Przygotuj odpowiedź"
 msgid "Draft failed · tap to retry"
 msgstr "Szkicowanie nie powiodło się · stuknij, aby ponowić"
 
-#: ../panel/src/DraftSection.tsx:249
+#: ../panel/src/DraftSection.tsx:267
 msgid "Draft generation failed."
 msgstr "Generowanie szkicu nie powiodło się."
 
@@ -2861,7 +2861,7 @@ msgstr "Generowanie szkicu nie powiodło się. Spróbuj ponownie."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
-#: ../ui/src/emails/SuggestedDraftCard.tsx:47
+#: ../ui/src/emails/SuggestedDraftCard.tsx:82
 #, fuzzy
 msgid "Draft reply"
 msgstr "Szkic odpowiedzi"
@@ -3265,7 +3265,7 @@ msgid "Field trips, parent evenings, assemblies, and school event scheduling."
 msgstr "Wycieczki, zebrania rodziców, apele i harmonogram wydarzeń szkolnych."
 
 #. placeholder {0}: folder.name
-#: ../panel/src/ClassificationCard.tsx:82
+#: ../panel/src/ClassificationCard.tsx:90
 msgid "Filed in {0}. Move to another folder"
 msgstr "Zapisano w {0}. Przenieś do innego folderu."
 
@@ -3587,7 +3587,7 @@ msgstr "Generuj"
 #~ msgid "Generate a new draft — uses one from your monthly allowance"
 #~ msgstr "Wygeneruj nowy szkic — wykorzystuje jedną pozycję z miesięcznego limitu."
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 msgid "Generate a new draft. Uses one from your monthly allowance"
 msgstr "Wygeneruj nowy szkic. Zalicza się do miesięcznego limitu."
 
@@ -4126,12 +4126,12 @@ msgstr "Początkowe uzupełnianie danych"
 msgid "Inline image"
 msgstr "Obrazek w tekście"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 #, fuzzy
 msgid "Insert again"
 msgstr "Wstaw ponownie"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 msgid "Insert into reply"
 msgstr "Wstaw do odpowiedzi"
 
@@ -4493,7 +4493,7 @@ msgstr "Wczytaj więcej"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:536
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:558
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:602
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:127
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "Ładowanie"
@@ -4526,7 +4526,7 @@ msgstr "Wczytywanie poprzednich wątków…"
 msgid "Loading…"
 msgstr "Wczytywanie…"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:164
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4590,7 +4590,6 @@ msgstr "Oznacz jako ukończone"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:107
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -4609,7 +4608,7 @@ msgid "Mark as read"
 msgstr "Oznacz jako przeczytane"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 #, fuzzy
 msgid "Mark as sent"
 msgstr "Oznacz jako wysłane"
@@ -4621,7 +4620,7 @@ msgid "Mark as unread"
 msgstr "Oznacz jako nieprzeczytane"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 #, fuzzy
 msgid "Mark as unsent"
 msgstr "Oznacz jako niewysłane"
@@ -4924,8 +4923,8 @@ msgstr "Brak wersji roboczych"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
-#: ../panel/src/DraftSection.tsx:222
-#: ../ui/src/emails/SuggestedDraftCard.tsx:97
+#: ../panel/src/DraftSection.tsx:240
+#: ../ui/src/emails/SuggestedDraftCard.tsx:134
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "Brak wersji roboczych · limit odnawia się {quotaResetDate}"
@@ -4936,7 +4935,7 @@ msgid "No drafts remaining · resets {resetDate}"
 msgstr "Brak wersji roboczych · limit odnawia się {resetDate}"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:470
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 #, fuzzy
 msgid "No drafts remaining this month"
 msgstr "Brak wersji roboczych w tym miesiącu"
@@ -5090,8 +5089,8 @@ msgid "Not connected"
 msgstr "Niepołączone"
 
 #: ../panel/src/ClassificationCard.tsx:96
-msgid "Not filed"
-msgstr "Nie zapisano"
+#~ msgid "Not filed"
+#~ msgstr "Nie zapisano"
 
 #: ../ui/src/PricingPlans.tsx:94
 #, fuzzy
@@ -5116,6 +5115,10 @@ msgstr "Niekoniecznie. Amarnai może wygenerować dla Ciebie kompletny zestaw fo
 #, fuzzy
 msgid "Not set"
 msgstr "Nie ustawiono"
+
+#: ../panel/src/ClassificationCard.tsx:104
+msgid "Not sorted yet"
+msgstr "Jeszcze nieposortowane"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:242
 #, fuzzy
@@ -5195,7 +5198,7 @@ msgstr "Otwórz rozmowę, aby zobaczyć, jak Amarnai ją posortował."
 #~ msgid "Open a message first, then choose Amarnai Reply."
 #~ msgstr "Najpierw otwórz wiadomość, a następnie wybierz Odpowiedź Amarnai."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:181
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:200
 msgid "Open all settings in a new tab"
 msgstr "Otwórz wszystkie ustawienia w nowej karcie"
 
@@ -5208,7 +5211,7 @@ msgstr "Otwórz Amarnai"
 msgid "Open an issue on GitHub"
 msgstr "Zgłoś problem na GitHubie"
 
-#: ../panel/src/InjectedThreadPanel.tsx:327
+#: ../panel/src/InjectedThreadPanel.tsx:323
 msgid "Open in Amarnai"
 msgstr "Otwórz w Amarnai"
 
@@ -5956,7 +5959,7 @@ msgstr "Odśwież"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:348
-#: ../ui/src/emails/SuggestedDraftCard.tsx:89
+#: ../ui/src/emails/SuggestedDraftCard.tsx:126
 #, fuzzy
 msgid "Regenerate"
 msgstr "Wygeneruj ponownie"
@@ -5991,7 +5994,6 @@ msgstr "Usuń {email} z czarnej listy"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:106
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:148
@@ -6178,7 +6180,7 @@ msgstr "Zasoby"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
-#: ../panel/src/DraftSection.tsx:252
+#: ../panel/src/DraftSection.tsx:270
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
 #, fuzzy
 msgid "Retry"
@@ -6508,7 +6510,7 @@ msgstr "Ustawia język dla tego obszaru roboczego, w tym interfejsu i folderów 
 msgid "Setting up your workspace…"
 msgstr "Konfigurowanie obszaru roboczego..."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6725,11 +6727,11 @@ msgstr "Sortuj"
 msgid "Sort emails your way."
 msgstr "Sortuj e-maile po swojemu."
 
-#: ../panel/src/ClassificationCard.tsx:131
+#: ../panel/src/ClassificationCard.tsx:117
 msgid "Sort now"
 msgstr "Sortuj teraz"
 
-#: ../panel/src/DraftSection.tsx:242
+#: ../panel/src/DraftSection.tsx:260
 msgid "Sort this thread first, then Amarnai can draft a reply for it."
 msgstr "Najpierw posortuj ten wątek, a potem Amarnai będzie mógł przygotować na niego odpowiedź."
 
@@ -6779,7 +6781,7 @@ msgid "Sorting volume"
 msgstr "Wolumen sortowania"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../panel/src/ClassificationCard.tsx:71
+#: ../panel/src/ClassificationCard.tsx:79
 #: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 #, fuzzy
@@ -8077,7 +8079,7 @@ msgstr "Nazwa obszaru roboczego zaktualizowana."
 msgid "Workspace settings"
 msgstr "Ustawienia obszaru roboczego"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:138
+#: ../../apps/web/src/app/(app)/settings/page.tsx:152
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "Ustawienia obszaru roboczego"
@@ -8109,7 +8111,7 @@ msgstr "Zapisywanie zwrotne jest włączone. Twoje foldery są synchronizowane z
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:474
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
-#: ../panel/src/DraftSection.tsx:236
+#: ../panel/src/DraftSection.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:250
 #, fuzzy
 msgid "Writing draft reply…"

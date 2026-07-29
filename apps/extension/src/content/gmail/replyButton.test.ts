@@ -327,6 +327,24 @@ describe("attachReplyButton", () => {
     expect(compose.inserted).toEqual(["<div><p>Thursday works.</p></div>"]);
   });
 
+  // The injected panel opened this compose to place the draft it is already
+  // showing. Asking the API again could return a different text — or generate a
+  // new one, since the panel marks the draft sent as soon as the insertion is
+  // accepted — and charge the user twice for one reply.
+  it("inserts the opener's draft without asking for another", async () => {
+    const compose = makeComposeView();
+    const { deps } = makeDeps();
+    attachReplyButton(compose.view, deps, {
+      autoStart: true,
+      presetHtml: "<p>Sounds good.</p>",
+    });
+
+    await settle();
+
+    expect(deps.requestDraft).not.toHaveBeenCalled();
+    expect(compose.inserted).toEqual(["<div><p>Sounds good.</p></div>"]);
+  });
+
   it("autoStart still respects a non-draftable compose", async () => {
     const compose = makeComposeView({ isForward: () => true });
     const { deps } = makeDeps();

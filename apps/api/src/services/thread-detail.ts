@@ -66,7 +66,12 @@ export const THREAD_DETAIL_SELECT = {
   },
   classifications: {
     orderBy: { createdAt: "desc" } as const,
-    take: 1,
+    // More than the latest, so the serializer can still name the folder the
+    // thread actually sits in when the newest run produced no destination (a
+    // needs-review outcome carries a null finalNode). Only the newest row is
+    // sent as `latestClassification`; the rest are read for `filedNode` and
+    // dropped. Five covers a run of review outcomes without paging history.
+    take: 5,
     select: {
       id: true,
       confidence: true,
@@ -131,6 +136,11 @@ export function serializeThreadDetail(thread: NonNullable<ThreadDetailRow>) {
     hasDraft: drafts.some((d) => d.status === "PROPOSED"),
     isDrafting: deriveIsDrafting(drafts),
     latestClassification: classifications[0] ?? null,
+    // Where the thread is filed right now, which is not always where the last
+    // run put it: a re-sort that ends in needs-review records no destination,
+    // and the thread (and its mailbox label) stays in the folder the previous
+    // run chose. Surfaces read this rather than reporting the thread unfiled.
+    filedNode: classifications.find((c) => c.finalNode)?.finalNode ?? null,
     doneMark: resolvedByUserId && resolvedAt && resolvedByUser
       ? {
           userId: resolvedByUserId,

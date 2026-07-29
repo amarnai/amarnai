@@ -349,7 +349,7 @@ describe("activation", () => {
 
     expect(nativeClick).toHaveBeenCalledOnce();
     // The compose that opens for this thread consumes the arm.
-    expect(consumeArmedReply("18f0abc")).toBe(true);
+    expect(consumeArmedReply("18f0abc")).not.toBeNull();
   });
 
   it("the header icon opens the reply via the bottom bar's native Reply", () => {
@@ -365,7 +365,7 @@ describe("activation", () => {
 
     expect(nativeClick).toHaveBeenCalledOnce();
     expect(moreClick).not.toHaveBeenCalled();
-    expect(consumeArmedReply("18f0abc")).toBe(true);
+    expect(consumeArmedReply("18f0abc")).not.toBeNull();
   });
 
   it("activates from the keyboard", () => {

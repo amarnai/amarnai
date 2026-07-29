@@ -44,16 +44,18 @@ export async function startReplyButton(deps: {
   const unregister = sdk.Compose.registerComposeViewHandler((composeView) => {
     const view = composeView as unknown as ComposeViewLike;
     const threadId = tryRead(() => view.getThreadID());
-    // An armed compose was opened BY an "Amarnai Reply" entry point: the user
-    // already asked for a draft, so generation starts without a second click.
-    const autoStart = consumeArmedReply(threadId === "threw" ? null : threadId || null);
+    // An armed compose was opened BY an "Amarnai Reply" entry point or by the
+    // injected panel: the user already asked for a draft, so it lands without a
+    // second click — inserted directly when the opener brought one along.
+    const armed = consumeArmedReply(threadId === "threw" ? null : threadId || null);
     debugLog(
       "reply button: compose opened —",
       `reply=${String(tryRead(() => view.isReply()))}`,
       `inline=${String(tryRead(() => view.isInlineReplyForm()))}`,
       `forward=${String(tryRead(() => view.isForward()))}`,
       `thread=${String(threadId)}`,
-      `autoStart=${String(autoStart)}`,
+      `armed=${String(!!armed)}`,
+      `preset=${String(!!armed?.html)}`,
     );
     const detach = attachReplyButton(
       view,
@@ -68,7 +70,10 @@ export async function startReplyButton(deps: {
         onDisabled: () => disableReplyEntryPoints(),
         iconUrl,
       },
-      { autoStart },
+      {
+        autoStart: !!armed,
+        ...(armed?.html ? { presetHtml: armed.html } : {}),
+      },
     );
     detachers.add(detach);
   });

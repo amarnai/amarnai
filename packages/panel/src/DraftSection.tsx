@@ -49,6 +49,9 @@ export function DraftSection({
   const [inserted, setInserted] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const tokenRef = useRef(0);
+  // Set for the duration of a generation the user asked for, so the finished
+  // draft goes straight into the compose. See generate().
+  const insertOnReady = useRef(false);
   // An auto-draft fires once per thread. Without the guard a re-render (or a
   // live thread event) would spend another draft from the monthly allowance.
   const autoDraftedFor = useRef<string | null>(null);
@@ -67,6 +70,9 @@ export function DraftSection({
     clearPoll();
     setDraft(null);
     setInserted(false);
+    // A draft restored from the server was not asked for just now, so it must
+    // not open a compose on its own.
+    insertOnReady.current = false;
     setState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
 
     if (thread.triageStatus === "PENDING") return;
@@ -96,6 +102,20 @@ export function DraftSection({
     };
   }, [thread.id, workspaceId]);
 
+  /**
+   * Show a finished draft, and hand it to the compose when this generation was
+   * one the user asked for. Both the immediate and the polled completion land
+   * here so the auto-insert cannot depend on which way the draft arrived.
+   */
+  function present(d: Draft) {
+    setDraft(d);
+    setState("ready");
+    if (insertOnReady.current) {
+      insertOnReady.current = false;
+      void insertInto(d);
+    }
+  }
+
   function startPoll(threadId: string, token: number) {
     pollRef.current = setInterval(() => {
       api
@@ -106,8 +126,7 @@ export function DraftSection({
           if (d?.status === "GENERATING") return;
           clearPoll();
           if (d?.status === "PROPOSED") {
-            setDraft(d);
-            setState("ready");
+            present(d);
           } else {
             setState("error");
           }
@@ -122,6 +141,15 @@ export function DraftSection({
 
   function generate(opts: { force?: boolean } = {}) {
     const token = tokenRef.current;
+    // Asking for a reply is asking for it in the compose, not in the sidebar:
+    // the finished draft inserts itself, and the button below is only there to
+    // put it back if the user clears the compose.
+    //
+    // Regeneration is deliberately not auto-inserted. It happens with a compose
+    // already open, and this host inserts by opening one — a reply control that
+    // only re-focuses the compose already on screen would leave the panel
+    // claiming an insertion that never happened.
+    insertOnReady.current = canInsert && !opts.force;
     setState("loading");
     api
       .generateDraft(workspaceId, thread.id, opts)
@@ -132,20 +160,22 @@ export function DraftSection({
           return;
         }
         if ("quotaExceeded" in result) {
+          insertOnReady.current = false;
           setQuota({ used: result.used, limit: result.limit, resetsAt: result.resetsAt });
           setState(opts.force ? "ready" : "idle");
           return;
         }
         if ("notClassified" in result) {
           // Not a failure: nothing to draft against until the thread is sorted.
+          insertOnReady.current = false;
           setState("notClassified");
           return;
         }
-        setDraft(result.draft);
-        setState("ready");
         if (result.isNew) setQuota((q) => (q ? { ...q, used: q.used + 1 } : q));
+        present(result.draft);
       })
       .catch(() => {
+        insertOnReady.current = false;
         if (token === tokenRef.current) setState("error");
       });
   }
@@ -168,28 +198,16 @@ export function DraftSection({
    * draft marked SENT that never reached a compose window would quietly
    * disappear from the user's queue with nothing to show for it.
    */
-  async function handleInsert() {
-    if (!draft) return;
-    const accepted = await insertDraft(draftBodyToHtml(draft.body)).catch(() => false);
+  async function insertInto(d: Draft) {
+    const accepted = await insertDraft(draftBodyToHtml(d.body)).catch(() => false);
     if (!accepted) return;
     setInserted(true);
-    const optimistic: Draft = { ...draft, status: "SENT" };
+    const optimistic: Draft = { ...d, status: "SENT" };
     setDraft(optimistic);
     api
-      .toggleDraftSent(workspaceId, thread.id, draft.id, true)
+      .toggleDraftSent(workspaceId, thread.id, d.id, true)
       .then(({ draft: updated }) => setDraft(updated))
-      .catch(() => setDraft(draft));
-  }
-
-  function handleToggleSent() {
-    if (!draft) return;
-    const next = draft.status !== "SENT";
-    const optimistic: Draft = { ...draft, status: next ? "SENT" : "PROPOSED" };
-    setDraft(optimistic);
-    api
-      .toggleDraftSent(workspaceId, thread.id, draft.id, next)
-      .then(({ draft: updated }) => setDraft(updated))
-      .catch(() => setDraft(draft));
+      .catch(() => setDraft(d));
   }
 
   // The last word in the thread is the user's own, so there is nothing to reply
@@ -260,14 +278,16 @@ export function DraftSection({
             <button
               type="button"
               className="apn-btn apn-btn-primary"
-              onClick={() => void handleInsert()}
+              onClick={() => void insertInto(draft)}
             >
               {inserted ? <Trans>Insert again</Trans> : <Trans>Insert into reply</Trans>}
             </button>
           )}
+          {/* No sent toggle here: inserting into the compose already marks the
+              draft, and a reader inside their mailbox tracks what they have
+              answered in the mailbox itself, not in this sidebar. */}
           <SuggestedDraftCard
             draft={draft}
-            onToggleSent={handleToggleSent}
             onRegenerate={() => generate({ force: true })}
             quota={quota}
           />

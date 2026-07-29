@@ -80,9 +80,12 @@ export function InjectedThreadPanel({
 
   const { stage, refresh, patchThread } = usePanelState({ api, host, visible });
 
-  // Folders and members are loaded on first use, not on thread open: most
-  // readers never move a thread or assign it, and both are whole-workspace
-  // fetches that would otherwise run on every conversation the user scrolls past.
+  // Folders are loaded on first use, not on thread open: most readers never move
+  // a thread, and it is a whole-workspace fetch that would otherwise run on
+  // every conversation the user scrolls past. Members are fetched once per
+  // workspace as soon as a thread loads — the assign control is always offered
+  // (as in the web app and the side panel), and a picker that opens empty while
+  // its members load reads as a broken button.
   const [folders, setFolders] = useState<FolderItem[] | null>(null);
   const [members, setMembers] = useState<MemberItem[] | null>(null);
   const foldersRequested = useRef(false);
@@ -123,6 +126,12 @@ export function InjectedThreadPanel({
       });
   }, [api, workspaceId]);
 
+  // Cached per workspace by the ref above, so this is one call per mailbox for
+  // the life of the panel, not one per conversation.
+  useEffect(() => {
+    if (workspaceId) requestMembers();
+  }, [workspaceId, requestMembers]);
+
   // ── Mutations ───────────────────────────────────────────────────────────────
   //
   // Optimistic, then reconciled from the server's echo. These are the same
@@ -136,11 +145,11 @@ export function InjectedThreadPanel({
       if (!thread || !workspaceId) return;
       const folder = folders?.find((f) => f.id === nodeId);
       const previous = thread.latestClassification;
+      const moved = { id: nodeId, name: folder?.name ?? "" };
       patchThread({
         triageStatus: "SORTED",
-        latestClassification: previous
-          ? { ...previous, finalNode: { id: nodeId, name: folder?.name ?? "" } }
-          : previous,
+        latestClassification: previous ? { ...previous, finalNode: moved } : previous,
+        filedNode: moved,
       });
       void api
         .triageThread(workspaceId, thread.id, { action: "move", nodeId })
@@ -170,15 +179,6 @@ export function InjectedThreadPanel({
       : api.markThreadDone(workspaceId, thread.id, userId);
     void call.then(({ doneMark }) => patchThread({ doneMark })).catch(refresh);
   }, [api, host, patchThread, refresh, thread, workspaceId]);
-
-  const handleToggleImportant = useCallback(() => {
-    if (!thread || !workspaceId) return;
-    const next = !thread.isImportant;
-    patchThread({ isImportant: next });
-    void api
-      .setThreadImportant(workspaceId, thread.id, next)
-      .catch(() => patchThread({ isImportant: !next }));
-  }, [api, patchThread, thread, workspaceId]);
 
   const handleAssign = useCallback(
     (userId: string | null) => {
@@ -236,7 +236,6 @@ export function InjectedThreadPanel({
           onRequestMembers={requestMembers}
           onMove={handleMove}
           onToggleDone={() => void handleToggleDone()}
-          onToggleImportant={handleToggleImportant}
           onAssign={handleAssign}
           onSortNow={handleSortNow}
         />
@@ -259,7 +258,6 @@ function ThreadView({
   onRequestMembers,
   onMove,
   onToggleDone,
-  onToggleImportant,
   onAssign,
   onSortNow,
 }: {
@@ -276,7 +274,6 @@ function ThreadView({
   onRequestMembers: () => void;
   onMove: (nodeId: string) => void;
   onToggleDone: () => void;
-  onToggleImportant: () => void;
   onAssign: (userId: string | null) => void;
   onSortNow: () => void;
 }) {
@@ -296,12 +293,11 @@ function ThreadView({
         thread={thread}
         folders={folders}
         members={members}
-        canAssign={(members?.length ?? 0) > 1 || !!thread.assignment}
+        canAssign
         onRequestFolders={onRequestFolders}
         onRequestMembers={onRequestMembers}
         onMove={onMove}
         onToggleDone={onToggleDone}
-        onToggleImportant={onToggleImportant}
         onAssign={onAssign}
         onSortNow={onSortNow}
       />

@@ -101,6 +101,33 @@ describe("GET /workspaces/:workspaceId/provider-threads/:providerThreadId", () =
     const body = (await res.json()) as Record<string, unknown>;
     expect(body["id"]).toBe(THREAD_ID);
     expect(body["latestClassification"]).toMatchObject({ finalNode: { name: "Clients" } });
+    expect(body["filedNode"]).toMatchObject({ name: "Clients" });
+  });
+
+  // A re-sort that ends in needs-review records no destination, and the thread
+  // keeps the filing (and the mailbox label) the previous run gave it. Reporting
+  // it as unsorted would contradict the label the reader can see on the very
+  // same conversation, so the folder survives the newer, node-less run.
+  it("still names the folder when the newest classification chose none", async () => {
+    vi.mocked(db.emailThread.findFirst).mockResolvedValue({
+      ...threadRow(),
+      classifications: [
+        { id: "c2", finalNode: null, needsHumanReview: true },
+        { id: "c1", finalNode: { id: "n1", name: "Clients" } },
+      ],
+    } as never);
+    const body = (await (await get(STORED_CONVERSATION_ID)).json()) as Record<string, unknown>;
+    expect(body["latestClassification"]).toMatchObject({ id: "c2", finalNode: null });
+    expect(body["filedNode"]).toMatchObject({ id: "n1", name: "Clients" });
+  });
+
+  it("reports no folder for a thread no run has ever routed", async () => {
+    vi.mocked(db.emailThread.findFirst).mockResolvedValue({
+      ...threadRow(),
+      classifications: [{ id: "c1", finalNode: null }],
+    } as never);
+    const body = (await (await get(STORED_CONVERSATION_ID)).json()) as Record<string, unknown>;
+    expect(body["filedNode"]).toBeNull();
   });
 
   // The same serializer as /email-threads/:threadId, so the panel and the web

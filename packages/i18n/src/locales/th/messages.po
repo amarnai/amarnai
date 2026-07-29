@@ -118,7 +118,7 @@ msgstr "โหลดแล้ว {0} จาก {1}"
 
 #. placeholder {0}: quota.limit - quota.used
 #. placeholder {1}: quota.limit
-#: ../ui/src/emails/SuggestedDraftCard.tsx:98
+#: ../ui/src/emails/SuggestedDraftCard.tsx:135
 #, fuzzy
 msgid "{0} of {1} remaining · resets {quotaResetDate}"
 msgstr "เหลือ {0} จาก {1} · รีเซ็ตใน {quotaResetDate}"
@@ -243,7 +243,7 @@ msgstr "{providerName} กล่องจดหมาย"
 #. placeholder {0}: quota.limit
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:465
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:482
-#: ../panel/src/DraftSection.tsx:224
+#: ../panel/src/DraftSection.tsx:242
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "เหลือ {quotaRemaining} จาก {0} · รีเซ็ตใน {quotaResetDate}"
@@ -1038,7 +1038,7 @@ msgstr "Amarnai จะจัดการกล่องจดหมายขอ�
 msgid "Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
 msgstr "Amarnai จัดเรียงกล่องจดหมายเข้าโฟลเดอร์ที่คุณกำหนด ร่างตอบกลับรออนุมัติ และอธิบายเหตุผลของการจัดเรียงแต่ละครั้ง ให้คุณเคลียร์ Inbox Zero ได้เร็วยิ่งขึ้น"
 
-#: ../panel/src/ClassificationCard.tsx:125
+#: ../panel/src/ClassificationCard.tsx:111
 msgid "Amarnai wasn't sure about this one. Move it if it's in the wrong place."
 msgstr "Amarnai ไม่แน่ใจเรื่องนี้ ย้ายหากอยู่ในที่ที่ไม่ถูกต้อง"
 
@@ -1309,7 +1309,7 @@ msgstr "Aziru,\n\nถ้อยคำแห่งมิตรภาพของ�
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "ทองคำลอตที่สามของบาบิโลนล่าช้า หลังจากผู้ส่งสารสองคน Burna-Buriash ขอให้คุณจัดส่งโดยไม่ล่าช้าอีกต่อไป"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:91
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:360
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
@@ -2129,12 +2129,12 @@ msgstr "สัญญา"
 msgid "Controls which Gmail threads are imported. Trash is always excluded."
 msgstr "ควบคุมว่าจะนำเข้าเธรด Gmail ใดบ้าง กล่องจดหมายขยะจะถูกยกเว้นเสมอ"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:57
+#: ../ui/src/emails/SuggestedDraftCard.tsx:92
 #, fuzzy
 msgid "Copied"
 msgstr "คัดลอกแล้ว"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:65
+#: ../ui/src/emails/SuggestedDraftCard.tsx:100
 #, fuzzy
 msgid "Copy"
 msgstr "คัดลอก"
@@ -2221,7 +2221,7 @@ msgstr "ไม่สามารถโหลดแผนได้"
 msgid "Could not load your folders. Please try again."
 msgstr "ไม่สามารถโหลดโฟลเดอร์ของคุณได้ โปรดลองอีกครั้ง"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:110
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:122
 msgid "Could not load your settings. Please try again."
 msgstr "ไม่สามารถโหลดการตั้งค่าของคุณได้ โปรดลองอีกครั้ง"
 
@@ -2831,7 +2831,7 @@ msgstr "ฉบับร่าง"
 msgid "Draft"
 msgstr "ฉบับร่าง"
 
-#: ../panel/src/DraftSection.tsx:217
+#: ../panel/src/DraftSection.tsx:235
 #, fuzzy
 msgid "Draft a reply"
 msgstr "ร่างอีเมลตอบกลับ"
@@ -2845,7 +2845,7 @@ msgstr "ร่างอีเมลตอบกลับ"
 msgid "Draft failed · tap to retry"
 msgstr "สร้างฉบับร่างไม่สำเร็จ · แตะเพื่อลองอีกครั้ง"
 
-#: ../panel/src/DraftSection.tsx:249
+#: ../panel/src/DraftSection.tsx:267
 msgid "Draft generation failed."
 msgstr "สร้างฉบับร่างไม่สำเร็จ"
 
@@ -2861,7 +2861,7 @@ msgstr "สร้างฉบับร่างไม่สำเร็จ โ�
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:264
-#: ../ui/src/emails/SuggestedDraftCard.tsx:47
+#: ../ui/src/emails/SuggestedDraftCard.tsx:82
 #, fuzzy
 msgid "Draft reply"
 msgstr "ร่างการตอบกลับ"
@@ -3265,7 +3265,7 @@ msgid "Field trips, parent evenings, assemblies, and school event scheduling."
 msgstr "ทัศนศึกษา, กิจกรรมผู้ปกครอง, การประชุมนักเรียน และการจัดตารางกิจกรรมโรงเรียน"
 
 #. placeholder {0}: folder.name
-#: ../panel/src/ClassificationCard.tsx:82
+#: ../panel/src/ClassificationCard.tsx:90
 msgid "Filed in {0}. Move to another folder"
 msgstr "จัดเก็บใน {0} ย้ายไปโฟลเดอร์อื่น"
 
@@ -3587,7 +3587,7 @@ msgstr "สร้าง"
 #~ msgid "Generate a new draft — uses one from your monthly allowance"
 #~ msgstr "สร้างฉบับร่างใหม่ — ใช้โควตาจากจำนวนรายเดือนของคุณ"
 
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 msgid "Generate a new draft. Uses one from your monthly allowance"
 msgstr "สร้างฉบับร่างใหม่ หักโควตารายเดือน 1 ครั้ง"
 
@@ -4126,12 +4126,12 @@ msgstr "การดึงข้อมูลย้อนหลังเบื้
 msgid "Inline image"
 msgstr "รูปภาพแทรก"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 #, fuzzy
 msgid "Insert again"
 msgstr "แทรกอีกครั้ง"
 
-#: ../panel/src/DraftSection.tsx:265
+#: ../panel/src/DraftSection.tsx:283
 msgid "Insert into reply"
 msgstr "แทรกในคำตอบ"
 
@@ -4493,7 +4493,7 @@ msgstr "โหลดเพิ่ม"
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:536
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:558
 #: ../../apps/extension/src/panel/EmailsPanel.tsx:602
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:127
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "กำลังโหลด"
@@ -4526,7 +4526,7 @@ msgstr "กำลังโหลดเธรดเก่า..."
 msgid "Loading…"
 msgstr "กำลังโหลด..."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:152
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:164
 #: ../ui/src/emails/EmailRail.tsx:59
 #, fuzzy
 msgid "Mail"
@@ -4590,7 +4590,6 @@ msgstr "ทำเครื่องหมายว่าเสร็จสิ้
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:107
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -4609,7 +4608,7 @@ msgid "Mark as read"
 msgstr "ทำเครื่องหมายว่าอ่านแล้ว"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 #, fuzzy
 msgid "Mark as sent"
 msgstr "ทำเครื่องหมายว่าส่งแล้ว"
@@ -4621,7 +4620,7 @@ msgid "Mark as unread"
 msgstr "ทำเครื่องหมายว่ายังไม่ได้อ่าน"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:111
-#: ../ui/src/emails/SuggestedDraftCard.tsx:73
+#: ../ui/src/emails/SuggestedDraftCard.tsx:109
 #, fuzzy
 msgid "Mark as unsent"
 msgstr "ทำเครื่องหมายว่ายังไม่ส่ง"
@@ -4924,8 +4923,8 @@ msgstr "ไม่มีฉบับร่างเหลืออยู่"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:481
-#: ../panel/src/DraftSection.tsx:222
-#: ../ui/src/emails/SuggestedDraftCard.tsx:97
+#: ../panel/src/DraftSection.tsx:240
+#: ../ui/src/emails/SuggestedDraftCard.tsx:134
 #, fuzzy
 msgid "No drafts remaining · resets {quotaResetDate}"
 msgstr "ไม่มีฉบับร่างเหลืออยู่ · รีเซ็ตในวันที่ {quotaResetDate}"
@@ -4936,7 +4935,7 @@ msgid "No drafts remaining · resets {resetDate}"
 msgstr "ไม่มีฉบับร่างเหลืออยู่ · รีเซ็ตในวันที่ {resetDate}"
 
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:470
-#: ../ui/src/emails/SuggestedDraftCard.tsx:76
+#: ../ui/src/emails/SuggestedDraftCard.tsx:113
 #, fuzzy
 msgid "No drafts remaining this month"
 msgstr "ไม่มีฉบับร่างเหลืออยู่สำหรับเดือนนี้"
@@ -5090,8 +5089,8 @@ msgid "Not connected"
 msgstr "ไม่ได้เชื่อมต่อ"
 
 #: ../panel/src/ClassificationCard.tsx:96
-msgid "Not filed"
-msgstr "ยังไม่จัดเก็บ"
+#~ msgid "Not filed"
+#~ msgstr "ยังไม่จัดเก็บ"
 
 #: ../ui/src/PricingPlans.tsx:94
 #, fuzzy
@@ -5116,6 +5115,10 @@ msgstr "ไม่จำเป็นเสมอไป Amarnai สามารถ
 #, fuzzy
 msgid "Not set"
 msgstr "ไม่ได้ตั้งค่า"
+
+#: ../panel/src/ClassificationCard.tsx:104
+msgid "Not sorted yet"
+msgstr "ยังไม่ได้จัดเรียง"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:242
 #, fuzzy
@@ -5195,7 +5198,7 @@ msgstr "เปิดการสนทนาเพื่อดูว่า Amarn
 #~ msgid "Open a message first, then choose Amarnai Reply."
 #~ msgstr "เปิดข้อความก่อน จากนั้นเลือก Amarnai Reply"
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:181
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:200
 msgid "Open all settings in a new tab"
 msgstr "เปิดการตั้งค่าทั้งหมดในแท็บใหม่"
 
@@ -5208,7 +5211,7 @@ msgstr "เปิด Amarnai"
 msgid "Open an issue on GitHub"
 msgstr "สร้างประเด็นบน GitHub"
 
-#: ../panel/src/InjectedThreadPanel.tsx:327
+#: ../panel/src/InjectedThreadPanel.tsx:323
 msgid "Open in Amarnai"
 msgstr "เปิดใน Amarnai"
 
@@ -5956,7 +5959,7 @@ msgstr "รีเฟรช"
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:348
-#: ../ui/src/emails/SuggestedDraftCard.tsx:89
+#: ../ui/src/emails/SuggestedDraftCard.tsx:126
 #, fuzzy
 msgid "Regenerate"
 msgstr "สร้างใหม่"
@@ -5991,7 +5994,6 @@ msgstr "นำ {email} ออกจากบัญชีดำ"
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:404
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:410
-#: ../panel/src/ClassificationCard.tsx:106
 #: ../ui/src/emails/ThreadPreview.tsx:119
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/emails/ThreadRow.tsx:148
@@ -6178,7 +6180,7 @@ msgstr "แหล่งข้อมูล"
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
-#: ../panel/src/DraftSection.tsx:252
+#: ../panel/src/DraftSection.tsx:270
 #: ../ui/src/emails/ThreadSummaryCard.tsx:44
 #, fuzzy
 msgid "Retry"
@@ -6508,7 +6510,7 @@ msgstr "กำหนดภาษาสำหรับพื้นที่ทำ
 msgid "Setting up your workspace…"
 msgstr "กำลังตั้งค่าพื้นที่ทำงานของคุณ..."
 
-#: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
+#: ../../apps/extension/src/panel/SettingsOverlay.tsx:115
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:50
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:42
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:197
@@ -6725,11 +6727,11 @@ msgstr "จัดเรียง"
 msgid "Sort emails your way."
 msgstr "จัดเรียงอีเมลในแบบของคุณ"
 
-#: ../panel/src/ClassificationCard.tsx:131
+#: ../panel/src/ClassificationCard.tsx:117
 msgid "Sort now"
 msgstr "คัดแยกเลย"
 
-#: ../panel/src/DraftSection.tsx:242
+#: ../panel/src/DraftSection.tsx:260
 msgid "Sort this thread first, then Amarnai can draft a reply for it."
 msgstr "จัดเรียงหัวข้อนี้ก่อน แล้ว Amarnai จะสามารถร่างคำตอบให้ได้"
 
@@ -6779,7 +6781,7 @@ msgid "Sorting volume"
 msgstr "ปริมาณการจัดเรียง"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
-#: ../panel/src/ClassificationCard.tsx:71
+#: ../panel/src/ClassificationCard.tsx:79
 #: ../ui/src/demo/HeroFeedCard.tsx:95
 #: ../ui/src/emails/ThreadRow.tsx:254
 #, fuzzy
@@ -8076,7 +8078,7 @@ msgstr "อัปเดตชื่อพื้นที่ทำงานแล
 msgid "Workspace settings"
 msgstr "การตั้งค่าเวิร์กสเปซ"
 
-#: ../../apps/web/src/app/(app)/settings/page.tsx:138
+#: ../../apps/web/src/app/(app)/settings/page.tsx:152
 #, fuzzy
 msgid "Workspace Settings"
 msgstr "การตั้งค่าพื้นที่ทำงาน"
@@ -8108,7 +8110,7 @@ msgstr "ฟังก์ชันเขียนกลับเปิดใช้
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:474
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:492
-#: ../panel/src/DraftSection.tsx:236
+#: ../panel/src/DraftSection.tsx:254
 #: ../ui/src/emails/ThreadPreview.tsx:250
 #, fuzzy
 msgid "Writing draft reply…"

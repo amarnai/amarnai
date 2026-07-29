@@ -134,6 +134,7 @@ function detail(messageIds: string[], explanation: string): EmailThreadDetail {
       createdAt: "2026-07-11T10:00:00Z",
       finalNode: { id: "folder-1", name: "Work" },
     },
+    filedNode: { id: "folder-1", name: "Work" },
     tags: [],
     doneMark: null,
     assignment: null,

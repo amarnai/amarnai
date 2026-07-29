@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -59,27 +59,39 @@ export function SettingsOverlay({ api, workspaceId, onUpgrade, onClose }: Props)
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
   const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const [s, c, st] = await Promise.all([
-          api.gmailSyncSettings(workspaceId),
-          api.gmailConnection(workspaceId).catch(() => null),
-          api.syncStatus(workspaceId).catch(() => null),
-        ]);
-        if (cancelled) return;
-        setSettings(s);
-        setConnection(c);
-        setSyncStatus(st);
-      } catch {
-        if (!cancelled) setFailed(true);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
+  const load = useCallback(async (): Promise<void> => {
+    try {
+      const [s, c, st] = await Promise.all([
+        api.gmailSyncSettings(workspaceId),
+        api.gmailConnection(workspaceId).catch(() => null),
+        api.syncStatus(workspaceId).catch(() => null),
+      ]);
+      setSettings(s);
+      setConnection(c);
+      setSyncStatus(st);
+    } catch {
+      setFailed(true);
+    }
   }, [api, workspaceId]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  // Permission grants happen on the web, in another tab. Re-read on the way
+  // back so the writeback switch reflects the new scope instead of sitting at
+  // OFF until the panel is closed and reopened.
+  useEffect(() => {
+    const refresh = () => {
+      if (document.visibilityState === "visible") void load();
+    };
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, [load]);
 
   const provider: MailProvider = connection?.provider ?? "GMAIL";
   const mailActive = connection?.status === "ACTIVE";
@@ -159,15 +171,22 @@ export function SettingsOverlay({ api, workspaceId, onUpgrade, onClose }: Props)
                   />
                   {settings.writebackAvailable && (
                     <LabelWritebackSection
+                      // The section seeds its switch from these props once, so a
+                      // grant completed in another tab only shows up if it
+                      // remounts. The scope is what the grant changes.
+                      key={String(settings.hasWritebackScope)}
                       api={api}
                       workspaceId={workspaceId}
                       provider={provider}
                       initialEnabled={settings.labelWritebackEnabled}
                       hasWriteScope={settings.hasWritebackScope}
                       // The panel has no incremental-consent route of its own, so
-                      // the grant is done on the web and the panel picks up the
-                      // result on its next load.
-                      onRequestWriteScope={() => void openWebApp(api, "/settings")}
+                      // the grant is done on the web. `?writeback=connect` starts
+                      // it on arrival rather than dropping the user on the
+                      // settings page to click the same toggle again.
+                      onRequestWriteScope={() =>
+                        void openWebApp(api, "/settings?writeback=connect")
+                      }
                     />
                   )}
                 </section>

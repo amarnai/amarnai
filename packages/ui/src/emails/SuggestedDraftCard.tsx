@@ -10,9 +10,36 @@ import { Tooltip } from "../Tooltip.js";
 
 export interface SuggestedDraftCardProps {
   draft: DraftItem;
-  onToggleSent: () => void;
+  /** Omitted where the surface has no use for the sent state (the injected panel). */
+  onToggleSent?: () => void;
   onRegenerate?: () => void;
   quota?: { used: number; limit: number; resetsAt: string } | null;
+}
+
+/**
+ * Copy the draft, from wherever this card happens to be rendered.
+ *
+ * The async Clipboard API is not available everywhere this card runs: inside
+ * the panel injected into Gmail the card lives in a cross-origin iframe, where
+ * `clipboard-write` is off unless the embedder grants it, and the call rejects.
+ * The execCommand path is deprecated but has no such gate, so it is the
+ * fallback rather than the primary.
+ */
+function copyText(text: string): boolean {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.cssText = "position:fixed;top:0;left:0;opacity:0;pointer-events:none;";
+  document.body.appendChild(area);
+  area.select();
+  let ok = false;
+  try {
+    ok = document.execCommand("copy");
+  } catch {
+    ok = false;
+  }
+  area.remove();
+  return ok;
 }
 
 export function SuggestedDraftCard({ draft, onToggleSent, onRegenerate, quota }: SuggestedDraftCardProps) {
@@ -22,11 +49,19 @@ export function SuggestedDraftCard({ draft, onToggleSent, onRegenerate, quota }:
   const quotaExhausted = quota != null && quota.used >= quota.limit;
   const quotaResetDate = quota ? formatQuotaResetDate(quota.resetsAt) : null;
 
+  function markCopied() {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   function handleCopy() {
-    navigator.clipboard.writeText(draft.body).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    navigator.clipboard
+      ?.writeText(draft.body)
+      .then(markCopied)
+      .catch(() => {
+        if (copyText(draft.body)) markCopied();
+      });
+    if (!navigator.clipboard && copyText(draft.body)) markCopied();
   }
 
   return (
@@ -66,12 +101,14 @@ export function SuggestedDraftCard({ draft, onToggleSent, onRegenerate, quota }:
               </>
             )}
           </button>
-          <button type="button" className="em-btn ghost" onClick={onToggleSent}>
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-              <path d="M1.5 6l2.5 3L10.5 2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {isSent ? <Trans>Mark as unsent</Trans> : <Trans>Mark as sent</Trans>}
-          </button>
+          {onToggleSent && (
+            <button type="button" className="em-btn ghost" onClick={onToggleSent}>
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+                <path d="M1.5 6l2.5 3L10.5 2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {isSent ? <Trans>Mark as unsent</Trans> : <Trans>Mark as sent</Trans>}
+            </button>
+          )}
           {onRegenerate && (
             <Tooltip content={quotaExhausted ? i18n._(msg`No drafts remaining this month`) : i18n._(msg`Generate a new draft. Uses one from your monthly allowance`)}>
               <button

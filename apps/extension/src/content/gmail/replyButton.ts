@@ -58,6 +58,13 @@ export type ReplyButtonOptions = {
    * "Amarnai Reply" already WAS the request.
    */
   autoStart?: boolean;
+  /**
+   * A draft the opener already has, inserted as-is instead of generating one.
+   * The injected panel opened this compose to place the draft it is showing;
+   * asking the API again would risk a different text and a second charge
+   * against the monthly allowance.
+   */
+  presetHtml?: string;
 };
 
 /**
@@ -179,13 +186,19 @@ export function attachReplyButton(
       return;
     }
 
-    // Replace, never append: clicking again must not stack a second copy. If
-    // the user deleted the insertion, the node is disconnected and this is a
-    // plain fresh insert.
+    insertHtml(outcome.html);
+  }
+
+  /**
+   * Put draft HTML in the compose body. Replace, never append: clicking again
+   * must not stack a second copy. If the user deleted the insertion, the node is
+   * disconnected and this is a plain fresh insert.
+   */
+  function insertHtml(html: string) {
     if (lastInserted?.isConnected) lastInserted.remove();
     // One wrapper so a multi-paragraph draft is removable as a unit; inserted
     // at the cursor, so Gmail's quoted trail below survives untouched.
-    const node = view.insertHTMLIntoBodyAtCursor(`<div>${outcome.html}</div>`);
+    const node = view.insertHTMLIntoBodyAtCursor(`<div>${html}</div>`);
     lastInserted = node instanceof HTMLElement ? node : null;
     emitTransient({ kind: "inserted" });
   }
@@ -208,8 +221,10 @@ export function attachReplyButton(
     }),
   );
 
-  // After addButton, so the "Drafting…" state has a button to show on.
-  if (opts.autoStart) void onClick();
+  // After addButton, so the "Drafting…"/"Inserted" state has a button to show on.
+  // A draft that came with the opener goes in as-is; anything else is generated.
+  if (opts.presetHtml !== undefined) insertHtml(opts.presetHtml);
+  else if (opts.autoStart) void onClick();
 
   return teardown;
 }

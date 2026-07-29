@@ -15,6 +15,12 @@ import type { EmailThreadDetail, MemberItem } from "./types.js";
 // leaves alone IS the approval, and the reasoning behind a sort turned out to be
 // something almost nobody read. What is left is one chip that says the answer
 // and opens the picker when the answer is wrong.
+//
+// No important star either, unlike the web preview. This panel sits a few
+// inches from the mail client's own star for the same conversation, wearing the
+// same glyph and meaning something else (Amarnai's important queue, which does
+// not sync with the provider's flag in either direction). Two stars that can
+// disagree about one thread is worse than one star in the web app.
 
 export type ClassificationCardProps = {
   thread: EmailThreadDetail;
@@ -26,7 +32,6 @@ export type ClassificationCardProps = {
   onRequestMembers: () => void;
   onMove: (nodeId: string) => void;
   onToggleDone: () => void;
-  onToggleImportant: () => void;
   onAssign: (userId: string | null) => void;
   onSortNow: () => void;
 };
@@ -40,7 +45,6 @@ export function ClassificationCard({
   onRequestMembers,
   onMove,
   onToggleDone,
-  onToggleImportant,
   onAssign,
   onSortNow,
 }: ClassificationCardProps) {
@@ -49,7 +53,11 @@ export function ClassificationCard({
   const [rerouteAnchor, setRerouteAnchor] = useState<HTMLElement | null>(null);
   const [assignAnchor, setAssignAnchor] = useState<HTMLElement | null>(null);
 
-  const folder = thread.latestClassification?.finalNode ?? null;
+  // The last run's destination when it had one, otherwise the folder the thread
+  // is still filed in. A needs-review re-sort records no destination, and
+  // calling the thread unsorted because of that would contradict the label the
+  // reader can see on the very same conversation.
+  const folder = thread.latestClassification?.finalNode ?? thread.filedNode ?? null;
   const needsReview = thread.triageStatus === "NEEDS_REVIEW";
   const isSorting = thread.isClassifying;
   const isUnsorted =
@@ -93,31 +101,9 @@ export function ClassificationCard({
             aria-haspopup="dialog"
             aria-expanded={rerouteAnchor !== null}
           >
-            <Trans>Not filed</Trans>
+            <Trans>Not sorted yet</Trans>
           </button>
         )}
-
-        <button
-          type="button"
-          className={`apn-icon-btn apn-star${thread.isImportant ? " is-important" : ""}`}
-          aria-pressed={thread.isImportant}
-          aria-label={
-            thread.isImportant
-              ? i18n._(msg`Remove from important`)
-              : i18n._(msg`Mark as important`)
-          }
-          onClick={onToggleImportant}
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-            <path
-              d="M7 1.75l1.545 3.13 3.455.502-2.5 2.437.59 3.44L7 9.63l-3.09 1.625.59-3.44-2.5-2.437 3.455-.502z"
-              fill={thread.isImportant ? "currentColor" : "none"}
-              stroke="currentColor"
-              strokeWidth={thread.isImportant ? 0 : 1.3}
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
       </div>
 
       {needsReview && !isSorting && (

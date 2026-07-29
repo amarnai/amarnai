@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import type { ApiClient, Workspace } from "@amarnai/api-client";
@@ -21,6 +21,7 @@ vi.mock("../auth/session", () => ({ useSession: () => session }));
 vi.mock("./openWebApp", () => ({ openWebApp: vi.fn() }));
 
 import { SettingsOverlay } from "./SettingsOverlay";
+import { openWebApp } from "./openWebApp";
 
 i18n.load("en", {});
 i18n.activate("en");
@@ -57,11 +58,11 @@ function makeApi(): ApiClient {
   } as unknown as ApiClient;
 }
 
-function renderOverlay() {
+function renderOverlay(api: ApiClient = makeApi()) {
   render(
     <I18nProvider i18n={i18n}>
       <SettingsOverlay
-        api={makeApi()}
+        api={api}
         workspaceId="ws-1"
         onUpgrade={vi.fn()}
         onClose={vi.fn()}
@@ -103,5 +104,79 @@ describe("SettingsOverlay — which controls a member sees", () => {
 
     await waitFor(() => expect(screen.getByText(/^Plan$/)).toBeTruthy());
     expect(screen.queryByText(/workspace details/i)).toBeNull();
+  });
+});
+
+// The panel cannot run OAuth itself, so a workspace whose mailbox predates the
+// write scope has to finish the grant on the web. Sending it to the bare
+// settings page made the switch look broken: the click opened a tab and the
+// toggle stayed off, with nothing saying why.
+describe("SettingsOverlay — label writeback without the write scope", () => {
+  /** An owner with an active mailbox, writeback available but not yet granted. */
+  function makeWritebackApi(hasWritebackScope: boolean): ApiClient {
+    return {
+      gmailSyncSettings: vi.fn(async () => ({
+        ...DEFAULT_GMAIL_SYNC_SETTINGS,
+        labelWritebackEnabled: true,
+        writebackAvailable: true,
+        hasWritebackScope,
+      })),
+      gmailConnection: vi.fn(async () => ({ provider: "GMAIL", status: "ACTIVE" })),
+      syncStatus: vi.fn(async () => null),
+    } as unknown as ApiClient;
+  }
+
+  function writebackSwitch(): HTMLInputElement {
+    const label = screen.getByText(/write sorted folders as gmail labels/i).closest("label");
+    return label!.querySelector("input[role=switch]") as HTMLInputElement;
+  }
+
+  it("sends the user into the consent flow, not just to the settings page", async () => {
+    session.workspaces = [workspace([{ userId: "u-1", role: "OWNER" }])];
+    session.userId = "u-1";
+
+    renderOverlay(makeWritebackApi(false));
+
+    await waitFor(() => expect(writebackSwitch()).toBeTruthy());
+    // Stored setting is on, but the missing scope makes it inert, so it reads off.
+    expect(writebackSwitch().checked).toBe(false);
+
+    fireEvent.click(writebackSwitch());
+
+    expect(vi.mocked(openWebApp)).toHaveBeenCalledWith(
+      expect.anything(),
+      "/settings?writeback=connect"
+    );
+  });
+
+  it("shows the switch on once the grant made in another tab comes back", async () => {
+    session.workspaces = [workspace([{ userId: "u-1", role: "OWNER" }])];
+    session.userId = "u-1";
+
+    // First read has neither the scope nor the setting. The web consent flow
+    // grants the scope AND turns the setting on, so every later read has both.
+    let granted = false;
+    const api = {
+      gmailSyncSettings: vi.fn(async () => ({
+        ...DEFAULT_GMAIL_SYNC_SETTINGS,
+        labelWritebackEnabled: granted,
+        writebackAvailable: true,
+        hasWritebackScope: granted,
+      })),
+      gmailConnection: vi.fn(async () => ({ provider: "GMAIL", status: "ACTIVE" })),
+      syncStatus: vi.fn(async () => null),
+    } as unknown as ApiClient;
+
+    renderOverlay(api);
+
+    await waitFor(() => expect(writebackSwitch()).toBeTruthy());
+    expect(writebackSwitch().checked).toBe(false);
+
+    granted = true;
+    await act(async () => {
+      window.dispatchEvent(new Event("focus"));
+    });
+
+    await waitFor(() => expect(writebackSwitch().checked).toBe(true));
   });
 });

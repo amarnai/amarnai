@@ -281,6 +281,13 @@ export type EmailThreadDetail = {
     toEmails: unknown;
   }>;
   latestClassification: Classification | null;
+  /**
+   * The folder the thread is filed in, which outlives a re-sort that ended in
+   * needs-review (those record no destination, so `latestClassification`
+   * carries a null `finalNode` while the filing — and the mailbox label — still
+   * stands). Null only when no run has ever routed the thread anywhere.
+   */
+  filedNode: { id: string; name: string } | null;
   tags: EmailTag[];
   doneMark: DoneMark | null;
   assignment: ThreadAssignment | null;
