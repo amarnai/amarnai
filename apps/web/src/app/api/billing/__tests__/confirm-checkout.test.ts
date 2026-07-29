@@ -100,3 +100,46 @@ describe("confirm-checkout", () => {
     expect(verifyAccessToken).toHaveBeenCalledWith("tok");
   });
 });
+
+describe("credential precedence — an explicit token beats an ambient cookie", () => {
+  it("acts as the Bearer's user even when a web session for someone else exists", async () => {
+    // The panel calls these routes with its own token from a browser that may
+    // hold a session for a different account. Letting the cookie win refused
+    // requests the caller was entitled to make (and could have charged the
+    // wrong workspace).
+    vi.mocked(auth).mockResolvedValue({ user: { id: "someone-else" } } as never);
+    vi.mocked(verifyAccessToken).mockResolvedValue({
+      userId: USER_ID,
+      sessionEpoch: 0,
+    } as never);
+    mockStripe.checkout.sessions.retrieve.mockResolvedValue({
+      client_reference_id: USER_ID,
+      status: "complete",
+    });
+    vi.mocked(provisionFromCheckoutSession).mockResolvedValue({
+      workspaceId: "ws-1",
+      plan: "PRO",
+    } as never);
+
+    const res = await POST(makeReq({ sessionId: "cs_1" }, { Authorization: "Bearer tok" }));
+
+    expect(res.status).toBe(200);
+    expect(verifyAccessToken).toHaveBeenCalledWith("tok");
+  });
+
+  it("still falls back to the cookie when no token is presented", async () => {
+    vi.mocked(auth).mockResolvedValue({ user: { id: USER_ID } } as never);
+    mockStripe.checkout.sessions.retrieve.mockResolvedValue({
+      client_reference_id: USER_ID,
+      status: "complete",
+    });
+    vi.mocked(provisionFromCheckoutSession).mockResolvedValue({
+      workspaceId: "ws-1",
+      plan: "PRO",
+    } as never);
+
+    const res = await POST(makeReq({ sessionId: "cs_1" }));
+
+    expect(res.status).toBe(200);
+  });
+});

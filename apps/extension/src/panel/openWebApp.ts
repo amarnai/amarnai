@@ -2,7 +2,19 @@ import { useCallback } from "react";
 import type { MouseEvent } from "react";
 import type { ApiClient } from "@amarnai/api-client";
 import { useSession } from "../auth/session";
+import { ext } from "../platform/ext";
 import { WEB_APP_URL } from "../config";
+
+/** Build the bridged URL for a web-app path, falling back to the plain one. */
+async function bridgedUrl(api: ApiClient, path: string): Promise<string> {
+  try {
+    const { code } = await api.createBridgeCode();
+    return `${WEB_APP_URL}/auth/bridge?code=${encodeURIComponent(code)}&next=${encodeURIComponent(path)}`;
+  } catch {
+    // A dead API costs a sign-in, not a dead end: the plain URL still works.
+    return `${WEB_APP_URL}${path}`;
+  }
+}
 
 /**
  * Opens a web-app page from the panel, carrying the panel's signed-in user with
@@ -16,17 +28,27 @@ import { WEB_APP_URL } from "../config";
  * links had before, so a dead API costs a sign-in rather than a dead end.
  */
 export async function openWebApp(api: ApiClient, path: string): Promise<void> {
-  const target = `${WEB_APP_URL}${path}`;
-  let url = target;
+  window.open(await bridgedUrl(api, path), "_blank", "noopener");
+}
 
+/**
+ * Same, but through the tabs API so the caller keeps the tab's id and can close
+ * it later. A page cannot reliably close itself once it has navigated across
+ * origins, which a checkout tab always does (bridge, then Stripe, then back), so
+ * owning the id here is the only dependable way to tidy it up afterwards.
+ *
+ * Returns null when the id is unavailable, in which case the tab is still open
+ * and the user closes it themselves.
+ */
+export async function openWebAppTab(api: ApiClient, path: string): Promise<number | null> {
+  const url = await bridgedUrl(api, path);
   try {
-    const { code } = await api.createBridgeCode();
-    url = `${WEB_APP_URL}/auth/bridge?code=${encodeURIComponent(code)}&next=${encodeURIComponent(path)}`;
+    const tab = await ext.tabs.create({ url });
+    return tab.id ?? null;
   } catch {
-    // Fall through to the plain URL.
+    window.open(url, "_blank", "noopener");
+    return null;
   }
-
-  window.open(url, "_blank", "noopener");
 }
 
 /**

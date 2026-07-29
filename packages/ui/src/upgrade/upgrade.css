@@ -270,3 +270,108 @@
 .ug-btn--primary:hover:not(:disabled) {
   background: var(--accent-ink);
 }
+
+/* ─── Success ─────────────────────────────────────────────────────────────── */
+/* Mirrors the web app's upgrade-success page: mascot on top, card pulled up
+   over Aziru's lower body. Sized down for the 360px panel. */
+
+.ug-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding-top: var(--space-md);
+}
+
+.ug-success-mascot {
+  width: 200px;
+  max-width: 60%;
+  position: relative;
+  z-index: 1;
+  /* Pull the card up over the artwork, as on the web. */
+  margin-bottom: -100px;
+  flex: none;
+}
+
+.ug-success-mascot img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ug-success-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 32px var(--space-lg) var(--space-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.ug-success-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.ug-success-badge svg {
+  display: block;
+}
+
+.ug-success-title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.ug-success-workspace {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+.ug-success-body {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+.ug-success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: 100%;
+  margin-top: var(--space-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ug-success-card {
+    animation: ug-rise 0.28s ease-out;
+  }
+}
+
+@keyframes ug-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

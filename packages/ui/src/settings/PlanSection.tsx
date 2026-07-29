@@ -2,8 +2,8 @@
 
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { PLANS, PLAN_TIER, PLAN_TO_BILLING, TOP_PLAN, type BillingPlan } from "@amarnai/shared";
-import { trPlan } from "../pricing/planMessages.js";
+import { PLAN_TIER, TOP_PLAN, type BillingPlan } from "@amarnai/shared";
+import { billingPlanLabel } from "../pricing/planLabel.js";
 import "./settings.css";
 
 export type PlanSectionProps = {
@@ -30,10 +30,7 @@ export type PlanSectionProps = {
 export function PlanSection({ plan, billingEnabled, isOwner, onUpgrade }: PlanSectionProps) {
   const { i18n } = useLingui();
 
-  // The marketing name ("Scribe"), resolved through the same render-edge
-  // localization the pricing table uses.
-  const marketing = PLANS.find((p) => PLAN_TO_BILLING[p.id] === plan);
-  const planLabel = marketing ? trPlan(i18n, marketing.name) : plan;
+  const planLabel = billingPlanLabel(i18n, plan);
 
   const canUpgrade = billingEnabled && plan !== TOP_PLAN && PLAN_TIER[plan] < PLAN_TIER[TOP_PLAN];
 

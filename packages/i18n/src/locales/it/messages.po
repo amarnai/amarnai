@@ -278,6 +278,10 @@ msgstr "{waitingCount, plural, one {# conversazione è in attesa di essere instr
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# conversazione è in attesa.} other {# conversazioni sono in attesa.}} Collega almeno {TAXONOMY_MIN_NON_ROOT_NODES} cartelle per iniziare lo smistamento."
 
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:60
+msgid "{workspaceName} is on {planLabel}"
+msgstr "{workspaceName} è sul piano {planLabel}"
+
 #: ../ui/src/PricingPlans.tsx:172
 #, fuzzy
 msgid "/ workspace / month"
@@ -320,7 +324,7 @@ msgstr "<0>King Aziru</0> è pronto a ordinare le tue conversazioni email. Colle
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>King Aziru</0> è pronto a organizzare le tue conversazioni email. Connetti il tuo account Gmail per iniziare. Amarnai si connette con <1>accesso di sola lettura</1> e <2>non invia, elimina o modifica mai nulla</2>. La tua casella di posta resta tua."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:216
+#: ../ui/src/upgrade/UpgradeDialog.tsx:238
 msgid "${price} per month"
 msgstr "${price} al mese"
 
@@ -560,9 +564,7 @@ msgstr "Una nuova candidatura è stata ricevuta da Horemheb di Tebe per la posiz
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Una nuova candidatura è stata ricevuta da Horemheb di Tebe per la posizione di Capo della Corrispondenza.\n"
-"\n"
-"Visualizza la candidatura nell'Archivio Reale."
+msgstr "Una nuova candidatura è stata ricevuta da Horemheb di Tebe per la posizione di Capo della Corrispondenza.\n\nVisualizza la candidatura nell'Archivio Reale."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -588,11 +590,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Sarò vicino al Delta quella stessa settimana. Incontriamoci alla stazione di posta il secondo giorno; posso dedicare la mattinata.\n"
-"\n"
-"Fino ad allora,"
+msgstr "Abdi-Heba,\n\nSarò vicino al Delta quella stessa settimana. Incontriamoci alla stazione di posta il secondo giorno; posso dedicare la mattinata.\n\nFino ad allora,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -829,11 +827,11 @@ msgstr "Elimina anche i dati email sincronizzati"
 msgid "amarnai business plan"
 msgstr "Piano Amarnai Business"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:69
 msgid "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
 msgstr "Amarnai archivia ogni conversazione Gmail e Outlook nelle cartelle che crei, direttamente dal pannello laterale accanto alle email che stai già leggendo."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:109
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:86
 #, fuzzy
 msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 msgstr "Amarnai archivia ogni conversazione nelle cartelle che scegli. Genera un set dalla tua posta in arrivo o parti da un modello."
@@ -905,11 +903,11 @@ msgstr "Amarnai non sta più sincronizzando questa casella di posta. Riconnetti 
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai è open source con licenza AGPL-3.0. Clonalo, usa le tue chiavi e gestisci gratuitamente ogni livello sulla tua infrastruttura."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:201
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:178
 msgid "Amarnai is pinned. Its icon opens the panel from any tab."
 msgstr "Amarnai è fissato. La sua icona apre il pannello da qualsiasi scheda."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:125
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:102
 #, fuzzy
 msgid "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
 msgstr "Amarnai si trova in un pannello laterale accanto a Gmail e Outlook, così non devi mai lasciare la conversazione che stai leggendo."
@@ -998,7 +996,7 @@ msgstr "Amarnai si trova in un pannello laterale accanto a Gmail e Outlook."
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai ordina le tue conversazioni Gmail nelle cartelle che definisci, crea bozze di risposta per la tua approvazione e spiega ogni decisione. Open source e auto-ospitabile."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:93
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:100
 msgid "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Amarnai organizza la tua posta in arrivo, archiviando in automatico le email vecchie e nuove al posto giusto. Le conversazioni incerte ti aspettano per la revisione."
 
@@ -1078,7 +1076,7 @@ msgstr "Annuale"
 msgid "Annual · Save 20%"
 msgstr "Annuale · Risparmia 20%"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:199
+#: ../ui/src/upgrade/UpgradeDialog.tsx:221
 #, fuzzy
 msgid "Annual, save 20%"
 msgstr "Annuale, risparmia il 20%"
@@ -1151,7 +1149,7 @@ msgstr "Apprendista"
 msgid "Archive"
 msgstr "Archivio"
 
-#: ../ui/src/settings/PlanSection.tsx:59
+#: ../ui/src/settings/PlanSection.tsx:56
 msgid "Ask the workspace owner to change the plan."
 msgstr "Chiedi al proprietario dell'area di lavoro di cambiare il piano."
 
@@ -1265,11 +1263,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Le tue parole di amicizia ci giungono gradite. Siamo aperti ad ascoltare ulteriormente ciò che la casa di Amurru propone. Invia le tue condizioni con il prossimo corriere.\n"
-"\n"
-"Con i nostri saluti,"
+msgstr "Aziru,\n\nLe tue parole di amicizia ci giungono gradite. Siamo aperti ad ascoltare ulteriormente ciò che la casa di Amurru propone. Invia le tue condizioni con il prossimo corriere.\n\nCon i nostri saluti,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1289,6 +1283,10 @@ msgstr "La terza spedizione d'oro di Babilonia è in ritardo dopo due messaggeri
 msgid "Back"
 msgstr "Indietro"
 
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:154
+msgid "Back to Gmail"
+msgstr "Torna a Gmail"
+
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
 #~ msgid "Back to inbox"
 #~ msgstr "Torna alla posta in arrivo"
@@ -1299,6 +1297,10 @@ msgstr "Indietro"
 #, fuzzy
 msgid "Back to list"
 msgstr "Torna all'elenco"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:152
+msgid "Back to Outlook"
+msgstr "Torna a Outlook"
 
 #: ../../apps/mobile/app/forgot-password.tsx:73
 #: ../../apps/web/src/app/forgot-password/page.tsx:55
@@ -1340,7 +1342,7 @@ msgstr "Fatturazione"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
 #: ../ui/src/PricingPlans.tsx:112
-#: ../ui/src/upgrade/UpgradeDialog.tsx:184
+#: ../ui/src/upgrade/UpgradeDialog.tsx:206
 #, fuzzy
 msgid "Billing cycle"
 msgstr "Ciclo di fatturazione"
@@ -1392,7 +1394,7 @@ msgstr "Naviga facilmente tra le email nelle tue cartelle. Genera bozze di rispo
 msgid "Browse templates"
 msgstr "Sfoglia i modelli"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:49
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:56
 #, fuzzy
 msgid "Browse the folders. It's fully interactive."
 msgstr "Esplora le cartelle. È completamente interattivo."
@@ -1550,7 +1552,7 @@ msgstr "Pipeline di candidati, screening delle domande e pianificazione del pers
 msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 msgstr "Numeri di tracking del corriere, eccezioni di consegna e avvisi di spedizione."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:170
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:147
 #, fuzzy
 msgid "CASA Tier 2 certified"
 msgstr "Certificato CASA Tier 2"
@@ -1594,7 +1596,7 @@ msgstr "Modifica abbonamento"
 #~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
 #~ msgstr "La modifica o la cancellazione di un piano a pagamento si effettua nell'app web di Amarnai."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#: ../ui/src/upgrade/UpgradeDialog.tsx:293
 #, fuzzy
 msgid "Changing or cancelling a paid plan is done in your subscription settings."
 msgstr "La modifica o l'annullamento di un piano a pagamento si gestisce dalle impostazioni dell'abbonamento."
@@ -1622,7 +1624,7 @@ msgstr "Pagamento non riuscito: {0}"
 msgid "Child folder"
 msgstr "Sottocartella"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:235
+#: ../ui/src/upgrade/UpgradeDialog.tsx:257
 msgid "Choose {planName}"
 msgstr "Scegli {planName}"
 
@@ -1667,7 +1669,7 @@ msgstr "Scegli dove posizionare le conversazioni di ciascuna cartella nelle tue 
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "Scegli dove devono andare le conversazioni di ogni cartella con il tuo nuovo piano. Le cartelle corrispondenti mantengono subito le loro conversazioni; tutto ciò che è impostato per essere riordinato viene riclassificato dall'IA."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:194
 #, fuzzy
 msgid "Choose which part of Amarnai to preview"
 msgstr "Scegli quale parte di Amarnai visualizzare in anteprima"
@@ -1680,11 +1682,11 @@ msgstr "Aula"
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "Clicca su cartelle e conversazioni, poi genera una bozza."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:177
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:154
 msgid "Click the Amarnai icon in your toolbar to open the panel."
 msgstr "Clicca l'icona di Amarnai nella barra degli strumenti per aprire il pannello."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:190
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:167
 msgid "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
 msgstr "Fai clic sull'icona a forma di pezzo di puzzle in alto a destra del browser, poi clicca sull'icona della puntina accanto ad Amarnai. Questa sezione si aggiornerà automaticamente."
 
@@ -1713,7 +1715,7 @@ msgstr "Clienti"
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
-#: ../ui/src/upgrade/UpgradeDialog.tsx:166
+#: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
 msgstr "Chiudi"
@@ -2176,7 +2178,7 @@ msgstr "Impossibile mettere in coda la nuova scansione. Riprova."
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Impossibile raggiungere Amarnai. Controlla la tua connessione."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:141
+#: ../ui/src/upgrade/UpgradeDialog.tsx:152
 #, fuzzy
 msgid "Could not reach the billing service. Please try again."
 msgstr "Impossibile raggiungere il servizio di fatturazione. Riprova."
@@ -2541,7 +2543,7 @@ msgstr "Descrivi le tue cartelle"
 msgid "Description"
 msgstr "Descrizione"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:106
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:83
 msgid "Design your folders"
 msgstr "Progetta le tue cartelle"
 
@@ -2642,7 +2644,7 @@ msgstr "Scollega questo spazio di lavoro. Amarnai mantiene l'accesso perché que
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Scollega questo spazio di lavoro. Amarnai mantiene l'accesso perché questa casella di posta è ancora collegata in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
@@ -2714,9 +2716,11 @@ msgstr "Non hai un account? <0>Iscriviti</0>"
 msgid "Donation drives, giving campaigns, and fundraising appeal responses."
 msgstr "Campagne di raccolta fondi, iniziative di donazione e risposte agli appelli."
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:62
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/upgrade/UpgradeDialog.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "Fatto"
@@ -2911,7 +2915,7 @@ msgstr "Email verificata! Accedi per continuare."
 #~ msgid "Email, sorted automatically. Never sends without you."
 #~ msgstr "Email smistate automaticamente. Mai un invio senza di te."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:45
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
@@ -2956,7 +2960,7 @@ msgstr "Iscrizioni, tasse universitarie, assegnazioni alloggi e amministrazione 
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "Inserisci un nome cartella (almeno {0} caratteri)."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:104
+#: ../ui/src/upgrade/UpgradeDialog.tsx:111
 msgid "Enter a name for the new workspace."
 msgstr "Inserisci un nome per il nuovo spazio di lavoro."
 
@@ -3014,7 +3018,7 @@ msgstr "Eventi e Gite scolastiche"
 msgid "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Ogni account inizia con un workspace gratuito, nessuna carta richiesta. Creane altri o esegui l'upgrade quando le tue esigenze crescono."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:104
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:111
 #, fuzzy
 msgid "Every email goes where it belongs"
 msgstr "Ogni email va al suo posto."
@@ -3032,7 +3036,7 @@ msgstr "Ogni email va al suo posto."
 msgid "Every thread in your inbox."
 msgstr "Ogni conversazione nella tua casella di posta."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:112
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Ogni conversazione finisce in una delle tue cartelle, esattamente dove ti aspetteresti di trovarla. Quando è necessaria una risposta, una bozza è a portata di clic, pronta per le tue modifiche e mai inviata senza di esse."
@@ -3518,7 +3522,7 @@ msgstr "Genera dalla casella di posta"
 msgid "Generate plan from inbox"
 msgstr "Genera piano dalla casella di posta"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
 #, fuzzy
 msgid "Generate your folders"
 msgstr "Genera le tue cartelle"
@@ -3664,7 +3668,7 @@ msgid "Go home"
 msgstr "Vai alla home"
 
 #. placeholder {0}: workspace.name
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:122
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:166
 #, fuzzy
 msgid "Go to {0}"
 msgstr "Vai a {0}"
@@ -3725,11 +3729,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Grande Re,\n"
-"\n"
-"I rapporti che hai richiesto saranno preparati prima che il consiglio si riunisca. Farò compilare ai miei scribi i resoconti dei territori orientali e li farò inviare in anticipo con un corriere veloce.\n"
-"\n"
-"In fratellanza,"
+msgstr "Grande Re,\n\nI rapporti che hai richiesto saranno preparati prima che il consiglio si riunisca. Farò compilare ai miei scribi i resoconti dei territori orientali e li farò inviare in anticipo con un corriere veloce.\n\nIn fratellanza,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4351,10 +4351,10 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Carica altro"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:510
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:531
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:553
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:597
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 #, fuzzy
@@ -4590,7 +4590,7 @@ msgstr "Monetizzazione"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
 #: ../ui/src/PricingPlans.tsx:119
-#: ../ui/src/upgrade/UpgradeDialog.tsx:191
+#: ../ui/src/upgrade/UpgradeDialog.tsx:213
 #, fuzzy
 msgid "Monthly"
 msgstr "Mensile"
@@ -4758,11 +4758,16 @@ msgid "New workspace"
 msgstr "Nuovo spazio di lavoro"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
-#: ../ui/src/upgrade/UpgradeDialog.tsx:265
-#: ../ui/src/upgrade/UpgradeDialog.tsx:266
+#: ../ui/src/upgrade/UpgradeDialog.tsx:287
+#: ../ui/src/upgrade/UpgradeDialog.tsx:288
 #, fuzzy
 msgid "New workspace name"
 msgstr "Nuovo nome spazio di lavoro"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:225
+#, fuzzy
+msgid "Next preview"
+msgstr "Anteprima successiva"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 msgid "No drafts remaining"
@@ -4991,7 +4996,7 @@ msgstr "Avvisi di reperibilità, rapporti interruzioni e escalation incidenti pr
 #~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 #~ msgstr "Un unico accesso crea il tuo account, collega la tua posta in arrivo Gmail o Outlook e ti consente di creare il tuo piano di smistamento. Amarnai non invia né elimina mai email."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:118
 msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Amarnai never sends or deletes mail."
 msgstr "Un singolo accesso crea il tuo account, collega la tua casella di posta Gmail o Outlook e ti permette di configurare le tue cartelle. Amarnai non invia né elimina mai email."
 
@@ -5006,8 +5011,8 @@ msgstr "Conversazione in corso con un noto governatore della città che solleva 
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:121
 #, fuzzy
-msgid "Only the workspace owner can change the plan."
-msgstr "Solo il proprietario dello spazio di lavoro può cambiare il piano."
+#~ msgid "Only the workspace owner can change the plan."
+#~ msgstr "Solo il proprietario dello spazio di lavoro può cambiare il piano."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 msgid "Only the workspace owner can manage billing."
@@ -5028,7 +5033,7 @@ msgstr "Apri prima un messaggio, poi scegli Amarnai Rispondi."
 msgid "Open all settings in a new tab"
 msgstr "Apri tutte le impostazioni in una nuova scheda"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:130
 #, fuzzy
 msgid "Open Amarnai"
 msgstr "Apri Amarnai"
@@ -5096,7 +5101,7 @@ msgstr "Aprilo dal pulsante Amarnai Rispondi in Outlook."
 msgid "Open-source maintainers, contributor discussions, and developer forum threads."
 msgstr "Maintainer open source, discussioni contributori e conversazioni forum sviluppatori."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:233
+#: ../ui/src/upgrade/UpgradeDialog.tsx:255
 msgid "Opening checkout"
 msgstr "Apertura del checkout"
 
@@ -5220,7 +5225,8 @@ msgstr "Password aggiornata. Accedi con la tua nuova password."
 msgid "Passwords do not match"
 msgstr "Le password non corrispondono"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:95
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:125
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:55
 msgid "Payment confirmed"
 msgstr "Pagamento confermato"
 
@@ -5363,7 +5369,7 @@ msgstr "Pharaoh"
 msgid "Pharaoh of Egypt"
 msgstr "Faraone d'Egitto"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:187
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:164
 #, fuzzy
 msgid "Pin Amarnai to your toolbar"
 msgstr "Fissa Amarnai alla barra degli strumenti"
@@ -5371,7 +5377,7 @@ msgstr "Fissa Amarnai alla barra degli strumenti"
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../ui/src/settings/PlanSection.tsx:43
+#: ../ui/src/settings/PlanSection.tsx:40
 msgid "Plan"
 msgstr "Piano"
 
@@ -5443,6 +5449,11 @@ msgstr "Stampa"
 #, fuzzy
 msgid "Preview"
 msgstr "Anteprima"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:217
+#, fuzzy
+msgid "Previous preview"
+msgstr "Anteprima precedente"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 msgid "Priced per workspace. Clear plans, clear limits."
@@ -5845,7 +5856,7 @@ msgid "Renews monthly on <0>{0}</0>."
 msgstr "Si rinnova mensilmente il <0>{0}</0>."
 
 #. placeholder {0}: workspace.currentPeriodEnd.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:112
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:142
 #, fuzzy
 msgid "Renews on <0>{0}</0>."
 msgstr "Si rinnova il <0>{0}</0>."
@@ -6032,11 +6043,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Ti ascoltiamo. È stato ordinato grano aggiuntivo dai magazzini del sud e arriverà prima della festa del raccolto. Chiediamo la tua pazienza fino ad allora.\n"
-"\n"
-"Stai bene,"
+msgstr "Rib-Hadda,\n\nTi ascoltiamo. È stato ordinato grano aggiuntivo dai magazzini del sud e arriverà prima della festa del raccolto. Chiediamo la tua pazienza fino ad allora.\n\nStai bene,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6185,7 +6192,7 @@ msgstr "Guardalo in azione"
 msgid "Select"
 msgstr "Seleziona"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6406,7 +6413,7 @@ msgstr "Accedi con l'email invece"
 #~ msgid "Sign in with Google"
 #~ msgstr "Accedi con Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:115
 msgid "Sign in with Google or Microsoft"
 msgstr "Accedi con Google o Microsoft"
 
@@ -6497,8 +6504,8 @@ msgstr "Qualcosa è andato storto"
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:209
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:84
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:90
-#: ../ui/src/upgrade/UpgradeDialog.tsx:122
-#: ../ui/src/upgrade/UpgradeDialog.tsx:139
+#: ../ui/src/upgrade/UpgradeDialog.tsx:133
+#: ../ui/src/upgrade/UpgradeDialog.tsx:150
 #, fuzzy
 msgid "Something went wrong. Please try again."
 msgstr "Qualcosa è andato storto. Riprova."
@@ -6648,7 +6655,7 @@ msgstr "Resta connesso con l'account attuale"
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "La tua casella di posta è ancora in fase di importazione. Riprova al termine dell'importazione."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
 #, fuzzy
 msgid "Stop sorting email"
 msgstr "Smetti di smistare le email"
@@ -6793,6 +6800,15 @@ msgstr "Cambia l'indirizzo in anteprima"
 msgid "Switch theme"
 msgstr "Cambia tema"
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:54
+#, fuzzy
+msgid "Switch to it"
+msgstr "Passa a questo"
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:70
+msgid "Switch to it whenever you are ready. This workspace is unchanged."
+msgstr "Passa a questo quando sei pronto. Questo spazio di lavoro rimane invariato."
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:120
 #, fuzzy
@@ -6845,7 +6861,7 @@ msgstr "Tasse"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
 #: ../ui/src/PricingPlans.tsx:183
-#: ../ui/src/upgrade/UpgradeDialog.tsx:219
+#: ../ui/src/upgrade/UpgradeDialog.tsx:241
 msgid "Taxes calculated at checkout"
 msgstr "Tasse calcolate al checkout"
 
@@ -6971,6 +6987,10 @@ msgstr "Il grano che hai inviato il mese scorso è stato ricevuto con gratitudin
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Il grande consiglio si riunisce all'inizio di Shemu. Chiedo che tu prepari un resoconto completo dei territori orientali e lo invii in anticipo tramite corriere veloce."
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:72
+msgid "The new limits apply right away."
+msgstr "I nuovi limiti si applicano immediatamente."
 
 #: ../ui/src/demo/demo-seed.ts:267
 #, fuzzy
@@ -7111,11 +7131,11 @@ msgstr "Questa conversazione è in attesa di essere instradata."
 #~ msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 #~ msgstr "Questa conversazione è in attesa di essere instradata. Usa “Instrada ora” per iniziare l'ordinamento."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:244
+#: ../ui/src/upgrade/UpgradeDialog.tsx:266
 msgid "This workspace is already on the highest plan."
 msgstr "Questo spazio di lavoro è già sul piano più alto."
 
-#: ../ui/src/settings/PlanSection.tsx:46
+#: ../ui/src/settings/PlanSection.tsx:43
 msgid "This workspace is on {planLabel}."
 msgstr "Questa area di lavoro utilizza {planLabel}."
 
@@ -7193,7 +7213,7 @@ msgstr "Tre passaggi per una casella di posta ordinata."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "In tre passaggi. Poi smista ogni email per te."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:205
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:182
 msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 msgstr "Suggerimento: blocca l'icona di Amarnai nella barra degli strumenti per averla a portata di clic."
 
@@ -7206,13 +7226,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "A mio fratello, il Grande Re,\n"
-"\n"
-"Il grande consiglio si riunirà all'inizio di Shemu. Ti chiedo di preparare un resoconto completo dei territori orientali e di inviarlo in anticipo con un corriere veloce, prima della luna nuova, se possibile.\n"
-"\n"
-"La nostra alleanza è forte. Mostriamo al consiglio che tale rimane.\n"
-"\n"
-"Tushratta, Grande Re di Mitanni"
+msgstr "A mio fratello, il Grande Re,\n\nIl grande consiglio si riunirà all'inizio di Shemu. Ti chiedo di preparare un resoconto completo dei territori orientali e di inviarlo in anticipo con un corriere veloce, prima della luna nuova, se possibile.\n\nLa nostra alleanza è forte. Mostriamo al consiglio che tale rimane.\n\nTushratta, Grande Re di Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7221,11 +7235,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "All'Ufficio Reale delle Nomine,\n"
-"\n"
-"Abbiamo ricevuto la candidatura di Horemheb di Tebe ed esamineremo le sue credenziali prima della prossima luna nuova. Comunicategli che invieremo notizie a tempo debito.\n"
-"\n"
-"Per decreto reale,"
+msgstr "All'Ufficio Reale delle Nomine,\n\nAbbiamo ricevuto la candidatura di Horemheb di Tebe ed esamineremo le sue credenziali prima della prossima luna nuova. Comunicategli che invieremo notizie a tempo debito.\n\nPer decreto reale,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7236,13 +7246,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Al Grande Re,\n"
-"\n"
-"Per molti anni le nostre case sono state come fratelli. Scrivo ora per proporre di formalizzare questa amicizia a beneficio di entrambi i nostri popoli: un patto di mutua protezione e rotte condivise.\n"
-"\n"
-"Chiedo solo che tu ascolti le mie condizioni. Fai pervenire la tua risposta con il prossimo corriere e spedirò subito il mio inviato.\n"
-"\n"
-"Aziru, servo del Grande Re, signore di Amurru"
+msgstr "Al Grande Re,\n\nPer molti anni le nostre case sono state come fratelli. Scrivo ora per proporre di formalizzare questa amicizia a beneficio di entrambi i nostri popoli: un patto di mutua protezione e rotte condivise.\n\nChiedo solo che tu ascolti le mie condizioni. Fai pervenire la tua risposta con il prossimo corriere e spedirò subito il mio inviato.\n\nAziru, servo del Grande Re, signore di Amurru"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7251,11 +7255,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Al Grande Re,\n"
-"\n"
-"I miei viaggi mi porteranno vicino al Delta nei prossimi giorni. Se il Grande Re ha un'ora da dedicare, sarei lieto di avere l'occasione di parlare faccia a faccia; ci sono questioni più facili da dire che da scrivere.\n"
-"\n"
-"Tuo servo, Abdi-Heba, governatore di Urushalim"
+msgstr "Al Grande Re,\n\nI miei viaggi mi porteranno vicino al Delta nei prossimi giorni. Se il Grande Re ha un'ora da dedicare, sarei lieto di avere l'occasione di parlare faccia a faccia; ci sono questioni più facili da dire che da scrivere.\n\nTuo servo, Abdi-Heba, governatore di Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7264,11 +7264,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Al Grande Re, mio fratello,\n"
-"\n"
-"Le tue parole mi sono giunte. L'oro sarà spedito prima che il prossimo messaggero parta. Apprezziamo il legame tra le nostre case e non desideriamo che si raffreddi.\n"
-"\n"
-"In amicizia,"
+msgstr "Al Grande Re, mio fratello,\n\nLe tue parole mi sono giunte. L'oro sarà spedito prima che il prossimo messaggero parta. Apprezziamo il legame tra le nostre case e non desideriamo che si raffreddi.\n\nIn amicizia,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7279,13 +7275,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Al Grande Re, mio fratello,\n"
-"\n"
-"Scrivo in amicizia, come i nostri padri hanno fatto prima di noi. La terza consegna d'oro concordata nel nostro trattato non è arrivata. Sono passati due messaggeri e ancora aspettiamo.\n"
-"\n"
-"Chiediamo che tu la spedisca senza ulteriore indugio, come si conviene al legame tra le nostre case.\n"
-"\n"
-"Burna-Buriash II, Re di Babilonia"
+msgstr "Al Grande Re, mio fratello,\n\nScrivo in amicizia, come i nostri padri hanno fatto prima di noi. La terza consegna d'oro concordata nel nostro trattato non è arrivata. Sono passati due messaggeri e ancora aspettiamo.\n\nChiediamo che tu la spedisca senza ulteriore indugio, come si conviene al legame tra le nostre case.\n\nBurna-Buriash II, Re di Babilonia"
 
 #: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
@@ -7295,13 +7285,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Al Grande Re, mio signore, mio sole,\n"
-"\n"
-"Il grano che hai inviato il mese scorso è stato ricevuto con gratitudine e ho lodato il tuo nome davanti al popolo. Ma devo scrivere di nuovo: la terza spedizione non è arrivata e la città è irrequieta.\n"
-"\n"
-"Ho scritto sette volte. Non desidero disturbarti, eppure cos'altro posso fare?\n"
-"\n"
-"Tuo servo, Rib-Hadda, governatore di Byblos"
+msgstr "Al Grande Re, mio signore, mio sole,\n\nIl grano che hai inviato il mese scorso è stato ricevuto con gratitudine e ho lodato il tuo nome davanti al popolo. Ma devo scrivere di nuovo: la terza spedizione non è arrivata e la città è irrequieta.\n\nHo scritto sette volte. Non desidero disturbarti, eppure cos'altro posso fare?\n\nTuo servo, Rib-Hadda, governatore di Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7413,7 +7397,7 @@ msgstr "Non classificate"
 msgid "Unclassified. Change folder"
 msgstr "Non classificato. Cambia cartella"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:486
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -7528,8 +7512,8 @@ msgstr "Aggiornamento in corso…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
-#: ../ui/src/settings/PlanSection.tsx:52
-#: ../ui/src/upgrade/UpgradeDialog.tsx:164
+#: ../ui/src/settings/PlanSection.tsx:49
+#: ../ui/src/upgrade/UpgradeDialog.tsx:175
 #, fuzzy
 msgid "Upgrade"
 msgstr "Aggiorna"
@@ -7617,7 +7601,7 @@ msgstr "Usa queste cartelle"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Usa questo piano per un'azienda, un team o un account Gmail separato."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:257
+#: ../ui/src/upgrade/UpgradeDialog.tsx:279
 #, fuzzy
 msgid "Use this plan for a new workspace instead"
 msgstr "Usa questo piano per un nuovo spazio di lavoro"
@@ -7649,12 +7633,12 @@ msgstr "Email di verifica inviata!"
 msgid "Verification email sent. Check your inbox."
 msgstr "Email di verifica inviata. Controlla la tua casella di posta."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:139
 #, fuzzy
 msgid "Verified by Google"
 msgstr "Verificato da Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:166
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:143
 #, fuzzy
 msgid "Verified by Microsoft"
 msgstr "Verificato da Microsoft"
@@ -7790,7 +7774,7 @@ msgstr "Perché si chiama Amarnai?"
 msgid "Work"
 msgstr "Lavoro"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:122
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:99
 #, fuzzy
 msgid "Work next to your email"
 msgstr "Lavora a fianco delle tue email."
@@ -7814,7 +7798,7 @@ msgid "Works with Gmail™ and Outlook."
 msgstr "Funziona con Gmail™ e Outlook."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:48
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
@@ -7997,6 +7981,10 @@ msgstr "Puoi riprovare dopo {0}, o iniziare da un modello."
 msgid "You can try again shortly, or start from a template."
 msgstr "Puoi riprovare a breve, oppure iniziare da un modello."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:132
+msgid "You do not have permission to change this plan."
+msgstr "Non hai il permesso di modificare questo piano."
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
@@ -8023,7 +8011,8 @@ msgstr "Mantieni il controllo"
 msgid "You were assigned a thread"
 msgstr "Ti è stata assegnata una conversazione"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:98
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:128
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:62
 #, fuzzy
 msgid "You're on {planLabel}"
 msgstr "Sei su {planLabel}"
@@ -8065,7 +8054,7 @@ msgid "Your {plan} plan finished importing your most recent emails. Older ones b
 msgstr "Il tuo piano {plan} ha terminato l'importazione delle email più recenti. Quelle più datate, oltre il limite, non sono state caricate."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:103
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:133
 #, fuzzy
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "La tua prova gratuita di 14 giorni dura fino al <0>{0}</0>. Non ti verrà addebitato alcun importo prima di quella data."
@@ -8085,7 +8074,7 @@ msgstr "La tua estensione ha effettuato l'accesso a un account diverso"
 msgid "Your folders"
 msgstr "Le tue cartelle"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:106
 msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 msgstr "Le tue cartelle sono un semplice albero che si dirama dalla tua casella di posta. Lascia che Amarnai le generi dalla tua casella di posta, parti da un modello o disegnale tu stesso."
 
@@ -8135,7 +8124,7 @@ msgstr "La tua casella di posta è ancora in fase di importazione. Puoi generare
 #~ msgid "Your inbox, sorted the way you think."
 #~ msgstr "La tua posta in arrivo, organizzata come la pensi."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:89
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:66
 msgid "Your inbox, sorted your way"
 msgstr "La tua posta in arrivo, organizzata a modo tuo."
 
@@ -8144,6 +8133,11 @@ msgstr "La tua posta in arrivo, organizzata a modo tuo."
 #, fuzzy
 msgid "Your name"
 msgstr "Il tuo nome"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:158
+#, fuzzy
+msgid "Your new plan is already active in the Amarnai panel."
+msgstr "Il tuo nuovo piano è già attivo nel pannello Amarnai."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
@@ -8165,8 +8159,8 @@ msgstr "Le tue conversazioni precedenti si stanno caricando e appariranno a brev
 #~ msgstr "Il tuo piano è un albero di cartelle (ad esempio una cartella Clienti con Sottocartelle di Supporto e Fatturazione), ognuna descritta in linguaggio semplice, e Amarnai percorre quest'albero per indirizzare ogni conversazione alla cartella che si adatta meglio. Il modo più veloce per costruirlo è lasciare che Amarnai ne generi uno per te: legge la tua casella di posta e propone un albero completo, nominato e descritto, che puoi mantenere così com'è o modificare. Puoi anche partire da uno dei nostri modelli predefiniti o costruirne uno da zero. Nessuna conoscenza tecnica richiesta."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:180
-msgid "Your plan is updated. The new limits apply right away."
-msgstr "Il tuo piano è stato aggiornato. I nuovi limiti si applicano immediatamente."
+#~ msgid "Your plan is updated. The new limits apply right away."
+#~ msgstr "Il tuo piano è stato aggiornato. I nuovi limiti si applicano immediatamente."
 
 #. placeholder {0}: status.plan
 #: ../../apps/extension/src/panel/StatusSlot.tsx:88

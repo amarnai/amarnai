@@ -275,3 +275,53 @@ describe("trial eligibility — create action (new workspace)", () => {
     expect(stripe.checkout.sessions.create).not.toHaveBeenCalled();
   });
 });
+
+describe("return destination — where the user came from", () => {
+  function extReq(workspaceId: string) {
+    return new Request("http://localhost/api/billing/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        plan: "pro",
+        cycle: "monthly",
+        action: "upgrade",
+        workspaceId,
+        source: "extension",
+      }),
+    });
+  }
+
+  it("marks the return URL when the checkout started in the extension", async () => {
+    const res = await POST(extReq(WS_ID));
+
+    expect(res.status).toBe(200);
+    // The success page reads this to send the user back to their mailbox rather
+    // than deeper into the web app.
+    expect(sessionsCreateArg()?.success_url).toContain("src=ext");
+  });
+
+  it("leaves a web-initiated checkout unmarked", async () => {
+    const res = await POST(upgradeReq(WS_ID));
+
+    expect(res.status).toBe(200);
+    expect(sessionsCreateArg()?.success_url).not.toContain("src=ext");
+  });
+
+  it("rejects an unrecognised source rather than trusting it", async () => {
+    const res = await POST(
+      new Request("http://localhost/api/billing/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plan: "pro",
+          cycle: "monthly",
+          action: "upgrade",
+          workspaceId: WS_ID,
+          source: "somewhere-else",
+        }),
+      })
+    );
+
+    expect(res.status).toBe(400);
+  });
+});

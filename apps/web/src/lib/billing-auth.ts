@@ -10,11 +10,17 @@ export type BillingAuthResult =
 /**
  * Resolve the acting user for a billing request.
  *
- * Primary: the web session cookie. Fallback: a Bearer JWT access token, which
- * native mobile clients carry (they cannot share the web cookie). Enforces
- * verify-before-pay with an authoritative DB read so a charge or billing change
- * can never originate from an unverified (or vanished) account, even if the
- * middleware matcher changes.
+ * A Bearer JWT wins over the web session cookie. The token is an explicit
+ * assertion of identity made by the caller; the cookie is ambient, belonging to
+ * whichever account the browser happens to be signed into. They are routinely
+ * different people: the extension panel calls these routes with its own token
+ * from a browser that may hold a web session for another account entirely, and
+ * letting the cookie win there charges the wrong workspace or, more often,
+ * refuses a request the caller was perfectly entitled to make.
+ *
+ * Enforces verify-before-pay with an authoritative DB read so a charge or
+ * billing change can never originate from an unverified (or vanished) account,
+ * even if the middleware matcher changes.
  */
 export async function resolveBillingUser(request: Request): Promise<BillingAuthResult> {
   let userId: string | undefined;
@@ -22,18 +28,18 @@ export async function resolveBillingUser(request: Request): Promise<BillingAuthR
   // web session cookie is already epoch-enforced in the next-auth jwt callback.
   let tokenEpoch: number | undefined;
 
-  const session = await auth();
-  if (session?.user?.id) {
-    userId = session.user.id;
-  } else {
-    const authHeader = request.headers.get("Authorization");
-    if (authHeader?.startsWith("Bearer ")) {
-      const verified = await verifyAccessToken(authHeader.slice(7));
-      if (verified) {
-        userId = verified.userId;
-        tokenEpoch = verified.sessionEpoch;
-      }
+  const authHeader = request.headers.get("Authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    const verified = await verifyAccessToken(authHeader.slice(7));
+    if (verified) {
+      userId = verified.userId;
+      tokenEpoch = verified.sessionEpoch;
     }
+  }
+
+  if (!userId) {
+    const session = await auth();
+    if (session?.user?.id) userId = session.user.id;
   }
 
   if (!userId) {

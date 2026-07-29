@@ -48,7 +48,14 @@ describe("startCheckout", () => {
     const [url, init] = fetchMock.mock.calls[0]!;
     expect(url).toBe("https://app.test/api/billing/create-checkout-session");
     expect(init.headers.Authorization).toBe("Bearer tok");
-    expect(JSON.parse(init.body)).toEqual({ action: "upgrade", plan: "pro", cycle: "monthly" });
+    // `source` tells the success page this user belongs back in their mailbox,
+    // not deeper in the web app.
+    expect(JSON.parse(init.body)).toEqual({
+      action: "upgrade",
+      plan: "pro",
+      cycle: "monthly",
+      source: "extension",
+    });
   });
 
   it("omits the header rather than sending an empty one when signed out", async () => {

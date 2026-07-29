@@ -62,7 +62,10 @@ export type StartCheckoutResult = {
 export function startCheckout(input: StartCheckoutInput) {
   return billingRequest<StartCheckoutResult>("create-checkout-session", {
     method: "POST",
-    body: input,
+    // `source` rides along so Stripe's return page knows the user came from the
+    // panel and should be pointed back at their mailbox rather than deeper into
+    // the web app.
+    body: { ...input, source: "extension" },
   });
 }
 

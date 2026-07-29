@@ -20,6 +20,8 @@ function ok(data: StartCheckoutOutcome["data"]): StartCheckoutOutcome {
 function renderDialog(overrides: Partial<UpgradeDialogProps> = {}) {
   const props: UpgradeDialogProps = {
     workspaceId: "ws-1",
+    workspaceName: "Acme",
+    mascotSrc: "/aziru-upgrade.png",
     currentPlan: "FREE",
     startCheckout: vi.fn().mockResolvedValue(ok({ url: "https://stripe.test/c", sessionId: "cs_1" })),
     onCheckoutStarted: vi.fn(),
@@ -145,26 +147,43 @@ describe("UpgradeDialog — responses that need no payment step", () => {
 
     await waitFor(() => expect(props.onUpgraded).toHaveBeenCalled());
     expect(props.onCheckoutStarted).not.toHaveBeenCalled();
-    expect(screen.getByText(/plan is updated/i)).toBeTruthy();
+    // The same success card the web app shows, mascot and all.
+    expect(screen.getByText(/payment confirmed/i)).toBeTruthy();
+    expect(screen.getByText(/You're on Pharaoh/i)).toBeTruthy();
+    expect(screen.getByText("Acme")).toBeTruthy();
   });
 });
 
 describe("UpgradeDialog — failures", () => {
-  it("explains a non-owner refusal rather than showing the raw error", async () => {
+  it("shows what the server actually refused, not a guess at why", async () => {
     const props = renderDialog({
       startCheckout: vi.fn().mockResolvedValue({
         ok: false,
         status: 403,
-        data: { error: "Forbidden" },
+        data: { error: "Email not verified" },
       }),
     });
 
     fireEvent.click(screen.getByRole("button", { name: /choose scribe/i }));
 
+    // Reporting every 403 as an ownership problem sent people hunting for
+    // permissions they already had.
     await waitFor(() => {
-      expect(screen.getByRole("alert").textContent).toMatch(/only the workspace owner/i);
+      expect(screen.getByRole("alert").textContent).toMatch(/email not verified/i);
     });
     expect(props.onCheckoutStarted).not.toHaveBeenCalled();
+  });
+
+  it("falls back to a permission message when a 403 carries no reason", async () => {
+    renderDialog({
+      startCheckout: vi.fn().mockResolvedValue({ ok: false, status: 403, data: {} }),
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /choose scribe/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("alert").textContent).toMatch(/do not have permission/i);
+    });
   });
 
   it("surfaces the server's message for other refusals", async () => {

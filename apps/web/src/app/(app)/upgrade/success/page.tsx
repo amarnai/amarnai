@@ -15,6 +15,13 @@ type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 const planLabels: Record<string, string> = { PRO: "Scribe", BUSINESS: "Pharaoh" };
 
+// Where to send an extension user back to. They were working in a mail tab with
+// the panel docked beside it, so the mailbox is home, not this app.
+const MAILBOX_URL: Record<string, string> = {
+  GMAIL: "https://mail.google.com/",
+  OUTLOOK: "https://outlook.office.com/mail/",
+};
+
 export default async function UpgradeSuccessPage({
   searchParams,
 }: {
@@ -22,7 +29,12 @@ export default async function UpgradeSuccessPage({
 }) {
   await initServerI18n();
   const user = await requireUser();
-  const { session_id } = await searchParams;
+  const { session_id, src } = await searchParams;
+  // Marked at session creation (see create-checkout-session). The panel normally
+  // closes this tab a moment after it lands, so what follows is the fallback for
+  // when it cannot: the panel was closed, its polling window elapsed, or payment
+  // finished somewhere else entirely.
+  const fromExtension = src === "ext";
 
   if (typeof session_id !== "string") redirect("/upgrade");
 
@@ -66,6 +78,24 @@ export default async function UpgradeSuccessPage({
 
   const planLabel = planLabels[workspace.plan] ?? workspace.plan;
   const isTrialing = workspace.trialEndsAt && workspace.trialEndsAt > new Date();
+
+  // Which mailbox to offer. A workspace bought for a new team has no connection
+  // of its own yet, so fall back to any mailbox this user already has connected.
+  let mailboxProvider: string | null = null;
+  if (fromExtension) {
+    const connection =
+      (await db.emailConnection.findFirst({
+        where: { workspaceId: workspace.id, status: "ACTIVE" },
+        select: { provider: true },
+      })) ??
+      (await db.emailConnection.findFirst({
+        where: { workspace: { members: { some: { userId: user.id } } }, status: "ACTIVE" },
+        select: { provider: true },
+        orderBy: { updatedAt: "desc" },
+      }));
+    mailboxProvider = connection?.provider ?? null;
+  }
+  const mailboxUrl = mailboxProvider ? MAILBOX_URL[mailboxProvider] : null;
 
   return (
     <div className="upgrade-success-page">
@@ -115,13 +145,28 @@ export default async function UpgradeSuccessPage({
               </Trans>
             </p>
           )}
-          {/* Switch the active-workspace cookie to the purchased workspace before
-              navigating — a plain link to /emails would keep the previous selection. */}
-          <form action={switchWorkspaceAction.bind(null, workspace.id, "/emails")}>
-            <button type="submit" className="btn-primary upgrade-success-cta">
-              <Trans>Go to {workspace.name}</Trans>
-            </button>
-          </form>
+          {mailboxUrl ? (
+            <>
+              <a href={mailboxUrl} className="btn-primary upgrade-success-cta">
+                {mailboxProvider === "OUTLOOK" ? (
+                  <Trans>Back to Outlook</Trans>
+                ) : (
+                  <Trans>Back to Gmail</Trans>
+                )}
+              </a>
+              <p className="upgrade-success-note">
+                <Trans>Your new plan is already active in the Amarnai panel.</Trans>
+              </p>
+            </>
+          ) : (
+            /* Switch the active-workspace cookie to the purchased workspace before
+               navigating — a plain link to /emails would keep the previous selection. */
+            <form action={switchWorkspaceAction.bind(null, workspace.id, "/emails")}>
+              <button type="submit" className="btn-primary upgrade-success-cta">
+                <Trans>Go to {workspace.name}</Trans>
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

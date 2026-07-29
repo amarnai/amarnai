@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { ApiClient, FilterCounts, SyncStatus } from "@amarnai/api-client";
+import type { ApiClient, FilterCounts, MailProvider, SyncStatus } from "@amarnai/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
 import { ThreadList, ReroutePopover, AssigneePicker } from "@amarnai/ui/emails";
 import type { PlanSetupMode } from "@amarnai/ui/plan-setup";
@@ -15,13 +15,11 @@ import { StatusSlot, NoPlanEmptyState } from "./StatusSlot";
 import { PanelHeader } from "./WorkspacePicker";
 import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
-import { openWebApp } from "./openWebApp";
-import { startCheckout, confirmCheckout } from "../billing/api";
-import {
-  setPendingCheckout,
-  getPendingCheckout,
-  clearPendingCheckout,
-} from "../billing/pendingCheckout";
+import { openWebApp, openWebAppTab } from "./openWebApp";
+import { focusMailTab, closeTab } from "../gmail/focusMailTab";
+import { MASCOT_SRC } from "./assets";
+import { startCheckout } from "../billing/api";
+import { usePendingCheckout } from "../billing/usePendingCheckout";
 
 // The dialog pulls in the taxonomy canvas (ReactFlow), which is far larger than
 // the rest of the panel. Loaded on demand so users who already have a plan
@@ -45,10 +43,26 @@ const SettingsOverlay = lazy(() =>
   import("./SettingsOverlay").then((m) => ({ default: m.SettingsOverlay })),
 );
 
+// Shares the upgrade chunk with the plan picker.
+const UpgradeSuccessOverlay = lazy(() =>
+  import("./UpgradeSuccessOverlay").then((m) => ({ default: m.UpgradeSuccessOverlay })),
+);
+
+/**
+ * How long to let the checkout tab settle on its success page before closing it.
+ * Stripe completes the session fractionally before the browser finishes
+ * navigating, so closing immediately can kill the tab mid-flight and leave the
+ * user with nothing to have seen.
+ */
+const RETURN_TO_MAIL_DELAY_MS = 1500;
+
+
 type Props = {
   api: ApiClient;
   workspaceId: string;
   currentUserId: string;
+  /** The connected mailbox's provider, so detours can return the user to it. */
+  provider: MailProvider;
   initialThreads: ThreadItem[];
   initialNextCursor: string | null;
   initialCounts: FilterCounts;
@@ -72,6 +86,7 @@ export function EmailsPanel({
   api,
   workspaceId,
   currentUserId,
+  provider,
   initialThreads,
   initialNextCursor,
   initialCounts,
@@ -89,7 +104,9 @@ export function EmailsPanel({
   // payload carries every member incl. the owner), so no members endpoint is
   // needed. refreshWorkspaces re-pulls them when the panel regains focus, the
   // same way the taxonomy is re-pulled after edits in a web tab.
-  const { workspaces, refreshWorkspaces } = useSession();
+  const { workspaces, refreshWorkspaces, switchWorkspace } = useSession();
+  const workspaceName =
+    workspaces.find((w) => w.id === workspaceId)?.name ?? "";
   const members = useMemo(
     () => mapMembers(workspaces.find((w) => w.id === workspaceId)?.members ?? []),
     [workspaces, workspaceId],
@@ -132,24 +149,28 @@ export function EmailsPanel({
 
   useEffect(() => { loadFolderCounts(); }, [loadFolderCounts]);
 
-  // A checkout the user was sent to a tab to complete. Confirming it here means
-  // the new plan lands as soon as they come back, instead of whenever Stripe's
-  // webhook arrives. `pending` just means payment is not finished: leave the
-  // marker in place and try again on the next focus.
-  const confirmPendingCheckout = useCallback(async () => {
-    const sessionId = await getPendingCheckout();
-    if (!sessionId) return;
-
-    const res = await confirmCheckout(sessionId).catch(() => null);
-    if (!res) return;
-    if (res.ok && res.data.pending) return;
-
-    await clearPendingCheckout();
-    if (res.ok && res.data.provisioned) {
+  // A checkout the user was sent to a tab to complete. The hook polls until it
+  // lands, so the new plan applies without waiting on Stripe's webhook and
+  // without depending on this panel regaining focus.
+  const pendingCheckout = usePendingCheckout({
+    onProvisioned: useCallback((result: { plan: string; workspaceId: string }) => {
       api.syncStatus(workspaceId).then(setSyncStatus).catch(() => {});
       void refreshWorkspaces();
-    }
-  }, [api, workspaceId, refreshWorkspaces]);
+      setCheckoutSuccess(result);
+
+      // Tidy up the detour: close the tab we sent the user to and put them back
+      // in their mailbox, where the panel is docked and the new plan is already
+      // in effect. Stripe marks the session complete just before the browser
+      // finishes landing on the success page, so wait a beat rather than
+      // yanking the tab away mid-navigation.
+      const tabId = checkoutTabRef.current;
+      checkoutTabRef.current = null;
+      if (tabId == null) return;
+      window.setTimeout(() => {
+        void closeTab(tabId).then(() => focusMailTab(provider));
+      }, RETURN_TO_MAIL_DELAY_MS);
+    }, [api, workspaceId, refreshWorkspaces, provider]),
+  });
 
   // The plan is edited in a separate web tab; re-pull the taxonomy (and folder
   // counts) when the panel regains focus so the banner reflects the new folders.
@@ -159,7 +180,7 @@ export function EmailsPanel({
         reloadTaxonomy();
         loadFolderCounts();
         void refreshWorkspaces();
-        void confirmPendingCheckout();
+        void pendingCheckout.confirmNow();
       }
     }
     window.addEventListener("focus", onFocus);
@@ -168,7 +189,7 @@ export function EmailsPanel({
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onFocus);
     };
-  }, [reloadTaxonomy, loadFolderCounts, refreshWorkspaces, confirmPendingCheckout]);
+  }, [reloadTaxonomy, loadFolderCounts, refreshWorkspaces, pendingCheckout]);
 
   // Refresh the list + sync status + taxonomy + folder counts when the worker
   // finishes a sync.
@@ -196,6 +217,15 @@ export function EmailsPanel({
   // The full folder editor. Opened from the header, so it is owned here
   // alongside the other full-panel overlays.
   const [editorOpen, setEditorOpen] = useState(false);
+  // The tab the checkout was sent to, so it can be closed once the upgrade
+  // lands rather than left behind on a page the user is done with.
+  const checkoutTabRef = useRef<number | null>(null);
+  // Success from a checkout that ran in a tab: the dialog closed when the user
+  // left, so the outcome has nowhere to land unless the panel shows it here.
+  const [checkoutSuccess, setCheckoutSuccess] = useState<{
+    plan: string;
+    workspaceId: string;
+  } | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { active, selectedId, selectedThread, folders, toast } = triage;
@@ -275,16 +305,19 @@ export function EmailsPanel({
   // first so the result is confirmed even if the user never returns to that tab.
   const handleCheckoutStarted = useCallback(
     async ({ sessionId, url }: { sessionId: string; url: string }) => {
-      await setPendingCheckout(sessionId);
+      await pendingCheckout.start(sessionId);
       setUpgradeOpen(false);
-      await openWebApp(api, `/upgrade/resume?session_id=${encodeURIComponent(sessionId)}`);
+      checkoutTabRef.current = await openWebAppTab(
+        api,
+        `/upgrade/resume?session_id=${encodeURIComponent(sessionId)}`
+      );
       // `url` is unused on this path: /upgrade/resume re-reads the session from
       // Stripe and redirects there, which also re-checks that it belongs to the
       // signed-in user. Kept in the callback shape so a host without a bridge
       // (the web app itself) can open it directly.
       void url;
     },
-    [api]
+    [api, pendingCheckout]
   );
 
   function openAssignFor(threadId: string, anchor: HTMLElement) {
@@ -538,6 +571,24 @@ export function EmailsPanel({
         </Suspense>
       )}
 
+      {checkoutSuccess && (
+        <Suspense fallback={null}>
+          <UpgradeSuccessOverlay
+            plan={checkoutSuccess.plan}
+            purchasedWorkspaceId={checkoutSuccess.workspaceId}
+            purchasedWorkspaceName={
+              workspaces.find((w) => w.id === checkoutSuccess.workspaceId)?.name ?? workspaceName
+            }
+            currentWorkspaceId={workspaceId}
+            onSwitchWorkspace={(id) => {
+              setCheckoutSuccess(null);
+              switchWorkspace(id);
+            }}
+            onDone={() => setCheckoutSuccess(null)}
+          />
+        </Suspense>
+      )}
+
       {upgradeOpen && (
         <Suspense
           fallback={
@@ -550,6 +601,8 @@ export function EmailsPanel({
         >
           <UpgradeDialog
             workspaceId={workspaceId}
+            workspaceName={workspaceName}
+            mascotSrc={MASCOT_SRC}
             currentPlan={syncStatus?.workspacePlan ?? "FREE"}
             startCheckout={startCheckout}
             onCheckoutStarted={handleCheckoutStarted}

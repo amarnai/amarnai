@@ -116,6 +116,7 @@ export function TriageGate({
       api={api}
       workspaceId={workspaceId}
       currentUserId={currentUserId}
+      provider={seed.provider ?? "GMAIL"}
       initialThreads={seed.threads}
       initialNextCursor={seed.nextCursor}
       initialCounts={seed.counts}

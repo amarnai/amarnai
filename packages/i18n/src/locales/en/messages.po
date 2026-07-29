@@ -253,6 +253,10 @@ msgstr "{waitingCount, plural, one {# thread is waiting to be routed. Set up you
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:60
+msgid "{workspaceName} is on {planLabel}"
+msgstr "{workspaceName} is on {planLabel}"
+
 #: ../ui/src/PricingPlans.tsx:172
 msgid "/ workspace / month"
 msgstr "/ workspace / month"
@@ -290,7 +294,7 @@ msgstr "<0>King Aziru</0> is ready to sort your email threads. Connect your {pro
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:216
+#: ../ui/src/upgrade/UpgradeDialog.tsx:238
 msgid "${price} per month"
 msgstr "${price} per month"
 
@@ -732,11 +736,11 @@ msgstr "Also erase synced email data"
 msgid "amarnai business plan"
 msgstr "amarnai business plan"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:69
 msgid "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
 msgstr "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:109
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:86
 msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 msgstr "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 
@@ -801,11 +805,11 @@ msgstr "Amarnai is no longer syncing this inbox. Reconnect your Outlook account 
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:201
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:178
 msgid "Amarnai is pinned. Its icon opens the panel from any tab."
 msgstr "Amarnai is pinned. Its icon opens the panel from any tab."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:125
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:102
 msgid "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
 msgstr "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
 
@@ -885,7 +889,7 @@ msgstr "Amarnai sits in a side panel next to Gmail and Outlook."
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:93
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:100
 msgid "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 
@@ -956,7 +960,7 @@ msgstr "Annual"
 msgid "Annual · Save 20%"
 msgstr "Annual · Save 20%"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:199
+#: ../ui/src/upgrade/UpgradeDialog.tsx:221
 msgid "Annual, save 20%"
 msgstr "Annual, save 20%"
 
@@ -1020,7 +1024,7 @@ msgstr "Apprentice"
 msgid "Archive"
 msgstr "Archive"
 
-#: ../ui/src/settings/PlanSection.tsx:59
+#: ../ui/src/settings/PlanSection.tsx:56
 msgid "Ask the workspace owner to change the plan."
 msgstr "Ask the workspace owner to change the plan."
 
@@ -1146,6 +1150,10 @@ msgstr "Babylon's third gold consignment is overdue after two messengers. Burna-
 msgid "Back"
 msgstr "Back"
 
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:154
+msgid "Back to Gmail"
+msgstr "Back to Gmail"
+
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
 #~ msgid "Back to inbox"
 #~ msgstr "Back to inbox"
@@ -1155,6 +1163,10 @@ msgstr "Back"
 #: ../ui/src/emails/ThreadPreview.tsx:109
 msgid "Back to list"
 msgstr "Back to list"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:152
+msgid "Back to Outlook"
+msgstr "Back to Outlook"
 
 #: ../../apps/mobile/app/forgot-password.tsx:73
 #: ../../apps/web/src/app/forgot-password/page.tsx:55
@@ -1192,7 +1204,7 @@ msgstr "Billing"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
 #: ../ui/src/PricingPlans.tsx:112
-#: ../ui/src/upgrade/UpgradeDialog.tsx:184
+#: ../ui/src/upgrade/UpgradeDialog.tsx:206
 msgid "Billing cycle"
 msgstr "Billing cycle"
 
@@ -1237,7 +1249,7 @@ msgstr "Browse emails easily through your folders. Generate draft replies and co
 msgid "Browse templates"
 msgstr "Browse templates"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:49
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:56
 msgid "Browse the folders. It's fully interactive."
 msgstr "Browse the folders. It's fully interactive."
 
@@ -1376,7 +1388,7 @@ msgstr "Candidate pipelines, applicant screening, and headcount planning."
 msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 msgstr "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:170
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:147
 msgid "CASA Tier 2 certified"
 msgstr "CASA Tier 2 certified"
 
@@ -1414,7 +1426,7 @@ msgstr "Change subscription"
 #~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
 #~ msgstr "Changing or cancelling a paid plan is done in the Amarnai web app."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#: ../ui/src/upgrade/UpgradeDialog.tsx:293
 msgid "Changing or cancelling a paid plan is done in your subscription settings."
 msgstr "Changing or cancelling a paid plan is done in your subscription settings."
 
@@ -1439,7 +1451,7 @@ msgstr "Checkout failed: {0}"
 msgid "Child folder"
 msgstr "Child folder"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:235
+#: ../ui/src/upgrade/UpgradeDialog.tsx:257
 msgid "Choose {planName}"
 msgstr "Choose {planName}"
 
@@ -1479,7 +1491,7 @@ msgstr "Choose where each folder’s threads should go under your new folders. M
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:194
 msgid "Choose which part of Amarnai to preview"
 msgstr "Choose which part of Amarnai to preview"
 
@@ -1491,11 +1503,11 @@ msgstr "Classroom"
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "Click folders & threads, then generate a draft."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:177
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:154
 msgid "Click the Amarnai icon in your toolbar to open the panel."
 msgstr "Click the Amarnai icon in your toolbar to open the panel."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:190
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:167
 msgid "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
 msgstr "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
 
@@ -1522,7 +1534,7 @@ msgstr "Clients"
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
-#: ../ui/src/upgrade/UpgradeDialog.tsx:166
+#: ../ui/src/upgrade/UpgradeDialog.tsx:177
 msgid "Close"
 msgstr "Close"
 
@@ -1931,7 +1943,7 @@ msgstr "Could not queue rescan. Please try again."
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Could not reach Amarnai. Check your connection."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:141
+#: ../ui/src/upgrade/UpgradeDialog.tsx:152
 msgid "Could not reach the billing service. Please try again."
 msgstr "Could not reach the billing service. Please try again."
 
@@ -2253,7 +2265,7 @@ msgstr "Describe your folders"
 msgid "Description"
 msgstr "Description"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:106
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:83
 msgid "Design your folders"
 msgstr "Design your folders"
 
@@ -2340,7 +2352,7 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
@@ -2405,9 +2417,11 @@ msgstr "Don't have an account? <0>Sign up</0>"
 msgid "Donation drives, giving campaigns, and fundraising appeal responses."
 msgstr "Donation drives, giving campaigns, and fundraising appeal responses."
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:62
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/upgrade/UpgradeDialog.tsx:200
 msgid "Done"
 msgstr "Done"
 
@@ -2580,7 +2594,7 @@ msgstr "Email verified! Sign in to continue."
 #~ msgid "Email, sorted automatically. Never sends without you."
 #~ msgstr "Email, sorted automatically. Never sends without you."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:45
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:32
 msgid "Emails"
@@ -2620,7 +2634,7 @@ msgstr "Enrollment, tuition fees, dorm assignments, and official campus administ
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "Enter a folder name (at least {0} characters)."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:104
+#: ../ui/src/upgrade/UpgradeDialog.tsx:111
 msgid "Enter a name for the new workspace."
 msgstr "Enter a name for the new workspace."
 
@@ -2669,7 +2683,7 @@ msgstr "Events & Field Trips"
 msgid "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:104
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:111
 msgid "Every email goes where it belongs"
 msgstr "Every email goes where it belongs"
 
@@ -2685,7 +2699,7 @@ msgstr "Every email goes where it belongs."
 msgid "Every thread in your inbox."
 msgstr "Every thread in your inbox."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:112
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 msgstr "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
@@ -3112,7 +3126,7 @@ msgstr "Generate from inbox"
 msgid "Generate plan from inbox"
 msgstr "Generate plan from inbox"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
 msgid "Generate your folders"
 msgstr "Generate your folders"
 
@@ -3242,7 +3256,7 @@ msgid "Go home"
 msgstr "Go home"
 
 #. placeholder {0}: workspace.name
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:122
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:166
 msgid "Go to {0}"
 msgstr "Go to {0}"
 
@@ -3844,10 +3858,10 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Load more"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:510
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:531
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:553
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:597
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
@@ -4063,7 +4077,7 @@ msgstr "Monetization"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
 #: ../ui/src/PricingPlans.tsx:119
-#: ../ui/src/upgrade/UpgradeDialog.tsx:191
+#: ../ui/src/upgrade/UpgradeDialog.tsx:213
 msgid "Monthly"
 msgstr "Monthly"
 
@@ -4213,10 +4227,14 @@ msgid "New workspace"
 msgstr "New workspace"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
-#: ../ui/src/upgrade/UpgradeDialog.tsx:265
-#: ../ui/src/upgrade/UpgradeDialog.tsx:266
+#: ../ui/src/upgrade/UpgradeDialog.tsx:287
+#: ../ui/src/upgrade/UpgradeDialog.tsx:288
 msgid "New workspace name"
 msgstr "New workspace name"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:225
+msgid "Next preview"
+msgstr "Next preview"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 msgid "No drafts remaining"
@@ -4420,7 +4438,7 @@ msgstr "On-call alerts, outage reports, and production incident escalations."
 #~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 #~ msgstr "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:118
 msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Amarnai never sends or deletes mail."
 msgstr "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Amarnai never sends or deletes mail."
 
@@ -4433,8 +4451,8 @@ msgid "Ongoing thread with a known city governor raising a recurring supply issu
 msgstr "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:121
-msgid "Only the workspace owner can change the plan."
-msgstr "Only the workspace owner can change the plan."
+#~ msgid "Only the workspace owner can change the plan."
+#~ msgstr "Only the workspace owner can change the plan."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 msgid "Only the workspace owner can manage billing."
@@ -4454,7 +4472,7 @@ msgstr "Open a message first, then choose Amarnai Reply."
 msgid "Open all settings in a new tab"
 msgstr "Open all settings in a new tab"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:130
 msgid "Open Amarnai"
 msgstr "Open Amarnai"
 
@@ -4515,7 +4533,7 @@ msgstr "Open this from the Amarnai Reply button in Outlook."
 msgid "Open-source maintainers, contributor discussions, and developer forum threads."
 msgstr "Open-source maintainers, contributor discussions, and developer forum threads."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:233
+#: ../ui/src/upgrade/UpgradeDialog.tsx:255
 msgid "Opening checkout"
 msgstr "Opening checkout"
 
@@ -4625,7 +4643,8 @@ msgstr "Password updated. Sign in with your new password."
 msgid "Passwords do not match"
 msgstr "Passwords do not match"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:95
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:125
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:55
 msgid "Payment confirmed"
 msgstr "Payment confirmed"
 
@@ -4747,14 +4766,14 @@ msgstr "Pharaoh"
 msgid "Pharaoh of Egypt"
 msgstr "Pharaoh of Egypt"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:187
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:164
 msgid "Pin Amarnai to your toolbar"
 msgstr "Pin Amarnai to your toolbar"
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../ui/src/settings/PlanSection.tsx:43
+#: ../ui/src/settings/PlanSection.tsx:40
 msgid "Plan"
 msgstr "Plan"
 
@@ -4819,6 +4838,10 @@ msgstr "Press"
 #: ../ui/src/emails/ThreadSummaryCard.tsx:82
 msgid "Preview"
 msgstr "Preview"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:217
+msgid "Previous preview"
+msgstr "Previous preview"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 msgid "Priced per workspace. Clear plans, clear limits."
@@ -5169,7 +5192,7 @@ msgid "Renews monthly on <0>{0}</0>."
 msgstr "Renews monthly on <0>{0}</0>."
 
 #. placeholder {0}: workspace.currentPeriodEnd.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:112
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:142
 msgid "Renews on <0>{0}</0>."
 msgstr "Renews on <0>{0}</0>."
 
@@ -5469,7 +5492,7 @@ msgstr "See it work"
 msgid "Select"
 msgstr "Select"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 msgid "Select a thread to preview"
@@ -5665,7 +5688,7 @@ msgstr "Sign in with email instead"
 #~ msgid "Sign in with Google"
 #~ msgstr "Sign in with Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:115
 msgid "Sign in with Google or Microsoft"
 msgstr "Sign in with Google or Microsoft"
 
@@ -5749,8 +5772,8 @@ msgstr "Something went wrong"
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:209
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:84
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:90
-#: ../ui/src/upgrade/UpgradeDialog.tsx:122
-#: ../ui/src/upgrade/UpgradeDialog.tsx:139
+#: ../ui/src/upgrade/UpgradeDialog.tsx:133
+#: ../ui/src/upgrade/UpgradeDialog.tsx:150
 msgid "Something went wrong. Please try again."
 msgstr "Something went wrong. Please try again."
 
@@ -5881,7 +5904,7 @@ msgstr "Stay signed in with the current account"
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "Still importing your inbox. Check back once the import finishes."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
 msgid "Stop sorting email"
 msgstr "Stop sorting email"
 
@@ -6009,6 +6032,14 @@ msgstr "Switch the previewed address"
 msgid "Switch theme"
 msgstr "Switch theme"
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:54
+msgid "Switch to it"
+msgstr "Switch to it"
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:70
+msgid "Switch to it whenever you are ready. This workspace is unchanged."
+msgstr "Switch to it whenever you are ready. This workspace is unchanged."
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:120
 msgid "Sync error"
@@ -6055,7 +6086,7 @@ msgstr "Taxes"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
 #: ../ui/src/PricingPlans.tsx:183
-#: ../ui/src/upgrade/UpgradeDialog.tsx:219
+#: ../ui/src/upgrade/UpgradeDialog.tsx:241
 msgid "Taxes calculated at checkout"
 msgstr "Taxes calculated at checkout"
 
@@ -6167,6 +6198,10 @@ msgstr "The grain you sent last month was received with gratitude. But I must wr
 #: ../ui/src/demo/demo-seed.ts:456
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:72
+msgid "The new limits apply right away."
+msgstr "The new limits apply right away."
 
 #: ../ui/src/demo/demo-seed.ts:267
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
@@ -6289,11 +6324,11 @@ msgstr "This thread is waiting to be routed."
 #~ msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 #~ msgstr "This thread is waiting to be routed. Use “Route now” to start sorting."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:244
+#: ../ui/src/upgrade/UpgradeDialog.tsx:266
 msgid "This workspace is already on the highest plan."
 msgstr "This workspace is already on the highest plan."
 
-#: ../ui/src/settings/PlanSection.tsx:46
+#: ../ui/src/settings/PlanSection.tsx:43
 msgid "This workspace is on {planLabel}."
 msgstr "This workspace is on {planLabel}."
 
@@ -6363,7 +6398,7 @@ msgstr "Three steps to a sorted inbox."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "Three steps. Then it sorts every email for you."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:205
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:182
 msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 msgstr "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 
@@ -6564,7 +6599,7 @@ msgstr "Unclassified"
 msgid "Unclassified. Change folder"
 msgstr "Unclassified. Change folder"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:486
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -6666,8 +6701,8 @@ msgstr "Updating…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
-#: ../ui/src/settings/PlanSection.tsx:52
-#: ../ui/src/upgrade/UpgradeDialog.tsx:164
+#: ../ui/src/settings/PlanSection.tsx:49
+#: ../ui/src/upgrade/UpgradeDialog.tsx:175
 msgid "Upgrade"
 msgstr "Upgrade"
 
@@ -6745,7 +6780,7 @@ msgstr "Use these folders"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Use this plan for a business, team, or separate Gmail account."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:257
+#: ../ui/src/upgrade/UpgradeDialog.tsx:279
 msgid "Use this plan for a new workspace instead"
 msgstr "Use this plan for a new workspace instead"
 
@@ -6773,11 +6808,11 @@ msgstr "Verification email sent!"
 msgid "Verification email sent. Check your inbox."
 msgstr "Verification email sent. Check your inbox."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:139
 msgid "Verified by Google"
 msgstr "Verified by Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:166
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:143
 msgid "Verified by Microsoft"
 msgstr "Verified by Microsoft"
 
@@ -6899,7 +6934,7 @@ msgstr "Why is it called Amarnai?"
 msgid "Work"
 msgstr "Work"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:122
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:99
 msgid "Work next to your email"
 msgstr "Work next to your email"
 
@@ -6920,7 +6955,7 @@ msgid "Works with Gmail™ and Outlook."
 msgstr "Works with Gmail™ and Outlook."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:48
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
@@ -7081,6 +7116,10 @@ msgstr "You can try again after {0}, or start from a template."
 msgid "You can try again shortly, or start from a template."
 msgstr "You can try again shortly, or start from a template."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:132
+msgid "You do not have permission to change this plan."
+msgstr "You do not have permission to change this plan."
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
 msgstr "You do not have permission to connect a Gmail inbox to this workspace."
@@ -7105,7 +7144,8 @@ msgstr "You stay in control"
 msgid "You were assigned a thread"
 msgstr "You were assigned a thread"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:98
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:128
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:62
 msgid "You're on {planLabel}"
 msgstr "You're on {planLabel}"
 
@@ -7142,7 +7182,7 @@ msgid "Your {plan} plan finished importing your most recent emails. Older ones b
 msgstr "Your {plan} plan finished importing your most recent emails. Older ones beyond its limit weren't loaded."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:103
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:133
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 
@@ -7159,7 +7199,7 @@ msgstr "Your extension is signed in to a different account"
 msgid "Your folders"
 msgstr "Your folders"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:106
 msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 msgstr "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 
@@ -7205,7 +7245,7 @@ msgstr "Your inbox is still importing. You can generate now from what's loaded s
 #~ msgid "Your inbox, sorted the way you think."
 #~ msgstr "Your inbox, sorted the way you think."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:89
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:66
 msgid "Your inbox, sorted your way"
 msgstr "Your inbox, sorted your way"
 
@@ -7213,6 +7253,10 @@ msgstr "Your inbox, sorted your way"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:65
 msgid "Your name"
 msgstr "Your name"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:158
+msgid "Your new plan is already active in the Amarnai panel."
+msgstr "Your new plan is already active in the Amarnai panel."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
@@ -7233,8 +7277,8 @@ msgstr "Your past threads are being loaded and will appear shortly."
 #~ msgstr "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:180
-msgid "Your plan is updated. The new limits apply right away."
-msgstr "Your plan is updated. The new limits apply right away."
+#~ msgid "Your plan is updated. The new limits apply right away."
+#~ msgstr "Your plan is updated. The new limits apply right away."
 
 #. placeholder {0}: status.plan
 #: ../../apps/extension/src/panel/StatusSlot.tsx:88

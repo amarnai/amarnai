@@ -12,6 +12,7 @@ import {
 } from "@amarnai/shared";
 import { trPlan } from "../pricing/planMessages.js";
 import { Switch } from "../Switch.js";
+import { UpgradeSuccess } from "./UpgradeSuccess.js";
 
 /** A plan that can actually be paid for. Free is never an upgrade target. */
 export type PaidPlanId = Exclude<PlanId, "free">;
@@ -32,6 +33,10 @@ export type StartCheckoutOutcome = {
 
 export type UpgradeDialogProps = {
   workspaceId: string;
+  /** Named in the success card, so the user sees what they just paid for. */
+  workspaceName: string;
+  /** The Aziru artwork, served by whichever surface is hosting this. */
+  mascotSrc: string;
   /** The plan this workspace is on today, so its own tier is not offered back. */
   currentPlan: BillingPlan;
   /**
@@ -62,6 +67,8 @@ export type UpgradeDialogProps = {
  */
 export function UpgradeDialog({
   workspaceId,
+  workspaceName,
+  mascotSrc,
   currentPlan,
   startCheckout,
   onCheckoutStarted,
@@ -74,7 +81,7 @@ export function UpgradeDialog({
   const [newName, setNewName] = useState("");
   const [busy, setBusy] = useState<PaidPlanId | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [upgraded, setUpgraded] = useState(false);
+  const [upgraded, setUpgraded] = useState<PaidPlanId | null>(null);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -116,17 +123,21 @@ export function UpgradeDialog({
         });
 
         if (!res.ok) {
+          // Prefer the server's own words. A 403 here is not always about
+          // ownership (an unverified email refuses the same way), and guessing
+          // sent people looking for a permissions problem they did not have.
           setError(
-            res.status === 403
-              ? _(msg`Only the workspace owner can change the plan.`)
-              : (res.data.error ?? _(msg`Something went wrong. Please try again.`))
+            res.data.error ??
+              (res.status === 403
+                ? _(msg`You do not have permission to change this plan.`)
+                : _(msg`Something went wrong. Please try again.`))
           );
           return;
         }
 
         // A paid-to-paid change is applied server-side with no payment step.
         if (res.data.upgraded) {
-          setUpgraded(true);
+          setUpgraded(plan);
           onUpgraded();
           return;
         }
@@ -176,9 +187,20 @@ export function UpgradeDialog({
           )}
 
           {upgraded ? (
-            <p className="ug-lead">
-              <Trans>Your plan is updated. The new limits apply right away.</Trans>
-            </p>
+            <UpgradeSuccess
+              mascotSrc={mascotSrc}
+              planLabel={trPlan(
+                i18n,
+                PLANS.find((p) => p.id === upgraded)?.name ?? upgraded
+              )}
+              workspaceName={workspaceName}
+            >
+              <div className="ug-success-actions">
+                <button type="button" className="ug-btn ug-btn--primary" onClick={onClose}>
+                  <Trans>Done</Trans>
+                </button>
+              </div>
+            </UpgradeSuccess>
           ) : (
             <>
               <div className="ug-cycle" role="group" aria-label={_(msg`Billing cycle`)}>

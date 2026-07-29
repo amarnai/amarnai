@@ -287,6 +287,10 @@ msgstr "{waitingCount, plural, one {# cuộc trò chuyện đang chờ định t
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# luồng đang chờ.} other {# luồng đang chờ.}} Kết nối ít nhất {TAXONOMY_MIN_NON_ROOT_NODES} thư mục để bắt đầu phân loại."
 
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:60
+msgid "{workspaceName} is on {planLabel}"
+msgstr "{workspaceName} đang dùng gói {planLabel}"
+
 #: ../ui/src/PricingPlans.tsx:172
 #, fuzzy
 msgid "/ workspace / month"
@@ -330,7 +334,7 @@ msgstr "<0>King Aziru</0> đã sẵn sàng sắp xếp email của bạn. Kết 
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>King Aziru</0> sẵn sàng giúp bạn sắp xếp các chuỗi email. Kết nối tài khoản Gmail để bắt đầu. Amarnai kết nối với <1>quyền truy cập chỉ đọc</1> và <2>không bao giờ gửi, xóa hay thay đổi bất cứ điều gì</2>. Hộp thư của bạn luôn thuộc về bạn."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:216
+#: ../ui/src/upgrade/UpgradeDialog.tsx:238
 msgid "${price} per month"
 msgstr "${price} mỗi tháng"
 
@@ -572,9 +576,7 @@ msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Th
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n"
-"\n"
-"Xem hồ sơ trong Nhà Lưu trữ."
+msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n\nXem hồ sơ trong Nhà Lưu trữ."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -601,11 +603,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Tôi sẽ ở gần vùng Đồng bằng vào tuần đó. Chúng ta hãy gặp nhau tại trạm dừng chân vào ngày thứ hai; tôi có thể dành ra buổi sáng.\n"
-"\n"
-"Hẹn gặp lại,"
+msgstr "Abdi-Heba,\n\nTôi sẽ ở gần vùng Đồng bằng vào tuần đó. Chúng ta hãy gặp nhau tại trạm dừng chân vào ngày thứ hai; tôi có thể dành ra buổi sáng.\n\nHẹn gặp lại,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -843,11 +841,11 @@ msgstr "Cũng xóa dữ liệu email đã đồng bộ hóa"
 msgid "amarnai business plan"
 msgstr "Gói Amarnai Business"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:69
 msgid "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
 msgstr "Amarnai tự động sắp xếp mọi chuỗi email Gmail và Outlook vào các thư mục bạn thiết kế, ngay từ bảng điều khiển bên cạnh email bạn đang đọc."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:109
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:86
 #, fuzzy
 msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 msgstr "Amarnai phân loại mọi cuộc hội thoại vào các thư mục bạn chọn. Tạo một bộ từ hộp thư đến của bạn, hoặc bắt đầu từ một mẫu."
@@ -919,11 +917,11 @@ msgstr "Amarnai không còn đồng bộ hóa hộp thư này nữa. Hãy kết 
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai là mã nguồn mở theo AGPL-3.0. Hãy nhân bản, sử dụng khóa riêng và vận hành mọi tính năng miễn phí trên hạ tầng của bạn."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:201
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:178
 msgid "Amarnai is pinned. Its icon opens the panel from any tab."
 msgstr "Amarnai đã được ghim. Biểu tượng của nó sẽ mở bảng điều khiển từ bất kỳ tab nào."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:125
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:102
 #, fuzzy
 msgid "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
 msgstr "Amarnai hiển thị trong bảng điều khiển bên cạnh Gmail và Outlook, nên bạn không bao giờ phải rời khỏi cuộc hội thoại đang đọc."
@@ -1012,7 +1010,7 @@ msgstr "Amarnai nằm trong bảng điều khiển bên cạnh Gmail và Outlook
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai phân loại các cuộc trò chuyện Gmail vào thư mục bạn định sẵn, soạn thảo phản hồi để bạn duyệt, và giải thích mọi quyết định. Mã nguồn mở và có thể tự host."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:93
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:100
 #, fuzzy
 msgid "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Amarnai tự động sắp xếp hộp thư đến của bạn, phân loại email cũ và mới vào đúng nơi. Các chuỗi Amarnai chưa chắc chắn sẽ chờ bạn xem xét."
@@ -1092,7 +1090,7 @@ msgstr "Hằng năm"
 msgid "Annual · Save 20%"
 msgstr "Hằng năm · Tiết kiệm 20%"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:199
+#: ../ui/src/upgrade/UpgradeDialog.tsx:221
 msgid "Annual, save 20%"
 msgstr "Gói hàng năm, tiết kiệm 20%"
 
@@ -1166,7 +1164,7 @@ msgstr "Tập sự"
 msgid "Archive"
 msgstr "Lưu trữ"
 
-#: ../ui/src/settings/PlanSection.tsx:59
+#: ../ui/src/settings/PlanSection.tsx:56
 msgid "Ask the workspace owner to change the plan."
 msgstr "Yêu cầu chủ sở hữu không gian làm việc thay đổi gói dịch vụ."
 
@@ -1282,11 +1280,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Lời hữu nghị của ngài đã đến tai chúng tôi. Chúng tôi sẵn lòng lắng nghe thêm về đề xuất của Gia tộc Amurru. Xin hãy gửi các điều khoản của ngài qua sứ giả kế tiếp.\n"
-"\n"
-"Trân trọng,"
+msgstr "Aziru,\n\nLời hữu nghị của ngài đã đến tai chúng tôi. Chúng tôi sẵn lòng lắng nghe thêm về đề xuất của Gia tộc Amurru. Xin hãy gửi các điều khoản của ngài qua sứ giả kế tiếp.\n\nTrân trọng,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1306,6 +1300,10 @@ msgstr "Lô vàng thứ ba của Babylon đã quá hạn sau hai người đưa 
 msgid "Back"
 msgstr "Quay lại"
 
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:154
+msgid "Back to Gmail"
+msgstr "Quay lại Gmail"
+
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
 #~ msgid "Back to inbox"
 #~ msgstr "Về hộp thư đến"
@@ -1316,6 +1314,10 @@ msgstr "Quay lại"
 #, fuzzy
 msgid "Back to list"
 msgstr "Quay lại danh sách"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:152
+msgid "Back to Outlook"
+msgstr "Quay lại Outlook"
 
 #: ../../apps/mobile/app/forgot-password.tsx:73
 #: ../../apps/web/src/app/forgot-password/page.tsx:55
@@ -1360,7 +1362,7 @@ msgstr "Thanh toán"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
 #: ../ui/src/PricingPlans.tsx:112
-#: ../ui/src/upgrade/UpgradeDialog.tsx:184
+#: ../ui/src/upgrade/UpgradeDialog.tsx:206
 #, fuzzy
 msgid "Billing cycle"
 msgstr "Chu kỳ thanh toán"
@@ -1413,7 +1415,7 @@ msgstr "Dễ dàng duyệt email qua các thư mục. Tạo bản nháp phản h
 msgid "Browse templates"
 msgstr "Duyệt mẫu"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:49
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:56
 #, fuzzy
 msgid "Browse the folders. It's fully interactive."
 msgstr "Duyệt qua các thư mục. Hoàn toàn có thể tương tác."
@@ -1572,7 +1574,7 @@ msgstr "Quy trình ứng viên, sàng lọc hồ sơ và kế hoạch nhân sự
 msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 msgstr "Mã vận đơn, ngoại lệ giao hàng và thông báo điều phối."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:170
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:147
 msgid "CASA Tier 2 certified"
 msgstr "Được chứng nhận CASA Tier 2"
 
@@ -1615,7 +1617,7 @@ msgstr "Thay đổi gói đăng ký"
 #~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
 #~ msgstr "Việc thay đổi hoặc hủy gói trả phí được thực hiện trong ứng dụng web Amarnai."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#: ../ui/src/upgrade/UpgradeDialog.tsx:293
 #, fuzzy
 msgid "Changing or cancelling a paid plan is done in your subscription settings."
 msgstr "Bạn có thể thay đổi hoặc hủy gói trả phí trong cài đặt gói đăng ký của mình."
@@ -1644,7 +1646,7 @@ msgstr "Thanh toán thất bại: {0}"
 msgid "Child folder"
 msgstr "Thư mục con"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:235
+#: ../ui/src/upgrade/UpgradeDialog.tsx:257
 msgid "Choose {planName}"
 msgstr "Chọn {planName}"
 
@@ -1689,7 +1691,7 @@ msgstr "Chọn nơi các luồng của mỗi thư mục sẽ được chuyển �
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "Chọn nơi các cuộc hội thoại của mỗi thư mục sẽ chuyển đến theo gói mới của bạn. Các thư mục đã khớp sẽ giữ nguyên các cuộc hội thoại ngay lập tức; những cuộc hội thoại được đặt để sắp xếp lại sẽ được AI phân loại lại."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:194
 #, fuzzy
 msgid "Choose which part of Amarnai to preview"
 msgstr "Chọn phần Amarnai để xem trước"
@@ -1703,11 +1705,11 @@ msgstr "Lớp học"
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "Nhấp vào thư mục & chuỗi thư, sau đó tạo bản nháp."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:177
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:154
 msgid "Click the Amarnai icon in your toolbar to open the panel."
 msgstr "Nhấp vào biểu tượng Amarnai trên thanh công cụ của bạn để mở bảng điều khiển."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:190
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:167
 msgid "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
 msgstr "Nhấp vào biểu tượng mảnh ghép ở góc trên bên phải trình duyệt của bạn, sau đó nhấp vào ghim bên cạnh Amarnai. Hộp này sẽ tự động cập nhật sau khi bạn thực hiện."
 
@@ -1736,7 +1738,7 @@ msgstr "Khách hàng"
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
-#: ../ui/src/upgrade/UpgradeDialog.tsx:166
+#: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
 msgstr "Đóng"
@@ -2205,7 +2207,7 @@ msgstr "Không thể xếp hàng chờ quét lại. Vui lòng thử lại."
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Không thể kết nối với Amarnai. Vui lòng kiểm tra kết nối của bạn."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:141
+#: ../ui/src/upgrade/UpgradeDialog.tsx:152
 msgid "Could not reach the billing service. Please try again."
 msgstr "Không thể kết nối đến dịch vụ thanh toán. Vui lòng thử lại."
 
@@ -2578,7 +2580,7 @@ msgstr "Mô tả thư mục của bạn"
 msgid "Description"
 msgstr "Mô tả"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:106
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:83
 msgid "Design your folders"
 msgstr "Thiết kế thư mục"
 
@@ -2680,7 +2682,7 @@ msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quyền truy cập vì hộp thư này vẫn được kết nối trong {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
@@ -2749,9 +2751,11 @@ msgstr "Chưa có tài khoản? <0>Đăng ký</0>"
 msgid "Donation drives, giving campaigns, and fundraising appeal responses."
 msgstr "Các chiến dịch quyên góp, vận động tài trợ và phản hồi kêu gọi gây quỹ."
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:62
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/upgrade/UpgradeDialog.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "Hoàn tất"
@@ -2952,7 +2956,7 @@ msgstr "Email đã được xác minh! Đăng nhập để tiếp tục."
 #~ msgid "Email, sorted automatically. Never sends without you."
 #~ msgstr "Email được sắp xếp tự động. Không bao giờ gửi nếu bạn chưa duyệt."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:45
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
@@ -2998,7 +3002,7 @@ msgstr "Đăng ký nhập học, học phí, phân công ký túc xá và quản
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "Nhập tên thư mục (ít nhất {0} ký tự)."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:104
+#: ../ui/src/upgrade/UpgradeDialog.tsx:111
 msgid "Enter a name for the new workspace."
 msgstr "Nhập tên cho không gian làm việc mới."
 
@@ -3056,7 +3060,7 @@ msgstr "Sự kiện & Dã ngoại"
 msgid "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Mọi tài khoản đều bắt đầu với một không gian làm việc miễn phí, không yêu cầu thẻ. Tạo thêm hoặc nâng cấp bất cứ khi nào nhu cầu của bạn phát triển."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:104
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:111
 msgid "Every email goes where it belongs"
 msgstr "Mọi email đều được đặt đúng chỗ"
 
@@ -3074,7 +3078,7 @@ msgstr "Mọi email đều đến đúng nơi cần đến."
 msgid "Every thread in your inbox."
 msgstr "Mọi luồng email trong hộp thư đến của bạn."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:112
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
@@ -3573,7 +3577,7 @@ msgstr "Tạo từ hộp thư đến"
 msgid "Generate plan from inbox"
 msgstr "Tạo kế hoạch từ hộp thư đến"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
 #, fuzzy
 msgid "Generate your folders"
 msgstr "Tạo thư mục của bạn"
@@ -3724,7 +3728,7 @@ msgid "Go home"
 msgstr "Về trang chủ"
 
 #. placeholder {0}: workspace.name
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:122
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:166
 #, fuzzy
 msgid "Go to {0}"
 msgstr "Đi đến {0}"
@@ -3786,11 +3790,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Kính gửi Đại vương,\n"
-"\n"
-"Các báo cáo ngài yêu cầu sẽ được chuẩn bị trước khi hội đồng nhóm họp. Thần sẽ lệnh cho các thư lại tổng hợp sổ sách các lãnh thổ phía đông và gửi trước bằng sứ giả tốc hành.\n"
-"\n"
-"Trong tình huynh đệ,"
+msgstr "Kính gửi Đại vương,\n\nCác báo cáo ngài yêu cầu sẽ được chuẩn bị trước khi hội đồng nhóm họp. Thần sẽ lệnh cho các thư lại tổng hợp sổ sách các lãnh thổ phía đông và gửi trước bằng sứ giả tốc hành.\n\nTrong tình huynh đệ,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4421,10 +4421,10 @@ msgstr "Hoạt động"
 msgid "Load more"
 msgstr "Tải thêm"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:510
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:531
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:553
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:597
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
@@ -4665,7 +4665,7 @@ msgstr "Kiếm tiền"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
 #: ../ui/src/PricingPlans.tsx:119
-#: ../ui/src/upgrade/UpgradeDialog.tsx:191
+#: ../ui/src/upgrade/UpgradeDialog.tsx:213
 #, fuzzy
 msgid "Monthly"
 msgstr "Hàng tháng"
@@ -4837,11 +4837,15 @@ msgid "New workspace"
 msgstr "Không gian làm việc mới"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
-#: ../ui/src/upgrade/UpgradeDialog.tsx:265
-#: ../ui/src/upgrade/UpgradeDialog.tsx:266
+#: ../ui/src/upgrade/UpgradeDialog.tsx:287
+#: ../ui/src/upgrade/UpgradeDialog.tsx:288
 #, fuzzy
 msgid "New workspace name"
 msgstr "Tên không gian làm việc mới"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:225
+msgid "Next preview"
+msgstr "Bản xem trước tiếp theo"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 #, fuzzy
@@ -5075,7 +5079,7 @@ msgstr "Cảnh báo trực ban, báo cáo ngừng hoạt động và leo thang s
 #~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 #~ msgstr "Một lần đăng nhập sẽ tạo tài khoản, kết nối hộp thư đến Gmail hoặc Outlook của bạn và giúp bạn xây dựng kế hoạch sắp xếp. Amarnai không bao giờ gửi hoặc xóa thư."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:118
 msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Amarnai never sends or deletes mail."
 msgstr "Một lần đăng nhập sẽ tạo tài khoản, kết nối hộp thư đến Gmail hoặc Outlook và cho phép bạn thiết lập các thư mục của mình. Amarnai không bao giờ gửi hoặc xóa email."
 
@@ -5089,8 +5093,8 @@ msgid "Ongoing thread with a known city governor raising a recurring supply issu
 msgstr "Cuộc trò chuyện đang diễn ra với một thống đốc thành phố quen thuộc về vấn đề cung ứng định kỳ. Tông giọng leo thang và các lần theo dõi lặp lại phù hợp với thư mục Hỗ trợ."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:121
-msgid "Only the workspace owner can change the plan."
-msgstr "Chỉ chủ sở hữu không gian làm việc mới có thể thay đổi gói."
+#~ msgid "Only the workspace owner can change the plan."
+#~ msgstr "Chỉ chủ sở hữu không gian làm việc mới có thể thay đổi gói."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 #, fuzzy
@@ -5112,7 +5116,7 @@ msgstr "Vui lòng mở một tin nhắn trước, sau đó chọn Amarnai Trả 
 msgid "Open all settings in a new tab"
 msgstr "Mở tất cả cài đặt trong tab mới"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:130
 #, fuzzy
 msgid "Open Amarnai"
 msgstr "Mở Amarnai"
@@ -5181,7 +5185,7 @@ msgstr "Mở mục này từ nút Amarnai Trả lời trong Outlook."
 msgid "Open-source maintainers, contributor discussions, and developer forum threads."
 msgstr "Người quản lý mã nguồn mở, thảo luận của người đóng góp và chủ đề diễn đàn nhà phát triển."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:233
+#: ../ui/src/upgrade/UpgradeDialog.tsx:255
 msgid "Opening checkout"
 msgstr "Đang mở trang thanh toán"
 
@@ -5306,7 +5310,8 @@ msgstr "Đã cập nhật mật khẩu. Đăng nhập bằng mật khẩu mới 
 msgid "Passwords do not match"
 msgstr "Mật khẩu không khớp"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:95
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:125
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:55
 msgid "Payment confirmed"
 msgstr "Thanh toán thành công"
 
@@ -5445,14 +5450,14 @@ msgstr "Pharaoh"
 msgid "Pharaoh of Egypt"
 msgstr "Pharaoh Ai Cập"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:187
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:164
 msgid "Pin Amarnai to your toolbar"
 msgstr "Ghim Amarnai vào thanh công cụ của bạn"
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../ui/src/settings/PlanSection.tsx:43
+#: ../ui/src/settings/PlanSection.tsx:40
 #, fuzzy
 msgid "Plan"
 msgstr "Kế hoạch"
@@ -5526,6 +5531,11 @@ msgstr "Báo chí"
 #, fuzzy
 msgid "Preview"
 msgstr "Xem trước"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:217
+#, fuzzy
+msgid "Previous preview"
+msgstr "Bản xem trước trước đó"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 msgid "Priced per workspace. Clear plans, clear limits."
@@ -5935,7 +5945,7 @@ msgid "Renews monthly on <0>{0}</0>."
 msgstr "Gia hạn hàng tháng vào <0>{0}</0>."
 
 #. placeholder {0}: workspace.currentPeriodEnd.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:112
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:142
 #, fuzzy
 msgid "Renews on <0>{0}</0>."
 msgstr "Gia hạn vào <0>{0}</0>."
@@ -6124,11 +6134,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Chúng tôi đã nhận được thông tin. Ngũ cốc bổ sung đã được đặt hàng từ các kho phía nam và sẽ đến trước lễ hội thu hoạch. Kính mong ngài kiên nhẫn chờ đợi cho đến lúc đó.\n"
-"\n"
-"Chúc ngài mọi sự tốt lành,"
+msgstr "Rib-Hadda,\n\nChúng tôi đã nhận được thông tin. Ngũ cốc bổ sung đã được đặt hàng từ các kho phía nam và sẽ đến trước lễ hội thu hoạch. Kính mong ngài kiên nhẫn chờ đợi cho đến lúc đó.\n\nChúc ngài mọi sự tốt lành,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6278,7 +6284,7 @@ msgstr "Xem cách hoạt động"
 msgid "Select"
 msgstr "Chọn"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6505,7 +6511,7 @@ msgstr "Đăng nhập bằng email"
 #~ msgid "Sign in with Google"
 #~ msgstr "Đăng nhập bằng Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:115
 msgid "Sign in with Google or Microsoft"
 msgstr "Đăng nhập bằng Google hoặc Microsoft"
 
@@ -6598,8 +6604,8 @@ msgstr "Đã xảy ra lỗi"
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:209
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:84
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:90
-#: ../ui/src/upgrade/UpgradeDialog.tsx:122
-#: ../ui/src/upgrade/UpgradeDialog.tsx:139
+#: ../ui/src/upgrade/UpgradeDialog.tsx:133
+#: ../ui/src/upgrade/UpgradeDialog.tsx:150
 #, fuzzy
 msgid "Something went wrong. Please try again."
 msgstr "Đã xảy ra lỗi. Vui lòng thử lại."
@@ -6754,7 +6760,7 @@ msgstr "Duy trì đăng nhập bằng tài khoản hiện tại"
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "Hộp thư của bạn đang được nhập. Vui lòng kiểm tra lại khi quá trình nhập hoàn tất."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
 msgid "Stop sorting email"
 msgstr "Không còn phải sắp xếp email"
 
@@ -6903,6 +6909,15 @@ msgstr "Chuyển đổi địa chỉ xem trước"
 msgid "Switch theme"
 msgstr "Đổi giao diện"
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:54
+#, fuzzy
+msgid "Switch to it"
+msgstr "Chuyển sang"
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:70
+msgid "Switch to it whenever you are ready. This workspace is unchanged."
+msgstr "Chuyển sang khi sẵn sàng. Không gian làm việc này không thay đổi."
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:120
 #, fuzzy
@@ -6957,7 +6972,7 @@ msgstr "Thuế"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
 #: ../ui/src/PricingPlans.tsx:183
-#: ../ui/src/upgrade/UpgradeDialog.tsx:219
+#: ../ui/src/upgrade/UpgradeDialog.tsx:241
 #, fuzzy
 msgid "Taxes calculated at checkout"
 msgstr "Thuế được tính khi thanh toán"
@@ -7080,6 +7095,10 @@ msgstr "Số ngũ cốc người gửi tháng trước đã được nhận vớ
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Đại hội đồng triệu tập vào đầu Shemu. Ta yêu cầu ngươi chuẩn bị đầy đủ báo cáo về các vùng lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh."
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:72
+msgid "The new limits apply right away."
+msgstr "Các giới hạn mới có hiệu lực ngay lập tức."
 
 #: ../ui/src/demo/demo-seed.ts:267
 #, fuzzy
@@ -7220,11 +7239,11 @@ msgstr "Luồng này đang chờ được định tuyến."
 #~ msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 #~ msgstr "Luồng này đang chờ được định tuyến. Sử dụng “Định tuyến ngay” để bắt đầu sắp xếp."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:244
+#: ../ui/src/upgrade/UpgradeDialog.tsx:266
 msgid "This workspace is already on the highest plan."
 msgstr "Không gian làm việc này đã sử dụng gói cao nhất."
 
-#: ../ui/src/settings/PlanSection.tsx:46
+#: ../ui/src/settings/PlanSection.tsx:43
 msgid "This workspace is on {planLabel}."
 msgstr "Không gian làm việc này đang sử dụng gói {planLabel}."
 
@@ -7305,7 +7324,7 @@ msgstr "3 bước để hộp thư ngăn nắp."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "Chỉ 3 bước. Mọi email được sắp xếp tự động cho bạn."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:205
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:182
 msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 msgstr "Mẹo: Ghim biểu tượng Amarnai trên thanh công cụ để truy cập chỉ bằng một cú nhấp chuột."
 
@@ -7318,13 +7337,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Gửi Hoàng đế vĩ đại, huynh đệ của ta,\n"
-"\n"
-"Đại hội đồng sẽ họp vào đầu Shemu. Ta yêu cầu huynh chuẩn bị một bản kê khai đầy đủ về các lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh, nếu có thể thì trước kỳ trăng non.\n"
-"\n"
-"Liên minh của chúng ta rất mạnh. Hãy để chúng ta cho hội đồng thấy rằng nó vẫn vững chắc.\n"
-"\n"
-"Tushratta, Đại Vương Mitanni"
+msgstr "Gửi Hoàng đế vĩ đại, huynh đệ của ta,\n\nĐại hội đồng sẽ họp vào đầu Shemu. Ta yêu cầu huynh chuẩn bị một bản kê khai đầy đủ về các lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh, nếu có thể thì trước kỳ trăng non.\n\nLiên minh của chúng ta rất mạnh. Hãy để chúng ta cho hội đồng thấy rằng nó vẫn vững chắc.\n\nTushratta, Đại Vương Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7333,11 +7346,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n"
-"\n"
-"Chúng tôi đã nhận được đơn xin của Horemheb xứ Thebes và sẽ xem xét hồ sơ của ông ấy trước kỳ trăng non tới. Vui lòng thông báo cho ông ấy rằng chúng tôi sẽ gửi tin tức vào thời điểm thích hợp.\n"
-"\n"
-"Theo sắc lệnh hoàng gia,"
+msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n\nChúng tôi đã nhận được đơn xin của Horemheb xứ Thebes và sẽ xem xét hồ sơ của ông ấy trước kỳ trăng non tới. Vui lòng thông báo cho ông ấy rằng chúng tôi sẽ gửi tin tức vào thời điểm thích hợp.\n\nTheo sắc lệnh hoàng gia,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7348,13 +7357,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Gửi Đại Vương,\n"
-"\n"
-"Trong nhiều năm, các gia tộc của chúng ta đã như huynh đệ. Nay thần viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc: một hiệp ước bảo vệ lẫn nhau và chia sẻ các tuyến đường.\n"
-"\n"
-"Thần chỉ yêu cầu ngài lắng nghe các điều khoản của thần. Xin gửi tin tức bằng người đưa thư tiếp theo và thần sẽ cử sứ giả của mình đi ngay lập tức.\n"
-"\n"
-"Aziru, bầy tôi của Đại Vương, chúa tể Amurru"
+msgstr "Gửi Đại Vương,\n\nTrong nhiều năm, các gia tộc của chúng ta đã như huynh đệ. Nay thần viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc: một hiệp ước bảo vệ lẫn nhau và chia sẻ các tuyến đường.\n\nThần chỉ yêu cầu ngài lắng nghe các điều khoản của thần. Xin gửi tin tức bằng người đưa thư tiếp theo và thần sẽ cử sứ giả của mình đi ngay lập tức.\n\nAziru, bầy tôi của Đại Vương, chúa tể Amurru"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7363,11 +7366,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Gửi Đại Vương,\n"
-"\n"
-"Chuyến du hành của thần sẽ đưa thần đến gần Đồng bằng sông trong những ngày tới. Nếu Đại Vương có một giờ rảnh rỗi, thần rất hoan nghênh cơ hội được nói chuyện trực tiếp; có những vấn đề nói ra dễ hơn viết.\n"
-"\n"
-"Bầy tôi của ngài, Abdi-Heba, thống đốc Urushalim"
+msgstr "Gửi Đại Vương,\n\nChuyến du hành của thần sẽ đưa thần đến gần Đồng bằng sông trong những ngày tới. Nếu Đại Vương có một giờ rảnh rỗi, thần rất hoan nghênh cơ hội được nói chuyện trực tiếp; có những vấn đề nói ra dễ hơn viết.\n\nBầy tôi của ngài, Abdi-Heba, thống đốc Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7376,11 +7375,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Gửi Đại Vương, huynh đệ của ta,\n"
-"\n"
-"Ta đã nghe lời huynh nói. Vàng sẽ được gửi đi trước khi sứ giả tiếp theo khởi hành. Chúng ta trân trọng mối giao hảo giữa các gia tộc và không muốn nó nguội lạnh.\n"
-"\n"
-"Trong tình hữu nghị,"
+msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa đã nghe lời huynh nói. Vàng sẽ được gửi đi trước khi sứ giả tiếp theo khởi hành. Chúng ta trân trọng mối giao hảo giữa các gia tộc và không muốn nó nguội lạnh.\n\nTrong tình hữu nghị,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7391,13 +7386,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Gửi Đại Vương, huynh đệ của ta,\n"
-"\n"
-"Ta viết thư này trong tình hữu nghị, như cha ông chúng ta đã viết trước đây. Lô vàng thứ ba đã thỏa thuận theo hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua mà chúng ta vẫn chờ đợi.\n"
-"\n"
-"Chúng ta yêu cầu huynh gửi nó đi mà không trì hoãn thêm, như lẽ phải của mối giao hảo giữa các gia tộc chúng ta.\n"
-"\n"
-"Burna-Buriash II, Vua Babylon"
+msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa viết thư này trong tình hữu nghị, như cha ông chúng ta đã viết trước đây. Lô vàng thứ ba đã thỏa thuận theo hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua mà chúng ta vẫn chờ đợi.\n\nChúng ta yêu cầu huynh gửi nó đi mà không trì hoãn thêm, như lẽ phải của mối giao hảo giữa các gia tộc chúng ta.\n\nBurna-Buriash II, Vua Babylon"
 
 #: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
@@ -7408,13 +7397,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Gửi Đại Vương, chúa tể của thần, mặt trời của thần,\n"
-"\n"
-"Lượng ngũ cốc ngài gửi tháng trước đã được đón nhận với lòng biết ơn và thần đã ca ngợi tên ngài trước dân chúng. Nhưng thần phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang trở nên bất ổn.\n"
-"\n"
-"Thần đã viết bảy lần rồi. Thần không muốn làm phiền ngài, nhưng thần còn có thể làm gì khác?\n"
-"\n"
-"Bầy tôi của ngài, Rib-Hadda, thống đốc Byblos"
+msgstr "Gửi Đại Vương, chúa tể của thần, mặt trời của thần,\n\nLượng ngũ cốc ngài gửi tháng trước đã được đón nhận với lòng biết ơn và thần đã ca ngợi tên ngài trước dân chúng. Nhưng thần phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang trở nên bất ổn.\n\nThần đã viết bảy lần rồi. Thần không muốn làm phiền ngài, nhưng thần còn có thể làm gì khác?\n\nBầy tôi của ngài, Rib-Hadda, thống đốc Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7526,7 +7509,7 @@ msgstr "Chưa được phân loại"
 msgid "Unclassified. Change folder"
 msgstr "Chưa phân loại. Thay đổi thư mục"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:486
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -7646,8 +7629,8 @@ msgstr "Đang cập nhật…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
-#: ../ui/src/settings/PlanSection.tsx:52
-#: ../ui/src/upgrade/UpgradeDialog.tsx:164
+#: ../ui/src/settings/PlanSection.tsx:49
+#: ../ui/src/upgrade/UpgradeDialog.tsx:175
 #, fuzzy
 msgid "Upgrade"
 msgstr "Nâng cấp"
@@ -7738,7 +7721,7 @@ msgstr "Sử dụng các thư mục này"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Sử dụng gói này cho doanh nghiệp, nhóm hoặc tài khoản Gmail riêng."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:257
+#: ../ui/src/upgrade/UpgradeDialog.tsx:279
 #, fuzzy
 msgid "Use this plan for a new workspace instead"
 msgstr "Thay vào đó, sử dụng gói này cho một không gian làm việc mới."
@@ -7771,12 +7754,12 @@ msgstr "Đã gửi email xác minh!"
 msgid "Verification email sent. Check your inbox."
 msgstr "Đã gửi email xác minh. Hãy kiểm tra hộp thư của bạn."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:139
 #, fuzzy
 msgid "Verified by Google"
 msgstr "Được xác minh bởi Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:166
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:143
 msgid "Verified by Microsoft"
 msgstr "Được xác minh bởi Microsoft"
 
@@ -7916,7 +7899,7 @@ msgstr "Vì sao có tên Amarnai?"
 msgid "Work"
 msgstr "Công việc"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:122
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:99
 msgid "Work next to your email"
 msgstr "Làm việc ngay cạnh email"
 
@@ -7938,7 +7921,7 @@ msgid "Works with Gmail™ and Outlook."
 msgstr "Tương thích với Gmail™ và Outlook."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:48
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
@@ -8125,6 +8108,10 @@ msgstr "Bạn có thể thử lại sau {0}, hoặc bắt đầu từ một mẫ
 msgid "You can try again shortly, or start from a template."
 msgstr "Bạn có thể thử lại trong thời gian ngắn, hoặc bắt đầu từ một mẫu."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:132
+msgid "You do not have permission to change this plan."
+msgstr "Bạn không có quyền thay đổi gói này."
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
@@ -8151,7 +8138,8 @@ msgstr "Bạn luôn kiểm soát"
 msgid "You were assigned a thread"
 msgstr "Bạn đã được giao một chủ đề"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:98
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:128
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:62
 #, fuzzy
 msgid "You're on {planLabel}"
 msgstr "Bạn đang dùng gói {planLabel}"
@@ -8193,7 +8181,7 @@ msgid "Your {plan} plan finished importing your most recent emails. Older ones b
 msgstr "Gói {plan} của bạn đã hoàn tất việc nhập các email gần đây nhất. Các email cũ hơn vượt quá giới hạn đã không được tải."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:103
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:133
 #, fuzzy
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Bản dùng thử miễn phí 14 ngày của bạn sẽ kéo dài đến <0>{0}</0>. Bạn sẽ không bị tính phí trước thời điểm đó."
@@ -8213,7 +8201,7 @@ msgstr "Tiện ích mở rộng của bạn đang đăng nhập bằng một tà
 msgid "Your folders"
 msgstr "Thư mục của bạn"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:106
 msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 msgstr "Cấu trúc thư mục của bạn là một cây đơn giản, phân nhánh từ hộp thư đến. Hãy để Amarnai tạo chúng từ hộp thư đến của bạn, bắt đầu từ một mẫu, hoặc tự tạo chúng."
 
@@ -8264,7 +8252,7 @@ msgstr "Hộp thư đến của bạn vẫn đang được nhập. Bạn có th�
 #~ msgid "Your inbox, sorted the way you think."
 #~ msgstr "Hộp thư đến, sắp xếp theo cách bạn nghĩ."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:89
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:66
 msgid "Your inbox, sorted your way"
 msgstr "Hộp thư đến của bạn, sắp xếp theo ý bạn."
 
@@ -8273,6 +8261,11 @@ msgstr "Hộp thư đến của bạn, sắp xếp theo ý bạn."
 #, fuzzy
 msgid "Your name"
 msgstr "Tên của bạn"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:158
+#, fuzzy
+msgid "Your new plan is already active in the Amarnai panel."
+msgstr "Gói mới của bạn đã được kích hoạt trong bảng điều khiển Amarnai."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
@@ -8295,8 +8288,8 @@ msgstr "Lịch sử trò chuyện của bạn đang được tải và sẽ sớ
 #~ msgstr "Kế hoạch của bạn là một cây thư mục (ví dụ: thư mục Khách hàng với Hỗ trợ và Thanh toán bên dưới), mỗi thư mục được mô tả bằng ngôn ngữ tự nhiên, và Amarnai sẽ duyệt qua cây thư mục đó để định tuyến mọi cuộc hội thoại đến thư mục phù hợp nhất. Cách nhanh nhất để xây dựng là để Amarnai tạo cho bạn: nó đọc hộp thư đến của bạn và đề xuất một cây thư mục hoàn chỉnh, được đặt tên và mô tả, mà bạn có thể giữ nguyên hoặc điều chỉnh. Bạn cũng có thể bắt đầu từ một trong các mẫu có sẵn của chúng tôi hoặc tự xây dựng từ đầu. Không yêu cầu kiến thức kỹ thuật."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:180
-msgid "Your plan is updated. The new limits apply right away."
-msgstr "Gói của bạn đã được cập nhật. Các giới hạn mới áp dụng ngay lập tức."
+#~ msgid "Your plan is updated. The new limits apply right away."
+#~ msgstr "Gói của bạn đã được cập nhật. Các giới hạn mới áp dụng ngay lập tức."
 
 #. placeholder {0}: status.plan
 #: ../../apps/extension/src/panel/StatusSlot.tsx:88

@@ -39,6 +39,8 @@ const chromeStub = {
     query: vi.fn(async () => []),
     update: vi.fn(async () => ({}) as chrome.tabs.Tab),
     create: vi.fn(async () => ({}) as chrome.tabs.Tab),
+    // Used to close a tab the panel opened (checkout) once it is finished with.
+    remove: vi.fn(async () => {}),
   },
   sidePanel: {
     setPanelBehavior: vi.fn(async () => {}),

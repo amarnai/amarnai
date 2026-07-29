@@ -287,6 +287,10 @@ msgstr "{waitingCount, plural, one {# thread menunggu untuk dirutekan. Siapkan f
 msgid "{waitingCount, plural, one {# thread is waiting.} other {# threads are waiting.}} Connect at least {TAXONOMY_MIN_NON_ROOT_NODES} folders to begin sorting."
 msgstr "{waitingCount, plural, one {# utas sedang menunggu.} other {# utas sedang menunggu.}} Hubungkan setidaknya {TAXONOMY_MIN_NON_ROOT_NODES} folder untuk mulai menyortir."
 
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:60
+msgid "{workspaceName} is on {planLabel}"
+msgstr "{workspaceName} menggunakan paket {planLabel}"
+
 #: ../ui/src/PricingPlans.tsx:172
 #, fuzzy
 msgid "/ workspace / month"
@@ -330,7 +334,7 @@ msgstr "<0>King Aziru</0> siap menyortir utas email Anda. Hubungkan akun {provid
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>King Aziru</0> siap merapikan utas email Anda. Hubungkan akun Gmail Anda untuk memulai. Amarnai terhubung dengan <1>akses hanya-baca</1> dan <2>tidak pernah mengirim, menghapus, atau mengubah apa pun</2>. Kotak masuk Anda tetap milik Anda."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:216
+#: ../ui/src/upgrade/UpgradeDialog.tsx:238
 msgid "${price} per month"
 msgstr "${price} per bulan"
 
@@ -572,9 +576,7 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
-"\n"
-"Lihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -601,11 +603,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
-"\n"
-"Sampai jumpa,"
+msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -843,11 +841,11 @@ msgstr "Juga hapus data email yang disinkronkan"
 msgid "amarnai business plan"
 msgstr "Paket Bisnis Amarnai"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:69
 msgid "Amarnai files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
 msgstr "Amarnai menyimpan setiap thread Gmail dan Outlook ke folder yang Anda rancang, langsung dari panel samping di sebelah email yang sedang Anda baca."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:109
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:86
 #, fuzzy
 msgid "Amarnai files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 msgstr "Amarnai mengatur setiap utas ke folder pilihan Anda. Buat set folder dari kotak masuk Anda, atau mulai dari templat."
@@ -919,11 +917,11 @@ msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali aku
 msgid "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure."
 msgstr "Amarnai adalah sumber terbuka di bawah AGPL-3.0. Kloning, gunakan kunci Anda sendiri, dan jalankan setiap tingkat secara gratis di infrastruktur Anda sendiri."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:201
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:178
 msgid "Amarnai is pinned. Its icon opens the panel from any tab."
 msgstr "Amarnai sudah disematkan. Ikonnya membuka panel dari tab mana pun."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:125
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:102
 #, fuzzy
 msgid "Amarnai lives in a side panel beside Gmail and Outlook, so you never have to leave the thread you are reading."
 msgstr "Amarnai ada di panel samping Gmail dan Outlook, jadi Anda tidak perlu meninggalkan utas yang sedang Anda baca."
@@ -1012,7 +1010,7 @@ msgstr "Amarnai berada di panel samping Gmail dan Outlook."
 #~ msgid "Amarnai sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Amarnai menyortir utas Gmail Anda ke dalam folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan. Sumber terbuka dan dapat di-hosting sendiri."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:93
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:100
 #, fuzzy
 msgid "Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Amarnai menyortir inbox Anda, menyimpan email lama dan baru ke tempatnya. Thread yang tidak yakin akan menunggu Anda untuk ditinjau."
@@ -1092,7 +1090,7 @@ msgstr "Tahunan"
 msgid "Annual · Save 20%"
 msgstr "Tahunan · Hemat 20%"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:199
+#: ../ui/src/upgrade/UpgradeDialog.tsx:221
 msgid "Annual, save 20%"
 msgstr "Tahunan, hemat 20%"
 
@@ -1166,7 +1164,7 @@ msgstr "Magang"
 msgid "Archive"
 msgstr "Arsip"
 
-#: ../ui/src/settings/PlanSection.tsx:59
+#: ../ui/src/settings/PlanSection.tsx:56
 msgid "Ask the workspace owner to change the plan."
 msgstr "Minta pemilik ruang kerja untuk mengubah paket."
 
@@ -1282,11 +1280,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
-"\n"
-"Dengan hormat,"
+msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1306,6 +1300,10 @@ msgstr "Pengiriman emas ketiga Babel tertunda setelah dua utusan. Burna-Buriash 
 msgid "Back"
 msgstr "Kembali"
 
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:154
+msgid "Back to Gmail"
+msgstr "Kembali ke Gmail"
+
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
 #~ msgid "Back to inbox"
 #~ msgstr "Kembali ke kotak masuk"
@@ -1316,6 +1314,10 @@ msgstr "Kembali"
 #, fuzzy
 msgid "Back to list"
 msgstr "Kembali ke daftar"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:152
+msgid "Back to Outlook"
+msgstr "Kembali ke Outlook"
 
 #: ../../apps/mobile/app/forgot-password.tsx:73
 #: ../../apps/web/src/app/forgot-password/page.tsx:55
@@ -1360,7 +1362,7 @@ msgstr "Penagihan"
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:177
 #: ../ui/src/PricingPlans.tsx:112
-#: ../ui/src/upgrade/UpgradeDialog.tsx:184
+#: ../ui/src/upgrade/UpgradeDialog.tsx:206
 #, fuzzy
 msgid "Billing cycle"
 msgstr "Siklus Penagihan"
@@ -1413,7 +1415,7 @@ msgstr "Jelajahi email dengan mudah melalui folder Anda. Buat draf balasan dan s
 msgid "Browse templates"
 msgstr "Telusuri Template"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:49
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:56
 #, fuzzy
 msgid "Browse the folders. It's fully interactive."
 msgstr "Jelajahi foldernya. Semuanya interaktif."
@@ -1572,7 +1574,7 @@ msgstr "Daftar kandidat, penyaringan pelamar, dan perencanaan jumlah karyawan."
 msgid "Carrier tracking numbers, delivery exceptions, and courier dispatch notices."
 msgstr "Nomor pelacakan pengiriman, pengecualian pengiriman, dan pemberitahuan pengiriman kurir."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:170
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:147
 msgid "CASA Tier 2 certified"
 msgstr "Tersertifikasi CASA Tier 2"
 
@@ -1615,7 +1617,7 @@ msgstr "Ubah Langganan"
 #~ msgid "Changing or cancelling a paid plan is done in the Amarnai web app."
 #~ msgstr "Mengubah atau membatalkan paket berbayar dilakukan di aplikasi web Amarnai."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:271
+#: ../ui/src/upgrade/UpgradeDialog.tsx:293
 #, fuzzy
 msgid "Changing or cancelling a paid plan is done in your subscription settings."
 msgstr "Mengubah atau membatalkan paket berbayar dilakukan di pengaturan langganan Anda."
@@ -1644,7 +1646,7 @@ msgstr "Pembayaran gagal: {0}"
 msgid "Child folder"
 msgstr "Subfolder"
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:235
+#: ../ui/src/upgrade/UpgradeDialog.tsx:257
 msgid "Choose {planName}"
 msgstr "Pilih {planName}"
 
@@ -1689,7 +1691,7 @@ msgstr "Pilih tujuan setiap utas folder ke folder baru Anda. Folder yang cocok a
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "Pilih tujuan utas setiap folder di paket baru Anda. Folder yang cocok akan langsung mempertahankan utasnya; apa pun yang diatur untuk disortir ulang akan diklasifikasikan ulang oleh AI."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:194
 #, fuzzy
 msgid "Choose which part of Amarnai to preview"
 msgstr "Pilih bagian Amarnai yang ingin Anda pratinjau"
@@ -1703,11 +1705,11 @@ msgstr "Kelas"
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "Klik folder & percakapan, lalu buat draf."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:177
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:154
 msgid "Click the Amarnai icon in your toolbar to open the panel."
 msgstr "Klik ikon Amarnai di bilah alat untuk membuka panel."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:190
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:167
 msgid "Click the puzzle-piece icon at the top right of your browser, then click the pin next to Amarnai. This box updates on its own once you do."
 msgstr "Klik ikon potongan puzzle di kanan atas browser Anda, lalu klik pin di sebelah Amarnai. Kotak ini akan diperbarui otomatis setelah Anda melakukannya."
 
@@ -1736,7 +1738,7 @@ msgstr "Klien"
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
-#: ../ui/src/upgrade/UpgradeDialog.tsx:166
+#: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
 msgstr "Tutup"
@@ -2205,7 +2207,7 @@ msgstr "Tidak dapat mengantrekan pemindaian ulang. Silakan coba lagi."
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Gagal terhubung ke Amarnai. Periksa koneksi Anda."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:141
+#: ../ui/src/upgrade/UpgradeDialog.tsx:152
 msgid "Could not reach the billing service. Please try again."
 msgstr "Gagal menghubungi layanan penagihan. Mohon coba lagi."
 
@@ -2578,7 +2580,7 @@ msgstr "Deskripsikan folder Anda"
 msgid "Description"
 msgstr "Deskripsi"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:106
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:83
 msgid "Design your folders"
 msgstr "Rancang folder Anda"
 
@@ -2680,7 +2682,7 @@ msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena k
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Memutus sambungan ruang kerja ini. Amarnai tetap memiliki akses karena kotak email ini masih terhubung di {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:460
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
@@ -2749,9 +2751,11 @@ msgstr "Belum punya akun? <0>Daftar</0>"
 msgid "Donation drives, giving campaigns, and fundraising appeal responses."
 msgstr "Kampanye donasi, program pemberian, dan tanggapan permohonan penggalangan dana."
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:62
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
 #: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/upgrade/UpgradeDialog.tsx:200
 #, fuzzy
 msgid "Done"
 msgstr "Selesai"
@@ -2952,7 +2956,7 @@ msgstr "Email terverifikasi! Masuk untuk melanjutkan."
 #~ msgid "Email, sorted automatically. Never sends without you."
 #~ msgstr "Email, tersortir otomatis. Takkan pernah mengirim tanpa persetujuan Anda."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:45
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:52
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:28
 #: ../../apps/web/src/components/Sidebar.tsx:32
 #, fuzzy
@@ -2998,7 +3002,7 @@ msgstr "Pendaftaran, biaya kuliah, penempatan asrama, dan administrasi kampus re
 msgid "Enter a folder name (at least {0} characters)."
 msgstr "Masukkan nama folder (minimal {0} karakter)."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:104
+#: ../ui/src/upgrade/UpgradeDialog.tsx:111
 msgid "Enter a name for the new workspace."
 msgstr "Masukkan nama untuk ruang kerja baru."
 
@@ -3056,7 +3060,7 @@ msgstr "Acara & Kunjungan Lapangan"
 msgid "Every account starts with a free workspace, no card required. Create more or upgrade whenever your needs grow."
 msgstr "Setiap akun dimulai dengan ruang kerja gratis, tanpa kartu kredit. Buat lebih banyak atau upgrade kapan pun kebutuhan Anda bertambah."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:104
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:111
 msgid "Every email goes where it belongs"
 msgstr "Setiap email masuk ke tempatnya"
 
@@ -3074,7 +3078,7 @@ msgstr "Setiap email masuk ke tempatnya."
 msgid "Every thread in your inbox."
 msgstr "Setiap utas di kotak masuk Anda."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:112
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
 #, fuzzy
 msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
@@ -3573,7 +3577,7 @@ msgstr "Hasilkan dari kotak masuk"
 msgid "Generate plan from inbox"
 msgstr "Hasilkan rencana dari kotak masuk"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:105
 #, fuzzy
 msgid "Generate your folders"
 msgstr "Buat folder Anda"
@@ -3724,7 +3728,7 @@ msgid "Go home"
 msgstr "Kembali ke Beranda"
 
 #. placeholder {0}: workspace.name
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:122
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:166
 #, fuzzy
 msgid "Go to {0}"
 msgstr "Buka {0}"
@@ -3786,11 +3790,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n"
-"\n"
-"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
-"\n"
-"Dalam persaudaraan,"
+msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4421,10 +4421,10 @@ msgstr "Aktif"
 msgid "Load more"
 msgstr "Muat lebih banyak"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:477
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:520
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:546
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:510
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:531
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:553
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:597
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:109
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
@@ -4665,7 +4665,7 @@ msgstr "Monetisasi"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:35
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:185
 #: ../ui/src/PricingPlans.tsx:119
-#: ../ui/src/upgrade/UpgradeDialog.tsx:191
+#: ../ui/src/upgrade/UpgradeDialog.tsx:213
 #, fuzzy
 msgid "Monthly"
 msgstr "Bulanan"
@@ -4837,11 +4837,15 @@ msgid "New workspace"
 msgstr "Ruang kerja baru"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:150
-#: ../ui/src/upgrade/UpgradeDialog.tsx:265
-#: ../ui/src/upgrade/UpgradeDialog.tsx:266
+#: ../ui/src/upgrade/UpgradeDialog.tsx:287
+#: ../ui/src/upgrade/UpgradeDialog.tsx:288
 #, fuzzy
 msgid "New workspace name"
 msgstr "Nama ruang kerja baru"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:225
+msgid "Next preview"
+msgstr "Pratinjau berikutnya"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 #, fuzzy
@@ -5075,7 +5079,7 @@ msgstr "Peringatan siaga, laporan gangguan, dan eskalasi insiden produksi."
 #~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 #~ msgstr "Satu kali masuk akan membuat akun Anda, menghubungkan inbox Gmail atau Outlook, dan memungkinkan Anda membangun rencana penyortiran. Amarnai tidak pernah mengirim atau menghapus email."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:118
 msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Amarnai never sends or deletes mail."
 msgstr "Satu kali masuk akan membuat akun Anda, menghubungkan kotak masuk Gmail atau Outlook Anda, dan memungkinkan Anda menyiapkan folder. Amarnai tidak pernah mengirim atau menghapus email."
 
@@ -5089,8 +5093,8 @@ msgid "Ongoing thread with a known city governor raising a recurring supply issu
 msgstr "Utas yang sedang berlangsung dengan gubernur kota terkait masalah pasokan berulang. Nada eskalasi dan tindak lanjut berulang cocok untuk folder Dukungan."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:121
-msgid "Only the workspace owner can change the plan."
-msgstr "Hanya pemilik ruang kerja yang dapat mengubah paket."
+#~ msgid "Only the workspace owner can change the plan."
+#~ msgstr "Hanya pemilik ruang kerja yang dapat mengubah paket."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:325
 #, fuzzy
@@ -5112,7 +5116,7 @@ msgstr "Buka pesan terlebih dahulu, lalu pilih Balasan Amarnai."
 msgid "Open all settings in a new tab"
 msgstr "Buka semua pengaturan di tab baru"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:153
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:130
 #, fuzzy
 msgid "Open Amarnai"
 msgstr "Buka Amarnai"
@@ -5181,7 +5185,7 @@ msgstr "Buka ini dari tombol Balasan Amarnai di Outlook."
 msgid "Open-source maintainers, contributor discussions, and developer forum threads."
 msgstr "Pengelola open-source, diskusi kontributor, dan utas forum developer."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:233
+#: ../ui/src/upgrade/UpgradeDialog.tsx:255
 msgid "Opening checkout"
 msgstr "Membuka pembayaran"
 
@@ -5306,7 +5310,8 @@ msgstr "Kata sandi telah diperbarui. Masuk dengan kata sandi baru Anda."
 msgid "Passwords do not match"
 msgstr "Kata sandi tidak cocok"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:95
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:125
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:55
 msgid "Payment confirmed"
 msgstr "Pembayaran dikonfirmasi"
 
@@ -5445,14 +5450,14 @@ msgstr "Pharaoh"
 msgid "Pharaoh of Egypt"
 msgstr "Firaun Mesir"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:187
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:164
 msgid "Pin Amarnai to your toolbar"
 msgstr "Sematkan Amarnai ke bilah alat Anda"
 
 #. Screen heading for the email-sorting taxonomy. Not a billing or subscription plan.
 #: ../../apps/mobile/app/(app)/(tabs)/_layout.tsx:35
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:265
-#: ../ui/src/settings/PlanSection.tsx:43
+#: ../ui/src/settings/PlanSection.tsx:40
 #, fuzzy
 msgid "Plan"
 msgstr "Paket"
@@ -5526,6 +5531,11 @@ msgstr "Pers"
 #, fuzzy
 msgid "Preview"
 msgstr "Pratinjau"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:217
+#, fuzzy
+msgid "Previous preview"
+msgstr "Pratinjau sebelumnya"
 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:28
 msgid "Priced per workspace. Clear plans, clear limits."
@@ -5935,7 +5945,7 @@ msgid "Renews monthly on <0>{0}</0>."
 msgstr "Diperbarui setiap bulan pada <0>{0}</0>."
 
 #. placeholder {0}: workspace.currentPeriodEnd.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:112
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:142
 #, fuzzy
 msgid "Renews on <0>{0}</0>."
 msgstr "Diperbarui pada <0>{0}</0>."
@@ -6124,11 +6134,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
-"\n"
-"Semoga sehat selalu,"
+msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6278,7 +6284,7 @@ msgstr "Lihat Cara Kerjanya"
 msgid "Select"
 msgstr "Pilih"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:409
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:442
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
 #: ../ui/src/emails/MockEmailsPage.tsx:279
 #, fuzzy
@@ -6505,7 +6511,7 @@ msgstr "Masuk dengan email saja."
 #~ msgid "Sign in with Google"
 #~ msgstr "Masuk dengan Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:115
 msgid "Sign in with Google or Microsoft"
 msgstr "Masuk dengan Google atau Microsoft"
 
@@ -6598,8 +6604,8 @@ msgstr "Terjadi kesalahan"
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:209
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:84
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:90
-#: ../ui/src/upgrade/UpgradeDialog.tsx:122
-#: ../ui/src/upgrade/UpgradeDialog.tsx:139
+#: ../ui/src/upgrade/UpgradeDialog.tsx:133
+#: ../ui/src/upgrade/UpgradeDialog.tsx:150
 #, fuzzy
 msgid "Something went wrong. Please try again."
 msgstr "Terjadi kesalahan. Silakan coba lagi."
@@ -6754,7 +6760,7 @@ msgstr "Tetap masuk dengan akun saat ini"
 msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "Masih mengimpor kotak masuk Anda. Periksa kembali setelah impor selesai."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:92
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
 msgid "Stop sorting email"
 msgstr "Berhenti menyortir email"
 
@@ -6903,6 +6909,15 @@ msgstr "Ganti alamat pratinjau"
 msgid "Switch theme"
 msgstr "Ganti tema"
 
+#: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:54
+#, fuzzy
+msgid "Switch to it"
+msgstr "Beralih ke sana"
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:70
+msgid "Switch to it whenever you are ready. This workspace is unchanged."
+msgstr "Beralihlah kapan pun Anda siap. Ruang kerja ini tidak berubah."
+
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:39
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:120
 #, fuzzy
@@ -6957,7 +6972,7 @@ msgstr "Pajak"
 
 #: ../../apps/mobile/src/components/billing/PricingSheet.tsx:69
 #: ../ui/src/PricingPlans.tsx:183
-#: ../ui/src/upgrade/UpgradeDialog.tsx:219
+#: ../ui/src/upgrade/UpgradeDialog.tsx:241
 #, fuzzy
 msgid "Taxes calculated at checkout"
 msgstr "Pajak dihitung saat checkout"
@@ -7080,6 +7095,10 @@ msgstr "Gandum yang Anda kirim bulan lalu telah diterima dengan penuh syukur. Na
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Dewan Agung akan bersidang pada awal Shemu. Saya meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya terlebih dahulu melalui kurir cepat."
+
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:72
+msgid "The new limits apply right away."
+msgstr "Batas baru langsung berlaku."
 
 #: ../ui/src/demo/demo-seed.ts:267
 #, fuzzy
@@ -7220,11 +7239,11 @@ msgstr "Thread ini menunggu untuk dirutekan."
 #~ msgid "This thread is waiting to be routed. Use “Route now” to start sorting."
 #~ msgstr "Thread ini menunggu untuk dirutekan. Gunakan “Rutekan sekarang” untuk mulai mengurutkan."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:244
+#: ../ui/src/upgrade/UpgradeDialog.tsx:266
 msgid "This workspace is already on the highest plan."
 msgstr "Ruang kerja ini sudah menggunakan paket tertinggi."
 
-#: ../ui/src/settings/PlanSection.tsx:46
+#: ../ui/src/settings/PlanSection.tsx:43
 msgid "This workspace is on {planLabel}."
 msgstr "Ruang kerja ini menggunakan {planLabel}."
 
@@ -7305,7 +7324,7 @@ msgstr "Tiga langkah menuju kotak masuk rapi."
 #~ msgid "Three steps. Then it sorts every email for you."
 #~ msgstr "Tiga langkah. Lalu semua email Anda tersortir otomatis."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:205
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:182
 msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 msgstr "Tips: sematkan ikon Amarnai di bilah alat agar mudah diakses dengan satu klik."
 
@@ -7318,13 +7337,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n"
-"\n"
-"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
-"\n"
-"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
-"\n"
-"Tushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7333,11 +7346,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n"
-"\n"
-"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
-"\n"
-"Berdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7348,13 +7357,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
-"\n"
-"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
-"\n"
-"Aziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7363,11 +7366,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
-"\n"
-"Hambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7376,11 +7375,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
-"\n"
-"Dalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7391,13 +7386,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
-"\n"
-"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
-"\n"
-"Burna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
 
 #: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
@@ -7408,13 +7397,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
-"\n"
-"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
-"\n"
-"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
-"\n"
-"Hambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -7526,7 +7509,7 @@ msgstr "Tidak Terklasifikasi"
 msgid "Unclassified. Change folder"
 msgstr "Tidak terklasifikasi. Ubah folder"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:453
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:486
 #: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
 #: ../ui/src/emails/MockEmailsPage.tsx:298
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
@@ -7646,8 +7629,8 @@ msgstr "Memperbarui…"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:175
 #: ../ui/src/emails/AssigneePicker.tsx:136
-#: ../ui/src/settings/PlanSection.tsx:52
-#: ../ui/src/upgrade/UpgradeDialog.tsx:164
+#: ../ui/src/settings/PlanSection.tsx:49
+#: ../ui/src/upgrade/UpgradeDialog.tsx:175
 #, fuzzy
 msgid "Upgrade"
 msgstr "Upgrade"
@@ -7738,7 +7721,7 @@ msgstr "Gunakan folder ini"
 msgid "Use this plan for a business, team, or separate Gmail account."
 msgstr "Gunakan paket ini untuk bisnis, tim, atau akun Gmail terpisah."
 
-#: ../ui/src/upgrade/UpgradeDialog.tsx:257
+#: ../ui/src/upgrade/UpgradeDialog.tsx:279
 #, fuzzy
 msgid "Use this plan for a new workspace instead"
 msgstr "Gunakan paket ini untuk ruang kerja baru sebagai gantinya"
@@ -7771,12 +7754,12 @@ msgstr "Email verifikasi terkirim!"
 msgid "Verification email sent. Check your inbox."
 msgstr "Email verifikasi terkirim. Periksa kotak masuk Anda."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:162
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:139
 #, fuzzy
 msgid "Verified by Google"
 msgstr "Diverifikasi oleh Google"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:166
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:143
 msgid "Verified by Microsoft"
 msgstr "Diverifikasi oleh Microsoft"
 
@@ -7916,7 +7899,7 @@ msgstr "Mengapa dinamai Amarnai?"
 msgid "Work"
 msgstr "Pekerjaan"
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:122
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:99
 msgid "Work next to your email"
 msgstr "Bekerja di samping email Anda."
 
@@ -7938,7 +7921,7 @@ msgid "Works with Gmail™ and Outlook."
 msgstr "Berfungsi dengan Gmail™ dan Outlook."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:41
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:48
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
@@ -8125,6 +8108,10 @@ msgstr "Anda dapat mencoba lagi setelah {0}, atau mulai dari template."
 msgid "You can try again shortly, or start from a template."
 msgstr "Anda dapat mencoba lagi sebentar lagi, atau mulai dari template."
 
+#: ../ui/src/upgrade/UpgradeDialog.tsx:132
+msgid "You do not have permission to change this plan."
+msgstr "Anda tidak memiliki izin untuk mengubah paket ini."
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
@@ -8151,7 +8138,8 @@ msgstr "Anda tetap memegang kendali"
 msgid "You were assigned a thread"
 msgstr "Anda ditugaskan sebuah utas"
 
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:98
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:128
+#: ../ui/src/upgrade/UpgradeSuccess.tsx:62
 #, fuzzy
 msgid "You're on {planLabel}"
 msgstr "Anda menggunakan {planLabel}"
@@ -8193,7 +8181,7 @@ msgid "Your {plan} plan finished importing your most recent emails. Older ones b
 msgstr "Paket {plan} Anda telah selesai mengimpor email terbaru Anda. Email lama yang melampaui batas tidak dimuat."
 
 #. placeholder {0}: workspace.trialEndsAt.toLocaleDateString()
-#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:103
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:133
 #, fuzzy
 msgid "Your 14-day free trial runs until <0>{0}</0>. You won't be charged before then."
 msgstr "Uji coba gratis 14 hari Anda berlaku hingga <0>{0}</0>. Anda tidak akan dikenakan biaya sebelum tanggal tersebut."
@@ -8213,7 +8201,7 @@ msgstr "Ekstensi Anda masuk ke akun yang berbeda"
 msgid "Your folders"
 msgstr "Folder Anda"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:106
 msgid "Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself."
 msgstr "Folder Anda adalah struktur pohon sederhana yang bercabang dari kotak masuk Anda. Biarkan Amarnai membuatnya dari kotak masuk Anda, mulai dari templat, atau buat sendiri."
 
@@ -8264,7 +8252,7 @@ msgstr "Kotak masuk Anda masih dalam proses impor. Anda dapat mulai menghasilkan
 #~ msgid "Your inbox, sorted the way you think."
 #~ msgstr "Kotak masuk Anda, tertata sesuai cara pikir Anda."
 
-#: ../../apps/extension/src/welcome/WelcomeApp.tsx:89
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:66
 msgid "Your inbox, sorted your way"
 msgstr "Inbox Anda, tersortir sesuai keinginan."
 
@@ -8273,6 +8261,11 @@ msgstr "Inbox Anda, tersortir sesuai keinginan."
 #, fuzzy
 msgid "Your name"
 msgstr "Nama Anda"
+
+#: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:158
+#, fuzzy
+msgid "Your new plan is already active in the Amarnai panel."
+msgstr "Paket baru Anda sudah aktif di panel Amarnai."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:151
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:40
@@ -8295,8 +8288,8 @@ msgstr "Riwayat obrolan Anda sedang dimuat dan akan segera muncul."
 #~ msgstr "Rencana Anda adalah pohon folder (misalnya, folder Pelanggan dengan Support dan Penagihan di bawahnya), masing-masing dijelaskan dengan bahasa sederhana, dan Amarnai akan menelusuri pohon tersebut untuk mengarahkan setiap thread ke folder yang paling sesuai. Cara tercepat untuk membangunnya adalah dengan membiarkan Amarnai menghasilkannya untuk Anda: Amarnai akan membaca kotak masuk Anda dan mengusulkan pohon lengkap, lengkap dengan nama dan deskripsi, yang dapat Anda gunakan apa adanya atau sesuaikan. Anda juga dapat memulai dari salah satu template siap pakai kami atau membuatnya sendiri dari awal. Tidak diperlukan keahlian teknis."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:180
-msgid "Your plan is updated. The new limits apply right away."
-msgstr "Paket Anda telah diperbarui. Batasan baru segera berlaku."
+#~ msgid "Your plan is updated. The new limits apply right away."
+#~ msgstr "Paket Anda telah diperbarui. Batasan baru segera berlaku."
 
 #. placeholder {0}: status.plan
 #: ../../apps/extension/src/panel/StatusSlot.tsx:88
