@@ -5,6 +5,7 @@ import {
   PANEL_THREAD_CONTEXT,
   PANEL_VISIBILITY,
   PANEL_INSERT_RESULT,
+  isPanelDisabledMessage,
   isPanelInsertDraftMessage,
   isPanelOpenPanelMessage,
   isPanelReadyMessage,
@@ -40,6 +41,16 @@ export type PanelFrameOptions = {
   onInsertDraft: (html: string) => boolean;
   /** The panel asked for the extension's own side panel (its sign-in surface). */
   onOpenPanel: () => void;
+  /**
+   * The workspace has switched the panel off. Remove the whole surface — the
+   * frame and whatever chrome holds it — rather than leaving an inert panel in
+   * place; see PANEL_DISABLED.
+   *
+   * Required, not optional: a host that mounts something into a mail page has to
+   * have an answer for being switched off, and making this optional is how the
+   * two hosts would end up with different ones.
+   */
+  onDisabled: () => void;
 };
 
 export type PanelFrameLink = {
@@ -60,6 +71,7 @@ export function attachPanelFrame({
   iframe,
   onInsertDraft,
   onOpenPanel,
+  onDisabled,
 }: PanelFrameOptions): PanelFrameLink {
   const origin = extensionOrigin();
   let pendingContext: PanelThreadContext | null = null;
@@ -135,6 +147,15 @@ export function attachPanelFrame({
 
     if (isPanelOpenPanelMessage(event.data)) {
       onOpenPanel();
+      return;
+    }
+
+    if (isPanelDisabledMessage(event.data)) {
+      // The host tears itself down, which drops this listener too — so the
+      // handshake is stopped first rather than left running against a frame that
+      // is about to be removed.
+      stopHello();
+      onDisabled();
     }
   };
   window.addEventListener("message", onMessage);

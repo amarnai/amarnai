@@ -44,6 +44,7 @@ function makeHost(overrides: Partial<PanelHost> = {}) {
     insertDraft: vi.fn().mockResolvedValue(true),
     openThread: vi.fn(),
     requestSignIn: vi.fn(),
+    reportInjectionDisabled: vi.fn(),
     openExternal: vi.fn(),
     ...overrides,
   };
@@ -278,6 +279,29 @@ describe("usePanelState", () => {
 
     act(() => result.current.reportInjectionDisabled());
     expect(result.current.stage.kind).toBe("injectionDisabled");
+  });
+
+  // The screen alone is not enough: a host that injected the panel into a mail
+  // page has to remove itself, or the workspace's kill switch leaves the drawer
+  // tab (and Gmail's sidebar entry) sitting there inert.
+  it("tells the host to un-inject, from either path that latches the stage", async () => {
+    const fromQueue = makeHost();
+    const queueRun = render(makeApi(), fromQueue.host);
+    fromQueue.setContext({ providerThreadId: null, accountEmail: "ada@example.com" });
+    await waitFor(() => expect(queueRun.result.current.stage.kind).toBe("queue"));
+    act(() => queueRun.result.current.reportInjectionDisabled());
+    expect(fromQueue.host.reportInjectionDisabled).toHaveBeenCalledTimes(1);
+
+    const api = makeApi({
+      resolveProviderThread: vi.fn().mockRejectedValue(new InjectionDisabledError("off")),
+    });
+    const fromThread = makeHost();
+    const threadRun = render(api, fromThread.host);
+    fromThread.setContext(CONTEXT);
+    await waitFor(() =>
+      expect(threadRun.result.current.stage.kind).toBe("injectionDisabled"),
+    );
+    expect(fromThread.host.reportInjectionDisabled).toHaveBeenCalledTimes(1);
   });
 
   it("says notConnected when the user has no mailbox connected anywhere", async () => {

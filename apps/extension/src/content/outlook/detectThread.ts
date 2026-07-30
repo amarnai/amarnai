@@ -184,6 +184,39 @@ export function isConversationOpen(doc: Document = document): boolean {
   );
 }
 
+/**
+ * Which conversation the injected panel is looking at, and by which kind of id.
+ * Null when OWA is showing no conversation at all.
+ *
+ * The panel's one answer to that question, used both by the reader that reports
+ * context to the frame and by the insertion path that arms OWA's reply. They had
+ * drifted: the reader knew about the deeplink read view and the insertion path
+ * did not, so on that layout the panel offered a draft it could never place —
+ * `isConversationOpen` says yes there (the item pane), while
+ * `findConversationId` says nothing (an item view carries no `data-convid`).
+ *
+ * Deliberately NOT shared with `detectOutlookThread`, which the summary card
+ * uses: that one wants the `aria-selected` list row even with an empty reading
+ * pane, and this one must not. See `isConversationOpen` for why those two
+ * requirements are genuinely opposed.
+ */
+export function readOpenThreadRef(
+  doc: Document = document,
+): { providerThreadId: string; refKind: "thread" | "message" } | null {
+  // The deeplink read view is asked first, because it can answer where the
+  // conversation reader cannot: its id comes from the URL and travels as a
+  // message ref for the server to resolve through providerMessageId.
+  const deeplinkMessageId = isDeeplinkReadView(doc)
+    ? findDeeplinkMessageId(doc.location?.href ?? "")
+    : null;
+  if (deeplinkMessageId) {
+    return { providerThreadId: deeplinkMessageId, refKind: "message" };
+  }
+  if (!isConversationOpen(doc)) return null;
+  const providerThreadId = findConversationId(doc);
+  return providerThreadId ? { providerThreadId, refKind: "thread" } : null;
+}
+
 /** Insert the card above the reading pane's message list. */
 export function findOutlookInjectionAnchor(doc: Document = document): Element | null {
   const main = doc.querySelector("[role='main']");

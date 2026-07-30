@@ -284,6 +284,16 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
     setStage({ kind: "injectionDisabled" });
   }, []);
 
+  // Tell the host once the stage has actually latched, rather than at each of the
+  // two places that latch it (the thread resolve's own 403 and the queue's, which
+  // is a different request). A host that injected the panel into a mail page
+  // removes itself here, so the workspace's kill switch un-injects rather than
+  // leaving an inert panel behind.
+  const stageKind = stage.kind;
+  useEffect(() => {
+    if (stageKind === "injectionDisabled") host.reportInjectionDisabled?.();
+  }, [stageKind, host]);
+
   // ── Queue over a conversation ───────────────────────────────────────────────
   //
   // Kept beside the resolved stage rather than inside it, so going back to the

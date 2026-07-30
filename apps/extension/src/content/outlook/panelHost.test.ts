@@ -8,6 +8,8 @@ import {
   PANEL_EMBED_PARAM,
   PANEL_THREAD_CONTEXT,
   PANEL_VISIBILITY,
+  PANEL_INSERT_DRAFT,
+  PANEL_INSERT_RESULT,
 } from "../core/panelProtocol";
 
 // The OWA drawer. jsdom has no layout engine, so nothing here can check that the
@@ -82,6 +84,21 @@ function stubFrameWindow() {
     configurable: true,
     value: { postMessage: framePostMessage },
   });
+}
+
+/**
+ * Deliver a message from the frame as the browser would. The host accepts only
+ * the extension origin AND its own frame as the source, so both are supplied
+ * honestly here — those checks have their own cases in panelFrame.test.ts.
+ */
+function deliverToHost(data: unknown) {
+  window.dispatchEvent(
+    new MessageEvent("message", {
+      data,
+      origin: new URL(chrome.runtime.getURL("/")).origin,
+      source: frame().contentWindow,
+    }),
+  );
 }
 
 beforeEach(() => {
@@ -279,6 +296,72 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
 
     expect(messagesOfType(PANEL_THREAD_CONTEXT)[0]).toMatchObject({
       context: { providerThreadId: itemId, accountEmail: null, refKind: "message" },
+    });
+  });
+
+  // The other half of the reported bug. Reporting the deeplink layout's context is
+  // only useful if the panel can then ACT on it: the insert path resolved the
+  // conversation separately and had no deeplink case, so it answered "no
+  // conversation open" on the very layout the context feed had just described —
+  // the panel offered a draft it could never place, and the click did nothing.
+  it("inserts a draft on the deeplink read view, where there is no conversation id", async () => {
+    window.history.replaceState({}, "", "/mail/deeplink/read/AAkALg_HYQDEapm-EWg0AFt");
+    // The live shape: a toolbar of Reply/Forward inside the compose scroll region,
+    // an open editor to receive the text, and no data-convid anywhere.
+    document.body.innerHTML = `
+      <div id="ReadingPaneContainerId">
+        <div id="ItemReadingPaneContainer">
+          <div class="owaMailComposeEditorScrollContainer customScrollBar">
+            <div role="toolbar">
+              <button aria-label="Reply"></button>
+              <button aria-label="Forward"></button>
+            </div>
+            <div contenteditable="true" role="textbox"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    teardown = await startOutlookInjectedPanel(document);
+    stubFrameWindow();
+    frame().dispatchEvent(new Event("load"));
+    posted.length = 0;
+
+    deliverToHost({
+      v: PANEL_PROTOCOL_VERSION,
+      type: PANEL_INSERT_DRAFT,
+      requestId: "insert-1",
+      html: "<p>Thursday works.</p>",
+    });
+
+    expect(messagesOfType(PANEL_INSERT_RESULT)[0]).toMatchObject({
+      requestId: "insert-1",
+      ok: true,
+    });
+    expect(document.querySelector('[contenteditable="true"]')?.innerHTML).toContain(
+      "Thursday works.",
+    );
+  });
+
+  // The gate still has to hold where it should: a page with no read pane at all is
+  // not somewhere a draft can go, and the panel must be told so rather than left
+  // believing the text landed in a compose.
+  it("refuses to insert when no conversation is open", async () => {
+    buildListOnly();
+    teardown = await startOutlookInjectedPanel(document);
+    stubFrameWindow();
+    frame().dispatchEvent(new Event("load"));
+    posted.length = 0;
+
+    deliverToHost({
+      v: PANEL_PROTOCOL_VERSION,
+      type: PANEL_INSERT_DRAFT,
+      requestId: "insert-1",
+      html: "<p>Thursday works.</p>",
+    });
+
+    expect(messagesOfType(PANEL_INSERT_RESULT)[0]).toMatchObject({
+      requestId: "insert-1",
+      ok: false,
     });
   });
 

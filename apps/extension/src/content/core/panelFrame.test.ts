@@ -8,6 +8,7 @@ import {
   PANEL_INSERT_DRAFT,
   PANEL_INSERT_RESULT,
   PANEL_OPEN_PANEL,
+  PANEL_DISABLED,
 } from "./panelProtocol";
 import { attachPanelFrame, type PanelFrameLink } from "./panelFrame";
 
@@ -35,6 +36,7 @@ let framePostMessage: ReturnType<typeof vi.fn>;
 let fakeContentWindow: object;
 let insertDraft: ReturnType<typeof vi.fn>;
 let openPanel: ReturnType<typeof vi.fn>;
+let disabled: ReturnType<typeof vi.fn>;
 let link: PanelFrameLink;
 
 /** Deliver a message as the browser would, with an origin we do not control. */
@@ -63,10 +65,12 @@ beforeEach(() => {
 
   insertDraft = vi.fn(() => true);
   openPanel = vi.fn();
+  disabled = vi.fn();
   link = attachPanelFrame({
     iframe,
     onInsertDraft: insertDraft as unknown as (html: string) => boolean,
     onOpenPanel: openPanel,
+    onDisabled: disabled,
   });
 });
 
@@ -155,6 +159,38 @@ describe("attachPanelFrame — who it listens to", () => {
   it("accepts one from our own frame at our own origin", () => {
     deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_OPEN_PANEL });
     expect(openPanel).toHaveBeenCalledTimes(1);
+  });
+});
+
+// The workspace's kill switch has to reach the chrome the content script mounted,
+// not just the frame's own rendering — the frame cannot remove its own embedder.
+describe("attachPanelFrame — disabled relay", () => {
+  it("tells the host to tear down when the panel reports it is switched off", () => {
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_DISABLED });
+    expect(disabled).toHaveBeenCalledTimes(1);
+  });
+
+  it("stops the handshake, so nothing keeps polling a frame about to be removed", () => {
+    iframe.dispatchEvent(new Event("load"));
+    posted.length = 0;
+
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_DISABLED });
+    vi.advanceTimersByTime(5_000);
+
+    expect(posted).toEqual([]);
+  });
+
+  // Same lock as every other inbound message: neither check alone is enough.
+  it("ignores a disable from another frame at the same origin", () => {
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_DISABLED }, EXTENSION_ORIGIN, {
+      notOurFrame: true,
+    });
+    expect(disabled).not.toHaveBeenCalled();
+  });
+
+  it("ignores a disable from the mail page's own origin", () => {
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_DISABLED }, "https://mail.google.com");
+    expect(disabled).not.toHaveBeenCalled();
   });
 });
 

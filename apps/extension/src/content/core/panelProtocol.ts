@@ -94,6 +94,18 @@ export type HostToPanelMessage =
 export const PANEL_READY = "amarnai:panel:ready" as const;
 export const PANEL_INSERT_DRAFT = "amarnai:panel:insertDraft" as const;
 export const PANEL_OPEN_PANEL = "amarnai:panel:openPanel" as const;
+/**
+ * The workspace has switched the injected panel off, as the API just told the
+ * frame. The host removes itself: the kill switch has to un-inject, not merely
+ * blank what is injected, or a workspace that turned the panel off still has
+ * Amarnai chrome on every mail page (OWA's drawer tab above Fluent's dialog
+ * layer, an entry in Gmail's sidebar rail).
+ *
+ * Additive without a version bump, unlike v2: this is frame → host only, so an
+ * old host drops it through the guards below and behaves exactly as it does
+ * today, and an old frame never sends it. Nothing can misread it.
+ */
+export const PANEL_DISABLED = "amarnai:panel:disabled" as const;
 
 export type PanelReadyMessage = {
   v: typeof PANEL_PROTOCOL_VERSION;
@@ -114,10 +126,16 @@ export type PanelOpenPanelMessage = {
   type: typeof PANEL_OPEN_PANEL;
 };
 
+export type PanelDisabledMessage = {
+  v: typeof PANEL_PROTOCOL_VERSION;
+  type: typeof PANEL_DISABLED;
+};
+
 export type PanelToHostMessage =
   | PanelReadyMessage
   | PanelInsertDraftMessage
-  | PanelOpenPanelMessage;
+  | PanelOpenPanelMessage
+  | PanelDisabledMessage;
 
 // ── Guards ────────────────────────────────────────────────────────────────────
 
@@ -185,4 +203,9 @@ export function isPanelInsertDraftMessage(msg: unknown): msg is PanelInsertDraft
 export function isPanelOpenPanelMessage(msg: unknown): msg is PanelOpenPanelMessage {
   const m = envelope(msg);
   return !!m && m["type"] === PANEL_OPEN_PANEL;
+}
+
+export function isPanelDisabledMessage(msg: unknown): msg is PanelDisabledMessage {
+  const m = envelope(msg);
+  return !!m && m["type"] === PANEL_DISABLED;
 }

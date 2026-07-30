@@ -10,6 +10,7 @@ import {
   PANEL_READY,
   PANEL_INSERT_DRAFT,
   PANEL_OPEN_PANEL,
+  PANEL_DISABLED,
   isPanelInsertResultMessage,
   isPanelThreadContextMessage,
   isPanelVisibilityMessage,
@@ -274,6 +275,15 @@ function buildInjectedPanelHost(embed: Embed): PanelHost {
       // it (chrome.sidePanel needs a user gesture in an extension context the
       // content script owns), so the request is relayed through the host.
       post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_OPEN_PANEL });
+    },
+
+    reportInjectionDisabled() {
+      // Relayed rather than handled here: this frame cannot remove the chrome
+      // that holds it — Gmail's sidebar entry, OWA's drawer and tab — and leaving
+      // that in place is what would make the workspace's kill switch look like it
+      // had not worked. The embedder tears the whole surface down, this document
+      // with it.
+      post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_DISABLED });
     },
 
     openExternal(url) {

@@ -121,6 +121,18 @@ export type PanelHost = {
   /** Bring the user to wherever this host signs people in. */
   requestSignIn(): void;
 
+  /**
+   * The workspace has switched the injected panel off. Called once, when the API
+   * says so, before the panel renders its own "switched off" screen.
+   *
+   * Optional because only a host that INJECTED something has anything to do here:
+   * the extension's hosts remove the frame and the chrome holding it, so the kill
+   * switch un-injects rather than leaving an inert panel on the mail page. The
+   * Outlook task pane implements nothing — the user opened it deliberately and
+   * the pane is the whole surface, so the message is the right answer there.
+   */
+  reportInjectionDisabled?(): void;
+
   /** Open a URL outside the panel (the web app). */
   openExternal(url: string): void;
 };
