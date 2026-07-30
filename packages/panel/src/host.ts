@@ -1,15 +1,16 @@
-import type { TokenStore } from "@amarnai/api-client";
+import type { ProviderRefKind, TokenStore } from "@amarnai/api-client";
 
 // The seam between the panel and the mail client it is rendered inside.
 //
-// There are two hosts and they could hardly be less alike: a cross-origin iframe
-// inside Gmail, talking to a content script over postMessage, and an Office
-// task pane inside Outlook, talking to Office.js. Everything they disagree about
-// lives behind this interface, so the panel itself contains no branch on which
-// mail client it happens to be in.
+// There are three hosts and they could hardly be less alike: an extension iframe
+// in Gmail's sidebar and another in a drawer on Outlook Web, both talking to a
+// content script over postMessage, and an Office task pane inside Outlook desktop
+// talking to Office.js. Everything they disagree about lives behind this
+// interface, so the panel itself contains no branch on which mail client it
+// happens to be in.
 //
-// The rule for adding to it: a method belongs here only if the two hosts must
-// implement it differently. Anything both could share belongs in the panel.
+// The rule for adding to it: a method belongs here only if the hosts must
+// implement it differently. Anything they could share belongs in the panel.
 
 /** Which conversation the mail client currently has open, and in which mailbox. */
 export type PanelThreadContext = {
@@ -19,8 +20,29 @@ export type PanelThreadContext = {
    * panel acts on rather than ignores: it shows the queue there.
    */
   providerThreadId: string | null;
-  /** The mailbox reading it, which decides the workspace. */
-  accountEmail: string;
+  /**
+   * The mailbox reading it, which decides the workspace.
+   *
+   * Null when the page could not name the mailbox at all — not the same thing as
+   * a host reporting no context, which means it could not read the page. Some
+   * mail layouts carry no account chrome whatsoever: OWA's standalone deeplink
+   * read view has no header and no folder tree, so there is nowhere for an
+   * address to be read from. The panel answers that by speaking for the single
+   * connected mailbox when there is exactly one (see resolveMailbox in
+   * usePanelState.ts), so a layout without account chrome still gets a panel.
+   */
+  accountEmail: string | null;
+  /**
+   * What kind of id `providerThreadId` is. Absent means a conversation id, which
+   * is what every layout but one can name.
+   *
+   * "message" is OWA's standalone deeplink read view: an ITEM view with no
+   * conversation id anywhere in its DOM, whose only id — taken from the deeplink
+   * URL rather than the DOM — is the open message's. The server resolves it to
+   * the containing thread. Passed through rather than guessed at, because both
+   * flavors look alike.
+   */
+  refKind?: ProviderRefKind;
 };
 
 /**
@@ -38,9 +60,10 @@ export type PanelCapabilities = {
   signIn: boolean;
   openExternal: boolean;
   /**
-   * Whether the host can show a conversation in place. Gmail can (its router
-   * reads the URL fragment); an Outlook task pane cannot, because Office.js
-   * exposes no such call. Where it is false the queue links out instead, which
+   * Whether the host can show a conversation in place. Gmail can, because its
+   * router reads the URL fragment. Neither Outlook host can: Office.js exposes
+   * no such call, and on OWA the conversation id the page hands out is not
+   * URL-resolvable at all. Where it is false the queue links out instead, which
    * is why this gates an affordance rather than a whole feature.
    */
   openThread: boolean;

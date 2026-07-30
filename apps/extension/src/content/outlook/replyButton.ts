@@ -30,6 +30,10 @@ import { detectOutlookThread } from "./detectThread.js";
 //     "Click Reply to insert" state leaves the user one native click away.
 //   - Insertion target: [contenteditable="true"][role="textbox"] — the inline
 //     compose editor, an accessibility contract OWA cannot hash or localize.
+//
+// This file owns OWA insertion for BOTH surfaces. The injected panel does not
+// re-implement any of the above; it calls armOutlookReplyWithDraft below, which
+// is the tail of this button's own click flow with the generation step removed.
 
 export const OWA_BUTTON_ATTRIBUTE = "data-amarnai-owa-reply";
 
@@ -103,7 +107,15 @@ function setTransient(doc: Document, next: ReplyButtonState): void {
 export function findReplyCluster(
   doc: Document,
 ): { container: HTMLElement; nativeReply: HTMLElement } | null {
-  const pane = doc.getElementById("ConversationReadingPaneContainer");
+  // Two panes, because OWA has two shapes of read view and the deeplink one uses
+  // neither the conversation pane nor a list. On that layout (DOM mapped live,
+  // 2026-07-30) the row is a `[role='toolbar']` holding Reply then Forward,
+  // inside `.owaMailComposeEditorScrollContainer` inside #ItemReadingPaneContainer
+  // — so the same "cluster of sibling buttons inside the messages scroll region"
+  // rule finds it, once the scan is allowed to look in that pane too.
+  const pane =
+    doc.getElementById("ConversationReadingPaneContainer") ??
+    doc.getElementById("ItemReadingPaneContainer");
   const messages = pane?.querySelector(".customScrollBar");
   if (!messages) return null;
 
@@ -168,8 +180,12 @@ async function onClick(doc: Document): Promise<void> {
     return;
   }
 
+  // A conversation is required; an ADDRESS is not. The deeplink read view names no
+  // mailbox anywhere, and refusing here is what left that layout without a working
+  // pill — the background settles the mailbox against the connected accounts and
+  // answers "noWorkspace" if it cannot, which this already renders.
   const context = detectOutlookThread(doc);
-  if (!context?.accountEmail) {
+  if (!context) {
     setTransient(doc, { kind: "error" });
     return;
   }
@@ -178,6 +194,7 @@ async function onClick(doc: Document): Promise<void> {
   const response = await requestDraftFromBackground(
     context.accountEmail,
     context.providerThreadId,
+    context.refKind,
   );
 
   const outcome = resolveDraftOutcome(response);
@@ -294,6 +311,64 @@ export function ensureOutlookReplyButton(doc: Document = document): void {
   }
 
   tryInsertPending(doc);
+}
+
+/**
+ * Put the injected panel's draft into OWA's reply, using the one insertion path
+ * this file already owns.
+ *
+ * The panel's draft never goes through `onClick`: it has already been generated
+ * and is on screen, and re-requesting it would spend a second draft from the
+ * user's monthly allowance for text the user is looking at (the panel marks a
+ * draft sent the moment insertion is accepted, so the first one is no longer
+ * reusable). What it wants is exactly the tail of `onClick` — arm, insert if the
+ * editor is already open, otherwise click OWA's own Reply and let the ticker
+ * finish — so it gets that and nothing new.
+ *
+ * Returns false when there is neither a compose editor nor a reply row to click,
+ * matching the Gmail host's "no native Reply control" answer: the panel then
+ * leaves its insert affordance alone rather than marking the draft sent.
+ *
+ * Two deliberate consequences of sharing the pill's state, rather than accidents
+ * to be discovered later. `tryInsertPending` sets the pill to "Draft inserted",
+ * so the pill reports a draft it did not generate — correct, in that the draft
+ * really is in the editor and the pill is the thing that says so. And
+ * `ensureOutlookReplyButton` clears `pending` on a thread switch, so a
+ * panel-armed draft is dropped if the user moves on before the editor opens,
+ * which is the same staleness rule the pill already applies to its own.
+ */
+export function armOutlookReplyWithDraft(
+  doc: Document,
+  threadId: string,
+  html: string,
+): boolean {
+  // Deliberately not gated on `disabled`: that flag is the reply BUTTON's, and
+  // the panel is a separate surface behind a separate workspace setting. A user
+  // who turned the pill off and left the panel on still gets panel insertion.
+  pending = { threadId, html, at: now() };
+  // Claim the thread as well as the draft. Without this, a panel that arms
+  // before the pill's ticker has ever run leaves `currentThreadId` null, and the
+  // very next tick reads that as a thread switch and throws the arm away before
+  // the editor has had time to open.
+  currentThreadId = threadId;
+
+  tryInsertPending(doc);
+  if (!pending) return true;
+
+  const cluster = findReplyCluster(doc);
+  if (!cluster) {
+    // Nowhere to put it and nothing to click. Drop the arm rather than leave it
+    // to surprise the user on some later tick with a draft they were told had
+    // failed.
+    pending = null;
+    debugLog("panel (owa): no reply row and no editor — cannot insert");
+    return false;
+  }
+
+  cluster.nativeReply.click();
+  setState(doc, { kind: "ready" });
+  tryInsertPending(doc);
+  return true;
 }
 
 /** The workspace switched the feature off: remove and stop. */

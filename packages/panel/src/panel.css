@@ -1,8 +1,9 @@
 /*
  * The injected panel's own styles.
  *
- * Two hosts, two very different width budgets: Gmail's sidebar is around 344px
- * and an Outlook task pane can be dragged down to about 280. So this sizes off
+ * Three hosts, three width budgets: Gmail's sidebar is around 344px, the OWA
+ * drawer is 360 (or the window minus its tab, on a narrow screen), and an
+ * Outlook task pane can be dragged down to about 280. So this sizes off
  * container queries rather than the viewport — inside an iframe the viewport is
  * the iframe, and inside a task pane it is the whole pane, and neither tells us
  * how much room the panel actually has.

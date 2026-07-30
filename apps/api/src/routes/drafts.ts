@@ -11,7 +11,7 @@ import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadM
 import { getDraftLimit, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
 import { createMailProvider } from "@amarnai/mail";
-import { isInjectionEnabled, resolveProviderThreadId } from "../services/provider-thread.js";
+import { isInjectionEnabled, resolveProviderRef } from "../services/provider-thread.js";
 
 const params = z.object({
   workspaceId: z.string().min(1),
@@ -21,6 +21,9 @@ const params = z.object({
 const providerThreadParams = z.object({
   workspaceId: z.string().min(1),
   providerThreadId: z.string().min(1),
+  // See ProviderRefKind: absent means a conversation id, "message" is the OWA
+  // deeplink read view, whose DOM can name no conversation.
+  ref: z.enum(["thread", "message"]).default("thread"),
 });
 
 const draftParams = z.object({
@@ -394,11 +397,12 @@ drafts.post(
     const parsed = providerThreadParams.safeParse({
       workspaceId: c.req.param("workspaceId"),
       providerThreadId: c.req.param("providerThreadId"),
+      ref: c.req.query("ref") ?? undefined,
     });
     if (!parsed.success) {
       return c.json({ error: "Invalid params" }, 400);
     }
-    const { workspaceId, providerThreadId } = parsed.data;
+    const { workspaceId, providerThreadId, ref } = parsed.data;
 
     if (!(await isInjectionEnabled(workspaceId, "replyButton"))) {
       return c.json(
@@ -410,7 +414,7 @@ drafts.post(
       );
     }
 
-    const threadId = await resolveProviderThreadId(workspaceId, providerThreadId);
+    const threadId = await resolveProviderRef(workspaceId, ref, providerThreadId);
     if (!threadId) return c.json({ error: "Thread not found" }, 404);
 
     return generateDraftForThread(c, workspaceId, threadId);

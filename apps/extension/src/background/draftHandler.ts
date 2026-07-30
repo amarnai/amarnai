@@ -44,7 +44,9 @@ export async function handleGenerateDraftRequest(
   for (;;) {
     let result;
     try {
-      result = await api.generateDraftByProviderThread(workspaceId, request.providerThreadId);
+      result = await api.generateDraftByProviderThread(workspaceId, request.providerThreadId, {
+        ...(request.refKind ? { refKind: request.refKind } : {}),
+      });
     } catch (e) {
       // A refusal, not a failure: the workspace turned the button off. Told apart
       // from an error so the content script can remove the button instead of

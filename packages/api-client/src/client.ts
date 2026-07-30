@@ -71,6 +71,24 @@ export class InjectionDisabledError extends Error {
 }
 
 /**
+ * Which kind of provider id the three provider-id routes are being given.
+ *
+ * "thread" is the default and the ordinary case: a mail page names the
+ * conversation it is showing. "message" is for OWA's standalone deeplink read
+ * view, an ITEM view that carries no conversation id anywhere in its DOM — its
+ * only id is the message's, which the server resolves through
+ * `providerMessageId`. Kept explicit end to end: both flavors are 68-char base64
+ * for a consumer mailbox, so a wrong kind must fail rather than resolve as the
+ * other.
+ */
+export type ProviderRefKind = "thread" | "message";
+
+/** The query suffix for a non-default ref kind, or nothing at all. */
+function providerRefQuery(refKind: ProviderRefKind | undefined): string {
+  return refKind === "message" ? "?ref=message" : "";
+}
+
+/**
  * A non-ok API response, carrying the status and parsed body.
  *
  * Callers that only log the failure keep working: this is still an Error and
@@ -486,9 +504,11 @@ export function makeApiClient(transport: ApiTransport) {
     resolveProviderThread: async (
       workspaceId: string,
       providerThreadId: string,
+      refKind: ProviderRefKind = "thread",
     ): Promise<EmailThreadDetail | null> => {
       const res = await apiRequest(
-        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}`,
+        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}` +
+          (refKind === "message" ? "?ref=message" : ""),
         { cache: "no-store" },
       );
       if (res.status === 404) return null;
@@ -762,10 +782,11 @@ export function makeApiClient(transport: ApiTransport) {
     generateDraftByProviderThread: (
       workspaceId: string,
       providerThreadId: string,
-      opts: { force?: boolean } = {}
+      opts: { force?: boolean; refKind?: ProviderRefKind } = {}
     ): Promise<GenerateDraftResult> =>
       requestGenerateDraft(
-        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/generate-draft`,
+        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/generate-draft` +
+          providerRefQuery(opts.refKind),
         opts
       ),
 
@@ -788,10 +809,11 @@ export function makeApiClient(transport: ApiTransport) {
     providerThreadSummary: (
       workspaceId: string,
       providerThreadId: string,
-      opts: { force?: boolean } = {}
+      opts: { force?: boolean; refKind?: ProviderRefKind } = {}
     ) =>
       requestThreadSummary(
-        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/summary`,
+        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/summary` +
+          providerRefQuery(opts.refKind),
         opts
       ),
 

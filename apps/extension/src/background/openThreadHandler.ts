@@ -13,8 +13,13 @@ import { isOpenMailThreadRequest } from "../content/core/messaging.js";
 // depends on the panel's postMessage channel and on the page reacting to a write
 // we cannot observe.
 //
-// Gmail only, because the injected panel is Gmail only: the Outlook pane is an
-// Office add-in with no tab of ours to navigate, and its queue links out instead.
+// Gmail only, and it stays that way now the panel also runs on OWA. Neither
+// Outlook host asks: an OWA conversation is not addressable from the id the page
+// exposes (`data-convid` is an EWS conversation id, and the only working deep
+// link is the thread's own Graph webLink), and the Office pane has no tab of
+// ours to navigate at all. Both declare `capabilities.openThread: false`, so
+// their queues render links out and never reach this handler — and the Gmail URL
+// guard below keeps a stray call inert rather than wrong.
 
 const GMAIL_URL_PREFIX = "https://mail.google.com/";
 

@@ -44,6 +44,17 @@ export const REPLY_BUTTON_STRINGS = {
   },
 } as const;
 
+/**
+ * The OWA drawer's collapse tab. English-only for the same reason as the labels
+ * above; everything the drawer actually shows is inside the panel iframe, which
+ * is an extension document with the full catalog.
+ */
+export const PANEL_TAB_STRINGS = {
+  open: "Open the Amarnai panel",
+  close: "Close the Amarnai panel",
+  title: "Amarnai",
+} as const;
+
 /** Short, UTC-stable reset date ("Aug 1"), matching the in-app quota copy. */
 export function formatResetDate(iso: string): string {
   const d = new Date(iso);

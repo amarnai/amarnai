@@ -1,10 +1,10 @@
 export type { ApiTransport, TransportInit } from "./transport.js";
 export { makeApiClient, InjectionDisabledError, ApiHttpError } from "./client.js";
-export type { ApiClient } from "./client.js";
+export type { ApiClient, ProviderRefKind } from "./client.js";
 export { makeBearerTransport } from "./bearer-transport.js";
 export type { BearerTransportDeps, StoredTokens, TokenStore } from "./bearer-transport.js";
 export { readUserIdFromAccessToken } from "./jwt.js";
-export { resolveWorkspaceIdForMailbox } from "./mailbox-workspace.js";
+export { resolveMailboxAccount, resolveWorkspaceIdForMailbox } from "./mailbox-workspace.js";
 export {
   interpretNotification,
   NOTIFICATION_POLL_INTERVAL_MS,

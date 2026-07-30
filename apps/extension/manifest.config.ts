@@ -44,7 +44,11 @@ const CONTENT_SCRIPTS = [
 ];
 
 /**
- * Resources Gmail's own page is allowed to load from the extension:
+ * Resources each mail page is allowed to load from the extension. One entry per
+ * provider, and they are deliberately not the same list: a resource is exposed
+ * to a host only if that host actually loads it.
+ *
+ * Gmail gets:
  *   - pageWorld.js: InboxSDK's page-world half, which it injects into Gmail.
  *   - the button icon, which InboxSDK's compose button loads by URL.
  *   - the panel icon (the full logomark), which InboxSDK's sidebar loads by URL.
@@ -53,30 +57,40 @@ const CONTENT_SCRIPTS = [
  *     from mail.google.com for the iframe to load at all, and `assets/*` with
  *     it because the built page links its own hashed JS and CSS from there.
  *
- * Gmail alone. The hand-rolled buttons on both providers build their icon as an
- * inline SVG node instead (see content/core/replyIcon), and Outlook gets the
- * panel through the Office add-in rather than an injected iframe, so nothing
- * here needs to be reachable from OWA. Narrow on purpose: every site not listed
- * remains unable to probe for the extension. Emitted only alongside the content
- * scripts, so a build with injection disabled exposes nothing.
+ * OWA gets injected.html and `assets/*` and nothing else. It embeds the same
+ * panel document — in its own fixed drawer rather than a host sidebar, since OWA
+ * offers nothing to mount into — but it loads no image by URL: the drawer's tab
+ * and the reply pill both build their mark as an inline SVG node (see
+ * content/core/logoMark and content/core/replyIcon), which is what keeps this
+ * list short. InboxSDK is Gmail's alone and pageWorld.js must stay unreachable
+ * from OWA.
+ *
+ * Narrow on purpose: every site not listed remains unable to probe for the
+ * extension. Emitted only alongside the content scripts, so a build with
+ * injection disabled exposes nothing.
  *
  * `assets/*` is the widest entry here and deserves the caveat: it exposes the
- * extension's built bundles to mail.google.com. They are already shipped to the
+ * extension's built bundles to the mail hosts. They are already shipped to the
  * user's disk and contain no secrets (every credential lives in chrome.storage,
  * which a web page cannot reach), and the alternative — a separate unhashed
  * output just for this page — trades a real build simplification for no security
  * gain, since the page it loads is web-accessible either way.
  */
+const PANEL_IFRAME_RESOURCES = ["injected.html", "assets/*"];
+
 const WEB_ACCESSIBLE_RESOURCES = [
   {
     resources: [
       "pageWorld.js",
       "reply-button-icon.svg",
       "panel-icon.svg",
-      "injected.html",
-      "assets/*",
+      ...PANEL_IFRAME_RESOURCES,
     ],
     matches: [GMAIL_MAIL_HOST],
+  },
+  {
+    resources: PANEL_IFRAME_RESOURCES,
+    matches: OUTLOOK_MAIL_HOSTS,
   },
 ];
 

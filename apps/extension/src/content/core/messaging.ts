@@ -56,10 +56,23 @@ export const GENERATE_DRAFT_MESSAGE = "amarnai:generateDraft" as const;
 
 export type GenerateDraftRequest = {
   type: typeof GENERATE_DRAFT_MESSAGE;
-  /** The mailbox address currently visible in the mail UI (multi-login safety). */
-  accountEmail: string;
+  /**
+   * The mailbox address currently visible in the mail UI (multi-login safety).
+   *
+   * Null only where the page names no mailbox anywhere — OWA's standalone deeplink
+   * read view has neither an account header nor a folder tree. The background then
+   * falls back to the single connected mailbox (resolveMailboxAccount), and
+   * declines when several are connected, so multi-login safety is unchanged
+   * wherever an address does exist.
+   */
+  accountEmail: string | null;
   /** The provider's own thread id (Gmail thread id / Outlook conversationId). */
   providerThreadId: string;
+  /**
+   * What kind of id the above is — absent means a conversation id. "message" is
+   * the deeplink read view, whose only id is the open message's.
+   */
+  refKind?: "thread" | "message";
 };
 
 /**
@@ -151,9 +164,12 @@ export function isOpenMailThreadRequest(msg: unknown): msg is OpenMailThreadRequ
 export function isGenerateDraftRequest(msg: unknown): msg is GenerateDraftRequest {
   if (typeof msg !== "object" || msg === null) return false;
   const m = msg as Record<string, unknown>;
-  return (
-    m["type"] === GENERATE_DRAFT_MESSAGE &&
-    typeof m["accountEmail"] === "string" &&
-    typeof m["providerThreadId"] === "string"
-  );
+  if (m["type"] !== GENERATE_DRAFT_MESSAGE) return false;
+  if (typeof m["providerThreadId"] !== "string") return false;
+  // Null is a value here, not a missing field: a page that names no mailbox says
+  // so. `undefined` still fails, so a malformed message is still refused.
+  const email = m["accountEmail"];
+  if (email !== null && typeof email !== "string") return false;
+  const refKind = m["refKind"];
+  return refKind === undefined || refKind === "thread" || refKind === "message";
 }

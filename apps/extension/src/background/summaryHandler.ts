@@ -80,11 +80,19 @@ async function writeWorkspaceCache(cache: WorkspaceCache): Promise<void> {
  *
  * Returns null when the signed-in user has no workspace for that address — the
  * normal case under multi-login, and it means "render nothing".
+ *
+ * A null address means the page named no mailbox at all (OWA's deeplink read
+ * view). The shared resolution answers with the single connected mailbox there,
+ * and that answer is deliberately NOT cached: it is derived from the account list
+ * rather than from an address, so connecting a second mailbox must change it
+ * immediately instead of being pinned for the rest of the browser session.
  */
 export async function resolveWorkspaceForAccount(
   api: ApiClient,
-  accountEmail: string,
+  accountEmail: string | null,
 ): Promise<string | null> {
+  if (!accountEmail) return resolveWorkspaceIdForMailbox(api, null);
+
   const key = accountEmail.toLowerCase();
   const cache = await readWorkspaceCache();
   const cached = cache[key];

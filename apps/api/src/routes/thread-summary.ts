@@ -7,7 +7,7 @@ import {
   messageSetSignature,
   type InboxQuota,
 } from "@amarnai/db";
-import { isInjectionEnabled, resolveProviderThreadId } from "../services/provider-thread.js";
+import { isInjectionEnabled, resolveProviderRef } from "../services/provider-thread.js";
 import {
   createAIProvider,
   generateThreadSummary,
@@ -47,6 +47,9 @@ const threadParams = z.object({
 const providerThreadParams = z.object({
   workspaceId: z.string().min(1),
   providerThreadId: z.string().min(1),
+  // See ProviderRefKind: absent means a conversation id, "message" is the OWA
+  // deeplink read view, whose DOM can name no conversation.
+  ref: z.enum(["thread", "message"]).default("thread"),
 });
 
 /**
@@ -438,9 +441,10 @@ summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summar
   const parsed = providerThreadParams.safeParse({
     workspaceId: c.req.param("workspaceId"),
     providerThreadId: c.req.param("providerThreadId"),
+    ref: c.req.query("ref") ?? undefined,
   });
   if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
-  const { workspaceId, providerThreadId } = parsed.data;
+  const { workspaceId, providerThreadId, ref } = parsed.data;
 
   // Workspace kill-switch for native injection; see isInjectionEnabled for why
   // it is enforced server-side rather than in the content script.
@@ -454,7 +458,7 @@ summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summar
     );
   }
 
-  const threadId = await resolveProviderThreadId(workspaceId, providerThreadId);
+  const threadId = await resolveProviderRef(workspaceId, ref, providerThreadId);
   if (!threadId) return c.json({ error: "Thread not found" }, 404);
 
   const force = c.req.header("X-Force-Regenerate") === "1";

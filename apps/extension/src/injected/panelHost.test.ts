@@ -9,9 +9,10 @@ import {
   PANEL_INSERT_RESULT,
 } from "../content/core/panelProtocol";
 import { OPEN_MAIL_THREAD_MESSAGE } from "../content/core/messaging";
-import { createGmailPanelHost, resetGmailPanelHost } from "./gmailHost";
+import { createInjectedPanelHost, resetInjectedPanelHost } from "./panelHost";
 
-// The handshake between the panel iframe and the Gmail content script.
+// The handshake between the panel iframe and the content script that embedded
+// it, on both providers.
 //
 // This is where the panel first shipped broken: the frame worked out its
 // embedder from `document.referrer`, which is empty for a chrome-extension://
@@ -20,6 +21,15 @@ import { createGmailPanelHost, resetGmailPanelHost } from "./gmailHost";
 // before sending any context. Both halves of that deadlock are pinned below.
 
 const GMAIL = "https://mail.google.com";
+const OWA = "https://outlook.live.com";
+const OWA_WORK = "https://outlook.office.com";
+
+/** Load the document as a given embed, the way the content script's src does. */
+function asEmbed(embed: string | null) {
+  const search = embed === null ? "" : `?embed=${embed}`;
+  window.history.replaceState({}, "", `/injected.html${search}`);
+  resetInjectedPanelHost();
+}
 
 type Posted = { message: unknown; targetOrigin: string };
 
@@ -33,9 +43,10 @@ function deliver(data: unknown, origin: string, source: unknown = window.parent)
 
 beforeEach(() => {
   vi.useFakeTimers();
-  // The host is a per-document singleton and owns a window listener; without
-  // this, one case's host keeps answering the next case's messages.
-  resetGmailPanelHost();
+  // No embed parameter, so these cases run as the Gmail default. Also resets the
+  // host: it is a per-document singleton and owns a window listener, so without
+  // this one case's host keeps answering the next case's messages.
+  asEmbed(null);
   // The chrome stub is shared across files, so its call history is not ours.
   vi.mocked(chrome.runtime.sendMessage).mockClear();
   posted = [];
@@ -51,20 +62,20 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  resetGmailPanelHost();
+  resetInjectedPanelHost();
   vi.useRealTimers();
 });
 
-describe("createGmailPanelHost — handshake", () => {
+describe("createInjectedPanelHost — handshake", () => {
   it("does not announce itself before the embedder has spoken", () => {
-    createGmailPanelHost();
+    createInjectedPanelHost();
     // Nothing to address yet: the frame has no way to know its embedder's origin
     // until a message carries it.
     expect(parentPostMessage).not.toHaveBeenCalled();
   });
 
   it("adopts the embedder's origin from the first message and answers ready", () => {
-    createGmailPanelHost();
+    createInjectedPanelHost();
 
     deliver(
       { v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null },
@@ -79,7 +90,7 @@ describe("createGmailPanelHost — handshake", () => {
   // The whole point of the redesign: context has to reach the panel without the
   // frame having had to speak first.
   it("delivers the context that carried the handshake", () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     const listener = vi.fn();
     host.onThreadContext(listener);
 
@@ -99,13 +110,13 @@ describe("createGmailPanelHost — handshake", () => {
   });
 
   it("never targets a wildcard origin", () => {
-    createGmailPanelHost();
+    createInjectedPanelHost();
     deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_VISIBILITY, visible: true }, GMAIL);
     for (const { targetOrigin } of posted) expect(targetOrigin).toBe(GMAIL);
   });
 
   it("ignores a message from an origin that is not Gmail", () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     const listener = vi.fn();
     host.onThreadContext(listener);
 
@@ -123,7 +134,7 @@ describe("createGmailPanelHost — handshake", () => {
   });
 
   it("ignores a message from a frame other than the embedder", () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     const listener = vi.fn();
     host.onThreadContext(listener);
 
@@ -138,7 +149,7 @@ describe("createGmailPanelHost — handshake", () => {
 
   // Once an embedder is adopted, a later message from anywhere else is dropped.
   it("keeps to the adopted origin afterwards", () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     const listener = vi.fn();
     host.onThreadContext(listener);
 
@@ -159,7 +170,7 @@ describe("createGmailPanelHost — handshake", () => {
 
   // A spinner with no end is the worst thing this frame can render.
   it("reports no conversation when the embedder never speaks", () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     const listener = vi.fn();
     host.onThreadContext(listener);
 
@@ -169,7 +180,7 @@ describe("createGmailPanelHost — handshake", () => {
   });
 
   it("does not fire that fallback once the handshake lands", () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     const listener = vi.fn();
     host.onThreadContext(listener);
 
@@ -189,9 +200,9 @@ describe("createGmailPanelHost — handshake", () => {
   });
 });
 
-describe("createGmailPanelHost — insert draft", () => {
+describe("createInjectedPanelHost — insert draft", () => {
   it("relays the request and resolves on the host's answer", async () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null }, GMAIL);
 
     const pending = host.insertDraft("<p>Thursday works.</p>");
@@ -215,7 +226,7 @@ describe("createGmailPanelHost — insert draft", () => {
 
   // A host that never answers must not leave the panel's button waiting forever.
   it("resolves false when the host never answers", async () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null }, GMAIL);
 
     const pending = host.insertDraft("<p>hi</p>");
@@ -224,17 +235,17 @@ describe("createGmailPanelHost — insert draft", () => {
   });
 
   it("resolves false before any embedder is known", async () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     await expect(host.insertDraft("<p>hi</p>")).resolves.toBe(false);
   });
 });
 
-describe("createGmailPanelHost — open thread", () => {
+describe("createInjectedPanelHost — open thread", () => {
   // Through the background rather than the embedder: this frame is an extension
   // document, so the tab can be navigated with chrome.tabs instead of by writing
   // Gmail's own location from a content script.
   it("asks the background to navigate the tab", () => {
-    const host = createGmailPanelHost();
+    const host = createInjectedPanelHost();
     deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null }, GMAIL);
     posted.length = 0;
 
@@ -251,7 +262,7 @@ describe("createGmailPanelHost — open thread", () => {
   // The panel has already switched screens by the time this is sent, so it works
   // with or without an embedder having spoken.
   it("navigates before any embedder is known", () => {
-    createGmailPanelHost().openThread("18f0abc");
+    createInjectedPanelHost().openThread("18f0abc");
 
     expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({
       type: OPEN_MAIL_THREAD_MESSAGE,
@@ -261,16 +272,16 @@ describe("createGmailPanelHost — open thread", () => {
   });
 
   it("declares that it can navigate", () => {
-    expect(createGmailPanelHost().capabilities.openThread).toBe(true);
+    expect(createInjectedPanelHost().capabilities.openThread).toBe(true);
   });
 });
 
 // StrictMode runs the render that creates the host twice in development. Two
 // hosts would answer the same handshake twice and leak a listener each.
-describe("createGmailPanelHost — one host per document", () => {
+describe("createInjectedPanelHost — one host per document", () => {
   it("returns the same instance and answers the handshake once", () => {
-    const first = createGmailPanelHost();
-    const second = createGmailPanelHost();
+    const first = createInjectedPanelHost();
+    const second = createInjectedPanelHost();
     expect(second).toBe(first);
 
     deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null }, GMAIL);
@@ -279,5 +290,100 @@ describe("createGmailPanelHost — one host per document", () => {
       (p) => (p.message as Record<string, unknown>)["type"] === PANEL_READY,
     );
     expect(readies).toHaveLength(1);
+  });
+
+  it("keeps that one instance whichever embed asked for it", () => {
+    asEmbed("outlook");
+    const first = createInjectedPanelHost();
+    expect(createInjectedPanelHost()).toBe(first);
+  });
+});
+
+// One document, two embedders. The parameter chooses which affordances the panel
+// offers and which parents this frame will speak to — but it is NOT what keeps
+// the frame safe, and the cases below pin that: whichever embed it claims to be,
+// it still refuses every origin outside that embed's own allowlist.
+describe("createInjectedPanelHost — embeds", () => {
+  function handshakeFrom(origin: string) {
+    const host = createInjectedPanelHost();
+    const listener = vi.fn();
+    host.onThreadContext(listener);
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_THREAD_CONTEXT, context: null }, origin);
+    return { host, listener };
+  }
+
+  it("adopts an OWA parent when it is the outlook embed", () => {
+    asEmbed("outlook");
+    const { listener } = handshakeFrom(OWA);
+
+    expect(posted).toEqual([
+      { message: { v: PANEL_PROTOCOL_VERSION, type: PANEL_READY }, targetOrigin: OWA },
+    ]);
+    expect(listener).toHaveBeenCalledWith(null);
+  });
+
+  it("adopts every OWA host, not just the personal one", () => {
+    asEmbed("outlook");
+    handshakeFrom(OWA_WORK);
+
+    expect(posted).toEqual([
+      { message: { v: PANEL_PROTOCOL_VERSION, type: PANEL_READY }, targetOrigin: OWA_WORK },
+    ]);
+  });
+
+  it("refuses Gmail when it is the outlook embed", () => {
+    asEmbed("outlook");
+    const { listener } = handshakeFrom(GMAIL);
+
+    expect(parentPostMessage).not.toHaveBeenCalled();
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it("refuses OWA when it is the gmail embed", () => {
+    asEmbed("gmail");
+    const { listener } = handshakeFrom(OWA);
+
+    expect(parentPostMessage).not.toHaveBeenCalled();
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it("falls back to gmail for an unrecognised value", () => {
+    asEmbed("outl00k");
+    handshakeFrom(GMAIL);
+
+    expect(posted).toEqual([
+      { message: { v: PANEL_PROTOCOL_VERSION, type: PANEL_READY }, targetOrigin: GMAIL },
+    ]);
+  });
+
+  it("falls back to gmail with no parameter at all", () => {
+    asEmbed(null);
+    handshakeFrom(GMAIL);
+
+    expect(posted).toEqual([
+      { message: { v: PANEL_PROTOCOL_VERSION, type: PANEL_READY }, targetOrigin: GMAIL },
+    ]);
+  });
+
+  // OWA's conversation id is not URL-resolvable, so the queue links out instead
+  // of asking this host to navigate. Everything else the embed can still do.
+  it("declares that the outlook embed cannot show a conversation in place", () => {
+    asEmbed("outlook");
+    expect(createInjectedPanelHost().capabilities).toEqual({
+      insertDraft: true,
+      signIn: true,
+      openExternal: true,
+      openThread: false,
+    });
+  });
+
+  it("declares that the gmail embed can", () => {
+    asEmbed("gmail");
+    expect(createInjectedPanelHost().capabilities).toEqual({
+      insertDraft: true,
+      signIn: true,
+      openExternal: true,
+      openThread: true,
+    });
   });
 });

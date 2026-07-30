@@ -6,13 +6,14 @@ import { GENERATE_DRAFT_MESSAGE, type GenerateDraftResponse } from "./messaging.
  * channel handling (dead worker, closed port) exists exactly once.
  */
 export function requestDraftFromBackground(
-  accountEmail: string,
+  accountEmail: string | null,
   providerThreadId: string,
+  refKind: "thread" | "message" = "thread",
 ): Promise<GenerateDraftResponse> {
   return new Promise((resolve) => {
     try {
       chrome.runtime.sendMessage(
-        { type: GENERATE_DRAFT_MESSAGE, accountEmail, providerThreadId },
+        { type: GENERATE_DRAFT_MESSAGE, accountEmail, providerThreadId, refKind },
         (response: GenerateDraftResponse | undefined) => {
           // A dead channel sets lastError and yields undefined; reading it here
           // also stops Chrome logging an unchecked-error warning onto the page.

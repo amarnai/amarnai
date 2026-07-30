@@ -1,4 +1,39 @@
 import type { ApiClient } from "./client.js";
+import type { MailAccount } from "./types.js";
+
+/**
+ * Which connected mailbox a surface is looking at, or null if that cannot be
+ * settled. The one place this rule lives; every injected surface shares it.
+ *
+ * An address read off the page is matched against the connected mailboxes and
+ * nothing else: on a multi-login page, answering with another mailbox because its
+ * address happened to be the one we could parse is the failure this matching
+ * exists to prevent.
+ *
+ * A null address is the interesting case, and the answer is the single connected
+ * mailbox — but only when there is exactly one, never a pick from several. Some
+ * mail layouts name no mailbox anywhere: OWA's standalone deeplink read view has
+ * neither an account header nor a folder tree, and before this the injected
+ * surfaces had nothing to say on it at all.
+ *
+ * What keeps that from being a guess is that the thread path verifies it
+ * downstream — the thread id still has to resolve inside that mailbox's
+ * workspace, so a page in fact showing some OTHER mailbox resolves to nothing
+ * rather than to another conversation's data.
+ */
+export function resolveMailboxAccount(
+  accounts: MailAccount[],
+  mailboxEmail: string | null,
+): MailAccount | null {
+  if (mailboxEmail) {
+    // The endpoint already lowercases, but fold again here: mailbox matching is
+    // case-insensitive by contract, and that contract should not depend on which
+    // API version the client happens to be talking to.
+    const key = mailboxEmail.toLowerCase();
+    return accounts.find((a) => a.email.toLowerCase() === key) ?? null;
+  }
+  return accounts.length === 1 ? accounts[0]! : null;
+}
 
 /**
  * Map a mailbox address to the workspace that has it connected.
@@ -19,12 +54,8 @@ import type { ApiClient } from "./client.js";
  */
 export async function resolveWorkspaceIdForMailbox(
   api: Pick<ApiClient, "mailAccounts">,
-  mailboxEmail: string,
+  mailboxEmail: string | null,
 ): Promise<string | null> {
-  const key = mailboxEmail.toLowerCase();
   const { accounts } = await api.mailAccounts();
-  // The endpoint already lowercases, but fold again here: mailbox matching is
-  // case-insensitive by contract, and that contract should not depend on which
-  // API version the client happens to be talking to.
-  return accounts.find((a) => a.email.toLowerCase() === key)?.workspaceId ?? null;
+  return resolveMailboxAccount(accounts, mailboxEmail)?.workspaceId ?? null;
 }

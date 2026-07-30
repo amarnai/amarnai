@@ -16,6 +16,14 @@ export const OBSERVE_THROTTLE_MS = 300;
 export interface ThreadContext {
   providerThreadId: string;
   accountEmail: string | null;
+  /**
+   * What kind of id `providerThreadId` is. Absent means a conversation id, which
+   * is what every layout but one can name; "message" is OWA's standalone deeplink
+   * read view, an item view whose DOM carries no conversation id at all. The API
+   * resolves the two differently, so it travels with the id rather than being
+   * guessed at downstream.
+   */
+  refKind?: "thread" | "message";
 }
 
 /**

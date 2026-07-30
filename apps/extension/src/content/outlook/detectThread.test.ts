@@ -3,7 +3,10 @@ import {
   detectOutlookThread,
   findAccountEmail,
   findConversationId,
+  findDeeplinkMessageId,
   findOutlookInjectionAnchor,
+  isConversationOpen,
+  isDeeplinkReadView,
 } from "./detectThread";
 
 // jsdom fixtures for OWA. As on the Gmail side these lock the parsing logic; the
@@ -126,6 +129,7 @@ describe("detectOutlookThread", () => {
     expect(detectOutlookThread()).toEqual({
       providerThreadId: "AAQkAD0=",
       accountEmail: "ada@example.com",
+      refKind: "thread",
     });
   });
 
@@ -137,6 +141,147 @@ describe("detectOutlookThread", () => {
   it("returns null on a list view with no conversation open", () => {
     setBody(`<div role="main"><div role="list"></div></div>`);
     expect(detectOutlookThread()).toBeNull();
+  });
+});
+
+// The summary card wants the selected row's conversation and gets it above. The
+// injected panel wants something stricter — is a conversation actually on screen
+// — because a thread screen for a thread nobody opened offers to insert a draft
+// into a reply form that does not exist.
+describe("isConversationOpen", () => {
+  it("is false on the mail list, even with a row selected", () => {
+    // Exactly the reported state: rows carry data-convid, one is selected, and
+    // the reading pane is showing the "take Outlook with you" promo instead of a
+    // conversation. findConversationId still answers here, and must.
+    setBody(`
+      <div role="main">
+        <div role="list">
+          <div data-convid="AAQkAD0=" aria-selected="false"></div>
+          <div data-convid="AAQkAD1=" aria-selected="true"></div>
+        </div>
+        <div id="ReadingPaneContainerId"><div class="customScrollBar"></div></div>
+      </div>
+    `);
+
+    expect(isConversationOpen()).toBe(false);
+    expect(findConversationId()).toBe("AAQkAD1=");
+  });
+
+  it("is true once the conversation pane renders (consumer OWA)", () => {
+    setBody(`
+      <div role="main">
+        <div role="list"><div data-convid="AAQkAD1=" aria-selected="true"></div></div>
+        <div id="ReadingPaneContainerId">
+          <div id="ConversationReadingPaneContainer">
+            <div class="customScrollBar"><div id="first-msg"></div></div>
+          </div>
+        </div>
+      </div>
+    `);
+
+    expect(isConversationOpen()).toBe(true);
+  });
+
+  it("is true on the work/school shape, which uses the same pane id", () => {
+    setBody(`
+      <div role="main">
+        <div id="ConversationReadingPaneContainer">
+          <div role="list" id="msgs"><div role="listitem"></div></div>
+        </div>
+      </div>
+    `);
+
+    expect(isConversationOpen()).toBe(true);
+  });
+
+  it("is false with no reading pane at all", () => {
+    setBody(`<div data-convid="AAQkAD0="></div>`);
+    expect(isConversationOpen()).toBe(false);
+  });
+
+  // The deeplink read view renders an ITEM pane, not a conversation pane. The
+  // panel must treat it as a conversation being open all the same, or it shows the
+  // queue on a page that is plainly displaying a message.
+  it("is true on the deeplink read view's item pane", () => {
+    setBody(`<div id="ReadingPaneContainerId"><div id="ItemReadingPaneContainer"></div></div>`);
+    expect(isConversationOpen()).toBe(true);
+  });
+});
+
+// The URL is this layout's id source, because its DOM has none. Parsing is what
+// these lock; the route shape itself is an external fact from a live load test.
+describe("findDeeplinkMessageId", () => {
+  const ITEM_ID_URLSAFE = "AAkALg_HYQDEapm-EWg0AFt";
+  const ITEM_ID_EWS = "AAkALg+HYQDEapm/EWg0AFt";
+
+  it("reads the id from the deeplink path", () => {
+    expect(
+      findDeeplinkMessageId(
+        `https://outlook.live.com/mail/deeplink/read/${ITEM_ID_URLSAFE}?ItemID=x&ispopout=0`,
+      ),
+    ).toBe(ITEM_ID_URLSAFE);
+  });
+
+  // Live URLs carry an account segment on some hosts.
+  it("reads it through an account segment", () => {
+    expect(
+      findDeeplinkMessageId(`https://outlook.office.com/mail/0/deeplink/read/${ITEM_ID_URLSAFE}`),
+    ).toBe(ITEM_ID_URLSAFE);
+  });
+
+  it("percent-decodes the path segment", () => {
+    expect(
+      findDeeplinkMessageId(
+        `https://outlook.live.com/mail/deeplink/read/${encodeURIComponent(ITEM_ID_EWS)}`,
+      ),
+    ).toBe(ITEM_ID_EWS);
+  });
+
+  // The alphabets differ between the two halves of the URL and both are fine: the
+  // server normalizes either onto the stored one.
+  it("falls back to the ItemID parameter when the path carries no id", () => {
+    expect(
+      findDeeplinkMessageId(
+        `https://outlook.live.com/mail/deeplink/read?ItemID=${encodeURIComponent(ITEM_ID_EWS)}`,
+      ),
+    ).toBe(ITEM_ID_EWS);
+  });
+
+  it("is null on every other OWA route", () => {
+    expect(findDeeplinkMessageId("https://outlook.live.com/mail/0/inbox")).toBeNull();
+    expect(findDeeplinkMessageId("https://outlook.live.com/mail/")).toBeNull();
+    expect(findDeeplinkMessageId("not a url")).toBeNull();
+  });
+});
+
+describe("isDeeplinkReadView", () => {
+  const DEEPLINK_URL = "https://outlook.live.com/mail/deeplink/read/AAkALg_HYQ?ispopout=0";
+
+  // jsdom fixes the document's own URL, so the route comes from a stub while the
+  // DOM half stays real.
+  function docAt(href: string): Document {
+    return {
+      location: { href },
+      getElementById: (id: string) => document.getElementById(id),
+    } as unknown as Document;
+  }
+
+  // Anchored on the URL *and* the item pane. A half-rendered three-pane page also
+  // has no conversation pane, and calling that this layout would send a
+  // conversation id to be resolved as a message id.
+  it("needs both the route and the item pane", () => {
+    setBody(`<div id="ItemReadingPaneContainer"></div>`);
+    expect(isDeeplinkReadView(docAt(DEEPLINK_URL))).toBe(true);
+  });
+
+  it("is false on the deeplink route before the item pane renders", () => {
+    setBody(`<div id="app"></div>`);
+    expect(isDeeplinkReadView(docAt(DEEPLINK_URL))).toBe(false);
+  });
+
+  it("is false on the three-pane layout, item pane or not", () => {
+    setBody(`<div id="ItemReadingPaneContainer"></div>`);
+    expect(isDeeplinkReadView(docAt("https://outlook.live.com/mail/0/inbox"))).toBe(false);
   });
 });
 

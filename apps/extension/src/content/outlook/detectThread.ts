@@ -76,13 +76,112 @@ export function findAccountEmail(doc: Document = document): string | null {
   return null;
 }
 
+/**
+ * OWA's standalone deeplink read view, and the message it is showing.
+ *
+ * This is a fourth OWA layout and it agrees with the other three about almost
+ * nothing (DOM mapped on a live mailbox, 2026-07-30): no `[role='main']`, no
+ * `#ConversationReadingPaneContainer`, no account header, no folder tree, and no
+ * `data-convid` anywhere — because it is an ITEM view, showing one message rather
+ * than a conversation. It is where Microsoft's own `webLink` lands, so Amarnai
+ * sends users here itself from the queue; `ispopout=0` does not prevent it on
+ * consumer OWA.
+ *
+ * The id therefore comes from the URL rather than the DOM, which is the sturdier
+ * source anyway: `/mail/deeplink/read/<id>` is OWA's own routing contract, while
+ * every DOM anchor here is a build-hashed class. Both halves of the URL carry the
+ * same value in different alphabets — the path segment URL-safe, the `ItemID`
+ * query param the EWS flavor — so either resolves once normalized server-side.
+ * The path segment is preferred simply because it is the canonical one.
+ *
+ * Returns null off this route, which is what keeps the other three layouts on the
+ * conversation-id path they already use.
+ */
+const DEEPLINK_READ_PATH = /^\/mail\/(?:\d+\/)?deeplink\/read\/([^/?#]+)/;
+
+export function findDeeplinkMessageId(url: string): string | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  const fromPath = DEEPLINK_READ_PATH.exec(parsed.pathname)?.[1];
+  if (fromPath) return decodeURIComponent(fromPath);
+  // Only if the path form ever changes shape: the same value, EWS-flavored.
+  return parsed.searchParams.get("ItemID");
+}
+
+/**
+ * Whether this document is the deeplink read view. Anchored on the URL and on
+ * OWA's own `#ItemReadingPaneContainer` id, not on the absence of the other
+ * layouts' anchors: "no reading pane found" is also what a half-rendered
+ * three-pane page looks like, and treating that as this layout would resolve a
+ * conversation as a message id.
+ */
+export function isDeeplinkReadView(doc: Document = document): boolean {
+  return (
+    !!findDeeplinkMessageId(doc.location?.href ?? "") &&
+    !!doc.getElementById("ItemReadingPaneContainer")
+  );
+}
+
 export function detectOutlookThread(doc: Document = document): ThreadContext | null {
+  // The deeplink read view first, and before the [role='main'] gate below —
+  // because it has no [role='main'] at all, which is exactly why every injected
+  // surface used to give up on it. Its id is the open MESSAGE's, taken from the
+  // route, and it says so.
+  const deeplinkMessageId = isDeeplinkReadView(doc)
+    ? findDeeplinkMessageId(doc.location?.href ?? "")
+    : null;
+  if (deeplinkMessageId) {
+    // accountEmail stays whatever the page can say, which on this layout is
+    // nothing: its only addresses are in the message body (To:, mailto:) and are
+    // recipients, not the mailbox reading it. The background settles it against
+    // the connected mailboxes instead.
+    return {
+      providerThreadId: deeplinkMessageId,
+      accountEmail: findAccountEmail(doc),
+      refKind: "message",
+    };
+  }
+
   // Presence of the reading pane is what distinguishes "a thread is open" from
   // "a row is selected in the list" — OWA keeps the list mounted either way.
   if (!doc.querySelector("[role='main']")) return null;
   const providerThreadId = findConversationId(doc);
   if (!providerThreadId) return null;
-  return { providerThreadId, accountEmail: findAccountEmail(doc) };
+  return { providerThreadId, accountEmail: findAccountEmail(doc), refKind: "thread" };
+}
+
+/**
+ * Whether OWA is actually SHOWING a conversation, as opposed to merely having a
+ * row selected in the list beside an empty reading pane.
+ *
+ * `findConversationId` cannot answer this and must not try: it prefers the
+ * `aria-selected` row, and OWA leaves a row selected when the reading pane is
+ * empty — open the mailbox fresh and there is a highlighted row next to the
+ * "take Outlook with you" promo. The summary card wants exactly that behaviour,
+ * because it anchors to the list row. The injected panel does not: it would show
+ * a thread screen for a thread nobody opened, and offer to insert a draft into a
+ * reply form that is not on the page.
+ *
+ * `#ConversationReadingPaneContainer` is OWA's own id for the pane that renders
+ * a conversation, and it is the same anchor the Amarnai Reply pill already
+ * depends on across all three OWA hosts — so this adds no new DOM bet, it reuses
+ * the one already shipping. If some build renders a conversation without it the
+ * panel falls back to the queue, which is the failure direction to want: showing
+ * the queue while a conversation is open costs the user a click, while claiming a
+ * conversation that is not there breaks the draft affordance outright.
+ */
+export function isConversationOpen(doc: Document = document): boolean {
+  // `#ItemReadingPaneContainer` is the deeplink read view's equivalent, and it is
+  // OWA's own id for the pane rendering the open item — the same kind of anchor,
+  // for a layout that has no conversation pane because it shows one message.
+  return (
+    !!doc.getElementById("ConversationReadingPaneContainer") ||
+    !!doc.getElementById("ItemReadingPaneContainer")
+  );
 }
 
 /** Insert the card above the reading pane's message list. */

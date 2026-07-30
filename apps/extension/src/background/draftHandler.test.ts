@@ -63,6 +63,15 @@ describe("isGenerateDraftRequest", () => {
     expect(isGenerateDraftRequest({ ...REQUEST, providerThreadId: 42 })).toBe(false);
     expect(isGenerateDraftRequest({ type: GENERATE_DRAFT_MESSAGE })).toBe(false);
   });
+
+  // A null mailbox is a value the deeplink read view really sends; an unknown ref
+  // kind is not, and must not reach the API as a query the server rejects.
+  it("accepts a null mailbox but not an unknown ref kind", () => {
+    expect(isGenerateDraftRequest({ ...REQUEST, accountEmail: null })).toBe(true);
+    expect(isGenerateDraftRequest({ ...REQUEST, refKind: "message" })).toBe(true);
+    expect(isGenerateDraftRequest({ ...REQUEST, refKind: "conversation" })).toBe(false);
+    expect(isGenerateDraftRequest({ ...REQUEST, accountEmail: undefined })).toBe(false);
+  });
 });
 
 describe("handleGenerateDraftRequest", () => {
@@ -108,6 +117,38 @@ describe("handleGenerateDraftRequest", () => {
       accounts: [{ email: "ada@example.com", workspaceId: "ws-1", provider: "OUTLOOK" }],
     });
     await expect(handleGenerateDraftRequest(REQUEST)).resolves.toMatchObject({ ok: true });
+  });
+
+  // OWA's deeplink read view names no mailbox anywhere, so the pill sends null and
+  // the background settles it against the connected accounts. With exactly one
+  // there is only one it can be.
+  it("falls back to the single connected mailbox when the page named none", async () => {
+    await expect(
+      handleGenerateDraftRequest({ ...REQUEST, accountEmail: null, refKind: "message" }),
+    ).resolves.toMatchObject({ ok: true });
+    expect(mockClient.generateDraftByProviderThread).toHaveBeenCalledWith("ws-1", "18f0abc", {
+      refKind: "message",
+    });
+  });
+
+  // Which mailbox is on screen is exactly what cannot be known here, and picking
+  // wrong would draft against another mailbox's thread.
+  it("answers noWorkspace when the page named none and several are connected", async () => {
+    mockClient.mailAccounts.mockResolvedValue({
+      accounts: [
+        { email: "ada@example.com", workspaceId: "ws-1", provider: "GMAIL" },
+        { email: "grace@example.com", workspaceId: "ws-2", provider: "OUTLOOK" },
+      ],
+    });
+    await expect(
+      handleGenerateDraftRequest({ ...REQUEST, accountEmail: null, refKind: "message" }),
+    ).resolves.toEqual({ ok: false, reason: "noWorkspace" });
+    expect(mockClient.generateDraftByProviderThread).not.toHaveBeenCalled();
+  });
+
+  it("passes no ref for an ordinary conversation id", async () => {
+    await handleGenerateDraftRequest(REQUEST);
+    expect(mockClient.generateDraftByProviderThread).toHaveBeenCalledWith("ws-1", "18f0abc", {});
   });
 
   it("maps a quota refusal to the quota payload", async () => {

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import {
+  armOutlookReplyWithDraft,
   ensureOutlookReplyButton,
   disableOutlookReplyButton,
   resetOutlookReplyButton,
@@ -150,6 +151,28 @@ describe("findReplyCluster", () => {
     document.body.innerHTML = "<div><button></button><button></button></div>";
     expect(findReplyCluster(document)).toBeNull();
   });
+
+  // The deeplink read view: no conversation pane, no list, and the row is a
+  // [role='toolbar'] of Reply + Forward inside the item pane's own scroll region
+  // (DOM mapped live, 2026-07-30). This is the layout where the pill was missing.
+  it("finds the Quick actions toolbar in the deeplink read view's item pane", () => {
+    document.body.innerHTML = `
+      <div id="ReadingPaneContainerId">
+        <div id="ItemReadingPaneContainer">
+          <div class="owaMailComposeEditorScrollContainer customScrollBar">
+            <div role="toolbar" aria-label="Quick actions" id="quick-actions">
+              <button role="menuitem" aria-label="Reply">Reply</button>
+              <button role="menuitem" aria-label="Forward">Forward</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    const found = findReplyCluster(document);
+    expect(found?.container.id).toBe("quick-actions");
+    // The cluster's first button is Reply, which is what the click flow presses.
+    expect(found?.nativeReply.getAttribute("aria-label")).toBe("Reply");
+  });
 });
 
 describe("ensureOutlookReplyButton", () => {
@@ -224,6 +247,44 @@ describe("ensureOutlookReplyButton", () => {
 });
 
 describe("click flow", () => {
+  // The reported bug's other half. On the deeplink read view there is no mailbox
+  // address anywhere and no conversation id — the pill used to refuse outright on
+  // the missing address. It must now generate, sending the message ref and a null
+  // mailbox for the background to settle.
+  it("generates on the deeplink read view with a message ref and no mailbox", async () => {
+    const itemId = "AAkALg_HYQDEapm-EWg0AFt";
+    window.history.replaceState({}, "", `/mail/deeplink/read/${itemId}?ispopout=0`);
+    document.body.innerHTML = `
+      <div id="ReadingPaneContainerId">
+        <div id="ItemReadingPaneContainer">
+          <div class="owaMailComposeEditorScrollContainer customScrollBar">
+            <div role="toolbar" aria-label="Quick actions">
+              <button role="menuitem" aria-label="Reply">Reply</button>
+              <button role="menuitem" aria-label="Forward">Forward</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    ensureOutlookReplyButton(document);
+    expect(button()).not.toBeNull();
+
+    button()!.click();
+    await settle();
+
+    expect(sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: GENERATE_DRAFT_MESSAGE,
+        providerThreadId: itemId,
+        accountEmail: null,
+        refKind: "message",
+      }),
+      expect.any(Function),
+    );
+    window.history.replaceState({}, "", "/");
+  });
+
   it("generates, opens the reply via the native button, and inserts", async () => {
     const { nativeReply } = buildOwa();
     // Clicking OWA's Reply opens the inline editor, as the real page does.
@@ -353,5 +414,97 @@ describe("disableOutlookReplyButton", () => {
     expect(button()).toBeNull();
     ensureOutlookReplyButton(document);
     expect(button()).toBeNull();
+  });
+});
+
+// What the injected panel calls. It reuses the pill's insertion path rather than
+// adding a second one, so the cases here are about the seams between them: the
+// draft the panel already has must never be regenerated, a refusal must travel
+// back honestly, and the pill's own ticker must not throw the arm away.
+describe("armOutlookReplyWithDraft", () => {
+  const HTML = "<p>Thursday works.</p>";
+
+  it("inserts straight away when the reply is already open", () => {
+    buildOwa();
+    const editor = openEditor();
+
+    expect(armOutlookReplyWithDraft(document, "AQQkADAw==", HTML)).toBe(true);
+
+    expect(editor.querySelector("p")?.textContent).toBe("Thursday works.");
+    // Above the quoted original, never appended after it.
+    expect(editor.firstElementChild?.querySelector("p")).not.toBeNull();
+    // The panel's draft is already on screen; asking for another would spend a
+    // second one from the user's allowance.
+    expect(sendMessage).not.toHaveBeenCalled();
+  });
+
+  it("clicks OWA's own Reply and inserts once the editor appears", () => {
+    const { nativeReply } = buildOwa();
+    const clicked = vi.fn();
+    nativeReply!.addEventListener("click", clicked);
+
+    expect(armOutlookReplyWithDraft(document, "AQQkADAw==", HTML)).toBe(true);
+    expect(clicked).toHaveBeenCalledTimes(1);
+
+    const editor = openEditor();
+    ensureOutlookReplyButton(document);
+
+    expect(editor.querySelector("p")?.textContent).toBe("Thursday works.");
+  });
+
+  // The panel marks a draft sent on a true, so "nowhere to put it" has to come
+  // back as false rather than as an arm that quietly never lands.
+  it("refuses when there is no editor and no reply row", () => {
+    const { headerRow } = buildOwa({ bottomRow: false });
+    // Drop the message's own Reply|Reply all|Forward row as well: that is a real
+    // cluster and would otherwise be clicked. What is left is the subject
+    // header's chip cluster, which lives outside the messages scroll region and
+    // so is correctly invisible to findReplyCluster.
+    headerRow.remove();
+    expect(findReplyCluster(document)).toBeNull();
+
+    expect(armOutlookReplyWithDraft(document, "AQQkADAw==", HTML)).toBe(false);
+
+    // And nothing is left armed to surprise the user on a later tick.
+    const editor = openEditor();
+    ensureOutlookReplyButton(document);
+    expect(editor.querySelector("p")).toBeNull();
+  });
+
+  // The arm can land before the pill's ticker has ever run, which leaves its
+  // idea of the open thread unset — and an unset thread used to read as a thread
+  // switch on the very next tick.
+  it("survives the pill's first tick when it armed first", () => {
+    buildOwa();
+
+    expect(armOutlookReplyWithDraft(document, "AQQkADAw==", HTML)).toBe(true);
+    ensureOutlookReplyButton(document);
+    const editor = openEditor();
+    ensureOutlookReplyButton(document);
+
+    expect(editor.querySelector("p")?.textContent).toBe("Thursday works.");
+  });
+
+  it("is dropped when the user moves to another conversation first", () => {
+    const { pane } = buildOwa();
+    expect(armOutlookReplyWithDraft(document, "AQQkADAw==", HTML)).toBe(true);
+
+    pane.setAttribute("data-convid", "BQQkADAw==");
+    ensureOutlookReplyButton(document);
+    const editor = openEditor();
+    ensureOutlookReplyButton(document);
+
+    expect(editor.querySelector("p")).toBeNull();
+  });
+
+  // Two separate workspace settings: turning the pill off must not silently take
+  // the panel's insertion with it.
+  it("still inserts when the reply button feature is off", () => {
+    buildOwa();
+    disableOutlookReplyButton(document);
+    const editor = openEditor();
+
+    expect(armOutlookReplyWithDraft(document, "AQQkADAw==", HTML)).toBe(true);
+    expect(editor.querySelector("p")?.textContent).toBe("Thursday works.");
   });
 });

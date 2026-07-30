@@ -133,9 +133,7 @@ describe("buildManifest — native summary injection", () => {
   // InboxSDK's page-world half and the button icon are loaded by Gmail's own
   // page, so they must be web-accessible — but only to Gmail. Any wider match
   // would let unrelated sites probe for the extension.
-  it("exposes only InboxSDK's files and the panel iframe, to Gmail alone", () => {
-    // The injected buttons use an inline SVG, so OWA needs nothing exposed —
-    // Outlook gets the panel through the Office add-in, not an iframe.
+  it("exposes InboxSDK's files and the panel iframe to Gmail", () => {
     // `assets/*` is here because the built injected.html links its own hashed
     // JS and CSS from that directory; without it the iframe loads blank.
     for (const browser of ["chrome", "firefox"] as const) {
@@ -151,7 +149,35 @@ describe("buildManifest — native summary injection", () => {
           ],
           matches: ["https://mail.google.com/*"],
         },
+        {
+          resources: ["injected.html", "assets/*"],
+          matches: [
+            "https://outlook.office.com/*",
+            "https://outlook.office365.com/*",
+            "https://outlook.live.com/*",
+          ],
+        },
       ]);
+    }
+  });
+
+  // OWA embeds the same panel document, so it needs the iframe and its assets —
+  // and nothing else. The drawer's tab and the reply pill both draw their mark
+  // as an inline SVG node, and InboxSDK is Gmail's alone, so exposing either the
+  // images or pageWorld.js to Outlook would widen the surface for no call site.
+  it("exposes only the panel iframe to OWA, never InboxSDK or the icons", () => {
+    for (const browser of ["chrome", "firefox"] as const) {
+      const m = buildManifest({ apiUrl: API, webAppUrl: WEB, browser }) as Record<string, unknown>;
+      const entries = m["web_accessible_resources"] as { resources: string[]; matches: string[] }[];
+      const owa = entries.find((e) => e.matches.some((h) => h.includes("outlook")));
+      expect(owa).toBeDefined();
+      expect(owa?.resources).toEqual(["injected.html", "assets/*"]);
+      for (const forbidden of ["pageWorld.js", "reply-button-icon.svg", "panel-icon.svg"]) {
+        expect(owa?.resources).not.toContain(forbidden);
+      }
+      // And no OWA host leaked into Gmail's entry, which does carry them.
+      const gmail = entries.find((e) => e.resources.includes("pageWorld.js"));
+      expect(gmail?.matches).toEqual(["https://mail.google.com/*"]);
     }
   });
 

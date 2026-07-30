@@ -1,9 +1,11 @@
-import type { PanelHost, PanelThreadContext } from "@amarnai/panel";
+import type { PanelCapabilities, PanelHost, PanelThreadContext } from "@amarnai/panel";
 import { extensionTokenStore } from "../auth/tokenStore";
 import { API_BASE_URL } from "../config";
 import { ext } from "../platform/ext";
+import { GMAIL_MAIL_ORIGIN, OUTLOOK_MAIL_ORIGINS } from "../platform/mailHosts";
 import { OPEN_MAIL_THREAD_MESSAGE } from "../content/core/messaging";
 import {
+  PANEL_EMBED_PARAM,
   PANEL_PROTOCOL_VERSION,
   PANEL_READY,
   PANEL_INSERT_DRAFT,
@@ -14,12 +16,17 @@ import {
   type PanelToHostMessage,
 } from "../content/core/panelProtocol";
 
-// The panel's view of Gmail, from inside the iframe.
+// The panel's view of the mail client, from inside the iframe.
 //
 // Everything the panel needs about the page arrives over postMessage from the
-// content script, because this document cannot see Gmail at all — which is the
-// point. In exchange the tokens, the API calls, and the SSE stream live here,
-// where nothing running on mail.google.com can reach them.
+// content script, because this document cannot see the mail app at all — which
+// is the point. In exchange the tokens, the API calls, and the SSE stream live
+// here, where nothing running on the mail host can reach them.
+//
+// One document, two embedders: Gmail's InboxSDK sidebar and OWA's fixed drawer.
+// They differ in exactly two things — which parents they trust, and whether the
+// embedder can show a conversation in place — so they are two entries in a
+// record rather than two modules.
 
 const INSERT_TIMEOUT_MS = 10_000;
 
@@ -35,14 +42,77 @@ const INSERT_TIMEOUT_MS = 10_000;
  */
 const HANDSHAKE_TIMEOUT_MS = 8_000;
 
+type Embed = {
+  /**
+   * The only pages this embed may be embedded in. The manifest's
+   * web_accessible_resources already restricts where the iframe is reachable
+   * from; this is the second lock, so a page that somehow loads it still cannot
+   * drive it.
+   */
+  allowedParentOrigins: readonly string[];
+  capabilities: PanelCapabilities;
+};
+
+const EMBEDS = {
+  gmail: {
+    allowedParentOrigins: [GMAIL_MAIL_ORIGIN],
+    capabilities: {
+      // The link to the client's compose is only live once an allowed embedder
+      // has spoken — but so is everything else: a thread can only be on screen
+      // if context arrived through that same channel. By the time there is a
+      // draft to insert, the channel exists, and insertDraft() below still
+      // answers false if it somehow is not.
+      insertDraft: true,
+      signIn: true,
+      openExternal: true,
+      // Gmail routes on the URL fragment, so the content script can show a
+      // conversation without a reload and without leaving the tab.
+      openThread: true,
+    },
+  },
+  outlook: {
+    allowedParentOrigins: OUTLOOK_MAIL_ORIGINS,
+    capabilities: {
+      insertDraft: true,
+      signIn: true,
+      // Unlike the Office task pane, this embed is an ordinary browser tab, so
+      // window.open lands somewhere useful.
+      openExternal: true,
+      // An OWA conversation is not addressable from the id the page exposes:
+      // `data-convid` is an EWS conversation id, and the only working deep link
+      // is the thread's own Graph `webLink` (see buildThreadUrl). The queue
+      // therefore renders links out rather than asking this host to navigate —
+      // the same answer the Outlook task pane gives, for a different reason.
+      openThread: false,
+    },
+  },
+} satisfies Record<string, Embed>;
+
+type EmbedName = keyof typeof EMBEDS;
+
+function isEmbedName(value: string | null): value is EmbedName {
+  return value === "gmail" || value === "outlook";
+}
+
 /**
- * The only page this panel may be embedded in. Gmail alone: Outlook gets the
- * panel through the Office add-in, not through an injected iframe, so there is
- * no second host to allow here. The manifest's web_accessible_resources already
- * restricts where the iframe is reachable from; this is the second lock, so a
- * page that somehow loads it still cannot drive it.
+ * Which embed this document is, from its own URL.
+ *
+ * Deliberately not a trust boundary, and nothing downstream treats it as one:
+ * any page in the manifest's match list can load the iframe with whichever value
+ * it likes. The worst it can do is pick the wrong allowlist for itself — a Gmail
+ * page asking for `?embed=outlook` gets an allowlist that rejects Gmail, and
+ * vice versa. `event.origin` plus `event.source` remain the actual lock. What
+ * the parameter really decides is which affordances the panel offers, and that
+ * has to be known synchronously at first render, long before any origin is
+ * latched.
+ *
+ * A closed allowlist defaulting to Gmail: an unrecognised value can only ever
+ * narrow, never widen.
  */
-const ALLOWED_PARENT_ORIGINS = new Set(["https://mail.google.com"]);
+function readEmbed(search: string): EmbedName {
+  const value = new URLSearchParams(search).get(PANEL_EMBED_PARAM);
+  return isEmbedName(value) ? value : "gmail";
+}
 
 /**
  * The host, built once per document.
@@ -51,24 +121,26 @@ const ALLOWED_PARENT_ORIGINS = new Set(["https://mail.google.com"]);
  * and a host owns a window-level message listener plus the ready handshake. A
  * second instance would answer the same handshake twice and hold a listener
  * nothing ever removes — which is not hypothetical, because React StrictMode
- * runs the render that creates it twice in development.
+ * runs the render that creates it twice in development. One factory rather than
+ * one per embed, for the same reason: two factories over one memo slot would let
+ * the second caller silently receive the first caller's embed.
  */
 let instance: PanelHost | null = null;
 let teardown: (() => void) | null = null;
 
-export function createGmailPanelHost(): PanelHost {
-  instance ??= buildGmailPanelHost();
+export function createInjectedPanelHost(): PanelHost {
+  instance ??= buildInjectedPanelHost(EMBEDS[readEmbed(window.location.search)]);
   return instance;
 }
 
 /** Test seam: drop the instance and its listener between cases. */
-export function resetGmailPanelHost(): void {
+export function resetInjectedPanelHost(): void {
   teardown?.();
   teardown = null;
   instance = null;
 }
 
-function buildGmailPanelHost(): PanelHost {
+function buildInjectedPanelHost(embed: Embed): PanelHost {
   // Learned from the first inbound message, not from `document.referrer`.
   //
   // The referrer looked like the honest source — the browser sets it, a message
@@ -108,12 +180,12 @@ function buildGmailPanelHost(): PanelHost {
     // was the frame that embedded us rather than some other frame on the page.
     if (event.source !== window.parent) return;
     if (target === null) {
-      if (!ALLOWED_PARENT_ORIGINS.has(event.origin)) return;
+      if (!embed.allowedParentOrigins.includes(event.origin)) return;
       target = event.origin;
       clearTimeout(handshakeTimer);
       // Now that there is somewhere to send it: the handshake asks the content
       // script to replay the current conversation and visibility, so the panel
-      // does not wait for the next Gmail mutation to learn where it is.
+      // does not wait for the next page mutation to learn where it is.
       post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_READY });
     } else if (event.origin !== target) {
       return;
@@ -143,21 +215,8 @@ function buildGmailPanelHost(): PanelHost {
     clearTimeout(handshakeTimer);
   };
 
-
   return {
-    capabilities: {
-      // The link to Gmail's compose is only live once an allowed embedder has
-      // spoken — but so is everything else: a thread can only be on screen if
-      // context arrived through that same channel. By the time there is a draft
-      // to insert, the channel exists, so this is unconditionally true and
-      // insertDraft() below still answers false if it somehow is not.
-      insertDraft: true,
-      signIn: true,
-      openExternal: true,
-      // Gmail routes on the URL fragment, so the content script can show a
-      // conversation without a reload and without leaving the tab.
-      openThread: true,
-    },
+    capabilities: embed.capabilities,
 
     apiBaseUrl: API_BASE_URL,
     tokenStore: extensionTokenStore,
@@ -196,11 +255,15 @@ function buildGmailPanelHost(): PanelHost {
       // with chrome.tabs — the same call the side panel makes when a thread row
       // is clicked there. Routing it through the content script instead would
       // make opening a conversation depend on the postMessage channel and on a
-      // write into Gmail's own location that nothing here can verify.
+      // write into the mail app's own location that nothing here can verify.
       //
       // Fire and forget: the panel has already switched to this thread's screen,
       // and the page reports itself through the ordinary context feed once it
       // catches up. A rejection means only that nothing was listening.
+      //
+      // Unreachable from the OWA embed, whose capabilities.openThread is false
+      // so the queue renders links instead; the background handler refuses a
+      // non-Gmail tab anyway, so a stray call there is inert rather than wrong.
       void ext.runtime
         .sendMessage({ type: OPEN_MAIL_THREAD_MESSAGE, providerThreadId })
         .catch(() => {});

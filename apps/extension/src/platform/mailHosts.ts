@@ -22,3 +22,19 @@ export const OUTLOOK_MAIL_HOSTS = [
 // Every mail-web-app host the extension needs a grant for (Gmail + OWA), in the
 // order the manifest/permissions lists expect.
 export const MAIL_HOSTS = [GMAIL_MAIL_HOST, ...OUTLOOK_MAIL_HOSTS];
+
+/**
+ * The same hosts as bare origins, for the places that compare against an origin
+ * rather than match a URL — above all the injected panel's allowlist of pages it
+ * will accept messages from, which is a security control and must never drift
+ * from the manifest's `web_accessible_resources` matches.
+ *
+ * Derived from the match patterns rather than written out again: two lists of
+ * the same four hosts is exactly the drift this module exists to prevent.
+ */
+function toOrigin(matchPattern: string): string {
+  return matchPattern.replace(/\/\*$/, "");
+}
+
+export const GMAIL_MAIL_ORIGIN = toOrigin(GMAIL_MAIL_HOST);
+export const OUTLOOK_MAIL_ORIGINS = OUTLOOK_MAIL_HOSTS.map(toOrigin);

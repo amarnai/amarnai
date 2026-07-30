@@ -1,12 +1,17 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { isInjectionEnabled, resolveProviderThreadId } from "../services/provider-thread.js";
+import { isInjectionEnabled, resolveProviderRef } from "../services/provider-thread.js";
 import { loadThreadDetail } from "../services/thread-detail.js";
 import type { AppEnv } from "../env.js";
 
 const providerThreadParams = z.object({
   workspaceId: z.string().min(1),
   providerThreadId: z.string().min(1),
+  // Which kind of id the path segment holds. Absent means a conversation id,
+  // which is what every layout but OWA's standalone deeplink read view can name;
+  // see ProviderRefKind. Enumerated rather than free text so an unknown value is
+  // a 400 and never a silent fall back to the wrong lookup.
+  ref: z.enum(["thread", "message"]).default("thread"),
 });
 
 const providerThreads = new Hono<AppEnv>();
@@ -35,9 +40,10 @@ providerThreads.get(
     const parsed = providerThreadParams.safeParse({
       workspaceId: c.req.param("workspaceId"),
       providerThreadId: c.req.param("providerThreadId"),
+      ref: c.req.query("ref") ?? undefined,
     });
     if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
-    const { workspaceId, providerThreadId } = parsed.data;
+    const { workspaceId, providerThreadId, ref } = parsed.data;
 
     if (!(await isInjectionEnabled(workspaceId, "injectedPanel"))) {
       return c.json(
@@ -49,7 +55,7 @@ providerThreads.get(
       );
     }
 
-    const threadId = await resolveProviderThreadId(workspaceId, providerThreadId);
+    const threadId = await resolveProviderRef(workspaceId, ref, providerThreadId);
     if (!threadId) return c.json({ error: "Thread not found" }, 404);
 
     const detail = await loadThreadDetail(workspaceId, threadId);

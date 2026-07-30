@@ -3,7 +3,9 @@ import {
   InjectionDisabledError,
   type ApiClient,
   type EmailThreadDetail,
+  resolveMailboxAccount,
   type MailAccount,
+  type ProviderRefKind,
 } from "@amarnai/api-client";
 import type { PanelHost, PanelThreadContext } from "./host.js";
 import {
@@ -22,8 +24,10 @@ import {
 //
 // "No conversation open" is the exception: it is not a state Amarnai cannot act
 // on, it is the thread list, and there the panel shows the queue. It only
-// degrades to `noThread` when the mailbox itself is unreadable, because without
-// an address there is no workspace and so nothing to show.
+// degrades to `noThread` when the mailbox itself cannot be settled — see
+// resolveMailboxAccount in @amarnai/api-client, which is where that rule lives for
+// every injected surface — because without one there is no workspace and so
+// nothing to show.
 //
 // The queue is also reachable from a conversation, by the back control on the
 // thread screen. That is the one place the panel's screen is not simply a
@@ -47,7 +51,7 @@ export type PanelStage =
   | { kind: "notConnected" }
   /** The open mailbox belongs to no workspace of this user (multi-login). */
   | { kind: "mismatch"; accountEmail: string; knownAccounts: MailAccount[] }
-  /** The mail client is not showing a conversation, and no mailbox is readable. */
+  /** The mail client is not showing a conversation, and no mailbox is settled. */
   | { kind: "noThread" }
   /**
    * The queue: what is waiting on this user in this workspace. Reached either
@@ -173,9 +177,19 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
     });
   }, [host]);
 
+  // Whether the host could read the page at all — an Office pane with no item
+  // selected reports nothing. Kept distinct from a context whose accountEmail is
+  // null, which is a page the host DID read and that simply names no mailbox: the
+  // first has nothing to resolve, the second resolveMailboxAccount may yet settle.
+  const hasContext = context !== null;
   const accountEmail = context?.accountEmail ?? null;
   const pageThreadId = context?.providerThreadId ?? null;
   const providerThreadId = pickedThreadId ?? pageThreadId;
+  // Which kind of id we are about to resolve. The page's kind applies only to the
+  // page's own id: a thread picked from the queue is named by Amarnai's stored
+  // conversation id, so carrying the page's "message" over to it would resolve
+  // the picked thread as a message id and 404 every row on that layout.
+  const refKind: ProviderRefKind = pickedThreadId ? "thread" : context?.refKind ?? "thread";
 
   // ── Resolution ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -185,11 +199,10 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
       setStage({ kind: "signedOut" });
       return;
     }
-    if (!accountEmail) {
+    if (!hasContext) {
       setStage({ kind: "noThread" });
       return;
     }
-
     setStage({ kind: "resolving" });
 
     void (async () => {
@@ -209,9 +222,17 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
         setStage({ kind: "notConnected" });
         return;
       }
-      const match = accounts.find((a) => a.email.toLowerCase() === accountEmail.toLowerCase());
+      const match = resolveMailboxAccount(accounts, accountEmail);
       if (!match) {
-        setStage({ kind: "mismatch", accountEmail, knownAccounts: accounts });
+        // An address we could read but do not know is a mismatch, and the screen
+        // says which mailbox and which ones are connected. No address and no way
+        // to settle on one (several connected) leaves nothing to name, so it
+        // falls back to the sentence.
+        setStage(
+          accountEmail
+            ? { kind: "mismatch", accountEmail, knownAccounts: accounts }
+            : { kind: "noThread" },
+        );
         return;
       }
 
@@ -229,7 +250,11 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
       }
 
       try {
-        const thread = await api.resolveProviderThread(match.workspaceId, providerThreadId);
+        const thread = await api.resolveProviderThread(
+          match.workspaceId,
+          providerThreadId,
+          refKind,
+        );
         if (token !== tokenRef.current) return;
         setStage(
           thread
@@ -251,7 +276,7 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
     // Keyed on the values rather than the context object: a host that re-reports
     // an unchanged conversation, and the pick being cleared once the page has
     // caught up with it, must not both cost a re-resolve.
-  }, [api, accountEmail, providerThreadId, contextKnown, signedIn, refreshKey]);
+  }, [api, accountEmail, hasContext, providerThreadId, refKind, contextKnown, signedIn, refreshKey]);
 
   const refresh = useCallback(() => setRefreshKey((k) => k + 1), []);
 

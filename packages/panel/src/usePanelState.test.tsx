@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
 import { InjectionDisabledError, type ApiClient } from "@amarnai/api-client";
 import { usePanelState } from "./usePanelState.js";
 import type { PanelHost, PanelThreadContext } from "./host.js";
@@ -86,6 +86,13 @@ beforeEach(() => {
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
 });
 
+// This package's vitest config sets no `globals`, so Testing Library's automatic
+// cleanup does not run and a rendered hook is never unmounted. Any test reaching
+// the queue or a thread opens the SSE hook, whose reconnect backoff then fires
+// after the environment is gone. The hook's own teardown handles it correctly —
+// it just has to be given the chance to run.
+afterEach(cleanup);
+
 describe("usePanelState", () => {
   it("loads the thread once the mail client reports a conversation", async () => {
     const api = makeApi();
@@ -96,7 +103,7 @@ describe("usePanelState", () => {
 
     await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
     expect(result.current.stage).toMatchObject({ workspaceId: "ws-1", accountEmail: "ada@example.com" });
-    expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0abc");
+    expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0abc", "thread");
   });
 
   it("says signedOut without asking the API anything", async () => {
@@ -135,6 +142,99 @@ describe("usePanelState", () => {
     });
     // Nothing to resolve: there is no conversation.
     expect(api.resolveProviderThread).not.toHaveBeenCalled();
+  });
+
+  // A page the host read but that names no mailbox anywhere — OWA's standalone
+  // deeplink read view has neither an account header nor a folder tree. With one
+  // mailbox connected there is only one it can be, and the panel says so rather
+  // than refusing to speak about a conversation that is plainly on screen.
+  it("speaks for the single connected mailbox when the page names none", async () => {
+    const api = makeApi();
+    const { host, setContext } = makeHost();
+    const { result } = render(api, host);
+
+    setContext({ providerThreadId: "18f0abc", accountEmail: null });
+
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+    expect(result.current.stage).toMatchObject({
+      workspaceId: "ws-1",
+      accountEmail: "ada@example.com",
+    });
+    expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0abc", "thread");
+  });
+
+  it("shows that mailbox's queue when the page names none and has no conversation", async () => {
+    const { host, setContext } = makeHost();
+    const { result } = render(makeApi(), host);
+    setContext({ providerThreadId: null, accountEmail: null });
+    await waitFor(() => expect(result.current.stage.kind).toBe("queue"));
+    expect(result.current.stage).toMatchObject({ accountEmail: "ada@example.com" });
+  });
+
+  // Two connected mailboxes and no address on the page: which one is on screen is
+  // exactly what we cannot know, and picking wrong would show another mailbox's
+  // queue. Declining is the only safe answer.
+  it("declines to guess when the page names no mailbox and several are connected", async () => {
+    const api = makeApi({
+      mailAccounts: vi.fn().mockResolvedValue({
+        accounts: [
+          { email: "ada@example.com", workspaceId: "ws-1", workspaceName: "Ada", provider: "GMAIL", status: "ACTIVE" },
+          { email: "grace@example.com", workspaceId: "ws-2", workspaceName: "Grace", provider: "OUTLOOK", status: "ACTIVE" },
+        ],
+      }),
+    });
+    const { host, setContext } = makeHost();
+    const { result } = render(api, host);
+
+    setContext({ providerThreadId: "18f0abc", accountEmail: null });
+
+    await waitFor(() => expect(result.current.stage.kind).toBe("noThread"));
+    expect(api.resolveProviderThread).not.toHaveBeenCalled();
+  });
+
+  // OWA's deeplink read view names a MESSAGE, not a conversation, and says so.
+  // The panel passes that through untouched: guessing the kind is not possible,
+  // since both flavors are 68-char base64 on a consumer mailbox.
+  it("forwards a message ref to the resolve call", async () => {
+    const api = makeApi();
+    const { host, setContext } = makeHost();
+    const { result } = render(api, host);
+
+    setContext({
+      providerThreadId: "AAkALg_HYQ",
+      accountEmail: "ada@example.com",
+      refKind: "message",
+    });
+
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+    expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "AAkALg_HYQ", "message");
+  });
+
+  // The page's kind belongs to the page's own id. A row picked from the queue is
+  // named by Amarnai's stored conversation id, so carrying "message" over to it
+  // would resolve a conversation id as a message id and 404 every queue row on
+  // that layout.
+  it("resolves a picked queue row as a thread even on a message-ref page", async () => {
+    const api = makeApi();
+    const { host, setContext } = makeHost();
+    const { result } = render(api, host);
+
+    setContext({
+      providerThreadId: "AAkALg_HYQ",
+      accountEmail: "ada@example.com",
+      refKind: "message",
+    });
+    await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
+
+    act(() => result.current.openThread("AAQkAD_storedConversation"));
+
+    await waitFor(() =>
+      expect(api.resolveProviderThread).toHaveBeenCalledWith(
+        "ws-1",
+        "AAQkAD_storedConversation",
+        "thread",
+      ),
+    );
   });
 
   // An unconnected mailbox is unconnected whether or not a conversation is open,
@@ -257,7 +357,7 @@ describe("usePanelState", () => {
 
     setContext(CONTEXT);
     await waitFor(() =>
-      expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0abc"),
+      expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0abc", "thread"),
     );
 
     setContext({ providerThreadId: "18f0def", accountEmail: "ada@example.com" });
@@ -412,7 +512,7 @@ describe("usePanelState", () => {
     act(() => result.current.openThread("18f0def"));
 
     await waitFor(() => expect(result.current.stage.kind).toBe("thread"));
-    expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0def");
+    expect(api.resolveProviderThread).toHaveBeenCalledWith("ws-1", "18f0def", "thread");
     expect(host.openThread).not.toHaveBeenCalled();
     // The pane is still on whatever it was: inserting here would reply to the
     // wrong conversation, so the panel says the two do not match.

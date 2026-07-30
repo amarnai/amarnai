@@ -20,6 +20,8 @@ vi.mock("@amarnai/db", () => ({
   Prisma: {},
   db: {
     emailThread: { findFirst: vi.fn() },
+    emailMessage: { findFirst: vi.fn() },
+    emailAccount: { findMany: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
   },
@@ -35,10 +37,16 @@ import { db } from "@amarnai/db";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";
+const ACCOUNT_ID = "acct-1";
 
 /** Graph stores the URL-safe alphabet; OWA's DOM hands us the EWS one. */
 const STORED_CONVERSATION_ID = "AAQkAD_bc-de_fg-hi";
 const EWS_CONVERSATION_ID = "AAQkAD+bc/de+fg/hi";
+
+// A message store id, as OWA's deeplink read view carries it: the `ItemID` query
+// param holds the EWS flavor, the path segment the URL-safe one we store.
+const STORED_MESSAGE_ID = "AAkALg_HYQDEapm-EWg0AFt";
+const EWS_MESSAGE_ID = "AAkALg+HYQDEapm/EWg0AFt";
 
 function threadRow() {
   return {
@@ -80,9 +88,9 @@ function threadRow() {
   };
 }
 
-function get(providerThreadId: string, workspaceId = WS_ID) {
+function get(providerThreadId: string, workspaceId = WS_ID, query = "") {
   return app.request(
-    `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}`,
+    `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}${query}`,
     authed(),
   );
 }
@@ -92,6 +100,10 @@ beforeEach(() => {
   vi.mocked(db.workspaceMember.findUnique).mockResolvedValue({ userId: TEST_USER_ID } as never);
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue(null as never);
   vi.mocked(db.emailThread.findFirst).mockResolvedValue(threadRow() as never);
+  vi.mocked(db.emailAccount.findMany).mockResolvedValue([{ id: ACCOUNT_ID }] as never);
+  vi.mocked(db.emailMessage.findFirst).mockResolvedValue({
+    emailThreadId: THREAD_ID,
+  } as never);
 });
 
 describe("GET /workspaces/:workspaceId/provider-threads/:providerThreadId", () => {
@@ -203,5 +215,91 @@ describe("GET /workspaces/:workspaceId/provider-threads/:providerThreadId", () =
   it("treats a workspace with no settings row as fully enabled", async () => {
     vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue(null as never);
     expect((await get(STORED_CONVERSATION_ID)).status).toBe(200);
+  });
+});
+
+// OWA's standalone deeplink read view (/mail/deeplink/read/<id>?ItemID=<id>) is an
+// ITEM view: it renders one message, carries no data-convid anywhere, and the only
+// id it can offer is the message's own. `ref=message` is how a surface says so.
+describe("GET provider-threads with ref=message", () => {
+  const messageRef = (id: string, workspaceId = WS_ID) =>
+    get(id, workspaceId, "?ref=message");
+
+  it("resolves the thread that contains the message", async () => {
+    const res = await messageRef(STORED_MESSAGE_ID);
+    expect(res.status).toBe(200);
+    expect(((await res.json()) as Record<string, unknown>)["id"]).toBe(THREAD_ID);
+    // Resolution went through the message, not the conversation lookup.
+    expect(db.emailMessage.findFirst).toHaveBeenCalled();
+  });
+
+  // The same alphabet fix the conversation path gets: OWA hands out the EWS
+  // flavor and we store Graph's, for message ids exactly as for thread ids.
+  it("normalizes an EWS-flavored message id onto the stored alphabet", async () => {
+    await messageRef(EWS_MESSAGE_ID);
+    expect(vi.mocked(db.emailMessage.findFirst).mock.calls[0]?.[0]).toMatchObject({
+      where: { providerMessageId: STORED_MESSAGE_ID },
+    });
+  });
+
+  // Load-bearing for two reasons, both documented on resolveProviderMessageId:
+  // the only index on this column leads with emailAccountId, so a workspaceId
+  // query degrades to a full scan of every message row; and providerMessageId is
+  // unique per ACCOUNT, so an unscoped lookup could answer with another tenant's
+  // thread. Live data has the same message id under three accounts.
+  it("scopes the message lookup to the workspace's own accounts", async () => {
+    await messageRef(STORED_MESSAGE_ID);
+    expect(vi.mocked(db.emailAccount.findMany).mock.calls[0]?.[0]).toMatchObject({
+      where: { workspaceId: WS_ID },
+    });
+    expect(vi.mocked(db.emailMessage.findFirst).mock.calls[0]?.[0]).toMatchObject({
+      where: { emailAccountId: { in: [ACCOUNT_ID] } },
+    });
+  });
+
+  it("404s without touching messages when the workspace has no accounts", async () => {
+    vi.mocked(db.emailAccount.findMany).mockResolvedValue([] as never);
+    expect((await messageRef(STORED_MESSAGE_ID)).status).toBe(404);
+    expect(db.emailMessage.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("404s a message that was never synced", async () => {
+    vi.mocked(db.emailMessage.findFirst).mockResolvedValue(null as never);
+    expect((await messageRef("never-synced")).status).toBe(404);
+  });
+
+  // Explicit, never inferred: both id flavors are 68-char base64 for a consumer
+  // mailbox, so a typo'd or unknown ref must fail rather than quietly resolve as
+  // the other kind.
+  it("400s an unknown ref kind without querying anything", async () => {
+    const res = await get(STORED_MESSAGE_ID, WS_ID, "?ref=conversation");
+    expect(res.status).toBe(400);
+    expect(db.emailMessage.findFirst).not.toHaveBeenCalled();
+    expect(db.emailThread.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("treats an absent ref as the conversation lookup", async () => {
+    await get(STORED_CONVERSATION_ID);
+    expect(db.emailMessage.findFirst).not.toHaveBeenCalled();
+    expect(vi.mocked(db.emailThread.findFirst).mock.calls[0]?.[0]).toMatchObject({
+      where: { providerThreadId: STORED_CONVERSATION_ID },
+    });
+  });
+
+  it("still honours the panel kill switch", async () => {
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      threadSummaryInjectionEnabled: true,
+      replyButtonInjectionEnabled: true,
+      injectedPanelEnabled: false,
+    } as never);
+    const res = await messageRef(STORED_MESSAGE_ID);
+    expect(res.status).toBe(403);
+    expect(db.emailMessage.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("404s a workspace the caller is not a member of", async () => {
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(null as never);
+    expect((await messageRef(STORED_MESSAGE_ID)).status).toBe(404);
+    expect(db.emailMessage.findFirst).not.toHaveBeenCalled();
   });
 });
