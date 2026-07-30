@@ -204,32 +204,37 @@ export function EmailsDemoSection() {
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
             <h2 className="ld-section-h">
-              <Trans>Every email goes where it belongs.</Trans>
+              <Trans>Sorted, summarized, and drafted, without leaving your inbox.</Trans>
             </h2>
             <p className="ld-section-lede">
               <Trans>
                 Your folders become labels in Gmail and categories in Outlook, so
-                every thread is filed where you would expect to find it without
-                leaving your mailbox. When a reply is needed, a draft is one click
-                away, ready for your edits and never sent without them.
+                every thread is filed where you would expect to find it. Each one
+                arrives with a summary, and a reply is one click away, ready for
+                your edits and never sent without them. Assign threads to your
+                team and everyone can see who has what.
               </Trans>
             </p>
-          </div>
 
-          <div className="ld-demo-controls">
-            {/* Which mailbox, the same control the connect step above uses. */}
-            <ProviderToggle provider={provider} onChange={chooseProvider} />
+            {/* Under the copy rather than beside it: as a sibling of .ld-copy
+                these two took a column out of the flex row and squeezed the
+                lede into a narrow measure. They also read better here, next to
+                the frame they drive. */}
+            <div className="ld-demo-controls">
+              {/* Which mailbox, the same control the connect step above uses. */}
+              <ProviderToggle provider={provider} onChange={chooseProvider} />
 
-            {/* Scoped in its own label to what it governs: what Amarnai puts
-                inside the mailbox. Off is not a broken state — it is the
-                mailbox a visitor already has, which is the comparison worth
-                making. */}
-            <label className="ld-amarnai-toggle">
-              <Switch checked={showAmarnai} onChange={setShowAmarnai} />
-              <span>
-                <Trans>Amarnai in your inbox</Trans>
-              </span>
-            </label>
+              {/* Scoped in its own label to what it governs: what Amarnai puts
+                  inside the mailbox. Off is not a broken state — it is the
+                  mailbox a visitor already has, which is the comparison worth
+                  making. */}
+              <label className="ld-amarnai-toggle">
+                <Switch checked={showAmarnai} onChange={setShowAmarnai} />
+                <span>
+                  <Trans>Amarnai in your inbox</Trans>
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 

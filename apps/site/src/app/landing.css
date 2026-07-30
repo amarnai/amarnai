@@ -1281,12 +1281,14 @@
   .ld-final-note-br { display: inline; }
 }
 
-/* The demo's two controls, side by side above the frame: which mailbox, and
+/* The demo's two controls, side by side under the lede: which mailbox, and
    whether Amarnai is in it. Different questions, so they read as two controls
-   rather than one segmented group. */
+   rather than one segmented group. They sit inside .ld-copy — as a sibling they
+   claimed a column of the head's flex row and squashed the paragraph. */
 .ld-demo-controls {
   display: flex;
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
+  margin-top: 20px;
 }

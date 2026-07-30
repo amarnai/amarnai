@@ -135,8 +135,8 @@ const SLIDES: Slide[] = [
   {
     id: "emails",
     Art: EmailsDemo,
-    title: msg`Every email goes where it belongs`,
-    body: msg`Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it without leaving your mailbox. When a reply is needed, a draft is one click away, ready for your edits and never sent without them.`,
+    title: msg`Sorted, summarized, and drafted, without leaving your inbox`,
+    body: msg`Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it. Each one arrives with a summary, and a reply is one click away, ready for your edits and never sent without them. Assign threads to your team and everyone can see who has what.`,
   },
 ];
 
