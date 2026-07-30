@@ -345,9 +345,14 @@ msgstr "+ Ruang kerja baru"
 #~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 #~ msgstr "<0>{migrateLive}</0> utas langsung berpindah ke folder baru. <1>{resortLive}</1> utas akan disortir ulang oleh AI."
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:96
+#, fuzzy
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "<0>King Aziru</0> siap mengurutkan utas email Anda. Hubungkan akun {providerName} Anda untuk memulai. Amarnai <1>tidak pernah mengirim, menghapus, atau memindahkan email Anda</1>, dan satu-satunya yang ditulis adalah label pengurutannya sendiri, yang dapat Anda nonaktifkan. Kotak masuk Anda tetap milik Anda."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
-msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-msgstr "<0>King Aziru</0> siap menyortir utas email Anda. Hubungkan akun {providerName} Anda untuk memulai. Amarnai terhubung dengan <1>akses baca-saja</1> dan <2>tidak pernah mengirim, menghapus, atau mengubah apa pun</2>. Kotak masuk Anda tetap milik Anda."
+#~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+#~ msgstr "<0>King Aziru</0> siap menyortir utas email Anda. Hubungkan akun {providerName} Anda untuk memulai. Amarnai terhubung dengan <1>akses baca-saja</1> dan <2>tidak pernah mengirim, menghapus, atau mengubah apa pun</2>. Kotak masuk Anda tetap milik Anda."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -595,9 +600,7 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n"
-"\n"
-"Lihat lamaran di Gedung Arsip."
+msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepala Korespondensi.\n\nLihat lamaran di Gedung Arsip."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -624,11 +627,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Saya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n"
-"\n"
-"Sampai jumpa,"
+msgstr "Abdi-Heba,\n\nSaya akan berada di dekat Delta pada minggu yang sama. Mari kita bertemu di stasiun persinggahan pada hari kedua; saya bisa menyisihkan waktu pagi.\n\nSampai jumpa,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -647,12 +646,21 @@ msgstr "Peneliti Akademis"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
 #, fuzzy
-msgid "Access was denied. Grant read-only Gmail access to connect."
-msgstr "Akses ditolak. Berikan akses Gmail hanya-baca untuk terhubung."
+#~ msgid "Access was denied. Grant read-only Gmail access to connect."
+#~ msgstr "Akses ditolak. Berikan akses Gmail hanya-baca untuk terhubung."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
-msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
-msgstr "Akses ditolak. Berikan akses baca-saja Outlook (Mail.Read) untuk terhubung."
+#~ msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
+#~ msgstr "Akses ditolak. Berikan akses baca-saja Outlook (Mail.Read) untuk terhubung."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
+#, fuzzy
+msgid "Access was denied. Grant the requested Gmail access to connect."
+msgstr "Akses ditolak. Berikan akses Gmail yang diminta untuk terhubung."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+msgid "Access was denied. Grant the requested Outlook access to connect."
+msgstr "Akses ditolak. Berikan akses Outlook yang diminta untuk terhubung."
 
 #: ../../apps/mobile/app/(app)/account.tsx:105
 #, fuzzy
@@ -933,17 +941,30 @@ msgstr "Amarnai dinamai dari surat-surat Amarna, sekumpulan tablet tanah liat da
 #~ msgstr ""
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:89
-msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Hubungkan kembali akun {providerName} Anda untuk melanjutkan penyortiran utas email Anda. Akses tetap <0>baca-saja</0>, dan kotak masuk Anda tetap milik Anda."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Hubungkan kembali akun {providerName} Anda untuk melanjutkan penyortiran utas email Anda. Akses tetap <0>baca-saja</0>, dan kotak masuk Anda tetap milik Anda."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
+msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Hubungkan kembali akun {providerName} Anda untuk melanjutkan pengurutan utas email Anda. Amarnai <0>tidak pernah mengirim, menghapus, atau memindahkan email Anda</0>, dan kotak masuk Anda tetap milik Anda."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali akun Gmail Anda untuk melanjutkan penyortiran utas email. Akses tetap <0>hanya-baca</0>, dan kotak masuk Anda tetap milik Anda."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali akun Gmail Anda untuk melanjutkan penyortiran utas email. Akses tetap <0>hanya-baca</0>, dan kotak masuk Anda tetap milik Anda."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:89
+#, fuzzy
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Hubungkan kembali akun Gmail Anda untuk melanjutkan pengurutan utas email Anda. Amarnai <0>tidak pernah mengirim, menghapus, atau memindahkan email Anda</0>, dan kotak masuk Anda tetap milik Anda."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali akun Outlook Anda untuk melanjutkan penyortiran utas email Anda. Akses tetap <0>hanya-baca</0>, dan kotak masuk Anda tetap milik Anda."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Sambungkan kembali akun Outlook Anda untuk melanjutkan penyortiran utas email Anda. Akses tetap <0>hanya-baca</0>, dan kotak masuk Anda tetap milik Anda."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai tidak lagi menyinkronkan kotak masuk ini. Hubungkan kembali akun Outlook Anda untuk melanjutkan pengurutan utas email Anda. Amarnai <0>tidak pernah mengirim, menghapus, atau memindahkan email Anda</0>, dan kotak masuk Anda tetap milik Anda."
 
 #: ../ui/src/pricing/planMessages.ts:113
 #, fuzzy
@@ -1000,7 +1021,7 @@ msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai memerlukan akses ke servernya dan kotak masuk Anda untuk menampilkan email Anda."
 
 #: ../../apps/extension/src/App.tsx:56
-#: ../../apps/extension/src/auth/SignInScreen.tsx:14
+#: ../../apps/extension/src/auth/SignInScreen.tsx:15
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai memerlukan akses ke servernya dan kotak masuk Anda agar berfungsi. Mohon izinkan akses dan coba lagi."
 
@@ -1326,11 +1347,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Kata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n"
-"\n"
-"Dengan hormat,"
+msgstr "Aziru,\n\nKata-kata persahabatan Anda telah kami terima dengan baik. Kami terbuka untuk mendengar lebih banyak tentang apa yang diusulkan oleh Wangsa Amurru. Kirimkan ketentuan Anda melalui kurir berikutnya.\n\nDengan hormat,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1578,7 +1595,7 @@ msgstr "Bisakah saya meng-hosting Amarnai sendiri?"
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:147
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:148
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:209
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:90
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:109
@@ -1915,12 +1932,12 @@ msgstr "Hubungkan {name}"
 msgid "Connect {name} to this workspace?"
 msgstr "Hubungkan {name} ke ruang kerja ini?"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:123
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:124
 msgid "Connect {providerName}"
 msgstr "Hubungkan {providerName}"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:167
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:159
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:168
 msgid "Connect {secondaryName}"
 msgstr "Hubungkan {secondaryName}"
 
@@ -1943,7 +1960,7 @@ msgid "Connect a mailbox to Amarnai to start sorting your inbox."
 msgstr "Hubungkan kotak email ke Amarnai untuk mulai menyortir kotak masuk Anda."
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
@@ -2012,7 +2029,7 @@ msgstr "Cukup hubungkan sekali, buat folder Anda sekali, dan biarkan Amarnai men
 #~ msgstr "Cukup hubungkan sekali, buat rencana sekali, dan biarkan Amarnai menangani email baru serta ribuan utas yang sudah ada di kotak masuk Anda."
 
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:153
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:461
 #, fuzzy
@@ -2028,10 +2045,14 @@ msgstr "Hubungkan Outlook"
 msgid "Connect your {providerName} inbox"
 msgstr "Hubungkan kotak masuk {providerName} Anda"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:97
+msgid "Connect your account to get started. Amarnai <0>never sends, deletes, or moves your mail</0>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "Hubungkan akun Anda untuk memulai. Amarnai <0>tidak pernah mengirim, menghapus, atau memindahkan email Anda</0>, dan satu-satunya yang ditulis adalah label pengurutannya sendiri, yang dapat Anda nonaktifkan. Kotak masuk Anda tetap milik Anda."
+
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
 #, fuzzy
-msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "Hubungkan akun Anda untuk memulai. Amarnai terhubung dengan <0>akses hanya-baca</0> dan <1>tidak pernah mengirim, menghapus, atau mengubah apa pun</1>. Kotak masuk Anda tetap milik Anda."
+#~ msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "Hubungkan akun Anda untuk memulai. Amarnai terhubung dengan <0>akses hanya-baca</0> dan <1>tidak pernah mengirim, menghapus, atau mengubah apa pun</1>. Kotak masuk Anda tetap milik Anda."
 
 #: ../../apps/extension/src/App.tsx:91
 #~ msgid "Connect your Gmail account to start triaging."
@@ -2065,14 +2086,14 @@ msgstr "Sambungkan kotak masuk Anda untuk mulai memilah."
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Menghubungkan {name} akan menghapus secara permanen email yang sudah diurutkan yang tersimpan dari {retainedAddress}. Folder dan pengaturan Anda tetap tersimpan."
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:131
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:132
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Menghubungkan {secondaryName} akan menghapus secara permanen email yang sudah diurutkan yang tersimpan dari {retainedAddress}. Folder dan pengaturan Anda tetap tersimpan."
 
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 msgid "Connecting…"
 msgstr "Menghubungkan…"
 
@@ -2100,7 +2121,7 @@ msgstr "Lanjutkan sebagai {incomingEmail}"
 msgid "Continue to {name}"
 msgstr "Lanjutkan ke {name}"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:141
 msgid "Continue to {secondaryName}"
 msgstr "Lanjutkan ke {secondaryName}"
 
@@ -2119,14 +2140,14 @@ msgstr "Lanjutkan ke Pembayaran"
 msgid "Continue with email"
 msgstr "Lanjutkan dengan email"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:113
+#: ../../apps/extension/src/auth/SignInScreen.tsx:121
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
 msgid "Continue with Google"
 msgstr "Lanjutkan dengan Google"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:124
+#: ../../apps/extension/src/auth/SignInScreen.tsx:132
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 #, fuzzy
 msgid "Continue with Microsoft"
@@ -2172,8 +2193,13 @@ msgstr "Salin"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
-msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
-msgstr "Tidak dapat mengakses kotak masuk Gmail Anda. Pastikan Gmail API diaktifkan dan cakupan gmail.readonly ditambahkan ke layar izin OAuth di Google Cloud Console."
+#~ msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
+#~ msgstr "Tidak dapat mengakses kotak masuk Gmail Anda. Pastikan Gmail API diaktifkan dan cakupan gmail.readonly ditambahkan ke layar izin OAuth di Google Cloud Console."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#, fuzzy
+msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Amarnai requests are added to the OAuth consent screen in Google Cloud Console."
+msgstr "Tidak dapat mengakses kotak masuk Gmail Anda. Pastikan Gmail API diaktifkan dan cakupan yang diminta Amarnai ditambahkan ke layar persetujuan OAuth di Google Cloud Console."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
@@ -2976,7 +3002,7 @@ msgstr "Edit kotak masuk"
 msgid "Edit Path"
 msgstr "Ubah Jalur"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:134
+#: ../../apps/extension/src/auth/SignInScreen.tsx:142
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -3319,6 +3345,10 @@ msgstr "Filter antrean & folder…"
 msgid "Filter rail"
 msgstr "Bilah filter"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Filters match rules you write by hand: this sender, that subject keyword. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement. Your folders are mirrored back into your inbox as labels or categories, so the sorting shows up there too, but the calm workspace is what you work from. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "Filter mencocokkan aturan yang Anda tulis secara manual: pengirim ini, kata kunci subjek itu. Amarnai membaca setiap utas seperti manusia dan menatanya di ruang kerja yang bersih, tempat utas terkait berkumpul, masing-masing dengan alasan penempatannya. Folder Anda dicerminkan kembali ke kotak masuk sebagai label atau kategori, jadi pengurutannya juga muncul di sana, tetapi ruang kerja yang tenang itulah tempat Anda bekerja. Spam dan promosi secara otomatis disingkirkan kecuali Anda mengaktifkannya di pengaturan, dan apa pun yang Amarnai ragukan akan ditandai untuk peninjauan Anda."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
@@ -3343,8 +3373,12 @@ msgid "First-contact buyer and seller enquiries and new agent introductions."
 msgstr "Pertanyaan pembeli dan penjual kontak pertama serta perkenalan agen baru."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
-msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
-msgstr "Lima hal menjaga kotak masuk Anda tetap aman. Pertama, Amarnai dirancang hanya untuk membaca: izin yang Anda berikan melalui Google membuat Amarnai tidak mungkin mengirim, menghapus, atau mengubah email apa pun. Kedua, Amarnai telah lulus peninjauan keamanan Google, menyelesaikan asesmen keamanan CASA yang wajib bagi setiap aplikasi yang mengakses Gmail. Ketiga, Anda tetap memegang kendali: balasan tetap berupa draf hingga Anda menyetujuinya, tidak ada yang terkirim atas nama Anda, dan Anda dapat memutuskan Amarnai kapan saja. Keempat, tidak ada isi email yang disimpan: Amarnai hanya menyimpan label dan metadata, bukan konten pesan Anda. Kelima, kode sumbernya bersifat publik, sehingga siapa pun dapat memeriksa persis apa yang berinteraksi dengan email Anda."
+#~ msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+#~ msgstr "Lima hal menjaga kotak masuk Anda tetap aman. Pertama, Amarnai dirancang hanya untuk membaca: izin yang Anda berikan melalui Google membuat Amarnai tidak mungkin mengirim, menghapus, atau mengubah email apa pun. Kedua, Amarnai telah lulus peninjauan keamanan Google, menyelesaikan asesmen keamanan CASA yang wajib bagi setiap aplikasi yang mengakses Gmail. Ketiga, Anda tetap memegang kendali: balasan tetap berupa draf hingga Anda menyetujuinya, tidak ada yang terkirim atas nama Anda, dan Anda dapat memutuskan Amarnai kapan saja. Keempat, tidak ada isi email yang disimpan: Amarnai hanya menyimpan label dan metadata, bukan konten pesan Anda. Kelima, kode sumbernya bersifat publik, sehingga siapa pun dapat memeriksa persis apa yang berinteraksi dengan email Anda."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:16
+msgid "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+msgstr "Lima hal menjaga kotak masuk Anda aman. Pertama, akses Amarnai sempit secara desain: tidak pernah dapat mengirim, menghapus, atau memindahkan email Anda, dan satu-satunya yang ditulis adalah label pengurutannya sendiri, yang dapat Anda nonaktifkan. Kedua, Amarnai telah lulus tinjauan keamanan Google, menyelesaikan penilaian keamanan CASA yang diperlukan untuk setiap aplikasi yang mengakses Gmail. Ketiga, Anda tetap memegang kendali: balasan tetap berupa draf sampai Anda mengatakannya, tidak ada yang pernah dikirim atas nama Anda, dan Anda dapat memutuskan sambungan Amarnai kapan saja. Keempat, tidak ada isi email yang disimpan: Amarnai menyimpan label dan metadata, bukan isi pesan Anda. Kelima, kodenya bersifat publik, sehingga siapa pun dapat memeriksa dengan tepat apa yang menyentuh email Anda."
 
 #: ../ui/src/demo/demo-seed.ts:311
 #, fuzzy
@@ -3754,8 +3788,8 @@ msgstr "Asisten AI Gmail"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
 #, fuzzy
-msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Filter Gmail dan Outlook hanya menempelkan label atau kategori pada setiap pesan dan membiarkannya menumpuk di kotak masuk yang ramai. Amarnai membaca setiap rangkaian email layaknya manusia dan menatanya di ruang kerja yang rapi. Rangkaian email terkait ditempatkan bersama, lengkap dengan alasan penempatannya, memberikan Anda pandangan yang lebih tenang alih-alih sekadar label tambahan yang terkubur. Spam dan promosi otomatis disaring, kecuali Anda mengaktifkannya di pengaturan. Amarnai juga akan menandai apa pun yang tidak pasti untuk Anda tinjau."
+#~ msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Filter Gmail dan Outlook hanya menempelkan label atau kategori pada setiap pesan dan membiarkannya menumpuk di kotak masuk yang ramai. Amarnai membaca setiap rangkaian email layaknya manusia dan menatanya di ruang kerja yang rapi. Rangkaian email terkait ditempatkan bersama, lengkap dengan alasan penempatannya, memberikan Anda pandangan yang lebih tenang alih-alih sekadar label tambahan yang terkubur. Spam dan promosi otomatis disaring, kecuali Anda mengaktifkannya di pengaturan. Amarnai juga akan menandai apa pun yang tidak pasti untuk Anda tinjau."
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
@@ -3795,9 +3829,13 @@ msgstr "Sinkronisasi langsung Gmail aktif"
 #~ msgstr "Gmail ditandai sebagai penting"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
+msgid "Gmail read access was not granted. Please try again and approve the requested permission."
+msgstr "Akses baca Gmail tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
-msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
-msgstr "Akses baca-saja Gmail tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
+#~ msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
+#~ msgstr "Akses baca-saja Gmail tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
 
 #: ../../apps/web/src/components/Sidebar.tsx:37
 #, fuzzy
@@ -3848,7 +3886,7 @@ msgstr "Izin Akun Google"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google tidak dapat menyelesaikan otorisasi. Tautan mungkin telah kedaluwarsa: silakan coba lagi. Jika masalah berlanjut, periksa apakah URL callback Gmail terdaftar di Google Cloud Console."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:67
+#: ../../apps/extension/src/auth/SignInScreen.tsx:75
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
@@ -3880,11 +3918,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Baginda Raja,\n"
-"\n"
-"Laporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n"
-"\n"
-"Dalam persaudaraan,"
+msgstr "Baginda Raja,\n\nLaporan yang Paduka minta akan disiapkan sebelum dewan bersidang. Hamba akan meminta juru tulis hamba menyusun catatan wilayah timur dan mengirimkannya terlebih dahulu dengan kurir cepat.\n\nDalam persaudaraan,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4748,7 +4782,7 @@ msgstr "Izin akun Microsoft"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft tidak dapat menyelesaikan otorisasi. Tautan mungkin telah kedaluwarsa: silakan coba lagi. Jika masalah berlanjut, periksa apakah URI pengalihan terdaftar pada pendaftaran aplikasi."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #, fuzzy
 msgid "Microsoft sign-in failed. Please try again."
 msgstr "Masuk ke Microsoft gagal. Silakan coba lagi."
@@ -4878,6 +4912,15 @@ msgstr "Tidak Pernah"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Tidak pernah kirim otomatis · Terenkripsi saat tidak aktif · Data minimal"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#, fuzzy
+msgid "Never sends · OAuth · revoke anytime"
+msgstr "Tidak mengirim · OAuth · cabut sewaktu-waktu"
+
+#: ../../apps/site/src/components/landing/HeroSection.tsx:47
+msgid "Never sends or deletes"
+msgstr "Tidak pernah mengirim atau menghapus"
+
 #: ../ui/src/demo/demo-seed.ts:358
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
@@ -4940,7 +4983,7 @@ msgstr "Kata sandi baru"
 msgid "New threads will appear as they are sorted."
 msgstr "Thread baru akan muncul setelah disortir."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:160
+#: ../../apps/extension/src/auth/SignInScreen.tsx:168
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Baru di Amarnai? <0>Buat akun</0>"
 
@@ -5358,7 +5401,7 @@ msgstr "Opsional. Diterapkan saat membuat draf balasan untuk utas di folder ini.
 msgid "Optional. Sets this folder’s chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "Opsional. Mengatur warna chip dan ikon folder ini di seluruh kotak masuk Anda. Default akan menetapkan warna stabil secara otomatis."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:130
+#: ../../apps/extension/src/auth/SignInScreen.tsx:138
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:88
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:80
@@ -5386,8 +5429,12 @@ msgid "outlook ai assistant"
 msgstr "asisten AI Outlook"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
-msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
-msgstr "Akses baca-saja Outlook (Mail.Read) tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
+msgid "Outlook read access (Mail.Read) was not granted. Please try again and approve the requested permission."
+msgstr "Akses baca Outlook (Mail.Read) tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
+#~ msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
+#~ msgstr "Akses baca-saja Outlook (Mail.Read) tidak diberikan. Silakan coba lagi dan setujui izin yang diminta."
 
 #: ../ui/src/pricing/planMessages.ts:78
 #, fuzzy
@@ -5425,7 +5472,7 @@ msgstr "Lulus peninjauan keamanan Google"
 msgid "Passing through the Delta: free to meet?"
 msgstr "Sedang melintasi Delta: bisa bertemu?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:144
+#: ../../apps/extension/src/auth/SignInScreen.tsx:152
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:183
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
@@ -5884,12 +5931,12 @@ msgstr "Aktifkan ulang"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
-msgid "Read-only · OAuth · revoke anytime"
-msgstr "Hanya baca · OAuth · cabut kapan saja"
+#~ msgid "Read-only · OAuth · revoke anytime"
+#~ msgstr "Hanya baca · OAuth · cabut kapan saja"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:47
-msgid "Read-only by design"
-msgstr "Dirancang hanya untuk membaca"
+#~ msgid "Read-only by design"
+#~ msgstr "Dirancang hanya untuk membaca"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
 #, fuzzy
@@ -5935,7 +5982,7 @@ msgid "Reconnect"
 msgstr "Sambungkan ulang"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:384
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:121
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:122
 #, fuzzy
 msgid "Reconnect {providerName}"
 msgstr "Hubungkan Kembali {providerName}"
@@ -5944,13 +5991,13 @@ msgstr "Hubungkan Kembali {providerName}"
 #~ msgid "Reconnect failed. Please try again."
 #~ msgstr "Koneksi ulang gagal. Silakan coba lagi."
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:128
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Sambungkan ulang Gmail"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #, fuzzy
 msgid "Reconnect Outlook"
 msgstr "Sambungkan Kembali Outlook"
@@ -5968,7 +6015,7 @@ msgstr "Sambungkan ulang kotak masuk Gmail Anda"
 msgid "Reconnect your Outlook inbox"
 msgstr "Sambungkan Kembali Kotak Masuk Outlook Anda"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
 msgid "Reconnecting…"
@@ -6286,11 +6333,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Kami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n"
-"\n"
-"Semoga sehat selalu,"
+msgstr "Rib-Hadda,\n\nKami mengerti. Gandum tambahan telah dipesan dari gudang selatan dan akan tiba sebelum festival panen. Kami mohon kesabaran Anda hingga saat itu.\n\nSemoga sehat selalu,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6426,7 +6469,7 @@ msgstr "Cari utas…"
 #~ msgid "See how your inbox is sorted, right next to Gmail."
 #~ msgstr "Lihat kotak masuk Anda tersortir, langsung di Gmail."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:104
+#: ../../apps/extension/src/auth/SignInScreen.tsx:112
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "Lihat bagaimana kotak masuk Anda diurutkan, tepat di samping email Anda."
 
@@ -6639,7 +6682,7 @@ msgstr "Tampilkan tombol Balasan Amarnai untuk membuat draf balasan"
 msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
 msgstr "Permintaan penayangan, tur pembeli, pendaftaran open house, dan penawaran tertulis."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:155
+#: ../../apps/extension/src/auth/SignInScreen.tsx:163
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
@@ -6694,7 +6737,7 @@ msgstr "Masuk dengan email saja."
 #~ msgstr "Masuk dengan Google. Amarnai menyinkronkan utas dan label Anda. Amarnai tidak pernah mengirim atau menghapus atas nama Anda."
 
 #: ../../apps/extension/src/App.tsx:128
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:161
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:156
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -6720,7 +6763,7 @@ msgstr "Daftar dengan Google"
 msgid "Sign up with Microsoft"
 msgstr "Daftar dengan Microsoft"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:47
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."
@@ -7521,13 +7564,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Untuk saudaraku, Raja Agung,\n"
-"\n"
-"Dewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n"
-"\n"
-"Aliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n"
-"\n"
-"Tushratta, Raja Agung Mitanni"
+msgstr "Untuk saudaraku, Raja Agung,\n\nDewan agung bersidang pada awal Shemu. Aku meminta Anda menyiapkan laporan lengkap wilayah timur dan mengirimkannya dengan kurir cepat, sebelum bulan baru jika memungkinkan.\n\nAliansi kita kuat. Marilah kita tunjukkan kepada dewan bahwa itu tetap demikian.\n\nTushratta, Raja Agung Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7536,11 +7573,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Kepada Biro Penunjukan Kerajaan,\n"
-"\n"
-"Kami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n"
-"\n"
-"Berdasarkan keputusan kerajaan,"
+msgstr "Kepada Biro Penunjukan Kerajaan,\n\nKami telah menerima permohonan dari Horemheb dari Thebes dan akan meninjau catatan rekam jejaknya sebelum bulan baru berikutnya. Harap beri tahu dia bahwa kami akan mengirimkan kabar pada waktunya.\n\nBerdasarkan keputusan kerajaan,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7551,13 +7584,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Selama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n"
-"\n"
-"Saya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n"
-"\n"
-"Aziru, hamba Raja Agung, penguasa Amurru"
+msgstr "Kepada Raja Agung,\n\nSelama bertahun-tahun rumah kita telah seperti saudara. Saya menulis sekarang untuk mengusulkan agar kita meresmikan persahabatan ini demi kepentingan kedua bangsa kita: sebuah pakta perlindungan timbal balik dan rute bersama.\n\nSaya hanya meminta Anda mendengar syarat-syarat saya. Kirimkan pesan melalui kurir berikutnya dan saya akan segera mengirimkan utusan saya.\n\nAziru, hamba Raja Agung, penguasa Amurru"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7566,11 +7593,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Kepada Raja Agung,\n"
-"\n"
-"Perjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n"
-"\n"
-"Hambamu, Abdi-Heba, gubernur Urushalim"
+msgstr "Kepada Raja Agung,\n\nPerjalanan saya membawa saya dekat Delta dalam beberapa hari mendatang. Jika Raja Agung memiliki waktu luang, saya akan menyambut kesempatan untuk berbicara tatap muka; ada hal-hal yang lebih mudah diucapkan daripada ditulis.\n\nHambamu, Abdi-Heba, gubernur Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7579,11 +7602,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n"
-"\n"
-"Dalam persahabatan,"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya telah mendengar perkataan Anda. Emas akan dikirimkan sebelum utusan berikutnya berangkat. Kami menghargai ikatan antara rumah kita dan tidak ingin itu mendingin.\n\nDalam persahabatan,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7594,13 +7613,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Kepada Raja Agung, saudaraku,\n"
-"\n"
-"Saya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n"
-"\n"
-"Kami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n"
-"\n"
-"Burna-Buriash II, Raja Babilonia"
+msgstr "Kepada Raja Agung, saudaraku,\n\nSaya menulis dalam persahabatan, sebagaimana para ayah kita menulis sebelumnya. Pengiriman emas ketiga yang disepakati dalam perjanjian kita belum tiba. Dua utusan telah berlalu dan kami masih menunggu.\n\nKami meminta Anda mengirimkannya tanpa penundaan lebih lanjut, sebagaimana layaknya ikatan antara rumah kita.\n\nBurna-Buriash II, Raja Babilonia"
 
 #: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
@@ -7611,13 +7624,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n"
-"\n"
-"Gandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n"
-"\n"
-"Saya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n"
-"\n"
-"Hambamu, Rib-Hadda, gubernur Byblos"
+msgstr "Kepada Raja Agung, Tuanku, Matahariku,\n\nGandum yang Anda kirim bulan lalu telah diterima dengan syukur dan saya memuji nama Anda di hadapan rakyat. Namun saya harus menulis lagi: pengiriman ketiga belum tiba dan kota menjadi gelisah.\n\nSaya telah menulis tujuh kali. Saya tidak ingin menyusahkan Anda, namun apa lagi yang bisa saya lakukan?\n\nHambamu, Rib-Hadda, gubernur Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -8272,8 +8279,8 @@ msgstr "Ya. Amarnai dapat memproses tumpukan email yang sudah ada di kotak masuk
 #~ msgstr "Ya. Amarnai dapat memproses ribuan thread yang sudah ada di kotak masuk Anda, bukan hanya pesan yang baru masuk. Triage historis dan pengurutan berkelanjutan menggunakan rencana yang sama, jadi seluruh kotak masuk Anda akan tertata seragam."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
-msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "Ya. Amarnai terhubung dengan cakupan hanya-baca, sehingga dapat membaca rangkaian email Anda tetapi tidak dapat mengirim, menghapus, melabeli, atau mengubah apa pun di akun Anda. Amarnai hanya menyimpan yang diperlukan untuk mengurutkan dan menampilkan rangkaian email: subjek, peserta, cuplikan, serta label dan alasan yang dihasilkannya. Isi pesan lengkap diambil saat dibutuhkan dan diproses dalam memori, tidak disimpan, dan token OAuth dienkripsi saat tidak aktif."
+#~ msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "Ya. Amarnai terhubung dengan cakupan hanya-baca, sehingga dapat membaca rangkaian email Anda tetapi tidak dapat mengirim, menghapus, melabeli, atau mengubah apa pun di akun Anda. Amarnai hanya menyimpan yang diperlukan untuk mengurutkan dan menampilkan rangkaian email: subjek, peserta, cuplikan, serta label dan alasan yang dihasilkannya. Isi pesan lengkap diambil saat dibutuhkan dan diproses dalam memori, tidak disimpan, dan token OAuth dienkripsi saat tidak aktif."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
@@ -8285,9 +8292,18 @@ msgstr "Ya. Amarnai terhubung dengan cakupan hanya-baca, sehingga dapat membaca 
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Ya. Amarnai adalah open source di bawah lisensi AGPL-3.0. Anda dapat mengkloning repositori dan menjalankannya sendiri dengan Docker. Self-hosting gratis dan tidak didukung, dengan dukungan komunitas tersedia di GitHub."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
+#, fuzzy
+msgid "Yes. Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes back is its own labels in Gmail or categories in Outlook, kept under an Amarnai namespace so sorted mail is easy to find in your inbox, and you can switch that off. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "Ya. Amarnai membaca utas email Anda untuk mengurutkannya, dan tidak pernah dapat mengirim, menghapus, atau memindahkan email Anda. Satu-satunya yang ditulisnya kembali adalah labelnya sendiri di Gmail atau kategori di Outlook, disimpan di bawah namespace Amarnai sehingga email yang diurutkan mudah ditemukan di kotak masuk Anda, dan Anda dapat menonaktifkannya. Ia hanya menyimpan apa yang dibutuhkan untuk mengurutkan dan menampilkan utas: subjek, peserta, cuplikan, serta label dan penalaran yang dihasilkannya. Seluruh isi pesan diambil saat dibutuhkan dan diproses dalam memori, tidak disimpan, dan token OAuth dienkripsi saat tidak aktif."
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
-msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "Ya. Amarnai berfungsi dengan Gmail dan Outlook, masing-masing terhubung dengan cara hanya-baca yang sama: Amarnai membaca rangkaian email Anda untuk mengurutkannya dan tidak pernah mengirim, menghapus, atau mengubah apa pun di akun Anda."
+#~ msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "Ya. Amarnai berfungsi dengan Gmail dan Outlook, masing-masing terhubung dengan cara hanya-baca yang sama: Amarnai membaca rangkaian email Anda untuk mengurutkannya dan tidak pernah mengirim, menghapus, atau mengubah apa pun di akun Anda."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:40
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same way: Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes is its own labels in Gmail or categories in Outlook, and you can switch that off."
+msgstr "Ya. Amarnai bekerja dengan Gmail dan Outlook, masing-masing terhubung dengan cara yang sama: Amarnai membaca utas email Anda untuk mengurutkannya, dan tidak pernah dapat mengirim, menghapus, atau memindahkan email Anda. Satu-satunya yang ditulisnya adalah labelnya sendiri di Gmail atau kategori di Outlook, dan Anda dapat menonaktifkannya."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy

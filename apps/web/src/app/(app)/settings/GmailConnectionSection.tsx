@@ -55,7 +55,7 @@ function AccountPermissionsLink({ provider }: { provider: MailProvider }) {
 // Gmail connect-error copy (unchanged keys so existing translations are kept).
 const GMAIL_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
   access_denied:
-    msg`Access was denied. Grant read-only Gmail access to connect.`,
+    msg`Access was denied. Grant the requested Gmail access to connect.`,
   invalid_callback:
     msg`The authorization callback was incomplete. Please try again.`,
   invalid_state:
@@ -65,9 +65,9 @@ const GMAIL_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
   token_exchange:
     msg`Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console.`,
   insufficient_scope:
-    msg`Gmail read-only access was not granted. Please try again and approve the requested permission.`,
+    msg`Gmail read access was not granted. Please try again and approve the requested permission.`,
   gmail_profile_fetch:
-    msg`Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console.`,
+    msg`Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Amarnai requests are added to the OAuth consent screen in Google Cloud Console.`,
   google_account_info:
     msg`Could not verify your Google account. Please try again.`,
   db_upsert:
@@ -83,7 +83,7 @@ const GMAIL_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
 // Outlook connect-error copy (Microsoft-specific wording).
 const OUTLOOK_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
   access_denied:
-    msg`Access was denied. Grant read-only Outlook (Mail.Read) access to connect.`,
+    msg`Access was denied. Grant the requested Outlook access to connect.`,
   invalid_callback:
     msg`The authorization callback was incomplete. Please try again.`,
   invalid_state:
@@ -93,7 +93,7 @@ const OUTLOOK_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
   token_exchange:
     msg`Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration.`,
   insufficient_scope:
-    msg`Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission.`,
+    msg`Outlook read access (Mail.Read) was not granted. Please try again and approve the requested permission.`,
   profile_fetch:
     msg`Could not access your Outlook inbox. Please try again.`,
   db_upsert:

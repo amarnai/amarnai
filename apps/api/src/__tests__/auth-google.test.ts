@@ -4,8 +4,15 @@ vi.mock("@amarnai/db", () => ({
   db: {
     // issueAccessTokenForUser reads the account's current epoch to stamp the token.
     user: { findUnique: vi.fn(async () => ({ sessionEpoch: 0 })) },
+    // Read + written by the post-sign-in writeback enable step.
+    emailConnection: { findUnique: vi.fn() },
+    gmailSyncSettings: { upsert: vi.fn() },
   },
   maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock("../queues.js", () => ({
+  provisionLabelsQueue: { add: vi.fn().mockResolvedValue({}) },
 }));
 
 vi.mock("@amarnai/gmail", () => {
@@ -18,15 +25,26 @@ vi.mock("@amarnai/gmail", () => {
   }
   class GmailClient {}
   const GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+  const GMAIL_MODIFY_SCOPE = "https://www.googleapis.com/auth/gmail.modify";
+  // Faithful to the real signature: providerHasWritebackScope (unmocked here)
+  // calls into hasWritebackScope, and the route reads hasWriteback via the stored
+  // scopes, so both must exist or the enable step sees undefined.
+  const hasWritebackScope = (scopes: readonly string[]) => scopes.includes(GMAIL_MODIFY_SCOPE);
   return {
     fetchGmailProfile: vi.fn(),
     fetchGoogleUserInfo: vi.fn(),
     exchangeServerAuthCode: vi.fn(),
     exchangeAuthCode: vi.fn(),
     GMAIL_READONLY_SCOPE,
+    GMAIL_MODIFY_SCOPE,
+    hasWritebackScope,
     parseGrantedScopes: (scope: string) => {
       const scopes = scope.split(" ");
-      return { scopes, hasReadonly: scopes.includes(GMAIL_READONLY_SCOPE) };
+      return {
+        scopes,
+        hasReadonly: scopes.includes(GMAIL_READONLY_SCOPE) || hasWritebackScope(scopes),
+        hasWriteback: hasWritebackScope(scopes),
+      };
     },
     GmailApiError,
     GmailClient,
@@ -78,6 +96,8 @@ import {
 import { provisionGoogleUser, issueAccessToken, rotateRefreshToken } from "@amarnai/auth";
 import { db } from "@amarnai/db";
 import { syncInboxQueue } from "../services/queue-client.js";
+import { provisionLabelsQueue } from "../queues.js";
+import { config } from "@amarnai/config";
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
@@ -215,6 +235,78 @@ describe("POST /auth/google", () => {
     expect(exchangeAuthCode).not.toHaveBeenCalled();
     expect(exchangeServerAuthCode).not.toHaveBeenCalled();
     expect(provisionGoogleUser).not.toHaveBeenCalled();
+  });
+});
+
+describe("POST /auth/google — label writeback on an upfront write grant", () => {
+  const MODIFY_SCOPE = "https://www.googleapis.com/auth/gmail.modify";
+
+  /** Point the exchange at a scope string and store it on the connection. */
+  function grantedScope(scope: string): void {
+    vi.mocked(exchangeServerAuthCode).mockResolvedValue({
+      accessToken: "google-at",
+      refreshToken: "google-rt",
+      scope,
+      expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+    });
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+      provider: "GMAIL",
+      status: "ACTIVE",
+      grantedScopes: scope.split(" "),
+    } as never);
+  }
+
+  function withFlag(on: boolean, run: () => Promise<void>): Promise<void> {
+    const original = config.mail.labelWritebackEnabled;
+    (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = on;
+    return run().finally(() => {
+      (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = original;
+    });
+  }
+
+  it("enables writeback and enqueues the relabel sweep when modify was granted", async () => {
+    await withFlag(true, async () => {
+      grantedScope(`openid email ${GMAIL_SCOPE} ${MODIFY_SCOPE}`);
+      const res = await post({ ...VALID_BODY, scope: `openid email ${GMAIL_SCOPE} ${MODIFY_SCOPE}` });
+      expect(res.status).toBe(200);
+
+      expect(db.gmailSyncSettings.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { workspaceId: "ws-1" },
+          update: { labelWritebackEnabled: true },
+        }),
+      );
+      // The relabel dedup id, not the structural one: an existing inbox has to
+      // catch up, and a folder-create provision must not coalesce the sweep away.
+      expect(provisionLabelsQueue.add).toHaveBeenCalledWith(
+        "provision-folder-labels",
+        { workspaceId: "ws-1", relabelThreads: true },
+        { deduplication: { id: "provision_relabel_ws-1" } },
+      );
+    });
+  });
+
+  it("does nothing for a read-only grant", async () => {
+    await withFlag(true, async () => {
+      grantedScope(`openid email ${GMAIL_SCOPE}`);
+      const res = await post(VALID_BODY);
+      expect(res.status).toBe(200);
+      expect(db.gmailSyncSettings.upsert).not.toHaveBeenCalled();
+      expect(provisionLabelsQueue.add).not.toHaveBeenCalled();
+    });
+  });
+
+  it("does nothing, and reads no connection, when the deployment flag is off", async () => {
+    // Production's current state: the whole feature must be inert, including the
+    // DB read, until Google's gmail.modify verification clears.
+    await withFlag(false, async () => {
+      grantedScope(`openid email ${GMAIL_SCOPE} ${MODIFY_SCOPE}`);
+      const res = await post({ ...VALID_BODY, scope: `openid email ${GMAIL_SCOPE} ${MODIFY_SCOPE}` });
+      expect(res.status).toBe(200);
+      expect(db.emailConnection.findUnique).not.toHaveBeenCalled();
+      expect(db.gmailSyncSettings.upsert).not.toHaveBeenCalled();
+      expect(provisionLabelsQueue.add).not.toHaveBeenCalled();
+    });
   });
 });
 

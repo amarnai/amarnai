@@ -22,6 +22,8 @@ vi.mock("@amarnai/db", () => {
       upsert: vi.fn(),
       count: vi.fn(),
     },
+    // Written by the post-connect writeback enable step.
+    gmailSyncSettings: { upsert: vi.fn() },
     emailAccount: {
       findUnique: vi.fn(),
       update: vi.fn(),
@@ -78,11 +80,19 @@ vi.mock("@amarnai/gmail", () => ({
   revokeGoogleToken: mockRevokeGoogleToken,
   // Literal, not the GMAIL_SCOPE const — this factory is hoisted above it.
   GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
+  GMAIL_MODIFY_SCOPE: "https://www.googleapis.com/auth/gmail.modify",
+  // Reached through @amarnai/mail's providerHasWritebackScope, which the connect
+  // path calls to decide whether the new grant can write labels.
+  hasWritebackScope: (scopes: readonly string[]) =>
+    scopes.includes("https://www.googleapis.com/auth/gmail.modify"),
   parseGrantedScopes: (scope: string) => {
     const scopes = scope.split(" ");
     return {
       scopes,
-      hasReadonly: scopes.includes("https://www.googleapis.com/auth/gmail.readonly"),
+      hasReadonly:
+        scopes.includes("https://www.googleapis.com/auth/gmail.readonly") ||
+        scopes.includes("https://www.googleapis.com/auth/gmail.modify"),
+      hasWriteback: scopes.includes("https://www.googleapis.com/auth/gmail.modify"),
     };
   },
   fetchGmailProfile: vi.fn(),
@@ -102,6 +112,7 @@ vi.mock("../queues.js", () => ({
   classifyThreadQueue: {
     getJobs: vi.fn().mockResolvedValue([]),
   },
+  provisionLabelsQueue: { add: vi.fn().mockResolvedValue({}) },
 }));
 
 vi.mock("../services/queue-client.js", () => ({
@@ -126,6 +137,8 @@ import {
   encrypt,
 } from "@amarnai/gmail";
 import { syncInboxQueue } from "../services/queue-client.js";
+import { provisionLabelsQueue } from "../queues.js";
+import { config } from "@amarnai/config";
 
 const WS_ID = "ws-1";
 const OTHER_WS_ID = "ws-other";
@@ -439,6 +452,41 @@ describe("POST /workspaces/:workspaceId/gmail-connection", () => {
     expect(res.status).toBe(409);
     expect(vi.mocked(db.emailConnection.upsert)).not.toHaveBeenCalled();
     expect(vi.mocked(syncInboxQueue.add)).not.toHaveBeenCalled();
+  });
+
+  it("enables writeback and provisions labels when the connect granted gmail.modify", async () => {
+    // The web OAuth callback already did this; the extension's connect route did
+    // not, so a granted write scope provisioned nothing.
+    const original = config.mail.labelWritebackEnabled;
+    (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = true;
+    try {
+      vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+        ...safeConnection,
+        grantedScopes: [GMAIL_SCOPE, "https://www.googleapis.com/auth/gmail.modify"],
+      } as never);
+
+      const res = await connect(VALID_CONNECT_BODY);
+      expect(res.status).toBe(201);
+      expect(vi.mocked(provisionLabelsQueue.add)).toHaveBeenCalledWith(
+        "provision-folder-labels",
+        { workspaceId: WS_ID, relabelThreads: true },
+        { deduplication: { id: `provision_relabel_${WS_ID}` } },
+      );
+    } finally {
+      (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = original;
+    }
+  });
+
+  it("provisions nothing for a read-only connect", async () => {
+    const original = config.mail.labelWritebackEnabled;
+    (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = true;
+    try {
+      const res = await connect(VALID_CONNECT_BODY);
+      expect(res.status).toBe(201);
+      expect(vi.mocked(provisionLabelsQueue.add)).not.toHaveBeenCalled();
+    } finally {
+      (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = original;
+    }
   });
 });
 

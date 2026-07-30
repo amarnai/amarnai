@@ -36,7 +36,7 @@ import {
   fetchOutlookProfile,
   type OutlookAccountType,
 } from "@amarnai/outlook";
-import { RegisterEmailSchema } from "@amarnai/shared";
+import { RegisterEmailSchema, type MailScopePolicy } from "@amarnai/shared";
 import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
 import { config } from "@amarnai/config";
 import {
@@ -53,6 +53,7 @@ import { syncInboxQueue } from "../services/queue-client.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
 import { registerGmailWatch } from "../services/gmail-watch.js";
 import { registerOutlookSubscription } from "../services/outlook-subscription.js";
+import { enableLabelWritebackForGrant } from "../services/label-writeback.js";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -137,6 +138,21 @@ async function issueTokenPair(userId: string): Promise<TokenPair> {
   ]);
   return tokenPairResponse(accessToken, refresh);
 }
+
+// The mail scopes an OAuth client should ask for, which it has to decide BEFORE
+// it has a session. Public and unauthenticated for that reason: the body is one
+// deployment-level boolean, no per-user or per-workspace fact. The authenticated
+// gmail-sync-settings endpoint carries the same flag as `writebackAvailable`, but
+// it is workspace-scoped and so unreachable at sign-in time.
+//
+// Clients that cannot reach this must fall back to read-only, never to asking for
+// the write scope: requesting a scope the deployment has switched off trips
+// Google's unverified-scope warning, and the Outlook write scopes are far more
+// likely than Mail.Read to hit tenant admin-consent restrictions, which would
+// turn a working read-only sign-in into a hard failure.
+auth.get("/auth/mail-scope-policy", (c) =>
+  c.json({ writebackAvailable: config.mail.labelWritebackEnabled } satisfies MailScopePolicy),
+);
 
 // Email/password login for native clients. Returns a short-lived access token
 // plus a rotating refresh token. Google sign-in is a separate endpoint (next
@@ -326,6 +342,18 @@ auth.post("/auth/google", async (c) => {
     );
   }
 
+  // The write scope is requested upfront, so a sign-in is where writeback gets
+  // enabled and folder provisioning starts. Every sign-in, not only the first:
+  // there is no false→true flip to detect (writeback is on by default) and both
+  // steps are idempotent. Reads the STORED scopes, so this no-ops for a read-only
+  // grant or a client that never asked (mobile), and never throws.
+  if (result.gmailConnected && result.workspaceId) {
+    await enableLabelWritebackForGrant({
+      workspaceId: result.workspaceId,
+      source: "auth/google",
+    });
+  }
+
   return c.json(await issueTokenPair(result.userId));
 });
 
@@ -430,6 +458,16 @@ auth.post("/auth/microsoft", async (c) => {
       (err) =>
         console.error("[auth/microsoft] extension_nudge:", err instanceof Error ? err.message : err)
     );
+  }
+
+  // Gmail's counterpart: enable category writeback and start provisioning when
+  // the grant carries both write scopes. See the /auth/google call for why this
+  // runs on every sign-in and reads the stored scopes.
+  if (result.outlookConnected && result.workspaceId) {
+    await enableLabelWritebackForGrant({
+      workspaceId: result.workspaceId,
+      source: "auth/microsoft",
+    });
   }
 
   return c.json(await issueTokenPair(result.userId));

@@ -8,7 +8,7 @@ export const metadata: Metadata = buildLegalMetadata(
   "How Amarnai collects, uses, and protects your data."
 );
 
-const LAST_UPDATED = "July 16, 2026";
+const LAST_UPDATED = "July 30, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -53,7 +53,12 @@ export default function PrivacyPage() {
         <li>
           <strong>Gmail or Outlook thread metadata and content:</strong> subject lines,
           sender and recipient addresses, message bodies, and timestamps, fetched via the
-          Gmail API or Microsoft Graph API to classify and sort your threads.
+          Gmail API (<code>gmail.readonly</code>, plus <code>gmail.modify</code> when
+          label writeback is enabled) or the Microsoft Graph API (<code>Mail.Read</code>,
+          plus <code>Mail.ReadWrite</code> and <code>MailboxSettings.ReadWrite</code> when
+          category writeback is enabled) to classify and sort your threads. What the write
+          permission is used for is described in{" "}
+          <a href="#mailbox-writes">What Amarnai writes to your mailbox</a> below.
         </li>
         <li>
           <strong>OAuth tokens:</strong> encrypted refresh tokens that allow Amarnai to
@@ -77,13 +82,51 @@ export default function PrivacyPage() {
         <li>Display threads and their assigned categories in the Amarnai UI.</li>
         <li>Notify you of new high-priority messages.</li>
         <li>
-          Provide actions you explicitly request, such as composing, sending, or
-          deleting messages.
+          Mirror your Amarnai folders into your mailbox as labels or categories, when you
+          have enabled label writeback.
+        </li>
+        <li>
+          Generate reply drafts you have asked for. Drafts are shown to you for approval
+          and are sent by you, from your own mail client.
         </li>
       </ul>
       <p>
         We do not use your email content for advertising, sell it to third parties, or
         use it to train models that are not specific to your account.
+      </p>
+
+      <h2 id="mailbox-writes">What Amarnai Writes to Your Mailbox</h2>
+      <p>
+        Amarnai <strong>never sends email, and never deletes email</strong>. It has no
+        feature that does either, and no Amarnai screen can send a message on your behalf.
+      </p>
+      <p>
+        The only change Amarnai makes to your mailbox is labelling. When label writeback is
+        enabled, Amarnai mirrors your folder structure into your mailbox and keeps it in
+        sync as threads are sorted:
+      </p>
+      <ul>
+        <li>
+          In Gmail, it creates nested labels under an <code>Amarnai/</code> prefix and
+          applies the matching label to each sorted thread.
+        </li>
+        <li>
+          In Outlook, it creates categories in the mailbox&rsquo;s category list under an{" "}
+          <code>Amarnai</code> prefix and applies the matching category to each sorted
+          thread.
+        </li>
+      </ul>
+      <p>
+        Amarnai only ever adds, updates, or removes labels and categories that it created
+        itself. Labels and categories you created are never touched, and nothing else about
+        a message changes: Amarnai does not move threads out of your inbox, does not
+        archive, does not mark as read, does not modify message content, and does not
+        create drafts in your mailbox.
+      </p>
+      <p>
+        Writeback is a per-workspace setting you can switch off at any time from Settings.
+        If you decline the write permission when signing in or connecting your mailbox, the
+        connection continues with read access only and the feature stays inert.
       </p>
 
       <h2>AI Processing</h2>
@@ -117,12 +160,14 @@ export default function PrivacyPage() {
       <p>We use the following third-party services to operate the Service:</p>
       <ul>
         <li>
-          <strong>Google (Gmail API, OAuth 2.0):</strong> to authenticate you and
-          access your Gmail data with your permission.
+          <strong>Google (Gmail API, OAuth 2.0):</strong> to authenticate you, read
+          your Gmail data with your permission, and, when label writeback is enabled,
+          create and apply Amarnai&rsquo;s own labels.
         </li>
         <li>
           <strong>Microsoft (Microsoft Graph API, OAuth 2.0):</strong> to authenticate
-          you and access your Outlook data with your permission.
+          you, read your Outlook data with your permission, and, when category writeback
+          is enabled, create and apply Amarnai&rsquo;s own categories.
         </li>
         <li>
           <strong>Google (Gemini API):</strong> to classify email threads, suggest

@@ -10,6 +10,8 @@ import {
   OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE,
   OUTLOOK_SCOPES,
   OUTLOOK_CONSENT_SCOPES,
+  OUTLOOK_UPFRONT_SCOPES,
+  OUTLOOK_UPFRONT_CONSENT_SCOPES,
 } from "./microsoft-oauth.js";
 
 /** An id_token shaped like Microsoft's: three base64url segments, only the
@@ -102,6 +104,47 @@ describe("scopeForCodeRedemption", () => {
   it("redeems with openid once the client asks for it", () => {
     expect(scopeForCodeRedemption("openid Mail.Read offline_access User.Read")).toBe(
       OUTLOOK_CONSENT_SCOPES,
+    );
+  });
+
+  it("keeps the write scopes a client authorized upfront", () => {
+    // The bug this guards: refresh tokens are scope-bound, so redeeming a write
+    // grant with the read-only set mints a token that can never write, silently.
+    expect(scopeForCodeRedemption(OUTLOOK_UPFRONT_CONSENT_SCOPES)).toBe(
+      OUTLOOK_UPFRONT_CONSENT_SCOPES,
+    );
+    expect(scopeForCodeRedemption(OUTLOOK_UPFRONT_SCOPES)).toBe(OUTLOOK_UPFRONT_SCOPES);
+  });
+
+  it("returns whole constants rather than intersecting the echoed scope", () => {
+    // Microsoft omits offline_access from the scope it echoes on the redirect, so
+    // a per-scope intersection would redeem without it and mint a token carrying
+    // no refresh token. One echoed resource scope must still redeem the full set.
+    expect(scopeForCodeRedemption(OUTLOOK_MAIL_READ_SCOPE)).toBe(OUTLOOK_SCOPES);
+    expect(scopeForCodeRedemption(`openid ${OUTLOOK_MAIL_READ_SCOPE}`)).toBe(
+      OUTLOOK_CONSENT_SCOPES,
+    );
+    // Either write scope alone identifies an upfront-write build, because the two
+    // are always authorized as a pair.
+    expect(scopeForCodeRedemption(`openid Mail.Read ${OUTLOOK_MAIL_READWRITE_SCOPE}`)).toBe(
+      OUTLOOK_UPFRONT_CONSENT_SCOPES,
+    );
+    expect(scopeForCodeRedemption(`Mail.Read ${OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE}`)).toBe(
+      OUTLOOK_UPFRONT_SCOPES,
+    );
+  });
+
+  it("falls back to read-only when a write build's grant carries no write scope", () => {
+    // Write consent denied or tenant-restricted. The read-only set is a subset of
+    // that build's authorize request, so the redemption is still valid.
+    expect(scopeForCodeRedemption("openid Mail.Read offline_access User.Read")).toBe(
+      OUTLOOK_CONSENT_SCOPES,
+    );
+  });
+
+  it("never asks Microsoft for a scope outside the known sets", () => {
+    expect(scopeForCodeRedemption("Mail.Read offline_access User.Read Files.ReadWrite.All")).toBe(
+      OUTLOOK_SCOPES,
     );
   });
 });

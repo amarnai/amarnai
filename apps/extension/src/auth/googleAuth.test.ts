@@ -6,12 +6,21 @@ vi.mock("../config", () => ({
   WEB_APP_URL: "http://localhost:3000",
 }));
 
+vi.mock("./writebackPolicy", () => ({
+  isWritebackAvailable: vi.fn(),
+  prefetchWritebackPolicy: vi.fn(),
+}));
+
 import { requestGoogleAuth, GoogleAuthCancelledError } from "./googleAuth";
+import { isWritebackAvailable } from "./writebackPolicy";
 
 const REDIRECT = "https://abcdefghijklmnop.chromiumapp.org/";
+const READONLY = "https://www.googleapis.com/auth/gmail.readonly";
+const MODIFY = "https://www.googleapis.com/auth/gmail.modify";
 
 beforeEach(() => {
   vi.mocked(chrome.identity.getRedirectURL).mockReturnValue(REDIRECT);
+  vi.mocked(isWritebackAvailable).mockResolvedValue(false);
 });
 
 describe("requestGoogleAuth", () => {
@@ -31,12 +40,40 @@ describe("requestGoogleAuth", () => {
     expect(url.searchParams.get("access_type")).toBe("offline");
     // Mandatory: without it Google may skip consent and omit the refresh token.
     expect(url.searchParams.get("prompt")).toBe("consent");
-    expect(url.searchParams.get("scope")).toContain("gmail.readonly");
+    expect(url.searchParams.get("scope")).toBe(`openid email profile ${READONLY}`);
     expect(call.interactive).toBe(true);
 
     expect(result.serverAuthCode).toBe("auth-code-123");
     expect(result.redirectUri).toBe(REDIRECT);
     expect(result.scope).toContain("gmail.readonly");
+  });
+
+  it("asks for gmail.modify upfront when the deployment has writeback on", async () => {
+    // Mirrors the web sign-in's upfront bulk grant, so authorization is gathered
+    // once rather than through a second consent round.
+    vi.mocked(isWritebackAvailable).mockResolvedValue(true);
+    vi.mocked(chrome.identity.launchWebAuthFlow).mockResolvedValue(`${REDIRECT}?code=c`);
+
+    await requestGoogleAuth();
+
+    const calls = vi.mocked(chrome.identity.launchWebAuthFlow).mock.calls;
+    const url = new URL(calls.at(-1)![0].url);
+    expect(url.searchParams.get("scope")).toBe(`openid email profile ${READONLY} ${MODIFY}`);
+    // Widens an existing readonly grant instead of replacing it.
+    expect(url.searchParams.get("include_granted_scopes")).toBe("true");
+  });
+
+  it("stays read-only, with no scope widening, when writeback is off", async () => {
+    // Production's state until verification clears: asking for gmail.modify here
+    // would show every user the unverified-scope warning.
+    vi.mocked(chrome.identity.launchWebAuthFlow).mockResolvedValue(`${REDIRECT}?code=c`);
+
+    await requestGoogleAuth();
+
+    const calls = vi.mocked(chrome.identity.launchWebAuthFlow).mock.calls;
+    const url = new URL(calls.at(-1)![0].url);
+    expect(url.searchParams.get("scope")).not.toContain("gmail.modify");
+    expect(url.searchParams.get("include_granted_scopes")).toBeNull();
   });
 
   it("throws GoogleAuthCancelledError when the flow resolves without a URL", async () => {

@@ -10,6 +10,7 @@ export * from "./schemas/taxonomy-transfer.js";
 export * from "./schemas/tag.js";
 export * from "./schemas/classification.js";
 export * from "./schemas/gmail-sync-settings.js";
+export * from "./schemas/mail-scope-policy.js";
 export * from "./schemas/push-device.js";
 export * from "./schemas/extension.js";
 export * from "./inbox-key.js";

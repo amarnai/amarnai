@@ -88,8 +88,9 @@ export function ConnectGmailCta({
             {reconnect ? (
               <Trans>
                 Amarnai is no longer syncing this inbox. Reconnect your{" "}
-                {providerName} account to resume sorting your email threads. Access
-                stays <strong>read-only</strong>, and your inbox stays yours.
+                {providerName} account to resume sorting your email threads. Amarnai{" "}
+                <strong>never sends, deletes, or moves your mail</strong>, and your
+                inbox stays yours.
               </Trans>
             ) : (
               <Trans>
@@ -101,10 +102,10 @@ export function ConnectGmailCta({
                   King Aziru
                 </button>{" "}
                 is ready to sort your email threads. Connect your {providerName}{" "}
-                account to get started. Amarnai connects with{" "}
-                <strong>read-only access</strong> and{" "}
-                <strong>never sends, deletes, or changes anything</strong>. Your
-                inbox stays yours.
+                account to get started. Amarnai{" "}
+                <strong>never sends, deletes, or moves your mail</strong>, and the
+                only thing it writes is its own sorting labels, which you can switch
+                off. Your inbox stays yours.
               </Trans>
             )}
           </p>

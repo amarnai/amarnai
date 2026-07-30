@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -8,6 +8,7 @@ import { GoogleAuthCancelledError } from "./googleAuth";
 import { MicrosoftAuthCancelledError } from "./microsoftAuth";
 import { MS_CLIENT_ID, WEB_APP_URL } from "../config";
 import { ensureHostPermissions } from "../platform/permissions";
+import { prefetchWritebackPolicy } from "./writebackPolicy";
 
 // Firefox treats host permissions as user-grantable and may not have them yet;
 // Chrome grants them at install, so this resolves true without a prompt there.
@@ -30,6 +31,13 @@ export function SignInScreen() {
   // Microsoft client id; otherwise the OAuth flow cannot run. Mirrors the web app
   // gating its Microsoft button on isOutlookConfigured().
   const microsoftEnabled = MS_CLIENT_ID.length > 0;
+
+  // Warm the deployment's mail-scope policy so the OAuth flows do not wait on a
+  // request to resolve it. Fire-and-forget: a failure means read-only scopes, and
+  // the flows work either way.
+  useEffect(() => {
+    prefetchWritebackPolicy();
+  }, []);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();

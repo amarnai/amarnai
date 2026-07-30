@@ -6,12 +6,19 @@ vi.mock("../config", () => ({
   WEB_APP_URL: "http://localhost:3000",
 }));
 
+vi.mock("./writebackPolicy", () => ({
+  isWritebackAvailable: vi.fn(),
+  prefetchWritebackPolicy: vi.fn(),
+}));
+
 import { requestMicrosoftAuth, MicrosoftAuthCancelledError } from "./microsoftAuth";
+import { isWritebackAvailable } from "./writebackPolicy";
 
 const REDIRECT = "https://abcdefghijklmnop.chromiumapp.org/";
 
 beforeEach(() => {
   vi.mocked(chrome.identity.getRedirectURL).mockReturnValue(REDIRECT);
+  vi.mocked(isWritebackAvailable).mockResolvedValue(false);
 });
 
 describe("requestMicrosoftAuth", () => {
@@ -38,6 +45,33 @@ describe("requestMicrosoftAuth", () => {
     expect(result.code).toBe("ms-code-123");
     expect(result.redirectUri).toBe(REDIRECT);
     expect(result.scope).toContain("Mail.Read");
+  });
+
+  it("adds both write scopes, keeping Mail.Read, when writeback is on", async () => {
+    vi.mocked(isWritebackAvailable).mockResolvedValue(true);
+    vi.mocked(chrome.identity.launchWebAuthFlow).mockResolvedValue(`${REDIRECT}?code=c`);
+
+    await requestMicrosoftAuth();
+
+    const calls = vi.mocked(chrome.identity.launchWebAuthFlow).mock.calls;
+    const url = new URL(calls.at(-1)![0].url);
+    expect(url.searchParams.get("scope")).toBe(
+      "openid Mail.Read offline_access User.Read Mail.ReadWrite MailboxSettings.ReadWrite",
+    );
+    // Mail.ReadWrite does NOT replace Mail.Read: Microsoft refresh tokens are
+    // scope-bound, so keeping it is what lets a declined or tenant-restricted
+    // write consent still yield a working read-only connection.
+    expect(url.searchParams.get("scope")).toContain("Mail.Read ");
+  });
+
+  it("stays read-only when writeback is off", async () => {
+    vi.mocked(chrome.identity.launchWebAuthFlow).mockResolvedValue(`${REDIRECT}?code=c`);
+
+    await requestMicrosoftAuth();
+
+    const calls = vi.mocked(chrome.identity.launchWebAuthFlow).mock.calls;
+    const url = new URL(calls.at(-1)![0].url);
+    expect(url.searchParams.get("scope")).toBe("openid Mail.Read offline_access User.Read");
   });
 
   it("throws MicrosoftAuthCancelledError when the flow resolves without a URL", async () => {

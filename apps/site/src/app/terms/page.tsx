@@ -8,7 +8,7 @@ export const metadata: Metadata = buildLegalMetadata(
   "Terms governing your use of Amarnai."
 );
 
-const LAST_UPDATED = "July 8, 2026";
+const LAST_UPDATED = "July 30, 2026";
 
 export default function TermsPage() {
   return (
@@ -26,8 +26,18 @@ export default function TermsPage() {
       <h2>The Service</h2>
       <p>
         Amarnai is an AI-assisted email triage tool. It connects to your Gmail or Outlook
-        account with your permission and sorts, classifies, and displays your threads. Actions
-        that modify or send email always require explicit user confirmation.
+        account with your permission and sorts, classifies, and displays your threads.
+        Amarnai never sends and never deletes email. Reply drafts are suggestions only:
+        they require your explicit approval and are sent by you, from your own mail client.
+      </p>
+      <p>
+        The one change Amarnai makes to your mailbox is labelling. When label writeback is
+        enabled, Amarnai mirrors your folders into your mailbox as Gmail labels or Outlook
+        categories, under an <code>Amarnai</code> namespace, and keeps them in sync
+        automatically as threads are sorted, without a confirmation for each thread. It
+        only ever adds, updates, or removes labels it created; labels and categories you
+        created are left alone. You can switch writeback off at any time from Settings, and
+        it is inert unless you granted the write permission at sign-in or connect.
       </p>
 
       <h2>Your Account</h2>

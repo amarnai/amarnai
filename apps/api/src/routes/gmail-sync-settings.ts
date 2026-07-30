@@ -3,8 +3,10 @@ import { z } from "zod";
 import { db } from "@amarnai/db";
 import { UpdateGmailSyncSettingsSchema, AddBlacklistEmailSchema, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { config } from "@amarnai/config";
-import { providerHasWritebackScope } from "@amarnai/mail";
-import { provisionLabelsQueue } from "../queues.js";
+import {
+  connectionHasWritebackScope,
+  enqueueFolderLabelProvisioning,
+} from "../services/label-writeback.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 
@@ -21,20 +23,6 @@ const SETTINGS_SELECT = {
   injectedPanelEnabled: true,
   blacklistedSenderEmails: true,
 } as const;
-
-/**
- * Whether the workspace's connected mailbox holds the write scope needed for
- * label writeback. Provider-dispatched so the check stays single-sourced in each
- * provider package. Returns false when no ACTIVE connection exists.
- */
-async function connectionHasWritebackScope(workspaceId: string): Promise<boolean> {
-  const connection = await db.emailConnection.findUnique({
-    where: { workspaceId },
-    select: { provider: true, status: true, grantedScopes: true },
-  });
-  if (!connection || connection.status !== "ACTIVE") return false;
-  return providerHasWritebackScope(connection.provider, connection.grantedScopes);
-}
 
 /**
  * GET /workspaces/:workspaceId/gmail-sync-settings
@@ -146,24 +134,9 @@ gmailSyncSettings.patch("/workspaces/:workspaceId/gmail-sync-settings", async (c
   // the current taxonomy into the mailbox AND sweep every classified thread so
   // the existing inbox catches up (threads sorted before enablement, or threads
   // that lost labels to an external deletion). Not gated on a false→true flip:
-  // with writeback on by default there is no flip at connect time. Distinct
-  // dedup id from the folder-create enqueues so an in-flight structural-only
-  // provision cannot coalesce away the relabel sweep.
+  // with writeback on by default there is no flip at connect time.
   if (enablingWriteback) {
-    try {
-      await provisionLabelsQueue.add(
-        "provision-folder-labels",
-        { workspaceId, relabelThreads: true },
-        { deduplication: { id: `provision_relabel_${workspaceId}` } },
-      );
-      // Log the enqueue so a stale process (old payload without relabelThreads)
-      // is diagnosable from the API console alone.
-      console.log(
-        `[gmail-sync-settings] enqueued folder provisioning + thread relabel sweep (workspace=${workspaceId})`,
-      );
-    } catch (err) {
-      console.error(`[gmail-sync-settings] provision enqueue failed (workspace=${workspaceId}):`, err);
-    }
+    await enqueueFolderLabelProvisioning(workspaceId, { relabelThreads: true });
   }
 
   return c.json(updated);

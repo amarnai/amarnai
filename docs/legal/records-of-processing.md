@@ -29,12 +29,25 @@ General security measures applying to all activities (Art. 30(1)(g)): OAuth refr
 
 | Field | Detail |
 |---|---|
-| Purpose | Fetch and store the user's mail threads for triage (read-only) |
+| Purpose | Fetch and store the user's mail threads for triage (read access to the mailbox) |
 | Data subjects | Users; third-party correspondents in their threads |
 | Data categories | Thread and message metadata, sender/recipient addresses and names, subjects, snippets, body text, attachment metadata; encrypted OAuth tokens |
 | Recipients | Google (Gmail API), Microsoft (Graph API) as data sources; hosting/database provider (TODO(business)) |
 | Transfers | USA; safeguards per checklist |
 | Retention | Life of account or until mailbox disconnect / workspace reset; deletions in the source mailbox are mirrored |
+
+### 2b. Label writeback into the mailbox (optional)
+
+| Field | Detail |
+|---|---|
+| Purpose | Mirror the user's Amarnai folders into their mailbox as Gmail labels / Outlook categories under an `Amarnai` namespace, and keep them in sync as threads are sorted |
+| Lawful basis | Performance of contract (Art. 6(1)(b)); the user enables it per workspace and grants the write scope explicitly |
+| Data subjects | Users |
+| Data categories | Folder names the user chose, and the mapping from thread to folder. No message content and no correspondent data is transmitted on this path |
+| Recipients | Google (Gmail API), Microsoft (Graph API) as the destination mailbox |
+| Transfers | USA; safeguards per checklist |
+| Retention | Labels persist in the user's own mailbox until Amarnai removes them on re-sort, or the user deletes them. Amarnai reconciles only labels it created; the user's own labels are never modified |
+| Notes | Off when the deployment flag is off, when the user switches it off, or when the write scope was declined. Amarnai never sends, deletes, moves, archives, or marks mail read |
 
 ### 3. AI classification, embeddings, and drafting
 

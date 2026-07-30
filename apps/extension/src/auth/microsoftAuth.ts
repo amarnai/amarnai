@@ -1,13 +1,6 @@
 import { MS_CLIENT_ID } from "../config";
 import { runAuthCodeFlow, type AuthCodeFlowResult } from "./authCodeFlow";
-
-// Delegated scopes for the read-only Outlook connection. Mirrors
-// @amarnai/outlook OUTLOOK_CONSENT_SCOPES (kept as a literal so the extension
-// bundle does not pull the Graph client). offline_access is required for a
-// refresh token; User.Read backs the Graph /me identity lookup; openid returns
-// the id_token whose tenant claim tells the API whether this is a personal
-// Microsoft account, which decides the Outlook web host the panel opens.
-const SCOPES = "openid Mail.Read offline_access User.Read";
+import { microsoftAuthScopes } from "./mailScopes";
 
 // Multitenant + personal accounts, so the authority is /common (mirrors the web
 // buildOutlookAuthUrl and the API's confidential Web client).
@@ -28,12 +21,19 @@ export type MicrosoftAuthResult = AuthCodeFlowResult;
 // the Microsoft app registration. Unlike Google, Microsoft returns a refresh token
 // whenever offline_access is granted, so no forced consent prompt is needed;
 // prompt=select_account lets the user pick which mailbox to connect.
-export function requestMicrosoftAuth(): Promise<MicrosoftAuthResult> {
+//
+// The scope set depends on the deployment's writeback policy (see mailScopes),
+// matching the web sign-in's upfront bulk grant. The write scopes are added to the
+// read set, never substituted for it: Microsoft refresh tokens are scope-bound, so
+// keeping Mail.Read is what lets a declined or tenant-restricted write consent
+// still yield a working read-only connection.
+export async function requestMicrosoftAuth(): Promise<MicrosoftAuthResult> {
+  const { scope } = await microsoftAuthScopes();
   return runAuthCodeFlow({
     authorizeUrl: AUTHORIZE_URL,
     clientId: MS_CLIENT_ID,
     missingClientIdMessage: "VITE_MS_CLIENT_ID is not configured",
-    scope: SCOPES,
+    scope,
     extraParams: { response_mode: "query", prompt: "select_account" },
     onCancel: () => new MicrosoftAuthCancelledError(),
   });

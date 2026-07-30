@@ -44,7 +44,7 @@ export function HeroSection() {
                 <circle cx="7.5" cy="7.5" r="1.8" stroke="currentColor" strokeWidth="1.2" />
                 <line x1="3" y1="3" x2="12" y2="12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
               </svg>
-              <Trans>Read-only by design</Trans>
+              <Trans>Never sends or deletes</Trans>
             </span>
             <span className="ld-trust-item">
               <ShieldCheckIcon />

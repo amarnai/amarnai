@@ -7,8 +7,7 @@ import { verifyCredentials, provisionGoogleUser, provisionMicrosoftUser } from "
 import { GMAIL_READONLY_SCOPE, GMAIL_MODIFY_SCOPE, parseGrantedScopes } from "@amarnai/gmail";
 import {
   OUTLOOK_SCOPES,
-  OUTLOOK_MAIL_READWRITE_SCOPE,
-  OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE,
+  OUTLOOK_UPFRONT_SCOPES,
   accountTypeFromIdToken,
   parseGrantedScopes as parseOutlookScopes,
 } from "@amarnai/outlook";
@@ -29,13 +28,12 @@ const GMAIL_SIGNIN_SCOPES = isLabelWritebackEnabled()
   ? `${GMAIL_READONLY_SCOPE} ${GMAIL_MODIFY_SCOPE}`
   : GMAIL_READONLY_SCOPE;
 
-// Microsoft counterpart, same upfront-grant policy. Note this is the UNION of
-// OUTLOOK_SCOPES and the two write scopes, not OUTLOOK_WRITEBACK_SCOPES: that
-// constant drops Mail.Read, and Microsoft refresh tokens are scope-bound, so a
-// sign-in that asked only for the writeback set would leave the connection
-// unable to fall back to read-only if the user declines a write permission.
+// Microsoft counterpart, same upfront-grant policy. OUTLOOK_UPFRONT_SCOPES is the
+// UNION of OUTLOOK_SCOPES and the two write scopes (see its doc comment for why
+// it is not OUTLOOK_WRITEBACK_SCOPES). Shared with the extension's sign-in and
+// with scopeForCodeRedemption, so the string cannot drift between surfaces.
 const MICROSOFT_SIGNIN_SCOPES = isLabelWritebackEnabled()
-  ? `${OUTLOOK_SCOPES} ${OUTLOOK_MAIL_READWRITE_SCOPE} ${OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE}`
+  ? OUTLOOK_UPFRONT_SCOPES
   : OUTLOOK_SCOPES;
 
 // One Azure app registration serves the web sign-in, the web connect callback,

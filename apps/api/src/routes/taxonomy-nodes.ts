@@ -4,7 +4,7 @@ import { db } from "@amarnai/db";
 import { findDescendants } from "@amarnai/ai";
 import { MAX_TAXONOMY_NON_ROOT_NODES, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
 import { bumpTaxonomyChangedAt } from "../services/taxonomy-changed.js";
-import { provisionLabelsQueue } from "../queues.js";
+import { enqueueFolderLabelProvisioning } from "../services/label-writeback.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 const nodeParam = z.object({
@@ -223,11 +223,7 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
   const writebackOn =
     settingsRow?.labelWritebackEnabled ?? DEFAULT_GMAIL_SYNC_SETTINGS.labelWritebackEnabled;
   if (writebackOn) {
-    await provisionLabelsQueue
-      .add("provision-folder-labels", { workspaceId }, { deduplication: { id: `provision_${workspaceId}` } })
-      .catch((err) =>
-        console.error(`[taxonomy-nodes] provision enqueue failed (workspace=${workspaceId}):`, err),
-      );
+    await enqueueFolderLabelProvisioning(workspaceId, { relabelThreads: false });
   }
 
   return c.json({ ...node, threadCount: 0 }, 201);

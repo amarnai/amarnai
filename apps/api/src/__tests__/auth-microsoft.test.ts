@@ -11,8 +11,15 @@ vi.mock("@amarnai/db", () => ({
   db: {
     // issueAccessTokenForUser reads the account's current epoch to stamp the token.
     user: { findUnique: vi.fn(async () => ({ sessionEpoch: 0 })) },
+    // Read + written by the post-sign-in writeback enable step.
+    emailConnection: { findUnique: vi.fn() },
+    gmailSyncSettings: { upsert: vi.fn() },
   },
   maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock("../queues.js", () => ({
+  provisionLabelsQueue: { add: vi.fn().mockResolvedValue({}) },
 }));
 
 vi.mock("@amarnai/outlook", async (importActual) => {
@@ -63,7 +70,14 @@ vi.mock("../services/outlook-subscription.js", () => ({
 }));
 
 import app from "../app.js";
-import { exchangeAuthCode, fetchOutlookProfile, MicrosoftApiError } from "@amarnai/outlook";
+import {
+  exchangeAuthCode,
+  fetchOutlookProfile,
+  MicrosoftApiError,
+  OUTLOOK_UPFRONT_CONSENT_SCOPES,
+} from "@amarnai/outlook";
+import { config } from "@amarnai/config";
+import { provisionLabelsQueue } from "../queues.js";
 import { provisionMicrosoftUser, issueAccessToken } from "@amarnai/auth";
 import { db, maybeCreateExtensionNudge } from "@amarnai/db";
 import { syncInboxQueue } from "../services/queue-client.js";
@@ -266,5 +280,82 @@ describe("POST /auth/microsoft", () => {
     const res = await post(VALID_BODY);
     expect(res.status).toBe(502);
     expect(provisionMicrosoftUser).not.toHaveBeenCalled();
+  });
+});
+
+describe("POST /auth/microsoft — upfront write grant", () => {
+  function withFlag(on: boolean, run: () => Promise<void>): Promise<void> {
+    const original = config.mail.labelWritebackEnabled;
+    (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = on;
+    return run().finally(() => {
+      (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = original;
+    });
+  }
+
+  it("redeems with the write scopes a write build authorized", async () => {
+    // The silent-drop bug: Microsoft refresh tokens are scope-bound, so redeeming
+    // a write grant with the read-only set mints a token that can never write and
+    // reports no error anywhere.
+    vi.mocked(exchangeAuthCode).mockResolvedValue({
+      accessToken: "ms-at",
+      refreshToken: "ms-rt",
+      scope: OUTLOOK_UPFRONT_CONSENT_SCOPES,
+      expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+      accountType: "ORGANIZATION",
+    });
+
+    const res = await post({ ...VALID_BODY, scope: OUTLOOK_UPFRONT_CONSENT_SCOPES });
+    expect(res.status).toBe(200);
+    expect(exchangeAuthCode).toHaveBeenCalledWith(
+      "ms-code-123",
+      REDIRECT_URI,
+      undefined,
+      OUTLOOK_UPFRONT_CONSENT_SCOPES,
+    );
+  });
+
+  it("enables writeback and enqueues provisioning when both write scopes were granted", async () => {
+    await withFlag(true, async () => {
+      vi.mocked(exchangeAuthCode).mockResolvedValue({
+        accessToken: "ms-at",
+        refreshToken: "ms-rt",
+        scope: OUTLOOK_UPFRONT_CONSENT_SCOPES,
+        expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+        accountType: "ORGANIZATION",
+      });
+      vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+        provider: "OUTLOOK",
+        status: "ACTIVE",
+        grantedScopes: OUTLOOK_UPFRONT_CONSENT_SCOPES.split(" "),
+      } as never);
+
+      const res = await post({ ...VALID_BODY, scope: OUTLOOK_UPFRONT_CONSENT_SCOPES });
+      expect(res.status).toBe(200);
+      expect(db.gmailSyncSettings.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({ update: { labelWritebackEnabled: true } }),
+      );
+      expect(provisionLabelsQueue.add).toHaveBeenCalledWith(
+        "provision-folder-labels",
+        { workspaceId: "ws-1", relabelThreads: true },
+        { deduplication: { id: "provision_relabel_ws-1" } },
+      );
+    });
+  });
+
+  it("leaves writeback off for a half write grant", async () => {
+    // Mail.ReadWrite without MailboxSettings.ReadWrite 403s on masterCategories,
+    // so treating it as writeback-capable would provision-fail forever.
+    await withFlag(true, async () => {
+      vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+        provider: "OUTLOOK",
+        status: "ACTIVE",
+        grantedScopes: ["Mail.ReadWrite", "offline_access", "User.Read"],
+      } as never);
+
+      const res = await post(VALID_BODY);
+      expect(res.status).toBe(200);
+      expect(db.gmailSyncSettings.upsert).not.toHaveBeenCalled();
+      expect(provisionLabelsQueue.add).not.toHaveBeenCalled();
+    });
   });
 });

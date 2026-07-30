@@ -345,9 +345,14 @@ msgstr "+ 새 워크스페이스"
 #~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 #~ msgstr "<0>{migrateLive}</0> 스레드는 새 폴더로 즉시 이동합니다. <1>{resortLive}</1> 스레드는 AI가 재분류합니다."
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:96
+#, fuzzy
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "<0>King Aziru</0>가 이메일 스레드를 정리해 드릴 준비가 되었습니다. {providerName} 계정을 연결하여 시작하세요. Amarnai는 <1>이메일을 보내거나, 삭제하거나, 이동하지 않습니다.</1> 자체 분류 라벨만 작성하며, 이 라벨은 언제든지 해제할 수 있습니다. 받은 편지함은 온전히 사용자님의 것입니다."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
-msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-msgstr "<0>King Aziru</0>가 이메일 스레드 분류를 도와드릴 준비가 되었습니다. {providerName} 계정을 연결하여 시작하세요. Amarnai는 <1>읽기 전용 액세스</1>로 연결되며 <2>어떠한 것도 보내거나, 삭제하거나, 변경하지 않습니다</2>. 받은 편지함은 사용자님의 것입니다."
+#~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+#~ msgstr "<0>King Aziru</0>가 이메일 스레드 분류를 도와드릴 준비가 되었습니다. {providerName} 계정을 연결하여 시작하세요. Amarnai는 <1>읽기 전용 액세스</1>로 연결되며 <2>어떠한 것도 보내거나, 삭제하거나, 변경하지 않습니다</2>. 받은 편지함은 사용자님의 것입니다."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -595,9 +600,7 @@ msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n"
-"\n"
-"지원서는 기록 보관소에서 확인할 수 있습니다."
+msgstr "테베의 호렘헤브님으로부터 서신 관리 책임자 직책에 대한 새로운 지원서가 접수되었습니다.\n\n지원서는 기록 보관소에서 확인할 수 있습니다."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -624,11 +627,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "압디-헤바님께,\n"
-"\n"
-"저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n"
-"\n"
-"그럼,"
+msgstr "압디-헤바님께,\n\n저도 그 주에 델타 근처에 있을 예정입니다. 둘째 날에 역참에서 만나뵙죠. 오전 시간은 괜찮습니다.\n\n그럼,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -647,12 +646,21 @@ msgstr "학술 연구원"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
 #, fuzzy
-msgid "Access was denied. Grant read-only Gmail access to connect."
-msgstr "액세스가 거부되었습니다. 연결하려면 Gmail 읽기 전용 액세스를 허용하세요."
+#~ msgid "Access was denied. Grant read-only Gmail access to connect."
+#~ msgstr "액세스가 거부되었습니다. 연결하려면 Gmail 읽기 전용 액세스를 허용하세요."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
-msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
-msgstr "액세스가 거부되었습니다. 연결하려면 읽기 전용 Outlook(Mail.Read) 액세스를 허용해 주세요."
+#~ msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
+#~ msgstr "액세스가 거부되었습니다. 연결하려면 읽기 전용 Outlook(Mail.Read) 액세스를 허용해 주세요."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
+#, fuzzy
+msgid "Access was denied. Grant the requested Gmail access to connect."
+msgstr "접근이 거부되었습니다. 연결하려면 요청된 Gmail 접근 권한을 허용해주세요."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+msgid "Access was denied. Grant the requested Outlook access to connect."
+msgstr "접근이 거부되었습니다. 연결하려면 요청된 Outlook 접근 권한을 허용해주세요."
 
 #: ../../apps/mobile/app/(app)/account.tsx:105
 #, fuzzy
@@ -933,17 +941,30 @@ msgstr "Amarnai는 기원전 1350년경 이집트 파라오와 고대 근동의 
 #~ msgstr ""
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:89
-msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai가 더 이상 이 받은 편지함을 동기화하지 않습니다. 이메일 스레드 분류를 다시 시작하려면 {providerName} 계정을 다시 연결하세요. 액세스는 <0>읽기 전용</0>으로 유지되며, 받은 편지함은 사용자님의 것입니다."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai가 더 이상 이 받은 편지함을 동기화하지 않습니다. 이메일 스레드 분류를 다시 시작하려면 {providerName} 계정을 다시 연결하세요. 액세스는 <0>읽기 전용</0>으로 유지되며, 받은 편지함은 사용자님의 것입니다."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
+msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai가 더 이상 이 받은 편지함을 동기화하지 않습니다. 이메일 스레드 분류를 재개하려면 {providerName} 계정을 다시 연결하세요. Amarnai는 <0>이메일을 보내거나, 삭제하거나, 이동하지 않으며</0>, 받은 편지함은 온전히 사용자님의 것입니다."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai는 더 이상 이 받은편지함을 동기화하지 않습니다. Gmail 계정을 다시 연결하여 이메일 스레드 정렬을 다시 시작하세요. 접근 권한은 <0>읽기 전용</0>으로 유지되며, 받은편지함은 사용자에게 속해 있습니다."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai는 더 이상 이 받은편지함을 동기화하지 않습니다. Gmail 계정을 다시 연결하여 이메일 스레드 정렬을 다시 시작하세요. 접근 권한은 <0>읽기 전용</0>으로 유지되며, 받은편지함은 사용자에게 속해 있습니다."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:89
+#, fuzzy
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai가 더 이상 이 받은 편지함을 동기화하지 않습니다. 이메일 스레드 분류를 재개하려면 Gmail 계정을 다시 연결하세요. Amarnai는 <0>이메일을 보내거나, 삭제하거나, 이동하지 않으며</0>, 받은 편지함은 온전히 사용자님의 것입니다."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai가 더 이상 이 받은 편지함을 동기화하지 않습니다. Outlook 계정을 다시 연결하여 이메일 스레드 분류를 재개하세요. 접근 권한은 <0>읽기 전용</0>이며, 받은 편지함은 회원님의 소유입니다."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai가 더 이상 이 받은 편지함을 동기화하지 않습니다. Outlook 계정을 다시 연결하여 이메일 스레드 분류를 재개하세요. 접근 권한은 <0>읽기 전용</0>이며, 받은 편지함은 회원님의 소유입니다."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai가 더 이상 이 받은 편지함을 동기화하지 않습니다. 이메일 스레드 분류를 재개하려면 Outlook 계정을 다시 연결하세요. Amarnai는 <0>이메일을 보내거나, 삭제하거나, 이동하지 않으며</0>, 받은 편지함은 온전히 사용자님의 것입니다."
 
 #: ../ui/src/pricing/planMessages.ts:113
 #, fuzzy
@@ -1000,7 +1021,7 @@ msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai에서 이메일을 표시하려면 서버와 받은편지함에 접근 권한이 필요합니다."
 
 #: ../../apps/extension/src/App.tsx:56
-#: ../../apps/extension/src/auth/SignInScreen.tsx:14
+#: ../../apps/extension/src/auth/SignInScreen.tsx:15
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai가 작동하려면 서버와 받은편지함에 접근 권한이 필요합니다. 접근을 허용하고 다시 시도해 주세요."
 
@@ -1326,11 +1347,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "아지루,\n"
-"\n"
-"친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n"
-"\n"
-"안녕히,"
+msgstr "아지루,\n\n친구로서의 말씀 잘 받았습니다. 아무르 가문이 제안하는 바를 더 들을 준비가 되어 있습니다. 다음 사신 편에 조건을 보내주십시오.\n\n안녕히,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1578,7 +1595,7 @@ msgstr "Amarnai를 자체 호스팅할 수 있나요?"
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:147
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:148
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:209
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:90
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:109
@@ -1915,12 +1932,12 @@ msgstr "{name} 연결"
 msgid "Connect {name} to this workspace?"
 msgstr "이 워크스페이스에 {name}을(를) 연결하시겠습니까?"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:123
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:124
 msgid "Connect {providerName}"
 msgstr "{providerName} 연결"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:167
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:159
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:168
 msgid "Connect {secondaryName}"
 msgstr "{secondaryName} 연결"
 
@@ -1943,7 +1960,7 @@ msgid "Connect a mailbox to Amarnai to start sorting your inbox."
 msgstr "Amarnai에 메일함을 연결하고 받은 편지함 분류를 시작하세요."
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
@@ -2012,7 +2029,7 @@ msgstr "한 번 연결하고 폴더를 생성하면, Amarnai가 새 메일과 �
 #~ msgstr "한 번 연결하고 계획을 한 번 생성하면, Amarnai가 새 메일과 받은 편지함에 이미 쌓여있는 수많은 스레드를 처리합니다."
 
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:153
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:461
 #, fuzzy
@@ -2028,10 +2045,14 @@ msgstr "Outlook 연결하기"
 msgid "Connect your {providerName} inbox"
 msgstr "{providerName} 받은 편지함 연결"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:97
+msgid "Connect your account to get started. Amarnai <0>never sends, deletes, or moves your mail</0>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "시작하려면 계정을 연결하세요. Amarnai는 <0>이메일을 보내거나, 삭제하거나, 이동하지 않습니다.</0> 자체 분류 라벨만 작성하며, 이 라벨은 언제든지 해제할 수 있습니다. 받은 편지함은 온전히 사용자님의 것입니다."
+
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
 #, fuzzy
-msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "시작하려면 계정을 연결하세요. 아마나이(Amarnai)는 <0>읽기 전용 권한</0>으로 연결되며, <1>어떤 것도 전송, 삭제, 변경하지 않습니다</1>. 고객님의 받은편지함은 온전히 고객님의 것입니다."
+#~ msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "시작하려면 계정을 연결하세요. 아마나이(Amarnai)는 <0>읽기 전용 권한</0>으로 연결되며, <1>어떤 것도 전송, 삭제, 변경하지 않습니다</1>. 고객님의 받은편지함은 온전히 고객님의 것입니다."
 
 #: ../../apps/extension/src/App.tsx:91
 #~ msgid "Connect your Gmail account to start triaging."
@@ -2065,14 +2086,14 @@ msgstr "받은 편지함을 연결하여 분류를 시작하세요."
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "{name}을(를) 연결하면 {retainedAddress}에서 분류된 이메일이 영구적으로 삭제됩니다. 폴더 및 설정은 유지됩니다."
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:131
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:132
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "{secondaryName}을(를) 연결하면 {retainedAddress}에서 분류된 이메일이 영구적으로 삭제됩니다. 폴더 및 설정은 유지됩니다."
 
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 msgid "Connecting…"
 msgstr "연결 중…"
 
@@ -2100,7 +2121,7 @@ msgstr "{incomingEmail}으로 계속"
 msgid "Continue to {name}"
 msgstr "{name}(으)로 계속하기"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:141
 msgid "Continue to {secondaryName}"
 msgstr "{secondaryName}(으)로 계속하기"
 
@@ -2119,14 +2140,14 @@ msgstr "결제 계속"
 msgid "Continue with email"
 msgstr "이메일로 계속"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:113
+#: ../../apps/extension/src/auth/SignInScreen.tsx:121
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
 msgid "Continue with Google"
 msgstr "Google로 계속"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:124
+#: ../../apps/extension/src/auth/SignInScreen.tsx:132
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 #, fuzzy
 msgid "Continue with Microsoft"
@@ -2172,8 +2193,13 @@ msgstr "복사"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
-msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
-msgstr "Gmail 받은 편지함에 액세스할 수 없습니다. Gmail API가 활성화되어 있고 Google Cloud Console의 OAuth 동의 화면에 gmail.readonly 범위가 추가되었는지 확인하세요."
+#~ msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
+#~ msgstr "Gmail 받은 편지함에 액세스할 수 없습니다. Gmail API가 활성화되어 있고 Google Cloud Console의 OAuth 동의 화면에 gmail.readonly 범위가 추가되었는지 확인하세요."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#, fuzzy
+msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Amarnai requests are added to the OAuth consent screen in Google Cloud Console."
+msgstr "Gmail 받은 편지함에 접근할 수 없습니다. Gmail API가 활성화되어 있고 Amarnai가 요청하는 범위가 Google Cloud Console의 OAuth 동의 화면에 추가되었는지 확인하세요."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
@@ -2976,7 +3002,7 @@ msgstr "받은 편지함 편집"
 msgid "Edit Path"
 msgstr "경로 편집"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:134
+#: ../../apps/extension/src/auth/SignInScreen.tsx:142
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -3319,6 +3345,10 @@ msgstr "큐 및 폴더 필터링…"
 msgid "Filter rail"
 msgstr "필터 영역"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Filters match rules you write by hand: this sender, that subject keyword. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement. Your folders are mirrored back into your inbox as labels or categories, so the sorting shows up there too, but the calm workspace is what you work from. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "필터는 사용자가 직접 작성한 규칙(예: 특정 발신자, 특정 제목 키워드)과 일치합니다. Amarnai는 마치 사람이 읽는 것처럼 모든 스레드를 분석하고, 깔끔한 작업 공간에 관련 스레드를 함께 배치하며, 각 스레드의 배치 이유를 명확히 제시합니다. 폴더는 받은 편지함에 라벨 또는 카테고리로 미러링되어 분류 내용이 그대로 표시되지만, 실질적인 작업은 차분한 작업 공간에서 이루어집니다. 스팸 및 프로모션은 설정에서 활성화하지 않는 한 자동으로 제외되며, Amarnai가 확신하지 못하는 모든 항목은 검토를 위해 플래그가 지정됩니다."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
@@ -3343,8 +3373,12 @@ msgid "First-contact buyer and seller enquiries and new agent introductions."
 msgstr "첫 연락 구매자/판매자 문의, 신규 에이전트 소개."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
-msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
-msgstr "받은편지함을 안전하게 보호하는 5가지 요소. 첫째, Amarnai는 기본적으로 읽기 전용입니다. Google을 통해 부여하는 권한으로 인해 Amarnai는 어떤 이메일도 보내거나, 삭제하거나, 변경할 수 없습니다. 둘째, Amarnai는 Google 보안 심사를 통과했으며, Gmail에 접근하는 모든 앱에 요구되는 CASA 보안 평가를 완료했습니다. 셋째, 모든 제어권은 사용자에게 있습니다. 답장은 승인 전까지 초안으로 유지되며, 사용자를 대신하여 그 어떤 것도 전송되지 않고, 언제든지 Amarnai 연결을 해제할 수 있습니다. 넷째, 이메일 본문은 저장되지 않습니다. Amarnai는 라벨과 메타데이터만 보관하며, 메시지 내용은 절대 저장하지 않습니다. 다섯째, 코드는 공개되어 있습니다. 따라서 누구나 Amarnai가 이메일에 어떻게 접근하는지 정확히 확인할 수 있습니다."
+#~ msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+#~ msgstr "받은편지함을 안전하게 보호하는 5가지 요소. 첫째, Amarnai는 기본적으로 읽기 전용입니다. Google을 통해 부여하는 권한으로 인해 Amarnai는 어떤 이메일도 보내거나, 삭제하거나, 변경할 수 없습니다. 둘째, Amarnai는 Google 보안 심사를 통과했으며, Gmail에 접근하는 모든 앱에 요구되는 CASA 보안 평가를 완료했습니다. 셋째, 모든 제어권은 사용자에게 있습니다. 답장은 승인 전까지 초안으로 유지되며, 사용자를 대신하여 그 어떤 것도 전송되지 않고, 언제든지 Amarnai 연결을 해제할 수 있습니다. 넷째, 이메일 본문은 저장되지 않습니다. Amarnai는 라벨과 메타데이터만 보관하며, 메시지 내용은 절대 저장하지 않습니다. 다섯째, 코드는 공개되어 있습니다. 따라서 누구나 Amarnai가 이메일에 어떻게 접근하는지 정확히 확인할 수 있습니다."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:16
+msgid "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+msgstr "다섯 가지로 받은 편지함을 안전하게 보호합니다. 첫째, Amarnai의 접근 권한은 의도적으로 제한적입니다. 이메일을 보내거나, 삭제하거나, 이동할 수 없으며, 자체 분류 라벨만 작성하고 이 라벨은 언제든지 해제할 수 있습니다. 둘째, Amarnai는 Google의 보안 검토를 통과하여 Gmail에 접근하는 모든 앱에 필요한 CASA 보안 평가를 완료했습니다. 셋째, 모든 제어권은 사용자에게 있습니다. 답장은 사용자가 보낼 때까지 초안으로 유지되며, 사용자 대신 이메일이 전송되지 않으며, 언제든지 Amarnai 연결을 해제할 수 있습니다. 넷째, 이메일 본문은 저장되지 않습니다. Amarnai는 라벨과 메타데이터만 유지하며, 메시지 내용은 저장하지 않습니다. 다섯째, 코드가 공개되어 있어 누구나 사용자 이메일에 접근하는 방식을 정확하게 검토할 수 있습니다."
 
 #: ../ui/src/demo/demo-seed.ts:311
 #, fuzzy
@@ -3754,8 +3788,8 @@ msgstr "Gmail AI 어시스턴트"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
 #, fuzzy
-msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Gmail 및 Outlook 필터는 메시지에 라벨이나 카테고리만 지정하고 번잡한 받은편지함에 그대로 둡니다. 하지만 Amarnai는 사람이 읽는 것처럼 모든 스레드를 이해하고, 관련 스레드를 한데 모아 깔끔하게 정리합니다. 각 스레드가 배치된 이유까지 명확히 알려주므로, 라벨에 파묻히는 대신 한눈에 파악하고 차분하게 업무를 처리할 수 있습니다. 스팸과 프로모션은 설정에서 활성화하지 않는 한 자동으로 걸러지며, Amarnai가 확실치 않은 내용은 검토를 위해 표시됩니다."
+#~ msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Gmail 및 Outlook 필터는 메시지에 라벨이나 카테고리만 지정하고 번잡한 받은편지함에 그대로 둡니다. 하지만 Amarnai는 사람이 읽는 것처럼 모든 스레드를 이해하고, 관련 스레드를 한데 모아 깔끔하게 정리합니다. 각 스레드가 배치된 이유까지 명확히 알려주므로, 라벨에 파묻히는 대신 한눈에 파악하고 차분하게 업무를 처리할 수 있습니다. 스팸과 프로모션은 설정에서 활성화하지 않는 한 자동으로 걸러지며, Amarnai가 확실치 않은 내용은 검토를 위해 표시됩니다."
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
@@ -3795,9 +3829,13 @@ msgstr "Gmail 실시간 동기화 활성"
 #~ msgstr "Gmail에서 중요 표시됨"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
+msgid "Gmail read access was not granted. Please try again and approve the requested permission."
+msgstr "Gmail 읽기 접근 권한이 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해주세요."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
-msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
-msgstr "Gmail 읽기 전용 액세스 권한이 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해 주세요."
+#~ msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
+#~ msgstr "Gmail 읽기 전용 액세스 권한이 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해 주세요."
 
 #: ../../apps/web/src/components/Sidebar.tsx:37
 #, fuzzy
@@ -3848,7 +3886,7 @@ msgstr "Google 계정 권한"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google에서 인증을 완료할 수 없습니다. 링크가 만료되었을 수 있으니 다시 시도해 주세요. 문제가 계속되면 Google Cloud Console에서 Gmail 콜백 URL이 등록되었는지 확인해 주세요."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:67
+#: ../../apps/extension/src/auth/SignInScreen.tsx:75
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
@@ -3880,11 +3918,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "위대하신 왕이시여,\n"
-"\n"
-"요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n"
-"\n"
-"충심을 다하여,"
+msgstr "위대하신 왕이시여,\n\n요청하신 보고서는 회의가 열리기 전에 준비될 것입니다. 저의 서기관들에게 동부 영토의 회계 장부를 취합하도록 하여 빠른 전령을 통해 미리 보내드리겠습니다.\n\n충심을 다하여,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4748,7 +4782,7 @@ msgstr "Microsoft 계정 권한"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft에서 인증을 완료할 수 없습니다. 링크가 만료되었을 수 있습니다. 다시 시도해 주세요. 문제가 지속되면 앱 등록에서 리디렉션 URI가 등록되었는지 확인하세요."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #, fuzzy
 msgid "Microsoft sign-in failed. Please try again."
 msgstr "Microsoft 로그인에 실패했습니다. 다시 시도해 주세요."
@@ -4878,6 +4912,15 @@ msgstr "안 함"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "자동 발송 안 함 · 저장 데이터 암호화 · 최소한의 데이터"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#, fuzzy
+msgid "Never sends · OAuth · revoke anytime"
+msgstr "전송 안 함 · OAuth · 언제든지 해지"
+
+#: ../../apps/site/src/components/landing/HeroSection.tsx:47
+msgid "Never sends or deletes"
+msgstr "전송 또는 삭제 안 함"
+
 #: ../ui/src/demo/demo-seed.ts:358
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
@@ -4940,7 +4983,7 @@ msgstr "새 비밀번호"
 msgid "New threads will appear as they are sorted."
 msgstr "새 스레드는 정리되는 대로 표시됩니다."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:160
+#: ../../apps/extension/src/auth/SignInScreen.tsx:168
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Amarnai가 처음이신가요? <0>계정 만들기</0>"
 
@@ -5358,7 +5401,7 @@ msgstr "선택 사항. 이 폴더의 스레드에 대한 답장 초안을 생성
 msgid "Optional. Sets this folder’s chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "선택 사항. 받은 편지함에서 이 폴더의 칩 및 아이콘 색상을 설정합니다. 기본 설정 시 안정적인 색상이 자동 지정됩니다."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:130
+#: ../../apps/extension/src/auth/SignInScreen.tsx:138
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:88
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:80
@@ -5386,8 +5429,12 @@ msgid "outlook ai assistant"
 msgstr "Outlook AI 어시스턴트"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
-msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
-msgstr "Outlook 읽기 전용 액세스(Mail.Read)가 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해 주세요."
+msgid "Outlook read access (Mail.Read) was not granted. Please try again and approve the requested permission."
+msgstr "Outlook 읽기 접근 권한(Mail.Read)이 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해주세요."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
+#~ msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
+#~ msgstr "Outlook 읽기 전용 액세스(Mail.Read)가 부여되지 않았습니다. 다시 시도하여 요청된 권한을 승인해 주세요."
 
 #: ../ui/src/pricing/planMessages.ts:78
 #, fuzzy
@@ -5425,7 +5472,7 @@ msgstr "Google 보안 심사 통과"
 msgid "Passing through the Delta: free to meet?"
 msgstr "델타 지역을 지나는 중: 만날 시간 되시나요?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:144
+#: ../../apps/extension/src/auth/SignInScreen.tsx:152
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:183
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
@@ -5884,12 +5931,12 @@ msgstr "재활성화"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
 #, fuzzy
-msgid "Read-only · OAuth · revoke anytime"
-msgstr "읽기 전용 · OAuth · 언제든지 철회 가능"
+#~ msgid "Read-only · OAuth · revoke anytime"
+#~ msgstr "읽기 전용 · OAuth · 언제든지 철회 가능"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:47
-msgid "Read-only by design"
-msgstr "기본 읽기 전용 설계"
+#~ msgid "Read-only by design"
+#~ msgstr "기본 읽기 전용 설계"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
 #, fuzzy
@@ -5935,7 +5982,7 @@ msgid "Reconnect"
 msgstr "다시 연결"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:384
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:121
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:122
 #, fuzzy
 msgid "Reconnect {providerName}"
 msgstr "{providerName} 다시 연결"
@@ -5944,13 +5991,13 @@ msgstr "{providerName} 다시 연결"
 #~ msgid "Reconnect failed. Please try again."
 #~ msgstr "재연결 실패. 다시 시도해 주세요."
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:128
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Gmail 다시 연결"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #, fuzzy
 msgid "Reconnect Outlook"
 msgstr "Outlook 다시 연결"
@@ -5968,7 +6015,7 @@ msgstr "Gmail 받은편지함 다시 연결"
 msgid "Reconnect your Outlook inbox"
 msgstr "Outlook 받은 편지함을 다시 연결"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 #, fuzzy
 msgid "Reconnecting…"
@@ -6286,11 +6333,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "립-하따님께,\n"
-"\n"
-"저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n"
-"\n"
-"안녕히 계십시오,"
+msgstr "립-하따님께,\n\n저희는 귀하의 말씀을 경청했습니다. 남쪽 창고에서 추가 곡물을 주문했으며, 추수 감사절 전에 도착할 예정입니다. 그때까지 기다려 주시기를 부탁드립니다.\n\n안녕히 계십시오,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6426,7 +6469,7 @@ msgstr "스레드 검색…"
 #~ msgid "See how your inbox is sorted, right next to Gmail."
 #~ msgstr "Gmail 바로 옆에서 내 받은편지함 정리 상태를 확인하세요."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:104
+#: ../../apps/extension/src/auth/SignInScreen.tsx:112
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "이메일 바로 옆에서 받은편지함이 어떻게 분류되는지 확인하세요."
 
@@ -6639,7 +6682,7 @@ msgstr "답장 작성을 위한 Amarnai 답장 버튼 표시"
 msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
 msgstr "집 보여주기 요청, 구매자 투어, 오픈 하우스 등록, 서면 제안."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:155
+#: ../../apps/extension/src/auth/SignInScreen.tsx:163
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
@@ -6694,7 +6737,7 @@ msgstr "대신 이메일로 로그인"
 #~ msgstr "Google로 로그인하세요. Amarnai는 스레드와 라벨을 동기화합니다. 사용자를 대신하여 메일을 보내거나 삭제하지 않습니다."
 
 #: ../../apps/extension/src/App.tsx:128
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:161
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:156
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -6720,7 +6763,7 @@ msgstr "Google로 가입"
 msgid "Sign up with Microsoft"
 msgstr "Microsoft로 가입"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:47
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."
@@ -7521,13 +7564,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "내 형제이신 대왕께,\n"
-"\n"
-"셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n"
-"\n"
-"우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n"
-"\n"
-"미탄니의 대왕 투슈라타"
+msgstr "내 형제이신 대왕께,\n\n셰무월 초에 대회의가 열립니다. 동부 영토에 대한 상세한 보고서를 준비하여, 가능하다면 초승달이 뜨기 전에 급한 전령 편으로 보내주시기를 청합니다.\n\n우리의 동맹은 굳건합니다. 회의에서 이 사실을 다시 한번 확인시켜 줍시다.\n\n미탄니의 대왕 투슈라타"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7536,11 +7573,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "왕실 임명국 귀하,\n"
-"\n"
-"테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n"
-"\n"
-"왕실 칙령에 따라,"
+msgstr "왕실 임명국 귀하,\n\n테베의 호렘헤브가 제출한 신청서를 접수했으며, 다음 초승달이 뜨기 전에 그의 기록을 검토할 것입니다. 그에게 적절한 시기에 소식을 전하겠다고 알려주십시오.\n\n왕실 칙령에 따라,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7551,13 +7584,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "대왕께,\n"
-"\n"
-"수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n"
-"\n"
-"부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n"
-"\n"
-"대왕의 종, 아무르의 영주 아지루"
+msgstr "대왕께,\n\n수년간 우리 가문들은 형제처럼 지내왔습니다. 이제 양국 백성의 번영을 위해 이 우정을 공식화할 것을 제안하고자 합니다. 상호 보호와 공동 항로에 관한 협정입니다.\n\n부디 저의 제안을 경청해 주십시오. 다음 전령 편에 답을 보내주시면 즉시 저의 사절을 파견하겠습니다.\n\n대왕의 종, 아무르의 영주 아지루"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7566,11 +7593,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "대왕께,\n"
-"\n"
-"저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n"
-"\n"
-"대왕의 종, 우루샬림의 총독 압디-헤바"
+msgstr "대왕께,\n\n저의 여정이 며칠 내로 델타 근처에 이르게 됩니다. 대왕께서 한 시간만 할애해 주신다면, 직접 만나 뵙고 말씀드릴 기회를 갖게 되어 영광일 것입니다. 글로 쓰는 것보다 직접 말씀드리는 편이 더 나은 일들이 있기 때문입니다.\n\n대왕의 종, 우루샬림의 총독 압디-헤바"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7579,11 +7602,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "내 형제이신 대왕께,\n"
-"\n"
-"말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n"
-"\n"
-"우정을 담아,"
+msgstr "내 형제이신 대왕께,\n\n말씀을 들었습니다. 다음 전령이 떠나기 전에 황금을 발송하겠습니다. 우리 가문들 사이의 유대를 소중히 여기며, 그 관계가 식기를 원치 않습니다.\n\n우정을 담아,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7594,13 +7613,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "내 형제이신 대왕께,\n"
-"\n"
-"저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n"
-"\n"
-"우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n"
-"\n"
-"바빌론의 왕 부르나-부리아쉬 2세"
+msgstr "내 형제이신 대왕께,\n\n저희 아버지들이 그러했듯이 우정을 담아 글을 씁니다. 우리 조약에 따라 합의된 세 번째 황금 운송분이 도착하지 않았습니다. 두 명의 전령이 오갔으나 저희는 여전히 기다리고 있습니다.\n\n우리 가문들 사이의 유대에 합당하게, 더 이상 지체 없이 황금을 발송해 주시기를 요청합니다.\n\n바빌론의 왕 부르나-부리아쉬 2세"
 
 #: ../ui/src/demo/demo-seed.ts:394
 #, fuzzy
@@ -7611,13 +7624,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n"
-"\n"
-"지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n"
-"\n"
-"일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n"
-"\n"
-"대왕의 종, 비블로스의 총독 리브-하다"
+msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n\n지난달 보내주신 곡물은 감사히 받았습니다. 백성들 앞에서 대왕의 이름을 찬양했습니다. 하지만 다시 글을 올려야만 합니다. 세 번째 선적분이 도착하지 않아 도시가 불안해하고 있습니다.\n\n일곱 번이나 글을 썼습니다. 대왕을 번거롭게 하고 싶지 않지만, 제가 달리 무엇을 할 수 있겠습니까?\n\n대왕의 종, 비블로스의 총독 리브-하다"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -8271,8 +8278,8 @@ msgstr "예. Amarnai는 지금부터 도착하는 메시지뿐만 아니라 받�
 #~ msgstr "네. Amarnai는 지금부터 도착하는 메시지뿐만 아니라 이미 받은 편지함에 있는 수천 개의 스레드도 처리할 수 있습니다. 과거 분류 및 지속적인 정리는 동일한 플랜을 사용하므로, 전체 받은 편지함이 동일한 방식으로 정리됩니다."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
-msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "네. Amarnai는 읽기 전용 범위로 연결되므로, 스레드를 읽을 수는 있지만 계정에서 메일을 보내거나, 삭제하거나, 라벨을 지정하거나, 어떤 것도 변경할 수 없습니다. 스레드를 분류하고 표시하는 데 필요한 정보(제목, 참여자, 스니펫, 생성된 라벨 및 분류 이유)만 보관합니다. 전체 메시지 본문은 필요할 때만 가져와 메모리에서 처리되며 저장되지 않으며, OAuth 토큰은 저장 시 암호화됩니다."
+#~ msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "네. Amarnai는 읽기 전용 범위로 연결되므로, 스레드를 읽을 수는 있지만 계정에서 메일을 보내거나, 삭제하거나, 라벨을 지정하거나, 어떤 것도 변경할 수 없습니다. 스레드를 분류하고 표시하는 데 필요한 정보(제목, 참여자, 스니펫, 생성된 라벨 및 분류 이유)만 보관합니다. 전체 메시지 본문은 필요할 때만 가져와 메모리에서 처리되며 저장되지 않으며, OAuth 토큰은 저장 시 암호화됩니다."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
@@ -8284,9 +8291,18 @@ msgstr "네. Amarnai는 읽기 전용 범위로 연결되므로, 스레드를 �
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "네. Amarnai는 AGPL-3.0 라이선스에 따라 오픈 소스로 제공됩니다. 저장소를 복제하고 Docker로 직접 실행할 수 있습니다. 셀프 호스팅은 무료이며 지원되지 않지만, GitHub에서 커뮤니티 지원을 받을 수 있습니다."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
+#, fuzzy
+msgid "Yes. Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes back is its own labels in Gmail or categories in Outlook, kept under an Amarnai namespace so sorted mail is easy to find in your inbox, and you can switch that off. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "예. Amarnai는 이메일 스레드를 읽어 분류하며, 사용자 이메일을 보내거나, 삭제하거나, 이동할 수 없습니다. Amarnai가 작성하는 유일한 정보는 Gmail의 자체 라벨 또는 Outlook의 카테고리이며, 이는 Amarnai 네임스페이스 아래에 유지되어 분류된 메일을 받은 편지함에서 쉽게 찾을 수 있도록 하며, 이 기능은 언제든지 해제할 수 있습니다. 스레드를 분류하고 표시하는 데 필요한 정보(제목, 참여자, 스니펫, 그리고 Amarnai가 생성하는 라벨 및 분류 이유)만 보관합니다. 전체 메시지 본문은 필요할 때 가져와 메모리에서 처리되며 저장되지 않고, OAuth 토큰은 저장 시 암호화됩니다."
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
-msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "네. Amarnai는 Gmail과 Outlook 모두에서 작동하며, 동일한 읽기 전용 방식으로 연결됩니다. Amarnai는 스레드를 분류하기 위해 읽기만 할 뿐, 계정에서 어떤 것도 보내거나 삭제하거나 변경하지 않습니다."
+#~ msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "네. Amarnai는 Gmail과 Outlook 모두에서 작동하며, 동일한 읽기 전용 방식으로 연결됩니다. Amarnai는 스레드를 분류하기 위해 읽기만 할 뿐, 계정에서 어떤 것도 보내거나 삭제하거나 변경하지 않습니다."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:40
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same way: Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes is its own labels in Gmail or categories in Outlook, and you can switch that off."
+msgstr "예. Amarnai는 Gmail과 Outlook 모두에서 작동하며, 동일한 방식으로 연결됩니다. Amarnai는 이메일 스레드를 읽어 분류하며, 사용자 이메일을 보내거나, 삭제하거나, 이동할 수 없습니다. Amarnai가 작성하는 유일한 정보는 Gmail의 자체 라벨 또는 Outlook의 카테고리이며, 이 기능은 언제든지 해제할 수 있습니다."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy

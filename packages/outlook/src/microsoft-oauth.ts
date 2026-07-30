@@ -49,6 +49,20 @@ export const OUTLOOK_CONSENT_SCOPES = `${OUTLOOK_SIGNIN_SCOPE} ${OUTLOOK_SCOPES}
 export const OUTLOOK_WRITEBACK_CONSENT_SCOPES = `${OUTLOOK_SIGNIN_SCOPE} ${OUTLOOK_WRITEBACK_SCOPES}`;
 
 /**
+ * The upfront-grant set: OUTLOOK_SCOPES plus both write scopes. Requested at
+ * sign-in and at extension connect when label writeback is enabled, so mail
+ * authorization is gathered once instead of via a second consent round.
+ *
+ * The UNION, deliberately, and not OUTLOOK_WRITEBACK_SCOPES: that set drops
+ * Mail.Read, and Microsoft refresh tokens are scope-bound, so a grant that came
+ * back narrower than asked (declined or tenant-restricted write consent) would
+ * leave the connection unable to fall back to reading.
+ */
+export const OUTLOOK_UPFRONT_SCOPES =
+  `${OUTLOOK_SCOPES} ${OUTLOOK_MAIL_READWRITE_SCOPE} ${OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE}`;
+export const OUTLOOK_UPFRONT_CONSENT_SCOPES = `${OUTLOOK_SIGNIN_SCOPE} ${OUTLOOK_UPFRONT_SCOPES}`;
+
+/**
  * The single tenant every personal Microsoft account (MSA) signs in under, fixed
  * and published by Microsoft. Any other tenant id is a work/school account.
  */
@@ -110,16 +124,46 @@ export function hasWritebackScope(grantedScopes: readonly string[]): boolean {
  * The scope set to redeem an authorization code with, given the scope string the
  * client says it authorized against.
  *
- * Microsoft refuses a redemption that asks for more than the authorize request
- * did, so a client build that predates the `openid` sign-in scope has to be
- * redeemed without it — otherwise every already-installed browser extension
- * would fail to connect until it updated. The client's string only selects
- * between two fixed constants here; it is never forwarded to Microsoft verbatim.
+ * Microsoft refuses a redemption that asks for more than the AUTHORIZE REQUEST
+ * did, so the client's string is used to identify which authorize request its
+ * build makes, and the matching constant is returned whole. Two independent
+ * tiers, so four combinations:
+ *   - `openid`: a build predating the sign-in scope must be redeemed without it,
+ *     or every already-installed extension fails to connect until it updates.
+ *   - the write scopes: a build that asked for them upfront must be redeemed WITH
+ *     them, because Microsoft refresh tokens are scope-bound — dropping them here
+ *     would silently mint a read-only token from a write grant.
+ *
+ * Deliberately NOT a per-scope intersection of the client's string. Microsoft
+ * omits `offline_access` (and `openid`) from the scope it echoes on the redirect,
+ * and `runAuthCodeFlow` forwards that echo, so intersecting would drop
+ * `offline_access` and redeem into a token response with no refresh token at all.
+ * The client's string is a lossy signal of which build is calling, never an
+ * inventory of what to ask for; it selects between fixed constants and is never
+ * forwarded to Microsoft verbatim.
  */
 export function scopeForCodeRedemption(clientScope: string): string {
-  const signedIn = clientScope
-    .split(" ")
-    .some((s) => s.toLowerCase() === OUTLOOK_SIGNIN_SCOPE);
+  const requested = new Set(
+    clientScope
+      .split(" ")
+      .filter(Boolean)
+      .map((s) => s.toLowerCase()),
+  );
+  const asked = (scope: string): boolean => requested.has(scope.toLowerCase());
+
+  const signedIn = asked(OUTLOOK_SIGNIN_SCOPE);
+  // EITHER write scope marks an upfront-write build, because the two are always
+  // authorized as a pair. Requiring both would drop the pair whenever Microsoft
+  // echoes only one. When a write build's echo carries neither (write consent
+  // fully denied or tenant-restricted), this falls through to the read-only
+  // constants — a subset of that build's authorize request, so still valid, and
+  // exactly the read-only fallback the connection needs.
+  const upfrontWrite =
+    asked(OUTLOOK_MAIL_READWRITE_SCOPE) || asked(OUTLOOK_MAILBOX_SETTINGS_RW_SCOPE);
+
+  if (upfrontWrite) {
+    return signedIn ? OUTLOOK_UPFRONT_CONSENT_SCOPES : OUTLOOK_UPFRONT_SCOPES;
+  }
   return signedIn ? OUTLOOK_CONSENT_SCOPES : OUTLOOK_SCOPES;
 }
 

@@ -7,6 +7,7 @@ import {
   listVisibleSiblingConnections,
 } from "./gmail-disconnect.js";
 import { syncInboxQueue } from "./queue-client.js";
+import { enableLabelWritebackForGrant } from "./label-writeback.js";
 import { recordAudit } from "./audit.js";
 
 // Columns returned by the connection GET/POST endpoints. encryptedRefreshToken is
@@ -201,6 +202,13 @@ export async function runProviderConnect(args: RunProviderConnectArgs): Promise<
       console.error(`[${logPrefix}] extension_nudge:`, err instanceof Error ? err.message : err),
     );
   }
+
+  // The write scope is requested upfront at connect, so this is where writeback
+  // gets enabled and folder provisioning starts — the counterpart of what the web
+  // OAuth callback does. Here for both providers at once, since both connect
+  // routes delegate to this function. Reads the stored scopes, so a read-only
+  // connect no-ops, and never throws.
+  await enableLabelWritebackForGrant({ workspaceId, source: logPrefix });
 
   // Return the full connection shape (same as GET) so the client can update state.
   const response = await buildConnectionResponse(workspaceId, userId);

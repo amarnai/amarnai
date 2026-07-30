@@ -336,9 +336,14 @@ msgstr "+ Neuer Arbeitsbereich"
 #~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 #~ msgstr "<0>{migrateLive}</0> Konversationen werden sofort in ihren neuen Ordner verschoben. <1>{resortLive}</1> Konversationen werden von der KI neu sortiert."
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:96
+#, fuzzy
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "<0>King Aziru</0> ist bereit, Ihre E-Mail-Konversationen zu sortieren. Verbinden Sie Ihr {providerName}-Konto, um loszulegen. Amarnai <1>sendet, löscht oder verschiebt niemals Ihre E-Mails</1>. Es erstellt lediglich eigene Sortierlabels, die Sie jederzeit deaktivieren können. Ihr Posteingang bleibt Ihnen."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
-msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-msgstr "<0>King Aziru</0> ist bereit, Ihre E-Mail-Konversationen zu sortieren. Verbinden Sie Ihr {providerName}-Konto, um loszulegen. Amarnai verbindet sich mit <1>reinem Lesezugriff</1> und <2>sendet, löscht oder ändert niemals etwas</2>. Ihr Posteingang bleibt Ihnen erhalten."
+#~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+#~ msgstr "<0>King Aziru</0> ist bereit, Ihre E-Mail-Konversationen zu sortieren. Verbinden Sie Ihr {providerName}-Konto, um loszulegen. Amarnai verbindet sich mit <1>reinem Lesezugriff</1> und <2>sendet, löscht oder ändert niemals etwas</2>. Ihr Posteingang bleibt Ihnen erhalten."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -584,9 +589,7 @@ msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Korres
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n"
-"\n"
-"Bewerbung im Haus der Akten einsehen."
+msgstr "Eine neue Bewerbung von Horemheb aus Theben für die Position des Obersten Korrespondenten ist eingegangen.\n\nBewerbung im Haus der Akten einsehen."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -612,11 +615,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n"
-"\n"
-"Ich bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n"
-"\n"
-"Bis dahin,"
+msgstr "Abdi-Heba,\n\nIch bin in jener Woche nahe des Deltas. Treffen wir uns am zweiten Tag an der Wegstation; den Vormittag habe ich frei.\n\nBis dahin,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -635,13 +634,23 @@ msgstr "Akademische/r Forscher/in"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
 #, fuzzy
-msgid "Access was denied. Grant read-only Gmail access to connect."
-msgstr "Der Zugriff wurde verweigert. Gewähren Sie Lesezugriff auf Gmail, um eine Verbindung herzustellen."
+#~ msgid "Access was denied. Grant read-only Gmail access to connect."
+#~ msgstr "Der Zugriff wurde verweigert. Gewähren Sie Lesezugriff auf Gmail, um eine Verbindung herzustellen."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
 #, fuzzy
-msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
-msgstr "Zugriff verweigert. Erteilen Sie Lesezugriff für Outlook (Mail.Read), um eine Verbindung herzustellen."
+#~ msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
+#~ msgstr "Zugriff verweigert. Erteilen Sie Lesezugriff für Outlook (Mail.Read), um eine Verbindung herzustellen."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
+#, fuzzy
+msgid "Access was denied. Grant the requested Gmail access to connect."
+msgstr "Zugriff verweigert. Erteilen Sie den angeforderten Gmail-Zugriff, um eine Verbindung herzustellen."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+#, fuzzy
+msgid "Access was denied. Grant the requested Outlook access to connect."
+msgstr "Zugriff verweigert. Erteilen Sie den angeforderten Outlook-Zugriff, um eine Verbindung herzustellen."
 
 #: ../../apps/mobile/app/(app)/account.tsx:105
 msgid "Account"
@@ -921,17 +930,30 @@ msgstr "Amarnai ist nach den Amarna-Briefen benannt, einer Sammlung von Tontafel
 #~ msgstr ""
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:89
-msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr {providerName}-Konto erneut, um Ihre E-Mail-Konversationen wieder zu sortieren. Der Zugriff bleibt <0>rein lesend</0>, und Ihr Posteingang bleibt Ihnen erhalten."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr {providerName}-Konto erneut, um Ihre E-Mail-Konversationen wieder zu sortieren. Der Zugriff bleibt <0>rein lesend</0>, und Ihr Posteingang bleibt Ihnen erhalten."
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
+msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr {providerName}-Konto erneut, um die Sortierung Ihrer E-Mail-Konversationen fortzusetzen. Amarnai <0>sendet, löscht oder verschiebt niemals Ihre E-Mails</0>, und Ihr Posteingang bleibt Ihnen."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Gmail-Konto erneut, um Ihre E-Mail-Konversationen weiter zu sortieren. Der Zugriff bleibt <0>nur lesend</0>, und Ihr Posteingang bleibt Ihrer."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Gmail-Konto erneut, um Ihre E-Mail-Konversationen weiter zu sortieren. Der Zugriff bleibt <0>nur lesend</0>, und Ihr Posteingang bleibt Ihrer."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:89
+#, fuzzy
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Gmail-Konto erneut, um die Sortierung Ihrer E-Mail-Konversationen fortzusetzen. Amarnai <0>sendet, löscht oder verschiebt niemals Ihre E-Mails</0>, und Ihr Posteingang bleibt Ihnen."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Outlook-Konto erneut, um Ihre E-Mail-Konversationen wieder zu sortieren. Der Zugriff bleibt <0>nur lesend</0>, und Ihr Posteingang gehört Ihnen."
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Outlook-Konto erneut, um Ihre E-Mail-Konversationen wieder zu sortieren. Der Zugriff bleibt <0>nur lesend</0>, und Ihr Posteingang gehört Ihnen."
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai synchronisiert diesen Posteingang nicht mehr. Verbinden Sie Ihr Outlook-Konto erneut, um die Sortierung Ihrer E-Mail-Konversationen fortzusetzen. Amarnai <0>sendet, löscht oder verschiebt niemals Ihre E-Mails</0>, und Ihr Posteingang bleibt Ihnen."
 
 #: ../ui/src/pricing/planMessages.ts:113
 #, fuzzy
@@ -988,7 +1010,7 @@ msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai benötigt Zugriff auf seinen Server und Ihren Posteingang, um Ihre E-Mails anzuzeigen."
 
 #: ../../apps/extension/src/App.tsx:56
-#: ../../apps/extension/src/auth/SignInScreen.tsx:14
+#: ../../apps/extension/src/auth/SignInScreen.tsx:15
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai benötigt Zugriff auf seinen Server und Ihren Posteingang, um zu funktionieren. Bitte gewähren Sie Zugriff und versuchen Sie es erneut."
 
@@ -1312,11 +1334,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n"
-"\n"
-"Deine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n"
-"\n"
-"Mit Grüßen,"
+msgstr "Aziru,\n\nDeine Worte der Freundschaft erreichen uns wohl. Wir sind offen dafür, mehr von den Vorschlägen des Hauses Amurru zu hören. Sende deine Bedingungen mit dem nächsten Kurier.\n\nMit Grüßen,"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1559,7 +1577,7 @@ msgstr "Kann ich Amarnai selbst hosten?"
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:147
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:148
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:209
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:90
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:109
@@ -1892,13 +1910,13 @@ msgstr "Verbinde {name}"
 msgid "Connect {name} to this workspace?"
 msgstr "{name} mit diesem Arbeitsbereich verbinden?"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:123
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:124
 #, fuzzy
 msgid "Connect {providerName}"
 msgstr "{providerName} verbinden"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:167
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:159
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:168
 msgid "Connect {secondaryName}"
 msgstr "Verbinden {secondaryName}"
 
@@ -1921,7 +1939,7 @@ msgid "Connect a mailbox to Amarnai to start sorting your inbox."
 msgstr "Verbinden Sie ein Postfach mit Amarnai, um Ihren Posteingang zu sortieren."
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
@@ -1989,7 +2007,7 @@ msgstr "Einmal verbinden, einmal Ordner generieren – Amarnai kümmert sich dan
 #~ msgstr "Einmal verbinden, einmal Ihren Plan erstellen und Amarnai den Umgang mit neuen E-Mails und Tausenden bereits vorhandener Konversationen in Ihrem Posteingang überlassen."
 
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:153
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:461
 #, fuzzy
@@ -2005,9 +2023,13 @@ msgstr "Outlook verbinden"
 msgid "Connect your {providerName} inbox"
 msgstr "Ihren {providerName}-Posteingang verbinden"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:97
+msgid "Connect your account to get started. Amarnai <0>never sends, deletes, or moves your mail</0>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "Verbinden Sie Ihr Konto, um loszulegen. Amarnai <0>sendet, löscht oder verschiebt niemals Ihre E-Mails</0>. Es erstellt lediglich eigene Sortierlabels, die Sie jederzeit deaktivieren können. Ihr Posteingang bleibt Ihnen."
+
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "Verbinden Sie Ihr Konto, um zu starten. Amarnai verbindet sich mit <0>Nur-Lesezugriff</0> und <1>sendet, löscht oder ändert niemals etwas</1>. Ihr Posteingang bleibt Ihnen erhalten."
+#~ msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "Verbinden Sie Ihr Konto, um zu starten. Amarnai verbindet sich mit <0>Nur-Lesezugriff</0> und <1>sendet, löscht oder ändert niemals etwas</1>. Ihr Posteingang bleibt Ihnen erhalten."
 
 #: ../../apps/extension/src/App.tsx:91
 #, fuzzy
@@ -2041,14 +2063,14 @@ msgstr "Verbinde deinen Posteingang, um mit dem Sichten zu beginnen."
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Beim Verbinden von {name} werden die von {retainedAddress} gespeicherten sortierten E-Mails dauerhaft entfernt. Ihre Ordner und Einstellungen bleiben erhalten."
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:131
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:132
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "Beim Verbinden von {secondaryName} werden die von {retainedAddress} gespeicherten sortierten E-Mails dauerhaft entfernt. Ihre Ordner und Einstellungen bleiben erhalten."
 
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 msgid "Connecting…"
 msgstr "Verbinden…"
 
@@ -2076,7 +2098,7 @@ msgstr "Als {incomingEmail} fortfahren"
 msgid "Continue to {name}"
 msgstr "Weiter zu {name}"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:141
 msgid "Continue to {secondaryName}"
 msgstr "Weiter zu {secondaryName}"
 
@@ -2094,14 +2116,14 @@ msgstr "Weiter zur Zahlung"
 msgid "Continue with email"
 msgstr "Mit E-Mail fortfahren"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:113
+#: ../../apps/extension/src/auth/SignInScreen.tsx:121
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
 msgid "Continue with Google"
 msgstr "Mit Google fortfahren"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:124
+#: ../../apps/extension/src/auth/SignInScreen.tsx:132
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 #, fuzzy
 msgid "Continue with Microsoft"
@@ -2144,8 +2166,13 @@ msgstr "Kopieren"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
-msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
-msgstr "Auf Ihren Gmail-Posteingang konnte nicht zugegriffen werden. Stellen Sie sicher, dass die Gmail API aktiviert ist und der Bereich „gmail.readonly“ dem OAuth-Zustimmungsbildschirm in der Google Cloud Console hinzugefügt wurde."
+#~ msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
+#~ msgstr "Auf Ihren Gmail-Posteingang konnte nicht zugegriffen werden. Stellen Sie sicher, dass die Gmail API aktiviert ist und der Bereich „gmail.readonly“ dem OAuth-Zustimmungsbildschirm in der Google Cloud Console hinzugefügt wurde."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#, fuzzy
+msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Amarnai requests are added to the OAuth consent screen in Google Cloud Console."
+msgstr "Zugriff auf Ihren Gmail-Posteingang nicht möglich. Stellen Sie sicher, dass die Gmail API aktiviert ist und die von Amarnai angeforderten Bereiche dem OAuth-Zustimmungsbildschirm in der Google Cloud Console hinzugefügt wurden."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
@@ -2939,7 +2966,7 @@ msgstr "Posteingang bearbeiten"
 msgid "Edit Path"
 msgstr "Pfad bearbeiten"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:134
+#: ../../apps/extension/src/auth/SignInScreen.tsx:142
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -3275,6 +3302,10 @@ msgstr "Warteschlangen & Ordner filtern…"
 msgid "Filter rail"
 msgstr "Filterleiste"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Filters match rules you write by hand: this sender, that subject keyword. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement. Your folders are mirrored back into your inbox as labels or categories, so the sorting shows up there too, but the calm workspace is what you work from. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "Filter basieren auf selbst erstellten Regeln: dieser Absender, jenes Betreff-Stichwort. Amarnai liest jede Konversation wie ein Mensch und ordnet sie in einem übersichtlichen Arbeitsbereich an, wo zusammengehörige Konversationen versammelt sind, jeweils mit einer Begründung für ihre Platzierung. Ihre Ordner werden als Labels oder Kategorien in Ihren Posteingang gespiegelt, sodass die Sortierung auch dort sichtbar ist. Sie arbeiten jedoch im ruhigen Arbeitsbereich von Amarnai. Spam und Werbe-E-Mails werden automatisch ausgeblendet, sofern Sie dies nicht in den Einstellungen aktivieren. Alles, worüber sich Amarnai unsicher ist, wird zur Überprüfung markiert."
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
@@ -3299,8 +3330,13 @@ msgstr "Erste Anfragen von Käufern und Verkäufern sowie neue Makler-Einführun
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
-msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
-msgstr "Fünf Punkte gewährleisten die Sicherheit Ihres Posteingangs. Erstens, Amarnai ist von Grund auf schreibgeschützt: Die Berechtigungen, die Sie über Google erteilen, machen es Amarnai unmöglich, E-Mails zu senden, zu löschen oder zu ändern. Zweitens, Amarnai hat Googles Sicherheitsprüfung bestanden und die CASA-Sicherheitsbewertung abgeschlossen, die für jede App erforderlich ist, die auf Gmail zugreift. Drittens, Sie behalten die Kontrolle: Antworten bleiben Entwürfe, bis Sie sie freigeben, nichts wird jemals in Ihrem Namen gesendet, und Sie können Amarnai jederzeit trennen. Viertens, es werden keine E-Mail-Inhalte gespeichert: Amarnai speichert Labels und Metadaten, niemals den Inhalt Ihrer Nachrichten. Fünftens, der Code ist öffentlich, sodass jeder genau überprüfen kann, was mit Ihren E-Mails geschieht."
+#~ msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+#~ msgstr "Fünf Punkte gewährleisten die Sicherheit Ihres Posteingangs. Erstens, Amarnai ist von Grund auf schreibgeschützt: Die Berechtigungen, die Sie über Google erteilen, machen es Amarnai unmöglich, E-Mails zu senden, zu löschen oder zu ändern. Zweitens, Amarnai hat Googles Sicherheitsprüfung bestanden und die CASA-Sicherheitsbewertung abgeschlossen, die für jede App erforderlich ist, die auf Gmail zugreift. Drittens, Sie behalten die Kontrolle: Antworten bleiben Entwürfe, bis Sie sie freigeben, nichts wird jemals in Ihrem Namen gesendet, und Sie können Amarnai jederzeit trennen. Viertens, es werden keine E-Mail-Inhalte gespeichert: Amarnai speichert Labels und Metadaten, niemals den Inhalt Ihrer Nachrichten. Fünftens, der Code ist öffentlich, sodass jeder genau überprüfen kann, was mit Ihren E-Mails geschieht."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:16
+#, fuzzy
+msgid "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+msgstr "Fünf Punkte sorgen für die Sicherheit Ihres Posteingangs. Erstens, Amarnais Zugriff ist bewusst eingeschränkt: Es kann niemals E-Mails senden, löschen oder verschieben. Es schreibt lediglich eigene Sortierlabels, die Sie deaktivieren können. Zweitens, Amarnai hat Googles Sicherheitsprüfung bestanden und die CASA-Sicherheitsbewertung abgeschlossen, die für jede App, die auf Gmail zugreift, erforderlich ist. Drittens, Sie behalten die Kontrolle: Antworten bleiben Entwürfe, bis Sie sie senden. Nichts wird in Ihrem Namen versendet, und Sie können Amarnai jederzeit trennen. Viertens, E-Mail-Inhalte werden nicht gespeichert: Amarnai speichert Labels und Metadaten, niemals den Inhalt Ihrer Nachrichten. Fünftens, der Code ist öffentlich. So kann jeder genau prüfen, was mit Ihren E-Mails geschieht."
 
 #: ../ui/src/demo/demo-seed.ts:311
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
@@ -3701,8 +3737,8 @@ msgid "gmail ai assistant"
 msgstr "Gmail KI-Assistent"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
-msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Gmail- und Outlook-Filter versehen jede Nachricht lediglich mit einem Label oder einer Kategorie und lassen sie im selben überfüllten Posteingang. Amarnai liest jede Konversation wie ein Mensch und ordnet sie in einem übersichtlichen Arbeitsbereich an, wo zusammengehörige Konversationen gruppiert sind, jeweils mit der Begründung für ihre Platzierung, sodass Sie eine klarere Übersicht erhalten, statt nur ein weiteres verstecktes Label. Spam und Werbe-E-Mails werden automatisch ferngehalten, es sei denn, Sie aktivieren sie in den Einstellungen, und alles, worüber Amarnai unsicher ist, wird zur Überprüfung markiert."
+#~ msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Gmail- und Outlook-Filter versehen jede Nachricht lediglich mit einem Label oder einer Kategorie und lassen sie im selben überfüllten Posteingang. Amarnai liest jede Konversation wie ein Mensch und ordnet sie in einem übersichtlichen Arbeitsbereich an, wo zusammengehörige Konversationen gruppiert sind, jeweils mit der Begründung für ihre Platzierung, sodass Sie eine klarere Übersicht erhalten, statt nur ein weiteres verstecktes Label. Spam und Werbe-E-Mails werden automatisch ferngehalten, es sei denn, Sie aktivieren sie in den Einstellungen, und alles, worüber Amarnai unsicher ist, wird zur Überprüfung markiert."
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
@@ -3739,9 +3775,13 @@ msgstr "Gmail Live-Synchronisierung aktiv"
 #~ msgstr "Gmail als wichtig markiert"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
+msgid "Gmail read access was not granted. Please try again and approve the requested permission."
+msgstr "Leseberechtigungen für Gmail wurden nicht erteilt. Bitte versuchen Sie es erneut und erteilen Sie die angeforderten Berechtigungen."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
-msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
-msgstr "Der Nur-Lesezugriff auf Gmail wurde nicht gewährt. Bitte versuchen Sie es erneut und genehmigen Sie die angeforderte Berechtigung."
+#~ msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
+#~ msgstr "Der Nur-Lesezugriff auf Gmail wurde nicht gewährt. Bitte versuchen Sie es erneut und genehmigen Sie die angeforderte Berechtigung."
 
 #: ../../apps/web/src/components/Sidebar.tsx:37
 #, fuzzy
@@ -3791,7 +3831,7 @@ msgstr "Google-Konto-Berechtigungen"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google konnte die Autorisierung nicht abschließen. Der Link ist möglicherweise abgelaufen: Bitte versuchen Sie es erneut. Wenn das Problem weiterhin besteht, überprüfen Sie, ob die Gmail-Callback-URL in der Google Cloud Console registriert ist."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:67
+#: ../../apps/extension/src/auth/SignInScreen.tsx:75
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
@@ -3823,11 +3863,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Großer König,\n"
-"\n"
-"Die angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n"
-"\n"
-"In Brüderlichkeit,"
+msgstr "Großer König,\n\nDie angeforderten Berichte werden vor der Ratsversammlung fertig sein. Ich werde meine Schreiber die Aufzeichnungen der östlichen Gebiete zusammenstellen und sie per Eilkurier vorausschicken.\n\nIn Brüderlichkeit,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4680,7 +4716,7 @@ msgstr "Microsoft-Kontoberechtigungen"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft konnte die Autorisierung nicht abschließen. Der Link ist möglicherweise abgelaufen: Bitte versuchen Sie es erneut. Wenn das Problem weiterhin besteht, überprüfen Sie, ob die Weiterleitungs-URI bei der App-Registrierung registriert ist."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #, fuzzy
 msgid "Microsoft sign-in failed. Please try again."
 msgstr "Microsoft-Anmeldung fehlgeschlagen. Bitte versuche es erneut."
@@ -4807,6 +4843,15 @@ msgstr "Nie"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Kein automatischer Versand · Im Ruhezustand verschlüsselt · Minimale Daten"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#, fuzzy
+msgid "Never sends · OAuth · revoke anytime"
+msgstr "Kein Versand · OAuth · Widerruf jederzeit"
+
+#: ../../apps/site/src/components/landing/HeroSection.tsx:47
+msgid "Never sends or deletes"
+msgstr "Sendet oder löscht niemals"
+
 #: ../ui/src/demo/demo-seed.ts:358
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
@@ -4867,7 +4912,7 @@ msgstr "Neues Passwort"
 msgid "New threads will appear as they are sorted."
 msgstr "Neue Konversationen werden angezeigt, sobald sie sortiert sind."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:160
+#: ../../apps/extension/src/auth/SignInScreen.tsx:168
 #, fuzzy
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Neu bei Amarnai? <0>Konto erstellen</0>"
@@ -5281,7 +5326,7 @@ msgstr "Optional. Wird angewendet, wenn Entwurfsantworten für Konversationen in
 msgid "Optional. Sets this folder’s chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "Optional. Legt die Farbe des Chips und des Symbols dieses Ordners in Ihrem gesamten Posteingang fest. Standardmäßig wird automatisch eine feste Farbe zugewiesen."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:130
+#: ../../apps/extension/src/auth/SignInScreen.tsx:138
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:88
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:80
@@ -5310,8 +5355,12 @@ msgid "outlook ai assistant"
 msgstr "Outlook KI-Assistent"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
-msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
-msgstr "Outlook-Lesezugriff (Mail.Read) wurde nicht gewährt. Bitte versuchen Sie es erneut und genehmigen Sie die angeforderte Berechtigung."
+msgid "Outlook read access (Mail.Read) was not granted. Please try again and approve the requested permission."
+msgstr "Leseberechtigungen für Outlook (Mail.Read) wurden nicht erteilt. Bitte versuchen Sie es erneut und erteilen Sie die angeforderten Berechtigungen."
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
+#~ msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
+#~ msgstr "Outlook-Lesezugriff (Mail.Read) wurde nicht gewährt. Bitte versuchen Sie es erneut und genehmigen Sie die angeforderte Berechtigung."
 
 #: ../ui/src/pricing/planMessages.ts:78
 #, fuzzy
@@ -5348,7 +5397,7 @@ msgstr "Googles Sicherheitsprüfung bestanden"
 msgid "Passing through the Delta: free to meet?"
 msgstr "Durchreise durch das Delta: Zeit für ein Treffen?"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:144
+#: ../../apps/extension/src/auth/SignInScreen.tsx:152
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:183
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
@@ -5803,12 +5852,12 @@ msgid "Reactivate"
 msgstr "Reaktivieren"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
-msgid "Read-only · OAuth · revoke anytime"
-msgstr "Nur Lesezugriff · OAuth · Jederzeit widerrufbar"
+#~ msgid "Read-only · OAuth · revoke anytime"
+#~ msgstr "Nur Lesezugriff · OAuth · Jederzeit widerrufbar"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:47
-msgid "Read-only by design"
-msgstr "Von Grund auf schreibgeschützt"
+#~ msgid "Read-only by design"
+#~ msgstr "Von Grund auf schreibgeschützt"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
 #, fuzzy
@@ -5854,7 +5903,7 @@ msgid "Reconnect"
 msgstr "Wieder verbinden"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:384
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:121
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:122
 #, fuzzy
 msgid "Reconnect {providerName}"
 msgstr "{providerName} erneut verbinden"
@@ -5863,13 +5912,13 @@ msgstr "{providerName} erneut verbinden"
 #~ msgid "Reconnect failed. Please try again."
 #~ msgstr "Wiederverbindung fehlgeschlagen. Bitte versuchen Sie es erneut."
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:128
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "Gmail neu verbinden"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #, fuzzy
 msgid "Reconnect Outlook"
 msgstr "Outlook erneut verbinden"
@@ -5888,7 +5937,7 @@ msgstr "Ihren Gmail-Posteingang neu verbinden"
 msgid "Reconnect your Outlook inbox"
 msgstr "Ihren Outlook-Posteingang erneut verbinden"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 msgid "Reconnecting…"
 msgstr "Verbindung wird wiederhergestellt…"
@@ -6202,11 +6251,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n"
-"\n"
-"Wir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n"
-"\n"
-"Bleibe gesund,"
+msgstr "Rib-Hadda,\n\nWir haben deine Botschaft empfangen. Zusätzliches Getreide wurde aus den südlichen Lagern geordert und trifft vor dem Erntefest ein. Wir bitten dich um Geduld bis dahin.\n\nBleibe gesund,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6341,7 +6386,7 @@ msgstr "Konversationen durchsuchen…"
 #~ msgid "See how your inbox is sorted, right next to Gmail."
 #~ msgstr "Sehen Sie direkt neben Gmail, wie Ihr Posteingang sortiert wird."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:104
+#: ../../apps/extension/src/auth/SignInScreen.tsx:112
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "Sehen Sie, wie Ihr Posteingang sortiert wird, direkt neben Ihren E-Mails."
 
@@ -6549,7 +6594,7 @@ msgstr "Schaltfläche „Amarnai Reply“ für Antwortentwürfe anzeigen"
 msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
 msgstr "Besichtigungsterminanfragen, Käuferbesichtigungen, Anmeldungen für Tage der offenen Tür und schriftliche Angebote."
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:155
+#: ../../apps/extension/src/auth/SignInScreen.tsx:163
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
@@ -6602,7 +6647,7 @@ msgstr "Stattdessen mit E-Mail anmelden"
 #~ msgstr "Mit Google anmelden. Amarnai synchronisiert Ihre Konversationen und Labels. Es sendet oder löscht niemals in Ihrem Namen."
 
 #: ../../apps/extension/src/App.tsx:128
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:161
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:156
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -6629,7 +6674,7 @@ msgstr "Mit Google registrieren"
 msgid "Sign up with Microsoft"
 msgstr "Mit Microsoft registrieren"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:47
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."
@@ -7416,13 +7461,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "An meinen Bruder, den Großen König,\n"
-"\n"
-"Der Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n"
-"\n"
-"Unsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n"
-"\n"
-"Tushratta, Großer König von Mitanni"
+msgstr "An meinen Bruder, den Großen König,\n\nDer Große Rat tritt zu Beginn von Shemu zusammen. Ich bitte Euch, eine vollständige Abrechnung der östlichen Gebiete zu erstellen und diese per Eilkurier vorauszuschicken, möglichst vor dem Neumond.\n\nUnsere Allianz ist stark. Zeigen wir dem Rat, dass sie es bleibt.\n\nTushratta, Großer König von Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7431,11 +7470,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "An das Büro für königliche Ernennungen,\n"
-"\n"
-"Wir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n"
-"\n"
-"Durch königlichen Erlass,"
+msgstr "An das Büro für königliche Ernennungen,\n\nWir haben die Bewerbung von Horemheb aus Theben erhalten und werden seine Akten vor dem nächsten Neumond prüfen. Bitte informiert ihn, dass wir uns zu gegebener Zeit melden werden.\n\nDurch königlichen Erlass,"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7446,13 +7481,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "An den Großen König,\n"
-"\n"
-"Seit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n"
-"\n"
-"Ich bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n"
-"\n"
-"Aziru, Diener des Großen Königs, Herr von Amurru"
+msgstr "An den Großen König,\n\nSeit vielen Jahren sind unsere Häuser wie Brüder. Ich schreibe nun, um vorzuschlagen, dass wir diese Freundschaft zum Wohle beider Völker formalisieren: einen Pakt des gegenseitigen Schutzes und der gemeinsamen Routen.\n\nIch bitte lediglich darum, dass Ihr meine Bedingungen anhört. Sendet eine Nachricht mit dem nächsten Kurier, und ich werde meinen Gesandten sogleich entsenden.\n\nAziru, Diener des Großen Königs, Herr von Amurru"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7461,11 +7490,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "An den Großen König,\n"
-"\n"
-"Meine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n"
-"\n"
-"Euer Diener, Abdi-Heba, Gouverneur von Urushalim"
+msgstr "An den Großen König,\n\nMeine Reisen führen mich in den kommenden Tagen in die Nähe des Deltas. Falls der Große König eine Stunde erübrigen kann, würde ich die Gelegenheit begrüßen, von Angesicht zu Angesicht zu sprechen; manche Dinge lassen sich leichter sagen als schreiben.\n\nEuer Diener, Abdi-Heba, Gouverneur von Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7474,11 +7499,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "An den Großen König, mein Bruder,\n"
-"\n"
-"Deine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n"
-"\n"
-"In Freundschaft,"
+msgstr "An den Großen König, mein Bruder,\n\nDeine Worte haben mich erreicht. Das Gold wird vor dem Aufbruch des nächsten Boten entsandt. Wir schätzen die Bindung zwischen unseren Häusern und wünschen nicht, dass sie abkühlt.\n\nIn Freundschaft,"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7489,13 +7510,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "An den Großen König, mein Bruder,\n"
-"\n"
-"Ich schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n"
-"\n"
-"Wir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n"
-"\n"
-"Burna-Buriash II, König von Babylon"
+msgstr "An den Großen König, mein Bruder,\n\nIch schreibe in Freundschaft, wie unsere Väter vor uns schrieben. Die dritte unter unserem Vertrag vereinbarte Goldlieferung ist nicht eingetroffen. Zwei Boten sind bereits vorbeigezogen, und wir warten immer noch.\n\nWir bitten Euch, sie ohne weitere Verzögerung zu entsenden, wie es der Bindung zwischen unseren Häusern geziemt.\n\nBurna-Buriash II, König von Babylon"
 
 #: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
@@ -7505,13 +7520,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "An den Großen König, mein Herr, meine Sonne,\n"
-"\n"
-"Das Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n"
-"\n"
-"Ich habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n"
-"\n"
-"Euer Diener, Rib-Hadda, Gouverneur von Byblos"
+msgstr "An den Großen König, mein Herr, meine Sonne,\n\nDas Getreide, das Ihr letzten Monat sandtet, wurde dankbar empfangen, und ich lobte Euren Namen vor dem Volk. Doch ich muss erneut schreiben: Die dritte Lieferung ist nicht eingetroffen, und die Stadt wird unruhig.\n\nIch habe bereits siebenmal geschrieben. Ich möchte Euch nicht behelligen, doch was bleibt mir anderes übrig?\n\nEuer Diener, Rib-Hadda, Gouverneur von Byblos"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -8152,8 +8161,8 @@ msgstr "Ja. Amarnai kann den bereits in deinem Posteingang vorhandenen Rückstan
 #~ msgstr "Ja. Amarnai kann die Tausenden von Konversationen in Ihrem Posteingang verarbeiten – nicht nur neue Nachrichten. Historische Sichtungen und die fortlaufende Sortierung nutzen denselben Plan, sodass Ihr gesamter Posteingang einheitlich organisiert wird."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
-msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "Ja. Amarnai verbindet sich mit Lesezugriff (read-only), sodass es Ihre Konversationen lesen kann, aber nichts in Ihrem Konto senden, löschen, labeln oder ändern kann. Es speichert nur das, was es zum Sortieren und Anzeigen von Konversationen benötigt: Betreffzeilen, Teilnehmer, Textauszüge und die von Amarnai generierten Labels und Begründungen. Vollständige Nachrichteninhalte werden bei Bedarf abgerufen und im Arbeitsspeicher verarbeitet, nicht gespeichert, und OAuth-Token werden im Ruhezustand verschlüsselt."
+#~ msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "Ja. Amarnai verbindet sich mit Lesezugriff (read-only), sodass es Ihre Konversationen lesen kann, aber nichts in Ihrem Konto senden, löschen, labeln oder ändern kann. Es speichert nur das, was es zum Sortieren und Anzeigen von Konversationen benötigt: Betreffzeilen, Teilnehmer, Textauszüge und die von Amarnai generierten Labels und Begründungen. Vollständige Nachrichteninhalte werden bei Bedarf abgerufen und im Arbeitsspeicher verarbeitet, nicht gespeichert, und OAuth-Token werden im Ruhezustand verschlüsselt."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
@@ -8165,9 +8174,18 @@ msgstr "Ja. Amarnai verbindet sich mit Lesezugriff (read-only), sodass es Ihre K
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "Ja. Amarnai ist Open Source unter der AGPL-3.0-Lizenz. Sie können das Repository klonen und es selbst mit Docker betreiben. Self-Hosting ist kostenlos und nicht offiziell unterstützt, mit Community-Support auf GitHub."
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
+#, fuzzy
+msgid "Yes. Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes back is its own labels in Gmail or categories in Outlook, kept under an Amarnai namespace so sorted mail is easy to find in your inbox, and you can switch that off. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "Ja. Amarnai liest Ihre Konversationen, um sie zu sortieren, und kann niemals Ihre E-Mails senden, löschen oder verschieben. Das Einzige, was Amarnai zurückschreibt, sind eigene Labels in Gmail oder Kategorien in Outlook. Diese werden unter einem Amarnai-Namespace gespeichert, damit sortierte E-Mails in Ihrem Posteingang leicht zu finden sind. Sie können diese Funktion jederzeit deaktivieren. Es speichert nur das, was es zum Sortieren und Anzeigen von Konversationen benötigt: Betreffzeilen, Teilnehmer, Textauszüge sowie die von ihm generierten Labels und Begründungen. Vollständige E-Mail-Inhalte werden bei Bedarf abgerufen und im Arbeitsspeicher verarbeitet, nicht gespeichert. OAuth-Tokens werden im Ruhezustand verschlüsselt."
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
-msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "Ja. Amarnai funktioniert sowohl mit Gmail als auch mit Outlook, jeweils mit Lesezugriff verbunden: Amarnai liest Ihre Konversationen, um sie zu sortieren, und sendet, löscht oder ändert niemals etwas in Ihrem Konto."
+#~ msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "Ja. Amarnai funktioniert sowohl mit Gmail als auch mit Outlook, jeweils mit Lesezugriff verbunden: Amarnai liest Ihre Konversationen, um sie zu sortieren, und sendet, löscht oder ändert niemals etwas in Ihrem Konto."
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:40
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same way: Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes is its own labels in Gmail or categories in Outlook, and you can switch that off."
+msgstr "Ja. Amarnai funktioniert mit Gmail und Outlook, die jeweils auf dieselbe Weise verbunden werden: Amarnai liest Ihre Konversationen, um sie zu sortieren, und kann niemals Ihre E-Mails senden, löschen oder verschieben. Es erstellt lediglich eigene Labels in Gmail oder Kategorien in Outlook, und diese Funktion können Sie deaktivieren."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy

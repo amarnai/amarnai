@@ -336,9 +336,14 @@ msgstr "+ 新建工作区"
 #~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 #~ msgstr "<0>{migrateLive}</0> 会话即时移至新文件夹。<1>{resortLive}</1> 会话将由AI重新分类。"
 
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:96
+#, fuzzy
+msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "<0>King Aziru</0> 随时为您整理邮件会话。连接您的 {providerName} 账户即可开始。Amarnai <1>绝不发送、删除或移动您的邮件</1>，它只会写入自己的分类标签，您可以随时关闭。您的收件箱始终归您所有。"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
-msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-msgstr "<0>King Aziru</0> 已准备好为您整理电子邮件会话。连接您的 {providerName} 账户即可开始。Amarnai 采用<1>只读访问</1>，<2>绝不会发送、删除或修改任何内容</2>。您的收件箱始终归您所有。"
+#~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
+#~ msgstr "<0>King Aziru</0> 已准备好为您整理电子邮件会话。连接您的 {providerName} 账户即可开始。Amarnai 采用<1>只读访问</1>，<2>绝不会发送、删除或修改任何内容</2>。您的收件箱始终归您所有。"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Amarnai connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
@@ -584,9 +589,7 @@ msgstr "收到赫伦希布（底比斯）的首席文书官职位申请。"
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n"
-"\n"
-"请在记录馆查看该申请。"
+msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n请在记录馆查看该申请。"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -612,11 +615,7 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "阿卜迪-赫巴，\n"
-"\n"
-"同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n"
-"\n"
-"届时再叙，"
+msgstr "阿卜迪-赫巴，\n\n同周我将行至三角洲附近。我们可在第二日于驿站会面；我可抽出上午时间。\n\n届时再叙，"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -635,13 +634,23 @@ msgstr "学术研究员"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
 #, fuzzy
-msgid "Access was denied. Grant read-only Gmail access to connect."
-msgstr "访问被拒绝。请授予只读 Gmail 访问权限以进行连接。"
+#~ msgid "Access was denied. Grant read-only Gmail access to connect."
+#~ msgstr "访问被拒绝。请授予只读 Gmail 访问权限以进行连接。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
 #, fuzzy
-msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
-msgstr "访问被拒绝。请授予 Outlook 只读访问权限 (Mail.Read) 以进行连接。"
+#~ msgid "Access was denied. Grant read-only Outlook (Mail.Read) access to connect."
+#~ msgstr "访问被拒绝。请授予 Outlook 只读访问权限 (Mail.Read) 以进行连接。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:58
+#, fuzzy
+msgid "Access was denied. Grant the requested Gmail access to connect."
+msgstr "访问被拒绝。请授予所需的 Gmail 访问权限以连接。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:86
+#, fuzzy
+msgid "Access was denied. Grant the requested Outlook access to connect."
+msgstr "访问被拒绝。请授予所需的 Outlook 访问权限以连接。"
 
 #: ../../apps/mobile/app/(app)/account.tsx:105
 msgid "Account"
@@ -921,17 +930,30 @@ msgstr "Amarnai 得名于阿玛纳信札，这是一批约公元前 1350 年的�
 #~ msgstr ""
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:89
-msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai 不再同步此收件箱。请重新连接您的 {providerName} 账户，以恢复整理您的电子邮件会话。访问权限仍为<0>只读</0>，您的收件箱始终归您所有。"
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai 不再同步此收件箱。请重新连接您的 {providerName} 账户，以恢复整理您的电子邮件会话。访问权限仍为<0>只读</0>，您的收件箱始终归您所有。"
+
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:89
+msgid "Amarnai is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai 不再同步此收件箱。请重新连接您的 {providerName} 账户，以继续整理您的邮件会话。Amarnai <0>绝不发送、删除或移动您的邮件</0>，您的收件箱始终归您所有。"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Gmail 账号以恢复对邮件会话的分类。访问权限仍保持<0>只读</0>，您的收件箱仍然归您所有。"
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Gmail 账号以恢复对邮件会话的分类。访问权限仍保持<0>只读</0>，您的收件箱仍然归您所有。"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:89
+#, fuzzy
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Gmail 账户，以继续整理您的邮件会话。Amarnai <0>绝不发送、删除或移动您的邮件</0>，您的收件箱始终归您所有。"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
-msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-msgstr "Amarnai 已停止同步此收件箱。请重新连接您的 Outlook 账户，以恢复电子邮件会话的整理。访问权限仍为<0>只读</0>，您的收件箱始终归您所有。"
+#~ msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
+#~ msgstr "Amarnai 已停止同步此收件箱。请重新连接您的 Outlook 账户，以恢复电子邮件会话的整理。访问权限仍为<0>只读</0>，您的收件箱始终归您所有。"
+
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
+msgid "Amarnai is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Amarnai <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
+msgstr "Amarnai 不再同步此收件箱。请重新连接您的 Outlook 账户，以继续整理您的邮件会话。Amarnai <0>绝不发送、删除或移动您的邮件</0>，您的收件箱始终归您所有。"
 
 #: ../ui/src/pricing/planMessages.ts:113
 #, fuzzy
@@ -988,7 +1010,7 @@ msgid "Amarnai needs access to its server and your inbox to show your emails."
 msgstr "Amarnai 需要访问其服务器和您的收件箱才能显示您的电子邮件。"
 
 #: ../../apps/extension/src/App.tsx:56
-#: ../../apps/extension/src/auth/SignInScreen.tsx:14
+#: ../../apps/extension/src/auth/SignInScreen.tsx:15
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai 需要访问其服务器和您的收件箱才能正常运行。请允许访问并重试。"
 
@@ -1312,11 +1334,7 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "阿齐鲁，\n"
-"\n"
-"你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n"
-"\n"
-"此致，"
+msgstr "阿齐鲁，\n\n你的友谊之言我们已悉。阿穆鲁家族有何提议，我们愿闻其详。请速派下一信使呈上你的条件。\n\n此致，"
 
 #: ../ui/src/demo/demo-seed.ts:200
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1559,7 +1577,7 @@ msgstr "我能自托管 Amarnai 吗？"
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:73
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:170
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:147
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:148
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:209
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:90
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:109
@@ -1892,13 +1910,13 @@ msgstr "连接 {name}"
 msgid "Connect {name} to this workspace?"
 msgstr "将 {name} 连接到此工作区？"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:123
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:124
 #, fuzzy
 msgid "Connect {providerName}"
 msgstr "连接 {providerName}"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:158
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:167
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:159
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:168
 msgid "Connect {secondaryName}"
 msgstr "连接 {secondaryName}"
 
@@ -1921,7 +1939,7 @@ msgid "Connect a mailbox to Amarnai to start sorting your inbox."
 msgstr "连接邮箱至 Amarnai，即可开始整理收件箱。"
 
 #: ../../apps/extension/src/App.tsx:114
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
@@ -1989,7 +2007,7 @@ msgstr "只需连接一次，生成您的文件夹后，Amarnai即可处理新�
 #~ msgstr "只需连接一次，制定一次方案，Amarnai 即可处理新邮件，并整理您收件箱中已有的数千个会话。"
 
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:153
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:369
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:461
 #, fuzzy
@@ -2005,9 +2023,13 @@ msgstr "连接 Outlook"
 msgid "Connect your {providerName} inbox"
 msgstr "连接您的 {providerName} 收件箱"
 
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:97
+msgid "Connect your account to get started. Amarnai <0>never sends, deletes, or moves your mail</0>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
+msgstr "连接您的账户即可开始。Amarnai <0>绝不发送、删除或移动您的邮件</0>，它只会写入自己的分类标签，您可以随时关闭。您的收件箱始终归您所有。"
+
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
-msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "连接您的账户，立即开始。Amarnai 会以 <0>只读访问</0> 连接，<1>绝不会发送、删除或更改任何内容</1>。您的收件箱始终归您所有。"
+#~ msgid "Connect your account to get started. Amarnai connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
+#~ msgstr "连接您的账户，立即开始。Amarnai 会以 <0>只读访问</0> 连接，<1>绝不会发送、删除或更改任何内容</1>。您的收件箱始终归您所有。"
 
 #: ../../apps/extension/src/App.tsx:91
 #, fuzzy
@@ -2041,14 +2063,14 @@ msgstr "连接收件箱，开始处理。"
 msgid "Connecting {name} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "连接 {name} 将永久删除来自 {retainedAddress} 的已分类邮件。您的文件夹和设置将保留。"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:131
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:132
 msgid "Connecting {secondaryName} will permanently remove the sorted email saved from {retainedAddress}. Your folders and settings are kept."
 msgstr "连接 {secondaryName} 将永久删除来自 {retainedAddress} 的已分类邮件。您的文件夹和设置将保留。"
 
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/App.tsx:124
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:138
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:149
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:151
 msgid "Connecting…"
 msgstr "连接中…"
 
@@ -2076,7 +2098,7 @@ msgstr "继续以 {incomingEmail} 身份登录"
 msgid "Continue to {name}"
 msgstr "继续前往 {name}"
 
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:140
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:141
 msgid "Continue to {secondaryName}"
 msgstr "继续前往 {secondaryName}"
 
@@ -2094,14 +2116,14 @@ msgstr "继续付款"
 msgid "Continue with email"
 msgstr "使用电子邮件继续"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:113
+#: ../../apps/extension/src/auth/SignInScreen.tsx:121
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:28
 #: ../../apps/web/src/components/GoogleButton.tsx:10
 #, fuzzy
 msgid "Continue with Google"
 msgstr "使用 Google 继续"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:124
+#: ../../apps/extension/src/auth/SignInScreen.tsx:132
 #: ../../apps/web/src/components/MicrosoftButton.tsx:10
 #, fuzzy
 msgid "Continue with Microsoft"
@@ -2144,8 +2166,13 @@ msgstr "复制"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
-msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
-msgstr "无法访问您的 Gmail 收件箱。请确保已启用 Gmail API，并且已将 gmail.readonly 范围添加到 Google Cloud Console 中的 OAuth 同意屏幕。"
+#~ msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
+#~ msgstr "无法访问您的 Gmail 收件箱。请确保已启用 Gmail API，并且已将 gmail.readonly 范围添加到 Google Cloud Console 中的 OAuth 同意屏幕。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
+#, fuzzy
+msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Amarnai requests are added to the OAuth consent screen in Google Cloud Console."
+msgstr "无法访问您的 Gmail 收件箱。请确保 Gmail API 已启用，并将 Amarnai 请求的范围添加到 Google Cloud Console 的 OAuth 同意屏幕中。"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
@@ -2939,7 +2966,7 @@ msgstr "编辑收件箱"
 msgid "Edit Path"
 msgstr "编辑路径"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:134
+#: ../../apps/extension/src/auth/SignInScreen.tsx:142
 #: ../../apps/mobile/app/(app)/account.tsx:139
 #: ../../apps/mobile/app/forgot-password.tsx:85
 #: ../../apps/mobile/app/sign-in.tsx:89
@@ -3275,6 +3302,10 @@ msgstr "筛选队列和文件夹…"
 msgid "Filter rail"
 msgstr "筛选栏"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:36
+msgid "Filters match rules you write by hand: this sender, that subject keyword. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement. Your folders are mirrored back into your inbox as labels or categories, so the sorting shows up there too, but the calm workspace is what you work from. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+msgstr "过滤器匹配您手动编写的规则：例如特定发件人、特定主题关键词。Amarnai 会像人一样阅读每个会话，并将它们整理到一个简洁的工作区中，相关会话会聚集在一起，并附有其分类依据。您的文件夹会作为标签或类别镜像回您的收件箱，因此分类结果也会在那里显示，但您主要还是在简洁的工作区中操作。除非您在设置中启用，否则垃圾邮件和推广邮件会自动排除，任何 Amarnai 不确定的内容都会标记出来供您审阅。"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
 msgid "Finance"
@@ -3299,8 +3330,13 @@ msgstr "买卖双方首次咨询及新代理介绍。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
-msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
-msgstr "五大保障，让您的收件箱安全无虞。第一，Amarnai 采用只读设计：您通过 Google 授予的权限，让 Amarnai 无法发送、删除或更改任何邮件。第二，Amarnai 已通过 Google 的安全审查，包括所有访问 Gmail 的应用都必须完成的 CASA 安全评估。第三，一切尽在您的掌控：回复邮件在您确认发送前始终是草稿，绝不会代表您发送任何内容，并且您可以随时断开 Amarnai 的连接。第四，邮件正文绝不存储：Amarnai 仅保留标签和元数据，从不存储您的邮件内容。第五，代码公开透明：任何人都可以检查您的邮件是如何被处理的。"
+#~ msgid "Five things keep your inbox safe. First, Amarnai is read-only by design: the permissions you grant through Google make it impossible for Amarnai to send, delete, or change any email. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+#~ msgstr "五大保障，让您的收件箱安全无虞。第一，Amarnai 采用只读设计：您通过 Google 授予的权限，让 Amarnai 无法发送、删除或更改任何邮件。第二，Amarnai 已通过 Google 的安全审查，包括所有访问 Gmail 的应用都必须完成的 CASA 安全评估。第三，一切尽在您的掌控：回复邮件在您确认发送前始终是草稿，绝不会代表您发送任何内容，并且您可以随时断开 Amarnai 的连接。第四，邮件正文绝不存储：Amarnai 仅保留标签和元数据，从不存储您的邮件内容。第五，代码公开透明：任何人都可以检查您的邮件是如何被处理的。"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:16
+#, fuzzy
+msgid "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
+msgstr "五大保障，确保您的收件箱安全无虞。第一，Amarnai 的访问权限设计精简：它绝不发送、删除或移动您的邮件，它只会写入自己的分类标签，您可以随时关闭。第二，Amarnai 已通过 Google 的安全审查，完成了所有访问 Gmail 的应用所需的 CASA 安全评估。第三，您始终掌控一切：回复在您发送前始终是草稿，绝不会代表您发送任何内容，您可以随时断开 Amarnai 的连接。第四，邮件正文绝不存储：Amarnai 只保留标签和元数据，从不存储您的消息内容。第五，代码公开透明：任何人都可以检查它如何处理您的邮件。"
 
 #: ../ui/src/demo/demo-seed.ts:311
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
@@ -3701,8 +3737,8 @@ msgid "gmail ai assistant"
 msgstr "Gmail AI 助手"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
-msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
-msgstr "Gmail 和 Outlook 过滤器只会给每封邮件添加标签或分类，然后将其留在杂乱的收件箱中。Amarnai 像人一样阅读每个会话，将其呈现在整洁的工作区中，相关会话集中显示，并附带分类理由，为您带来更平静的视图，而非又一个被埋藏的标签。垃圾邮件和推广信息会自动过滤（除非您在设置中开启），对于 Amarnai 不确定的内容，会标记出来供您查看。"
+#~ msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
+#~ msgstr "Gmail 和 Outlook 过滤器只会给每封邮件添加标签或分类，然后将其留在杂乱的收件箱中。Amarnai 像人一样阅读每个会话，将其呈现在整洁的工作区中，相关会话集中显示，并附带分类理由，为您带来更平静的视图，而非又一个被埋藏的标签。垃圾邮件和推广信息会自动过滤（除非您在设置中开启），对于 Amarnai 不确定的内容，会标记出来供您查看。"
 
 #: ../../apps/extension/src/panel/notificationText.ts:18
 #: ../../apps/mobile/src/data/notificationView.ts:53
@@ -3739,9 +3775,13 @@ msgstr "Gmail 实时同步已启用"
 #~ msgstr "Gmail 已标记为重要"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
+msgid "Gmail read access was not granted. Please try again and approve the requested permission."
+msgstr "Gmail 读取权限未授予。请重试并批准请求的权限。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:68
 #, fuzzy
-msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
-msgstr "未授予 Gmail 只读访问权限。请重试并批准请求的权限。"
+#~ msgid "Gmail read-only access was not granted. Please try again and approve the requested permission."
+#~ msgstr "未授予 Gmail 只读访问权限。请重试并批准请求的权限。"
 
 #: ../../apps/web/src/components/Sidebar.tsx:37
 #, fuzzy
@@ -3791,7 +3831,7 @@ msgstr "Google 账号权限"
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
 msgstr "Google 无法完成授权。链接可能已过期：请重试。如果问题仍然存在，请检查 Gmail 回调 URL 是否已在 Google Cloud Console 中注册。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:67
+#: ../../apps/extension/src/auth/SignInScreen.tsx:75
 #: ../../apps/mobile/app/sign-in.tsx:65
 #: ../../apps/mobile/app/sign-up.tsx:76
 #, fuzzy
@@ -3823,11 +3863,7 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "大王，\n"
-"\n"
-"你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n"
-"\n"
-"兄弟情谊，"
+msgstr "大王，\n\n你所要求之呈报，将在议会召开前备妥。我将命抄写员汇编东方领地的账目，并派快马先行送呈。\n\n兄弟情谊，"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4680,7 +4716,7 @@ msgstr "Microsoft 账户权限"
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
 msgstr "Microsoft 无法完成授权。链接可能已过期：请重试。如果问题仍然存在，请检查重定向 URI 是否已在应用程序注册中注册。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:89
+#: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #, fuzzy
 msgid "Microsoft sign-in failed. Please try again."
 msgstr "微软登录失败，请重试。"
@@ -4807,6 +4843,15 @@ msgstr "从不"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "绝不自动发送 ・ 静态加密 ・ 最少数据"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+#, fuzzy
+msgid "Never sends · OAuth · revoke anytime"
+msgstr "绝不发送 · OAuth · 随时撤销"
+
+#: ../../apps/site/src/components/landing/HeroSection.tsx:47
+msgid "Never sends or deletes"
+msgstr "绝不发送或删除"
+
 #: ../ui/src/demo/demo-seed.ts:358
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
@@ -4867,7 +4912,7 @@ msgstr "新密码"
 msgid "New threads will appear as they are sorted."
 msgstr "新会话将在分类后显示。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:160
+#: ../../apps/extension/src/auth/SignInScreen.tsx:168
 #, fuzzy
 msgid "New to Amarnai? <0>Create an account</0>"
 msgstr "Amarnai 新用户？<0>创建账号</0>"
@@ -5281,7 +5326,7 @@ msgstr "可选。在此文件夹中为会话生成草稿回复时应用。"
 msgid "Optional. Sets this folder’s chip and icon color across your inbox. Default assigns a stable color automatically."
 msgstr "可选。设置此文件夹在收件箱中的标记和图标颜色。默认情况下会自动分配一个固定颜色。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:130
+#: ../../apps/extension/src/auth/SignInScreen.tsx:138
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:88
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:80
@@ -5310,8 +5355,12 @@ msgid "outlook ai assistant"
 msgstr "Outlook AI 助手"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
-msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
-msgstr "Outlook 只读访问权限 (Mail.Read) 未被授予。请重试并批准请求的权限。"
+msgid "Outlook read access (Mail.Read) was not granted. Please try again and approve the requested permission."
+msgstr "Outlook 读取权限 (Mail.Read) 未授予。请重试并批准请求的权限。"
+
+#: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:96
+#~ msgid "Outlook read-only access (Mail.Read) was not granted. Please try again and approve the requested permission."
+#~ msgstr "Outlook 只读访问权限 (Mail.Read) 未被授予。请重试并批准请求的权限。"
 
 #: ../ui/src/pricing/planMessages.ts:78
 #, fuzzy
@@ -5348,7 +5397,7 @@ msgstr "通过 Google 安全审查"
 msgid "Passing through the Delta: free to meet?"
 msgstr "途经三角洲：方便会面吗？"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:144
+#: ../../apps/extension/src/auth/SignInScreen.tsx:152
 #: ../../apps/mobile/app/sign-in.tsx:106
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:183
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
@@ -5802,12 +5851,12 @@ msgid "Reactivate"
 msgstr "重新激活"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
-msgid "Read-only · OAuth · revoke anytime"
-msgstr "只读 ・ OAuth ・ 随时撤销"
+#~ msgid "Read-only · OAuth · revoke anytime"
+#~ msgstr "只读 ・ OAuth ・ 随时撤销"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:47
-msgid "Read-only by design"
-msgstr "只读设计"
+#~ msgid "Read-only by design"
+#~ msgstr "只读设计"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
 #, fuzzy
@@ -5853,7 +5902,7 @@ msgid "Reconnect"
 msgstr "重新连接"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:384
-#: ../../apps/web/src/components/ConnectGmailCta.tsx:121
+#: ../../apps/web/src/components/ConnectGmailCta.tsx:122
 #, fuzzy
 msgid "Reconnect {providerName}"
 msgstr "重新连接 {providerName}"
@@ -5862,13 +5911,13 @@ msgstr "重新连接 {providerName}"
 #~ msgid "Reconnect failed. Please try again."
 #~ msgstr "重新连接失败。请重试。"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:128
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
 #, fuzzy
 msgid "Reconnect Gmail"
 msgstr "重新连接 Gmail"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:126
 #, fuzzy
 msgid "Reconnect Outlook"
 msgstr "重新连接 Outlook"
@@ -5887,7 +5936,7 @@ msgstr "重新连接您的 Gmail 收件箱"
 msgid "Reconnect your Outlook inbox"
 msgstr "重新连接您的 Outlook 收件箱"
 
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:122
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 msgid "Reconnecting…"
 msgstr "正在重新连接…"
@@ -6200,11 +6249,7 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "里布-哈达，\n"
-"\n"
-"你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n"
-"\n"
-"保重，"
+msgstr "里布-哈达，\n\n你的呼吁，我们已收到。已从南方粮仓加订谷物，并将在丰收节前抵达。在此期间，请你耐心等候。\n\n保重，"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6339,7 +6384,7 @@ msgstr "搜索会话…"
 #~ msgid "See how your inbox is sorted, right next to Gmail."
 #~ msgstr "在 Gmail 旁，直观查看收件箱分类。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:104
+#: ../../apps/extension/src/auth/SignInScreen.tsx:112
 msgid "See how your inbox is sorted, right next to your email."
 msgstr "在您的邮件旁边，查看收件箱如何分类。"
 
@@ -6547,7 +6592,7 @@ msgstr "显示 Amarnai 回复按钮以起草回复"
 msgid "Showing requests, buyer tours, open-house sign-ups, and written offers."
 msgstr "看房请求、买家看房、开放日注册和书面报价。"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:155
+#: ../../apps/extension/src/auth/SignInScreen.tsx:163
 #: ../../apps/mobile/app/sign-in.tsx:133
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
@@ -6600,7 +6645,7 @@ msgstr "改用邮箱登录"
 #~ msgstr "使用 Google 登录。Amarnai 会同步您的会话和标签。它绝不会代表您发送或删除邮件。"
 
 #: ../../apps/extension/src/App.tsx:128
-#: ../../apps/extension/src/panel/ConnectMailCta.tsx:159
+#: ../../apps/extension/src/panel/ConnectMailCta.tsx:161
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:156
 #: ../../apps/mobile/app/(app)/account.tsx:122
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:98
@@ -6627,7 +6672,7 @@ msgstr "用 Google 注册"
 msgid "Sign up with Microsoft"
 msgstr "用微软注册"
 
-#: ../../apps/extension/src/auth/SignInScreen.tsx:47
+#: ../../apps/extension/src/auth/SignInScreen.tsx:55
 #: ../../apps/mobile/app/sign-in.tsx:51
 #, fuzzy
 msgid "Sign-in failed. Please try again."
@@ -7414,13 +7459,7 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "致吾兄，大王，\n"
-"\n"
-"大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n"
-"\n"
-"吾等盟约坚固。愿我们向议会昭示其一如既往。\n"
-"\n"
-"图什拉塔，米坦尼大王"
+msgstr "致吾兄，大王，\n\n大议会将于谢穆月初召开。我请求你备妥东方领地的详尽账目，并请快马先行送呈，如可能，请在新月之前。\n\n吾等盟约坚固。愿我们向议会昭示其一如既往。\n\n图什拉塔，米坦尼大王"
 
 #: ../ui/src/demo/demo-seed.ts:164
 #, fuzzy
@@ -7429,11 +7468,7 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "致王室任命局，\n"
-"\n"
-"我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n"
-"\n"
-"奉谕，"
+msgstr "致王室任命局，\n\n我们已收到底比斯的霍伦海布之申请，并将在下一新月前审查其记录。请告知他，我们将在适当时候回复。\n\n奉谕，"
 
 #: ../ui/src/demo/demo-seed.ts:320
 #, fuzzy
@@ -7444,13 +7479,7 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "致大王，\n"
-"\n"
-"多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n"
-"\n"
-"我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n"
-"\n"
-"阿齐鲁，大王之仆，阿穆鲁之主"
+msgstr "致大王，\n\n多年以来，吾等两家情同手足。今特致函，愿将此友谊正式化，以惠及吾等两族：订立互助盟约，共享商道。\n\n我只恳请大王倾听我的条件。请速派下一信使回复，我将立即派遣使者前往。\n\n阿齐鲁，大王之仆，阿穆鲁之主"
 
 #: ../ui/src/demo/demo-seed.ts:433
 #, fuzzy
@@ -7459,11 +7488,7 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "致大王，\n"
-"\n"
-"吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n"
-"\n"
-"你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
+msgstr "致大王，\n\n吾近期旅程将近三角洲一带。如大王能拨冗一小时，我愿与你面谈；有些事，口头陈述胜于笔墨。\n\n你的仆人，阿卜迪-赫巴，乌鲁沙利姆总督"
 
 #: ../ui/src/demo/demo-seed.ts:154
 #, fuzzy
@@ -7472,11 +7497,7 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "致吾兄，大王，\n"
-"\n"
-"你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n"
-"\n"
-"友谊长存，"
+msgstr "致吾兄，大王，\n\n你之言语，我已听闻。黄金将在下一信使启程前发出。吾等珍视两家情谊，不愿其冷却。\n\n友谊长存，"
 
 #: ../ui/src/demo/demo-seed.ts:281
 #, fuzzy
@@ -7487,13 +7508,7 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "致吾兄，大王，\n"
-"\n"
-"我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n"
-"\n"
-"吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n"
-"\n"
-"布尔那-布里亚什二世，巴比伦国王"
+msgstr "致吾兄，大王，\n\n我以友谊之名致函，正如我等父辈昔日所为。依照盟约，第三批黄金仍未抵达。两批信使已过，吾等仍在等候。\n\n吾等恳请你勿再延误，速将其发出，以维系吾等两家之盟谊。\n\n布尔那-布里亚什二世，巴比伦国王"
 
 #: ../ui/src/demo/demo-seed.ts:394
 msgid "To the Great King, my lord, my sun,\n"
@@ -7503,13 +7518,7 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "致大王，吾主，吾日，\n"
-"\n"
-"上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n"
-"\n"
-"我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n"
-"\n"
-"你的仆人，里布-哈达，比布鲁斯总督"
+msgstr "致大王，吾主，吾日，\n\n上月你所赐谷物，吾等不胜感激，吾亦在民众面前颂扬大王之名。然我不得不再次致函：第三批谷物尚未抵达，城中民心骚动不安。\n\n我已七度致函。我实不愿劳烦大王，然此外我能奈何？\n\n你的仆人，里布-哈达，比布鲁斯总督"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:135
 msgid "To: You"
@@ -8150,8 +8159,8 @@ msgstr "是的。Amarnai 不仅能处理您收件箱中已有的积压邮件，�
 #~ msgstr "是的。Amarnai 不仅能分类新邮件，也能处理你收件箱中已有的成千上万个会话。历史邮件分类和持续分类均采用同一方案，确保你的整个收件箱保持一致的井然有序。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
-msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "是的。Amarnai 以只读权限连接，因此它可以读取您的会话，但不能发送、删除、标记或更改您账户中的任何内容。它仅保留分类和显示会话所需的信息：主题、参与者、摘要，以及它生成的标签和理由。完整的邮件正文仅在需要时获取并在内存中处理，不会存储。OAuth 令牌在静态存储时会进行加密。"
+#~ msgid "Yes. Amarnai connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+#~ msgstr "是的。Amarnai 以只读权限连接，因此它可以读取您的会话，但不能发送、删除、标记或更改您账户中的任何内容。它仅保留分类和显示会话所需的信息：主题、参与者、摘要，以及它生成的标签和理由。完整的邮件正文仅在需要时获取并在内存中处理，不会存储。OAuth 令牌在静态存储时会进行加密。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
@@ -8163,9 +8172,18 @@ msgstr "是的。Amarnai 以只读权限连接，因此它可以读取您的会�
 msgid "Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub."
 msgstr "是的。Amarnai 基于 AGPL-3.0 许可证开源。你可以克隆仓库并使用 Docker 自行运行。自我托管是免费的且不提供官方支持，但可在 GitHub 上获得社区支持。"
 
+#: ../../apps/site/src/components/landing/FAQSection.tsx:12
+#, fuzzy
+msgid "Yes. Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes back is its own labels in Gmail or categories in Outlook, kept under an Amarnai namespace so sorted mail is easy to find in your inbox, and you can switch that off. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
+msgstr "是的。Amarnai 会读取您的会话进行分类，并且绝不发送、删除或移动您的邮件。它只会回写其在 Gmail 中的标签或 Outlook 中的类别，这些标签/类别都位于 Amarnai 命名空间下，方便您在收件箱中查找已分类的邮件，您也可以随时关闭此功能。它只保留分类和显示会话所需的信息：主题、参与者、摘要以及它生成的标签和依据。完整的邮件正文仅在需要时获取并在内存中处理，绝不存储，OAuth 令牌则在静态时加密。"
+
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
-msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
-msgstr "是的。Amarnai 支持 Gmail 和 Outlook，两者均以相同的只读方式连接：Amarnai 读取您的会话以进行分类，绝不会发送、删除或更改您账户中的任何内容。"
+#~ msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same read-only way: Amarnai reads your threads to sort them and never sends, deletes, or changes anything in your account."
+#~ msgstr "是的。Amarnai 支持 Gmail 和 Outlook，两者均以相同的只读方式连接：Amarnai 读取您的会话以进行分类，绝不会发送、删除或更改您账户中的任何内容。"
+
+#: ../../apps/site/src/components/landing/FAQSection.tsx:40
+msgid "Yes. Amarnai works with both Gmail and Outlook, each connected the same way: Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes is its own labels in Gmail or categories in Outlook, and you can switch that off."
+msgstr "是的。Amarnai 同时支持 Gmail 和 Outlook，连接方式相同：Amarnai 会读取您的会话进行分类，并且绝不发送、删除或移动您的邮件。它只会写入其在 Gmail 中的标签或 Outlook 中的类别，您也可以随时关闭此功能。"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy

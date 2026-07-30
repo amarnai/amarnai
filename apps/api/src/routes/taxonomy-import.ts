@@ -9,7 +9,8 @@ import {
   MIGRATION_RESORT,
 } from "@amarnai/shared";
 import { DEDUP_CLASSIFY_MIGRATION } from "@amarnai/queue";
-import { classifyThreadQueue, provisionLabelsQueue } from "../queues.js";
+import { classifyThreadQueue } from "../queues.js";
+import { enqueueFolderLabelProvisioning } from "../services/label-writeback.js";
 import { computeMigrationPreview, latestClassificationsByThread } from "../services/taxonomy-migration.js";
 
 const BODY_SIZE_LIMIT = 1_000_000; // 1 MB
@@ -300,11 +301,7 @@ taxonomyImport.post("/workspaces/:workspaceId/taxonomy-import", async (c) => {
   // by default; the job no-ops when the flag, toggle, or write scope is off).
   // Best-effort + deduped per workspace. This is the main bulk folder-creation
   // path (templates and generate-from-inbox both apply through it).
-  await provisionLabelsQueue
-    .add("provision-folder-labels", { workspaceId }, { deduplication: { id: `provision_${workspaceId}` } })
-    .catch((err) =>
-      console.error(`[taxonomy-import] provision enqueue failed (workspace=${workspaceId}):`, err),
-    );
+  await enqueueFolderLabelProvisioning(workspaceId, { relabelThreads: false });
 
   // Post-commit: enqueue the re-sort threads. They are already PENDING +
   // classifyingAt, so a failure here is recovered by the stuck-classifying sweep.

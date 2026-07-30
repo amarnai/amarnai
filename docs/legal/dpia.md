@@ -25,11 +25,12 @@ Conclusion: a DPIA is mandatory before processing EU/EEA personal data at scale 
 
 ### 2.1 Purpose
 
-Sort, classify, and prioritize the user's email threads; suggest categories; generate reply drafts that the user must explicitly approve. Amarnai is read-only against the mailbox: it never sends mail and never mutates mailbox state.
+Sort, classify, and prioritize the user's email threads; suggest categories; generate reply drafts that the user must explicitly approve. Amarnai never sends mail and never deletes mail. Its only mailbox mutation is label writeback: mirroring the user's folder structure into the mailbox as Gmail labels / Outlook categories under an `Amarnai` namespace, and keeping them in sync as threads are sorted. It reconciles only the labels it created, never the user's own, and changes nothing else about a message (no move, no archive, no read-state change, no content edit).
 
 ### 2.2 Data flows (as implemented)
 
-1. **Ingestion**: with the user's OAuth consent, threads are fetched via the Gmail API (`gmail.readonly` scope only) or Microsoft Graph (`Mail.Read`, read-only). Refresh tokens are encrypted with AES-256-GCM before storage (`packages/gmail/src/encryption.ts`); access tokens live only in memory during a request.
+1. **Ingestion**: with the user's OAuth consent, threads are fetched via the Gmail API (`gmail.readonly`) or Microsoft Graph (`Mail.Read`). Refresh tokens are encrypted with AES-256-GCM before storage (`packages/gmail/src/encryption.ts`); access tokens live only in memory during a request.
+1b. **Label writeback (optional, write path)**: when the deployment flag is on and the user granted the write scope (`gmail.modify`, or `Mail.ReadWrite` + `MailboxSettings.ReadWrite`), the worker creates the `Amarnai` label/category namespace and applies the matching label to each sorted thread (`packages/gmail/src/gmail-client.ts`, `apps/worker/src/jobs/provision-folder-labels.ts`). No personal data leaves Amarnai on this path: the payload is a folder name the user chose. Declining the write permission leaves the connection read-only and the feature inert.
 2. **Storage**: thread metadata and message content (sender, recipients, subject, snippet, body text, attachment metadata) are stored in PostgreSQL (`EmailThread`, `EmailMessage` in `packages/db/prisma/schema.prisma`). Full email bodies are never written to logs.
 3. **AI processing**: classification, category suggestion, and draft generation call the Google Gemini API (production model `gemini-2.5-flash-lite`); embeddings use `gemini-embedding-001`. The payload per task is limited to sender, subject, and body excerpts (`packages/ai/src/thread-snapshot.ts`), not full mailbox exports. Paid API tier: content is not used to train Google's models.
 4. **Transactional email**: verification, password reset, invitation, and lifecycle messages are delivered via Resend (recipient address plus message content).
@@ -55,7 +56,7 @@ Email data: life of the account or until mailbox disconnection/workspace reset. 
 
 - **Lawful basis**: performance of contract (Article 6(1)(b)) for the core triage service the user signs up for; legitimate interest (Article 6(1)(f)) for anti-abuse retention and service communications.
 - **Purpose limitation**: mailbox data is used only for triage, classification, and user-approved drafting. No advertising, no profiling beyond the service's stated function, no sale of data.
-- **Data minimization**: read-only OAuth scopes; AI payloads limited to excerpts; sign-up collects only an email address; push payloads exclude body content; deleted-account residue is limited to hashes, fingerprint tokens, and counters.
+- **Data minimization**: OAuth scopes limited to reading mail plus, only when the user enables writeback, the narrowest write scope that can label it (`gmail.modify`, not `https://mail.google.com/`); AI payloads limited to excerpts; sign-up collects only an email address; push payloads exclude body content; deleted-account residue is limited to hashes, fingerprint tokens, and counters.
 - **Third-party correspondent data**: processing their data is intrinsic to any email tool and is covered by the Article 14(5)(b) disproportionate-effort exemption for direct notice; the public privacy policy serves as the accessible information source. TODO(counsel): confirm this position.
 - **Google API Services User Data Policy / Limited Use**: complied with; CASA Tier 2 security assessment cleared July 2026.
 

@@ -54,6 +54,10 @@ const PUBLIC_PATHS = new Set([
   "/health",
   "/webhooks/gmail",
   "/webhooks/outlook",
+  // Which mail scopes to request, needed before a client can sign in at all. One
+  // deployment-level boolean; no rate limiter for the same reason /health has
+  // none (no DB read, no secret, nothing brute-forceable).
+  "/auth/mail-scope-policy",
   "/auth/login",
   "/auth/register",
   "/auth/google",

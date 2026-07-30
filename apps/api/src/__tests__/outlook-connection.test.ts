@@ -19,6 +19,8 @@ vi.mock("@amarnai/db", () => {
       count: vi.fn(),
     },
     auditLog: { create: vi.fn() },
+    // Written by the post-connect writeback enable step.
+    gmailSyncSettings: { upsert: vi.fn() },
   };
   return {
     db,
@@ -51,6 +53,10 @@ vi.mock("../services/outlook-subscription.js", () => ({
   registerOutlookSubscription: vi.fn().mockResolvedValue({ ok: true }),
 }));
 
+vi.mock("../queues.js", () => ({
+  provisionLabelsQueue: { add: vi.fn().mockResolvedValue({}) },
+}));
+
 import app from "../app.js";
 import { db } from "@amarnai/db";
 import {
@@ -58,8 +64,11 @@ import {
   fetchOutlookProfile,
   MicrosoftApiError,
   OUTLOOK_SCOPES,
+  OUTLOOK_UPFRONT_CONSENT_SCOPES,
 } from "@amarnai/outlook";
 import { syncInboxQueue } from "../services/queue-client.js";
+import { provisionLabelsQueue } from "../queues.js";
+import { config } from "@amarnai/config";
 
 const WS_ID = "ws-1";
 
@@ -192,5 +201,53 @@ describe("POST /workspaces/:workspaceId/outlook-connection", () => {
     const res = await connect({ code: "x", scope: OUTLOOK_SCOPE });
     expect(res.status).toBe(400);
     expect(vi.mocked(exchangeAuthCode)).not.toHaveBeenCalled();
+  });
+
+  it("redeems with the write scopes and provisions categories on an upfront write connect", async () => {
+    const original = config.mail.labelWritebackEnabled;
+    (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = true;
+    try {
+      vi.mocked(exchangeAuthCode).mockResolvedValue({
+        accessToken: "graph-at",
+        refreshToken: "graph-rt",
+        scope: OUTLOOK_UPFRONT_CONSENT_SCOPES,
+        expiresAt: new Date("2030-01-01T00:00:00.000Z"),
+        accountType: "PERSONAL",
+      } as never);
+      vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
+        ...safeConnection,
+        grantedScopes: OUTLOOK_UPFRONT_CONSENT_SCOPES.split(" "),
+      } as never);
+
+      const res = await connect({ ...VALID_BODY, scope: OUTLOOK_UPFRONT_CONSENT_SCOPES });
+      expect(res.status).toBe(201);
+      // Scope-bound refresh tokens: the redemption must carry the write scopes or
+      // the stored token can never write, with nothing to show it.
+      expect(vi.mocked(exchangeAuthCode)).toHaveBeenCalledWith(
+        "ms-auth-code",
+        "https://ext-id.chromiumapp.org/",
+        undefined,
+        OUTLOOK_UPFRONT_CONSENT_SCOPES,
+      );
+      expect(vi.mocked(provisionLabelsQueue.add)).toHaveBeenCalledWith(
+        "provision-folder-labels",
+        { workspaceId: WS_ID, relabelThreads: true },
+        { deduplication: { id: `provision_relabel_${WS_ID}` } },
+      );
+    } finally {
+      (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = original;
+    }
+  });
+
+  it("provisions nothing for a read-only connect", async () => {
+    const original = config.mail.labelWritebackEnabled;
+    (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = true;
+    try {
+      const res = await connect(VALID_BODY);
+      expect(res.status).toBe(201);
+      expect(vi.mocked(provisionLabelsQueue.add)).not.toHaveBeenCalled();
+    } finally {
+      (config.mail as { labelWritebackEnabled: boolean }).labelWritebackEnabled = original;
+    }
   });
 });

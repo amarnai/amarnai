@@ -372,7 +372,7 @@ function StepArt1({ provider }: { provider: Provider }) {
         )}
       </span>
       <div className="ld-sa-hint">
-        <Trans>Read-only · OAuth · revoke anytime</Trans>
+        <Trans>Never sends · OAuth · revoke anytime</Trans>
       </div>
     </div>
   );
