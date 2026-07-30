@@ -236,16 +236,9 @@ describe("makeApiClient", () => {
       expect((init.headers as Record<string, string>)?.["X-Force-Regenerate"]).toBe("1");
     });
 
-    it("returns notClassified on a 422 carrying code NOT_CLASSIFIED", async () => {
-      const fetchFn = vi.fn().mockResolvedValue(
-        mockOk({ code: "NOT_CLASSIFIED", error: "Thread has not been classified yet" }, 422)
-      );
-      const client = makeApiClient(makeMockTransport(fetchFn));
-      const result = await client.generateDraft("ws1", "t1");
-      expect(result).toEqual({ notClassified: true });
-    });
-
-    it("still throws on a 422 without the code (an unrelated validation failure)", async () => {
+    // An unsorted thread is no longer a server refusal (it drafts without triage
+    // context), so 422 has no special case left: every one of them is a failure.
+    it("throws on a 422", async () => {
       const fetchFn = vi.fn().mockResolvedValue(mockOk({ error: "Invalid params" }, 422));
       const client = makeApiClient(makeMockTransport(fetchFn));
       await expect(client.generateDraft("ws1", "t1")).rejects.toThrow("Invalid params");
@@ -289,11 +282,14 @@ describe("makeApiClient", () => {
 
     it("shares the outcome mapping with generateDraft", async () => {
       const fetchFn = vi.fn().mockResolvedValue(
-        mockOk({ code: "NOT_CLASSIFIED", error: "Thread has not been classified yet" }, 422)
+        mockOk({ used: 3, limit: 3, resetsAt: "2026-08-01T00:00:00Z" }, 429)
       );
       const client = makeApiClient(makeMockTransport(fetchFn));
       await expect(client.generateDraftByProviderThread("ws1", "t1")).resolves.toEqual({
-        notClassified: true,
+        quotaExceeded: true,
+        used: 3,
+        limit: 3,
+        resetsAt: "2026-08-01T00:00:00Z",
       });
     });
   });

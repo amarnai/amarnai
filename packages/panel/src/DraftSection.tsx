@@ -17,7 +17,7 @@ import type { Draft, EmailThreadDetail, QuotaInfo } from "./types.js";
 
 const POLL_INTERVAL_MS = 2_000;
 
-type DraftState = "idle" | "loading" | "ready" | "error" | "notClassified";
+type DraftState = "idle" | "loading" | "ready" | "error";
 
 export type DraftSectionProps = {
   api: ApiClient;
@@ -74,8 +74,6 @@ export function DraftSection({
     // not open a compose on its own.
     insertOnReady.current = false;
     setState(thread.isDrafting ? "loading" : thread.hasDraft ? "ready" : "idle");
-
-    if (thread.triageStatus === "PENDING") return;
 
     api.draftQuota(workspaceId).then((q) => {
       if (token === tokenRef.current) setQuota(q);
@@ -165,12 +163,6 @@ export function DraftSection({
           setState(opts.force ? "ready" : "idle");
           return;
         }
-        if ("notClassified" in result) {
-          // Not a failure: nothing to draft against until the thread is sorted.
-          insertOnReady.current = false;
-          setState("notClassified");
-          return;
-        }
         if (result.isNew) setQuota((q) => (q ? { ...q, used: q.used + 1 } : q));
         present(result.draft);
       })
@@ -185,11 +177,10 @@ export function DraftSection({
   // already has a draft shows it rather than paying for a second one.
   useEffect(() => {
     if (!autoDraft || state !== "idle") return;
-    if (thread.triageStatus === "PENDING") return;
     if (autoDraftedFor.current === thread.id) return;
     autoDraftedFor.current = thread.id;
     generate();
-  }, [autoDraft, state, thread.id, thread.triageStatus]);
+  }, [autoDraft, state, thread.id]);
 
   /**
    * Put the draft into the mail client's compose and mark it sent-ready.
@@ -220,7 +211,11 @@ export function DraftSection({
   const quotaRemaining = quota ? quota.limit - quota.used : 0;
   const quotaResetDate = quota ? formatQuotaResetDate(quota.resetsAt) : null;
 
-  if (thread.triageStatus === "PENDING" || isOwnLastMessage) return null;
+  // Sorting is deliberately NOT a precondition: the server drafts an unsorted
+  // thread from its own messages, so hiding the button on a PENDING (or
+  // QUOTA_BLOCKED) thread would withhold a feature the user still has allowance
+  // for. The last-word check stays: there is genuinely nothing to reply to.
+  if (isOwnLastMessage) return null;
 
   return (
     <div className="apn-draft">
@@ -252,12 +247,6 @@ export function DraftSection({
         <p className="apn-draft-loading" aria-live="polite">
           <span className="apn-skeleton-pulse" aria-hidden />
           <Trans>Writing draft reply…</Trans>
-        </p>
-      )}
-
-      {state === "notClassified" && (
-        <p className="apn-state-text">
-          <Trans>Sort this thread first, then Amarnai can draft a reply for it.</Trans>
         </p>
       )}
 

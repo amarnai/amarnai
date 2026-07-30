@@ -23,15 +23,14 @@ export type ReplyButtonState =
   | { kind: "generating" }
   | { kind: "ready" }
   | { kind: "inserted" }
-  | { kind: "notSorted" }
   | { kind: "error" }
   | { kind: "signedOut" }
   | { kind: "quota"; resetsAt: string };
 
 /**
- * How long a transient outcome (error, not-sorted) stays on the button before it
- * returns to idle. Long enough to read, short enough that the button is ready
- * again by the time the user has fixed the cause.
+ * How long a transient outcome (an error) stays on the button before it returns
+ * to idle. Long enough to read, short enough that the button is ready again by
+ * the time the user has fixed the cause.
  */
 export const TRANSIENT_MS = 6_000;
 
@@ -52,8 +51,6 @@ export function describeReplyState(state: ReplyButtonState): {
       // status readout, and renaming it after a click reads as a different
       // control. The outcome lives in the tooltip.
       return { label: S.idle, tooltip: S.tooltips.inserted, enabled: true };
-    case "notSorted":
-      return { label: S.notSorted, tooltip: S.tooltips.notSorted, enabled: true };
     case "error":
       return { label: S.error, tooltip: S.tooltips.error, enabled: true };
     case "signedOut":
@@ -108,10 +105,6 @@ export function resolveDraftOutcome(response: GenerateDraftResponse): DraftOutco
   if (result.kind === "quota") {
     return { kind: "state", state: { kind: "quota", resetsAt: result.resetsAt }, transient: false };
   }
-  if (result.kind === "notSorted") {
-    return { kind: "state", state: { kind: "notSorted" }, transient: true };
-  }
-
   const html = draftBodyToHtml(result.body);
   if (html === "") return { kind: "state", state: { kind: "error" }, transient: true };
   return { kind: "insert", html };

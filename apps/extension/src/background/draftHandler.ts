@@ -72,9 +72,6 @@ export async function handleGenerateDraftRequest(
         },
       };
     }
-    if ("notClassified" in result) {
-      return { ok: true, result: { kind: "notSorted" } };
-    }
     if ("draft" in result) {
       return {
         ok: true,

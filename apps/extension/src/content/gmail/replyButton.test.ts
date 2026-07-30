@@ -373,24 +373,6 @@ describe("attachReplyButton transient states", () => {
   beforeEach(() => vi.useFakeTimers());
   afterEach(() => vi.useRealTimers());
 
-  it("shows 'still sorting' and returns to idle so the user can retry", async () => {
-    const compose = makeComposeView();
-    const { deps } = makeDeps({ ok: true, result: { kind: "notSorted" } });
-    attachReplyButton(compose.view, deps);
-
-    compose.click();
-    await vi.advanceTimersByTimeAsync(0);
-    expect(compose.latest()).toMatchObject({
-      title: REPLY_BUTTON_STRINGS.notSorted,
-      // Enabled: classification usually lands within seconds, so a retry is the
-      // right next action.
-      enabled: true,
-    });
-
-    await vi.advanceTimersByTimeAsync(TRANSIENT_MS);
-    expect(compose.latest()).toMatchObject({ title: REPLY_BUTTON_STRINGS.idle });
-  });
-
   it("returns an errored button to idle so a retry is possible", async () => {
     const compose = makeComposeView();
     const { deps } = makeDeps({ ok: false, reason: "error" });

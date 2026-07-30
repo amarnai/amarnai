@@ -164,14 +164,6 @@ describe("handleGenerateDraftRequest", () => {
     });
   });
 
-  it("maps an unsorted thread to notSorted, which the button offers to retry", async () => {
-    mockClient.generateDraftByProviderThread.mockResolvedValue({ notClassified: true });
-    await expect(handleGenerateDraftRequest(REQUEST)).resolves.toEqual({
-      ok: true,
-      result: { kind: "notSorted" },
-    });
-  });
-
   it("maps the workspace kill-switch to injectionDisabled, not error", async () => {
     mockClient.generateDraftByProviderThread.mockRejectedValue(
       new InjectionDisabledError("Reply button injection is disabled for this workspace"),

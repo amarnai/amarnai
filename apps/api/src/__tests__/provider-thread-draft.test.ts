@@ -3,7 +3,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 
 // The provider-id generate-draft route: the one the native Gmail/Outlook reply
 // button calls. What matters here is the wrapper, not the generation itself
-// (covered by drafts-not-classified.test.ts): the workspace kill-switch, the
+// (covered by drafts-unclassified.test.ts): the workspace kill-switch, the
 // EWS↔Graph id normalization, and cross-workspace isolation.
 
 const { mockRecordMeterUsage, mockResolveInboxQuota, mockGenerateDraft, mockCreateAIProvider } =
@@ -30,8 +30,9 @@ vi.mock("@amarnai/db", () => ({
     emailClassification: { findFirst: vi.fn() },
     emailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
+    workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
-    draft: { findFirst: vi.fn(), findMany: vi.fn() },
+    draft: { findFirst: vi.fn(), findMany: vi.fn(), update: vi.fn() },
     $transaction: vi.fn(),
   },
   getThreadSortUsage: vi.fn(),
@@ -75,8 +76,7 @@ beforeEach(() => {
   vi.mocked(db.emailAccount.findMany).mockResolvedValue([{ id: ACCOUNT_ID }] as never);
   // Two lookups go through emailThread.findFirst: resolution (reads only `id`)
   // and the generation's own thread load (reads the messages). One fixture
-  // satisfies both. No classification, so the request stops at the 422 rather
-  // than reaching the LLM.
+  // satisfies both.
   vi.mocked(db.emailThread.findFirst).mockResolvedValue({
     id: THREAD_ID,
     subject: "Kickoff",
@@ -93,15 +93,40 @@ beforeEach(() => {
     ],
   } as never);
   vi.mocked(db.emailClassification.findFirst).mockResolvedValue(null);
+  // No connection: the draft meter is keyed on the mailbox address, so this path
+  // skips quota and metering. Irrelevant to the wrapper, exercised in
+  // drafts-unclassified.test.ts.
+  vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null);
+  vi.mocked(db.workspace.findUnique).mockResolvedValue({ plan: "PRO" } as never);
+  vi.mocked(db.draft.findFirst).mockResolvedValue(null);
+  vi.mocked(db.draft.update).mockResolvedValue({
+    id: "draft-1",
+    subject: "Re: Kickoff",
+    body: "Thursday works.",
+    status: "PROPOSED",
+    createdAt: new Date(Date.UTC(2026, 6, 2)),
+  } as never);
+  vi.mocked(db.$transaction).mockImplementation((async (cb: (tx: unknown) => Promise<unknown>) =>
+    cb({
+      $queryRaw: vi.fn().mockResolvedValue([{ id: WS_ID }]),
+      draft: {
+        findFirst: vi.fn().mockResolvedValue(null),
+        create: vi.fn().mockResolvedValue({ id: "draft-1" }),
+      },
+      inboxUsageMeter: { findUnique: vi.fn().mockResolvedValue({ used: 0 }) },
+    })) as never);
+  mockCreateAIProvider.mockReturnValue({ chat: vi.fn() });
+  mockGenerateDraft.mockResolvedValue({ subject: "Re: Kickoff", body: "Thursday works." });
 });
 
 describe("POST provider-threads/:id/generate-draft", () => {
   it("resolves the thread and hands off to the generation path", async () => {
     const res = await post(STORED_CONVERSATION_ID);
-    // 422 = it got past resolution into the generation, which then found no
-    // classification. Anything earlier (400/403/404) means the wrapper failed.
-    expect(res.status).toBe(422);
-    expect((await res.json()) as { code?: string }).toMatchObject({ code: "NOT_CLASSIFIED" });
+    // 201 = it got past resolution and generated. Anything earlier (400/403/404)
+    // means the wrapper failed. The thread is unsorted, which is no longer a
+    // refusal: the draft is written without triage context.
+    expect(res.status).toBe(201);
+    expect(mockGenerateDraft).toHaveBeenCalledTimes(1);
   });
 
   it("normalizes an EWS-flavored conversation id onto the stored alphabet", async () => {

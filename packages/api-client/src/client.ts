@@ -188,16 +188,9 @@ export function makeApiClient(transport: ApiTransport) {
     }
     if (!res.ok) {
       const err = (await res.json().catch(() => ({}))) as {
-        code?: string;
         error?: string;
         injectionDisabled?: boolean;
       };
-      // An unsorted thread is an expected outcome, not a failure: the caller
-      // shows "still sorting" and lets the user retry. Every other non-ok
-      // status still throws, so this does not widen the swallowed set.
-      if (res.status === 422 && err.code === "NOT_CLASSIFIED") {
-        return { notClassified: true as const };
-      }
       // A refusal, not a failure: the button latches off instead of retrying.
       if (res.status === 403 && err.injectionDisabled) {
         throw new InjectionDisabledError(err.error ?? "Reply button injection is disabled");

@@ -47,14 +47,16 @@ function makeApi(overrides: Partial<ApiClient> = {}): ApiClient {
   } as unknown as ApiClient;
 }
 
-function renderSection(opts: { api?: ApiClient; canInsert?: boolean } = {}) {
+function renderSection(
+  opts: { api?: ApiClient; canInsert?: boolean; thread?: EmailThreadDetail } = {},
+) {
   const insertDraft = vi.fn<(html: string) => Promise<boolean>>().mockResolvedValue(true);
   render(
     <I18nProvider i18n={i18n}>
       <DraftSection
         api={opts.api ?? makeApi()}
         workspaceId="ws-1"
-        thread={THREAD}
+        thread={opts.thread ?? THREAD}
         accountEmail="reader@example.com"
         canInsert={opts.canInsert ?? true}
         insertDraft={insertDraft}
@@ -103,6 +105,23 @@ describe("DraftSection", () => {
     await screen.findByText("Sounds good.");
     expect(insertDraft).not.toHaveBeenCalled();
     expect(api.generateDraft).not.toHaveBeenCalled();
+  });
+
+  // Sorting is not a precondition for a draft: the server writes one from the
+  // thread's own messages and simply omits the triage context. A PENDING thread
+  // may never be sorted at all (QUOTA_BLOCKED waits for a month rollover), so
+  // hiding the button here would make it permanently unreachable.
+  it("offers a draft on an unsorted thread", async () => {
+    const api = makeApi();
+    const { insertDraft } = renderSection({
+      api,
+      thread: { ...THREAD, triageStatus: "PENDING" } as unknown as EmailThreadDetail,
+    });
+
+    fireEvent.click(await screen.findByRole("button", { name: "Draft a reply" }));
+
+    await waitFor(() => expect(insertDraft).toHaveBeenCalledTimes(1));
+    expect(api.generateDraft).toHaveBeenCalledWith("ws-1", "t1", {});
   });
 
   it("leaves regeneration to the insert button", async () => {

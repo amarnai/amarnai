@@ -36,9 +36,10 @@ const drafts = new Hono();
 
 // ─── POST /workspaces/:workspaceId/email-threads/:threadId/generate-draft ──────
 //
-// Synchronous: loads thread messages + latest classification, calls the LLM,
-// persists a PROPOSED Draft row, and returns the draft inline. Returns 422 if
-// the thread has not been classified yet, or 503 if no AI provider is configured.
+// Synchronous: loads thread messages + latest classification (if any), calls the
+// LLM, persists a PROPOSED Draft row, and returns the draft inline. Returns 422
+// if the thread has no messages, or 503 if no AI provider is configured. An
+// unsorted thread is drafted without triage context rather than refused.
 //
 // A GENERATING placeholder row is created inside a locked transaction so that:
 //   1. Concurrent requests for the same workspace serialize on the quota check —
@@ -104,6 +105,15 @@ async function generateDraftForThread(
       ({ providerMessageId: _, ...m }) => m
     );
 
+    // Optional, deliberately. A classification sharpens the draft (it carries the
+    // folder's draftPrompt and the triage context lines) but it is not a
+    // precondition: buildDraftPrompt omits the whole "## Triage context" section
+    // when these are null, and Draft.classificationId is nullable.
+    //
+    // Requiring one used to make the reply button dead on any unsorted thread,
+    // including threads deferred as QUOTA_BLOCKED, which are never classified
+    // until the month rolls over or the plan is upgraded. That coupled the DRAFT
+    // meter to the THREAD_SORT meter for no technical reason.
     const classification = await db.emailClassification.findFirst({
       where: { emailThreadId: threadId, workspaceId },
       orderBy: { createdAt: "desc" },
@@ -115,19 +125,6 @@ async function generateDraftForThread(
         finalNode: { select: { name: true, draftPrompt: true } },
       },
     });
-    if (!classification) {
-      // `code` is the machine-readable discriminator; `error` stays the human
-      // string. Callers that render their own copy (the native Gmail/Outlook
-      // button, which cannot show a server sentence) branch on the code, so it
-      // must stay stable even if the prose is reworded.
-      return c.json(
-        {
-          code: "NOT_CLASSIFIED",
-          error: "Thread has not been classified yet — sort the thread before generating a draft",
-        },
-        422
-      );
-    }
 
     const gmailConnection = await db.emailConnection.findUnique({
       where: { workspaceId },
@@ -255,7 +252,7 @@ async function generateDraftForThread(
         data: {
           workspaceId,
           emailThreadId: threadId,
-          classificationId: classification.id,
+          classificationId: classification?.id ?? null,
           subject: thread.subject ? `Re: ${thread.subject}` : "",
           body: "",
           status: "GENERATING",
@@ -312,12 +309,12 @@ async function generateDraftForThread(
     let result;
     try {
       result = await generateDraft(provider, messagesForDraft, {
-        requiredAction: classification.requiredAction ?? null,
-        suggestedNextStep: classification.suggestedNextStep ?? null,
-        explanation: classification.explanation ?? null,
-        finalNodeName: classification.finalNode?.name ?? null,
+        requiredAction: classification?.requiredAction ?? null,
+        suggestedNextStep: classification?.suggestedNextStep ?? null,
+        explanation: classification?.explanation ?? null,
+        finalNodeName: classification?.finalNode?.name ?? null,
         senderEmail: gmailConnection?.emailAddress ?? null,
-        draftInstructions: classification.finalNode?.draftPrompt ?? null,
+        draftInstructions: classification?.finalNode?.draftPrompt ?? null,
       });
     } catch (e) {
       await db.draft.update({

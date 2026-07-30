@@ -305,13 +305,6 @@ export function ThreadPreviewPane({
         onDraftFailed(threadId);
         return;
       }
-      if ("notClassified" in result) {
-        // Thread not sorted yet: nothing to draft against. Same surface as any
-        // other failure in the panel.
-        setDraftState("error");
-        onDraftFailed(threadId);
-        return;
-      }
       setDraft(result.draft);
       setDraftState("ready");
       if (result.isNew) {

@@ -91,9 +91,7 @@ export type GenerateDraftFailureReason =
 export type GenerateDraftPayload =
   /** `body` is plain text; the content script converts it for the compose. */
   | { kind: "draft"; draftId: string; body: string }
-  | { kind: "quota"; used: number; limit: number; resetsAt: string }
-  /** The thread has not been sorted yet, so there is nothing to draft against. */
-  | { kind: "notSorted" };
+  | { kind: "quota"; used: number; limit: number; resetsAt: string };
 
 export type GenerateDraftResponse =
   | { ok: true; result: GenerateDraftPayload }
