@@ -1,0 +1,19 @@
+/** Which mailbox the demo is standing in. */
+export type MockProvider = "gmail" | "outlook";
+
+/**
+ * Everything the Amarnai layer needs to draw itself over a mailbox: the label
+ * each folder mirrors to, the canned summaries, and the canned draft bodies.
+ * Bundled into one prop so the mailbox components take a single "here is the
+ * Amarnai side of the demo" object instead of five parallel maps.
+ */
+export type AmarnaiDemoData = {
+  /** Folder id → namespace-first provider label segments. */
+  providerLabels: Record<string, string[]>;
+  /** Thread id → prose TL;DR. Absent for single-message threads, by design. */
+  summaries: Record<string, string>;
+  /** Thread id → bulleted TL;DR, for threads that enumerate facts. */
+  summaryBullets: Record<string, string[]>;
+  /** Thread id → the reply body the Amarnai Reply button inserts. */
+  draftBodies: Record<string, string>;
+};

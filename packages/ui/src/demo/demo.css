@@ -330,3 +330,1204 @@
   .ld-route-chip--resolved,
   .ld-chip-spin { animation: none !important; }
 }
+
+/* ─── Mailbox mocks ───────────────────────────────────────────────────────────
+   The simulated Gmail and Outlook windows, their conversation views, and the
+   Amarnai layer the extension injects into them. Rendered by the landing page
+   inside browser chrome and by the extension's first-run tab bare, so like the
+   rest of this file they ship with the components rather than with either app.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Gmail inbox mock ────────────────────────────────────────────────────── */
+
+.ld-gmail {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.ld-gmail-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  flex-shrink: 0;
+  /* The category tabs used to carry this seam; without them the app bar needs
+     its own, or the first thread row runs straight into the search field. */
+  border-bottom: 1px solid var(--line);
+}
+
+.ld-gmail-burger { display: flex; flex-direction: column; gap: 3px; }
+
+.ld-gmail-burger span {
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--ink-3);
+}
+
+.ld-gmail-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: -0.01em;
+}
+
+.ld-gmail-search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ink-4);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ld-gmail-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ld-gmail-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ld-gmail-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 16px;
+  flex-shrink: 0;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  font-family: inherit;
+  font-size: 12.5px;
+}
+
+/* Real thread rows are buttons that open the provider conversation mock; the
+   skeleton filler rows below stay plain divs. */
+button.ld-gmail-row { cursor: pointer; transition: background 0.12s; }
+button.ld-gmail-row:hover { background: var(--bg-soft); }
+
+.ld-gmail-check {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--line-3);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.ld-gmail-star { color: var(--line-3); flex-shrink: 0; }
+
+.ld-gmail-sender {
+  width: 132px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.ld-gmail-line {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* The subject is what gets truncated when the row runs out of room; the label
+   keeps its width (it is already capped) and the snippet gives way first. */
+.ld-gmail-line > .ld-gmail-subject {
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ld-gmail-line > .ld-gmail-snippet {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ld-gmail-subject { color: var(--ink-2); }
+.ld-gmail-snippet { color: var(--ink-4); }
+
+.ld-gmail-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+.ld-gmail-row.unread .ld-gmail-sender,
+.ld-gmail-row.unread .ld-gmail-subject {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.ld-gmail-row.unread .ld-gmail-time {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* Filler rows: static, de-emphasized rows standing in for already-read mail
+   below the fold. No fade — the block is hard-clipped at the pane's bottom
+   edge like a real inbox scrolled to the top, so it reads as "more mail
+   continues" rather than a loading or broken state. */
+.ld-gmail-more {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0.55;
+}
+
+.ld-skel-sender,
+.ld-skel-line,
+.ld-skel-time {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+.ld-skel-sender { width: 90px; flex-shrink: 0; }
+.ld-skel-line { flex: 1; max-width: 60%; }
+.ld-skel-time { width: 26px; flex-shrink: 0; margin-left: auto; }
+
+.ld-gmail-skel:nth-child(2n) .ld-skel-line { max-width: 44%; }
+.ld-gmail-skel:nth-child(3n) .ld-skel-line { max-width: 72%; }
+
+/* ─── Provider conversation mock ──────────────────────────────────────────────
+   The "opened in <provider>" view. It covers the whole demo stage (which is
+   position: relative, overflow: hidden) so it reads as clicking through to the
+   provider's reading pane. Opened from an inbox row or the workspace's "Open in
+   <provider>" control; dismissed with Back or Escape. */
+.ld-mailthread {
+  /* The conversation view replaces the inbox list inside the mailbox window
+     rather than floating over it, so the injected panel can take a column
+     beside it without stacking two overlays. */
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  animation: ld-mailthread-in 0.22s ease-out;
+}
+
+/* The conversation column and the injected panel sit side by side under the
+   provider's own top bar. */
+.ld-mailthread-main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.ld-mailthread-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes ld-mailthread-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Gmail's back arrow, level with the subject rather than in a bar of its own.
+   Round, quiet, and the only chrome the conversation view needs: which mailbox
+   this is comes from the browser tab and the address above it. */
+.ld-mailthread-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  margin-left: -6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.ld-mailthread-back:hover {
+  background: var(--bg-sunk);
+  color: var(--ink);
+}
+
+.ld-mailthread-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px clamp(20px, 5%, 56px) 48px;
+}
+
+.ld-mailthread-subject {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.3;
+  margin: 0 0 20px;
+}
+
+/* The chip is set at row size, so on a 21px heading it needs nudging onto the
+   optical centre of the text rather than the line box. */
+.ld-mailthread-subject .ld-mb-label {
+  font-size: 11.5px;
+  padding: 2px 8px;
+  transform: translateY(1px);
+}
+
+.ld-mailthread-msg {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.ld-mailthread-msg:first-of-type { border-top: none; padding-top: 0; }
+
+.ld-mailthread-msg-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ld-mailthread-msg-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.ld-mailthread-head-reply {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--ink-4);
+}
+
+/* The extension's own entry point in the header row: same footprint as the
+   mailbox's icon buttons, in Amarnai's accent so it is identifiably ours. */
+.ld-mb-head-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.14s;
+}
+
+.ld-mb-head-btn:hover:not(:disabled) { background: var(--accent-soft); }
+.ld-mb-head-btn:disabled { cursor: default; opacity: 0.5; }
+
+.ld-mailthread-avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Photo variant: the sender's picture clipped to the same 36px circle. */
+.ld-mailthread-avatar--photo { overflow: hidden; background: var(--line); }
+.ld-mailthread-avatar--photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.ld-mailthread-from {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+
+.ld-mailthread-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-mailthread-email {
+  font-size: 12px;
+  color: var(--ink-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-mailthread-time {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+.ld-mailthread-body {
+  white-space: pre-wrap;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  padding-left: 48px;
+}
+
+/* Gmail's reply row at the foot of a thread: its own pill (dead, decorative)
+   and the Amarnai one beside it, which is where the extension mounts it. */
+.ld-mailthread-reply {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 0 48px;
+}
+
+.ld-mailthread-reply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.ld-mailthread-reply-icon { display: inline-flex; color: var(--ink-4); }
+
+@media (max-width: 780px) {
+  .ld-mailthread-body,
+  .ld-mailthread-reply { padding-left: 0; }
+  .ld-mailthread-reply { margin-left: 0; }
+}
+
+/* ─── Outlook inbox mock ──────────────────────────────────────────────────────
+   A distinct layout from the Gmail mock above so the pane reads as real Outlook:
+   a blue app bar, a folder rail, the Focused/Other pivot, and stacked message
+   rows with colored initials avatars. The Outlook-blue accents come from a
+   scoped variable — a third-party brand color used only to make the mock
+   recognizable, not an Amarnai design token (same basis as the provider logos). */
+.ld-ol,
+.ld-mailthread--outlook {
+  --ld-ol-blue: #0f6cbd;
+  --ld-ol-blue-strong: #115ea3;
+}
+
+.ld-ol {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.ld-ol-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  background: var(--ld-ol-blue);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ld-ol-waffle,
+
+.ld-ol-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ld-ol-search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ld-ol-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ld-ol-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.ld-ol-rail {
+  flex: 0 0 132px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 8px;
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.ld-ol-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  padding: 6px 14px 6px 11px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  background: var(--ld-ol-blue);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.ld-ol-rail-label {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+
+.ld-ol-folder {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.ld-ol-folder-ico {
+  display: inline-flex;
+  color: var(--ink-4);
+  flex-shrink: 0;
+}
+
+.ld-ol-folder-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-ol-folder.active {
+  background: color-mix(in srgb, var(--ld-ol-blue) 12%, transparent);
+  color: var(--ld-ol-blue);
+  font-weight: 600;
+}
+
+.ld-ol-folder.active .ld-ol-folder-ico { color: var(--ld-ol-blue); }
+
+.ld-ol-folder-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ld-ol-blue);
+}
+
+.ld-ol-list-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ld-ol-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px 0;
+  flex-shrink: 0;
+}
+
+.ld-ol-tab {
+  padding: 6px 10px 8px;
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.ld-ol-tab.active {
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--ld-ol-blue);
+}
+
+.ld-ol-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+}
+
+.ld-ol-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 14px 9px 12px;
+  flex-shrink: 0;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  font-family: inherit;
+}
+
+/* Real thread rows are buttons that open the Outlook reading-pane mock; the
+   skeleton filler rows below stay plain divs. */
+button.ld-ol-row { cursor: pointer; transition: background 0.12s; }
+button.ld-ol-row:hover { background: var(--bg-soft); }
+
+.ld-ol-unread-bar {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: transparent;
+}
+
+.ld-ol-row.unread .ld-ol-unread-bar { background: var(--ld-ol-blue); }
+
+.ld-ol-av {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ld-ol-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ld-ol-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ld-ol-sender {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.ld-ol-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+.ld-ol-row-subject {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-ol-row-preview {
+  font-size: 12px;
+  color: var(--ink-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-ol-row.unread .ld-ol-sender { color: var(--ink); font-weight: 700; }
+.ld-ol-row.unread .ld-ol-row-subject { color: var(--ink); font-weight: 600; }
+.ld-ol-row.unread .ld-ol-time { color: var(--ld-ol-blue); font-weight: 600; }
+
+.ld-ol-unread-dot {
+  align-self: center;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ld-ol-blue);
+}
+
+/* Filler rows: static, de-emphasized stand-ins for already-read mail below the
+   fold, hard-clipped at the pane edge like the Gmail mock's. */
+.ld-ol-more {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0.5;
+}
+
+.ld-ol-av-skel { background: var(--line); }
+
+/* Photo avatar: the sender's picture clipped to the same circle as the initials
+   variants, so a real face and a colored initials chip line up in the list. */
+.ld-ol-av-photo { overflow: hidden; background: var(--line); }
+.ld-ol-av-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.ld-ol-skel .ld-skel-sender { width: 84px; }
+.ld-ol-skel .ld-skel-time { width: 24px; }
+.ld-ol-skel .ld-skel-line {
+  flex: none;
+  width: 80%;
+  max-width: none;
+  margin-top: 5px;
+}
+.ld-ol-skel .ld-skel-line--short { width: 55%; }
+
+/* Outlook contact-avatar tints (assigned by outlook-helpers.ts). Decorative
+   brand-style colors for the mock — white initials on each — not Amarnai
+   tokens. Defined after .ld-mailthread-avatar so they win in the reading pane. */
+.ld-ol-av--0 { background: #0f6cbd; color: #fff; }
+.ld-ol-av--1 { background: #0a7b74; color: #fff; }
+.ld-ol-av--2 { background: #8764b8; color: #fff; }
+.ld-ol-av--3 { background: #c4396b; color: #fff; }
+.ld-ol-av--4 { background: #ca6a18; color: #fff; }
+.ld-ol-av--5 { background: #3a7d44; color: #fff; }
+
+/* Outlook reading pane: the same overlay shell as the Gmail thread (position,
+   width, back bar), fronted by Outlook's Reply / Reply all / Forward bar. */
+.ld-ol-actions {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.ld-ol-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ld-ol-blue-strong);
+}
+
+/* ─── The Amarnai layer ───────────────────────────────────────────────────────
+   What the extension injects into a mail page: the mirrored folder label, the
+   summary card, the Amarnai Reply entry point and the compose it opens, and the
+   panel in the mailbox's right rail. Everything here is gated on the demo's
+   `amarnai` prop, so the same markup renders as a bare mailbox with it off.
+
+   These are drawn in Amarnai's palette on purpose. Injected UI that mimics the
+   host page perfectly is UI a reader cannot tell apart from Gmail's own, and
+   the whole point of the section is that they CAN.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@keyframes ld-mb-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered so the layer reads as arriving rather than as having always been
+   there. It replays every time the switch is turned back on, which is the beat
+   that makes "this is what Amarnai adds" legible without any callout chrome. */
+.ld-mb-label,
+.ld-mb-summary,
+.ld-mb-reply-pill,
+.ld-mb-rail {
+  animation: ld-mb-in 0.32s ease-out both;
+}
+
+.ld-mb-summary { animation-delay: 0.08s; }
+.ld-mb-reply-pill { animation-delay: 0.16s; }
+.ld-mb-rail { animation-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-mb-label,
+  .ld-mb-summary,
+  .ld-mb-reply-pill,
+  .ld-mb-rail { animation: none; }
+}
+
+/* ── Mirrored folder: a Gmail label chip / an Outlook category pill ── */
+
+.ld-mb-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  flex-shrink: 0;
+  max-width: 46%;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--folder-line, var(--accent-line));
+  background: var(--folder-soft, var(--accent-soft));
+  color: var(--folder-ink, var(--accent-ink));
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* The namespace and ancestors are held back so the leaf carries the chip at row
+   size. Nothing is truncated away: the full path is the chip's title. */
+.ld-mb-label-ns {
+  opacity: 0.6;
+  font-size: 9.5px;
+}
+
+.ld-mb-label-leaf {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Outlook draws a category as a colored dot plus its name on a flatter pill. */
+.ld-mb-label[data-provider="outlook"] {
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 1px 8px 1px 6px;
+}
+
+.ld-mb-label-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--folder-ink, var(--accent-ink));
+  flex-shrink: 0;
+}
+
+.ld-ol-row-cats {
+  display: flex;
+  margin-top: 5px;
+}
+
+/* ── Injected summary card ── */
+
+/* The injected summary card. The markup is the shared ThreadSummaryCard, but
+   inside a mail page it wears the in-page widget's skin rather than the app's:
+   a hairline accent border with a 3px accent spine on the left, and an eyebrow
+   in accent ink. Kept in step with content/core/summaryWidget.ts, which is the
+   framework-free original — it cannot import this, and this cannot import it. */
+.ld-mb-summary {
+  margin: 0 0 18px 48px;
+  max-width: 620px;
+}
+
+.ld-mb-summary .em-summary-card {
+  margin-top: 0;
+  padding: 9px 13px 10px 12px;
+  border: 1px solid var(--accent);
+  border-left-width: 3px;
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.ld-mb-summary .em-summary-eyebrow {
+  gap: 4px;
+  margin-bottom: 4px;
+  font-family: inherit;
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent-ink);
+}
+
+.ld-mb-summary .em-summary-text,
+.ld-mb-summary .em-summary-bullets {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+@media (max-width: 780px) {
+  .ld-mb-summary { margin-left: 0; }
+}
+
+/* ── Amarnai Reply ── */
+
+.ld-mb-reply-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.14s, border-color 0.14s;
+}
+
+.ld-mb-reply-pill:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent-soft) 70%, var(--accent) 12%);
+  border-color: var(--accent);
+}
+
+.ld-mb-reply-pill:disabled { cursor: default; opacity: 0.85; }
+
+.ld-mb-reply-pill svg { flex-shrink: 0; }
+
+/* Outlook's action bar is a row of small square-ish commands, so the pill sits
+   flatter and lighter there than on Gmail's rounded reply row. */
+.ld-mb-reply-pill[data-provider="outlook"] {
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 12.5px;
+}
+
+.ld-mb-pill-spin {
+  width: 12px;
+  height: 12px;
+  border: 1.6px solid var(--accent-line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: ld-mb-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes ld-mb-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-mb-pill-spin { animation-duration: 2.4s; }
+}
+
+/* ── The mailbox's own compose, opened by the entry point above ── */
+
+.ld-mb-compose {
+  margin: 24px 0 0 48px;
+  max-width: 620px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+  animation: ld-mb-in 0.2s ease-out both;
+}
+
+@media (max-width: 780px) {
+  .ld-mb-compose { margin-left: 0; }
+}
+
+.ld-mb-compose-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+
+.ld-mb-compose-to {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-mb-compose-x {
+  display: inline-flex;
+  padding: 3px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+
+.ld-mb-compose-x:hover { background: var(--bg-sunk); color: var(--ink-2); }
+
+.ld-mb-compose-body {
+  min-height: 96px;
+  padding: 14px 14px 10px;
+}
+
+.ld-mb-compose-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  white-space: pre-wrap;
+  animation: ld-mb-in 0.3s ease-out both;
+}
+
+/* The empty compose while generation runs: a text cursor, blinking, so the box
+   reads as waiting for the draft rather than as broken. */
+.ld-mb-compose-caret {
+  display: inline-block;
+  width: 1px;
+  height: 15px;
+  background: var(--ink-3);
+  animation: ld-mb-blink 1.1s steps(2, start) infinite;
+}
+
+@keyframes ld-mb-blink { to { visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-mb-compose-caret { animation: none; }
+}
+
+.ld-mb-compose-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+}
+
+/* Drawn, never wired: Send is the mailbox's button and Amarnai never presses
+   it. The draft waits here for edits. */
+.ld-mb-send {
+  padding: 7px 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-on);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ld-mb-compose-icons {
+  margin-left: auto;
+  display: inline-flex;
+  color: var(--ink-4);
+}
+
+/* ── Injected panel: the rail icon, and the panel it expands into ── */
+
+/* Gmail's right-hand add-on rail, which is where the panel lives when closed.
+   It needs a column of its own — collapsed to the width of its one button it
+   read as a stray icon floating on the message text. */
+.ld-mb-rail {
+  flex: 0 0 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0;
+  border-left: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+
+/* Clay at rest, not grey: the real rail loads panel-icon.svg, whose fill is
+   baked to the brand clay because currentColor cannot reach into a URL-loaded
+   SVG. The accent token is that colour, and it tracks the theme the way the
+   svg's own prefers-color-scheme block does. */
+.ld-mb-rail-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.ld-mb-rail-btn:hover,
+.ld-mb-rail-btn[aria-expanded="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+}
+
+/* A short rule under the icon, as the real rail has between its add-on slots,
+   so the column reads as a rail rather than as one lonely button. */
+.ld-mb-rail::after {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: var(--line-2);
+}
+
+.ld-mb-panel {
+  flex: 0 0 232px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  animation: ld-mb-in 0.22s ease-out both;
+}
+
+.ld-mb-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ld-mb-panel-brand {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ld-mb-panel-brand svg { color: var(--accent); }
+
+.ld-mb-panel-x {
+  display: inline-flex;
+  padding: 3px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+
+.ld-mb-panel-x:hover { background: var(--bg-sunk); color: var(--ink-2); }
+
+.ld-mb-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.ld-mb-panel-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 6px;
+}
+
+.ld-mb-panel-eyebrow:not(:first-child) { margin-top: 16px; }
+
+.ld-mb-panel-folder {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--folder-line, var(--accent-line));
+  background: var(--folder-soft, var(--accent-soft));
+  color: var(--folder-ink, var(--accent-ink));
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ld-mb-panel-assignee {
+  margin: 8px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.ld-mb-panel-conf {
+  margin: 7px 0 0;
+  font-size: 11.5px;
+  color: var(--ink-4);
+}
+
+.ld-mb-panel-draft {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  white-space: pre-wrap;
+  /* The panel is a preview slot, not a reader: the full draft belongs in the
+     compose. Fade the tail rather than cutting mid-word. */
+  max-height: 160px;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}

@@ -3,31 +3,36 @@
 import { useMemo } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import type { ThreadItem } from "@amarnai/ui/emails";
-import { GmailLogoIcon } from "./icons";
-import { OutlookInboxMock } from "./OutlookInboxMock";
-
-export type MockProvider = "gmail" | "outlook";
+import type { ThreadItem } from "../../emails/types.js";
+import { GmailLogoIcon } from "../icons.js";
+import { ProviderLabelChip } from "./ProviderLabelChip.js";
+import type { AmarnaiDemoData } from "./types.js";
 
 /**
- * Webmail inbox for the extension mode of the landing demo. It renders the same
- * demo threads that the live Amarnai workspace beside it sorts, so the two panes
- * visibly show the same inbox. Clicking a real thread row opens the provider's
- * conversation view (the same mock the workspace's "Open in <provider>" button
- * opens); the skeleton filler rows below stay decorative.
+ * Gmail's inbox list. It renders the same demo threads the Amarnai workspace
+ * sorts, so the mailbox and the panel beside it visibly show one inbox, and it
+ * is where the mirrored folders show up as Gmail labels: one chip per row,
+ * carrying the writeback name and the folder's own color.
  *
- * Gmail and Outlook are rendered by distinct layouts so each pane reads as the
- * real product (Gmail's single-line rows and label tabs here; Outlook's folder
- * rail, stacked rows, and blue chrome in OutlookInboxMock). Both consume the
- * same ThreadItem list and the same onOpenThread callback.
+ * Clicking a real thread row opens the conversation view; the skeleton filler
+ * rows below stay decorative. With `amarnai` null the list is a plain Gmail
+ * inbox, which is the off side of the landing page's switch.
+ *
+ * Gmail's Primary/Promotions/Social category tabs are deliberately not drawn.
+ * They are a second filing system sitting an inch from ours, which is the most
+ * confusing thing that could share this frame, and Amarnai excludes promotions
+ * from triage by default anyway (`includePromotions` defaults false), so those
+ * categories are not part of what this section is describing. An inbox with the
+ * category tabs turned off is an ordinary Gmail configuration, so nothing here
+ * is misrepresented by leaving them out.
  */
-export function MailInboxMock({
-  provider,
+export function GmailInboxMock({
   threads,
+  amarnai,
   onOpenThread,
 }: {
-  provider: MockProvider;
   threads: ThreadItem[];
+  amarnai: AmarnaiDemoData | null;
   onOpenThread: (thread: ThreadItem) => void;
 }) {
   const { i18n } = useLingui();
@@ -35,10 +40,6 @@ export function MailInboxMock({
     () => new Intl.DateTimeFormat(i18n.locale, { month: "short", day: "numeric" }),
     [i18n.locale],
   );
-
-  if (provider === "outlook") {
-    return <OutlookInboxMock threads={threads} onOpenThread={onOpenThread} />;
-  }
 
   return (
     <div className="ld-gmail">
@@ -62,18 +63,6 @@ export function MailInboxMock({
         <span className="ld-gmail-avatar">A</span>
       </div>
 
-      <div className="ld-gmail-tabs">
-        <span className="ld-gmail-tab active">
-          <Trans>Primary</Trans>
-        </span>
-        <span className="ld-gmail-tab">
-          <Trans>Promotions</Trans>
-        </span>
-        <span className="ld-gmail-tab">
-          <Trans>Social</Trans>
-        </span>
-      </div>
-
       <div className="ld-gmail-list">
         {threads.map((t) => (
           <button
@@ -93,6 +82,15 @@ export function MailInboxMock({
             </svg>
             <span className="ld-gmail-sender">{t.messages[0]?.fromName ?? t.participants}</span>
             <span className="ld-gmail-line">
+              {/* Gmail draws a thread's labels before the subject, so the
+                  mirrored folder is the first thing on the line. */}
+              {t.folderId && amarnai?.providerLabels[t.folderId] && (
+                <ProviderLabelChip
+                  folderId={t.folderId}
+                  segments={amarnai.providerLabels[t.folderId]!}
+                  provider="gmail"
+                />
+              )}
               <span className="ld-gmail-subject">{t.subject}</span>
               <span className="ld-gmail-snippet"> · {t.snippet}</span>
             </span>

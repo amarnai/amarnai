@@ -442,3 +442,60 @@ body {
     font-size: 22px;
   }
 }
+
+/* Which mailbox the in-your-inbox slide shows. Same shape as the frame bar's
+   other controls, sitting where the plan slide's Generate button sits. */
+.wc-provider-seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-sunk);
+}
+
+.wc-provider-seg button {
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink-3);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.wc-provider-seg button:hover { color: var(--ink); }
+
+.wc-provider-seg button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-1);
+}
+
+/* The carousel is capped at 600px, which is not enough for the mailbox, the
+   injected panel and the conversation to share three columns. Here the panel
+   slides over the conversation instead of pushing it — the rail icon still
+   opens and closes it, and the thread underneath stays readable. */
+.wc-slide-stage .ld-mb-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  box-shadow: var(--shadow-3);
+}
+
+.wc-provider-seg button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* The demos scroll internally (thread list, conversation body). On this tab the
+   scrollbar is chrome the reader did not ask for: it cuts into a 600px frame
+   and draws a grey bar down the middle of a product screenshot. The content
+   still scrolls by wheel, trackpad, and keyboard. */
+.wc-slide-stage *::-webkit-scrollbar { width: 0; height: 0; }
+.wc-slide-stage * { scrollbar-width: none; }

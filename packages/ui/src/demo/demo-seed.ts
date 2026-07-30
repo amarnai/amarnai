@@ -1,7 +1,8 @@
 import { msg } from "@lingui/core/macro";
 import type { I18n, MessageDescriptor } from "@lingui/core";
+import { PROVIDER_LABEL_NAMESPACE, sanitizeProviderSegment } from "@amarnai/core/taxonomy";
 import type { FolderItem } from "../folder-tree/types.js";
-import type { ThreadItem } from "../emails/types.js";
+import type { ThreadItem, MemberItem, ThreadAssignment } from "../emails/types.js";
 import { taxonomyTokens } from "../taxonomy/index.js";
 import type { Node, Edge } from "@xyflow/react";
 import { MarkerType } from "@xyflow/react";
@@ -127,6 +128,97 @@ export function getDemoFolders(i18n: I18n): FolderItem[] {
     parentId: item.parentId,
     ignored: false,
   }));
+}
+
+// ─── Workspace members ───────────────────────────────────────────────────────
+//
+// The demo's senders are the foreign rulers of the Amarna letters — people who
+// write TO the court. Its team is the court itself: officials attested in
+// Akhenaten's own administration, who work FOR it. Keeping the two casts apart
+// is what makes an assignment read as "one of us picked this up" rather than as
+// another correspondent appearing in a new place.
+//
+// Akhenaten is first because he is the owner: this is his inbox, the letters are
+// addressed to him, and assigning a thread to yourself is a normal thing to do,
+// so he has to be in the picker. Three members total, which is exactly what the
+// Pharaoh plan allows (COLLABORATOR_LIMITS.BUSINESS = 2 seats beyond the owner)
+// and what syncInfo claims this workspace is on — a fourth would put the demo in
+// breach of its own plan badge.
+//
+// Names are short and distinctly initialled because most of the assignment UI is
+// an avatar chip a few pixels wide, and they are wrapped for the same reason the
+// senders' are: transliteration into non-Latin scripts, not translation.
+
+/** The plan the demo workspace is on. Lives here rather than at each call site
+ *  because it is one fact with the member list: the headcount below has to fit
+ *  inside this plan's collaborator limit, and demo-seed.test.ts enforces it. */
+export const DEMO_WORKSPACE_PLAN = "BUSINESS" as const;
+
+const MEMBERS: { userId: string; name: MessageDescriptor; email: string }[] = [
+  { userId: "u-akhenaten", name: msg`Akhenaten`, email: "akhenaten@akhetaten.eg" },
+  { userId: "u-tutu", name: msg`Tutu`, email: "tutu@akhetaten.eg" },
+  { userId: "u-pentu", name: msg`Pentu`, email: "pentu@akhetaten.eg" },
+];
+
+export function getDemoMembers(i18n: I18n): MemberItem[] {
+  return MEMBERS.map((m) => ({ userId: m.userId, name: i18n._(m.name), email: m.email }));
+}
+
+/**
+ * Who each thread is assigned to, by thread id.
+ *
+ * Half the list, with every member represented once: shared triage is a reason
+ * to choose Amarnai over a personal-inbox tool, so the demo has to look like an
+ * inbox several people are actually working, not like a solo inbox with an
+ * assignment feature bolted on. One of them is the owner's own, so assigning
+ * yourself reads as ordinary; the other three stay unassigned so the assign
+ * affordance is on screen too.
+ */
+const ASSIGNMENTS: Record<string, string> = {
+  t1: "u-akhenaten",
+  t2: "u-pentu",
+  t4: "u-tutu",
+};
+
+function assignmentFor(threadId: string, i18n: I18n): ThreadAssignment | null {
+  const userId = ASSIGNMENTS[threadId];
+  const member = MEMBERS.find((m) => m.userId === userId);
+  if (!member) return null;
+  return {
+    userId: member.userId,
+    userName: i18n._(member.name),
+    userEmail: member.email,
+    // Fixed rather than relative: the seed carries no clock.
+    assignedAt: "2026-05-29T18:00:00.000Z",
+  };
+}
+
+// ─── Provider labels ─────────────────────────────────────────────────────────
+
+/**
+ * The provider-side name each folder mirrors to, keyed by folder id, exactly as
+ * the real writeback builds it: the "Amarnai" namespace followed by the folder's
+ * ancestry. Gmail nests the segments on "/" and Outlook joins them into one flat
+ * category display name, so both providers render the same string.
+ *
+ * The real taxonomy is a node+edge DAG and needs the canonical-parent walk in
+ * @amarnai/core `buildProviderPaths` to pick one stable path per node. The demo
+ * taxonomy is a plain parentId tree, where that walk reduces to following
+ * parentId, so only the namespace constant and the segment sanitizer are shared.
+ */
+export function getDemoProviderLabels(i18n: I18n): Record<string, string[]> {
+  const segmentsFor = (item: TaxonomyItem): string[] => {
+    const parent = item.parentId ? TAXONOMY_BY_ID[item.parentId] : undefined;
+    const ancestry = parent && !parent.isRoot ? segmentsFor(parent) : [];
+    return [...ancestry, sanitizeProviderSegment(i18n._(item.label))];
+  };
+
+  return Object.fromEntries(
+    TAXONOMY.filter((item) => !item.isRoot).map((item) => [
+      item.id,
+      [PROVIDER_LABEL_NAMESPACE, ...segmentsFor(item)],
+    ]),
+  );
 }
 
 // ─── Hero card ───────────────────────────────────────────────────────────────
@@ -500,6 +592,9 @@ export function getDemoThreads(
       // matches the mock beside it.
       provider,
       webLink: null,
+      // Resolved here rather than baked into the seed: an assignee's display
+      // name goes through the same locale as every other name in the demo.
+      assignment: assignmentFor(seed.id, i18n),
       subject: i18n._(subject),
       snippet: i18n._(snippet),
       reasoning: i18n._(reasoning),

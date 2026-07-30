@@ -1812,12 +1812,20 @@ button.em-pill--assignee:hover { background: var(--accent-line); }
 }
 
 .em-summary-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--f-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-4);
 }
+
+/* The mark only appears on the injected card (withMark), where the surrounding
+   page is Gmail's or Outlook's. It takes the accent so the eyebrow still reads
+   as one unit while the mark is the part that carries the attribution. */
+.em-summary-eyebrow svg { color: var(--accent-ink); flex-shrink: 0; }
 
 .em-summary-text {
   font-size: 13px;
@@ -1884,3 +1892,34 @@ button.em-pill--assignee:hover { background: var(--accent-line); }
   font-size: 11.5px;
   color: var(--ink-4);
 }
+
+/* Done and assignee on one line under the subject. Both answer "who has this,
+   and is it finished"; in the 360px side panel neither can afford its own row. */
+.em-preview-state-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.em-preview-assign {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-4);
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.em-preview-assign:hover { color: var(--ink-2); }
+
+/* Assigned reads as a fact about the thread, so it takes the ink the rest of
+   the metadata uses; unassigned stays muted, as an offer rather than a state. */
+.em-preview-assign.is-assigned { color: var(--ink-2); }
+.em-preview-assign.is-assigned:hover { color: var(--ink); }

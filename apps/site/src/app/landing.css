@@ -623,190 +623,223 @@
 
 /* ─── Browser demo frame (emails section) ─────────────────────────────────── */
 
-/* Chrome bar: URL pill left, mode toggle right — the classic browser toolbar
-   layout. No window dots — the URL pill and toggle carry the "browser" read,
-   matching the hero feed card's dot-free chrome. */
-.ld-browser-bar {
-  display: grid;
-  grid-template-columns: minmax(0, 340px) 1fr;
-  align-items: center;
-  gap: 14px;
-  padding: 9px 16px;
-  background: var(--bg-soft);
+/* Simulated browser chrome: a tab strip over a toolbar. Deliberately generic —
+   Amarnai ships to both Chrome and Firefox, so nothing here copies one vendor's
+   shapes. Only the tabs and the pinned extension icon are interactive; the rest
+   is drawn to make the frame read as a browser. */
+.ld-chrome {
+  background: var(--bg-sunk);
   border-bottom: 1px solid var(--line);
 }
 
-/* The pill sits at the left of the bar. In interactive mode it's wrapped in
-   .ld-url-nav (the positioning context for the address dropdown); in a narrow
-   frame it renders bare. Both are the grid's first column. */
-.ld-url-nav {
-  grid-column: 1;
-  justify-self: start;
+.ld-tabstrip {
+  display: flex;
+  align-items: flex-end;
+  /* Side padding is at least the flare width, so the first and last tab's
+     bottom corners have room to curve without touching the frame edge. */
+  padding: 8px 10px 0;
+}
+
+/* Chrome's tab shape: rounded on top, square at the bottom, and flaring out
+   into the toolbar at both bottom corners. The flare is two squares hung off
+   the tab's sides, each filled with the tab colour except for a quarter disc
+   that lets the strip show through — that inverted corner is the whole reason
+   a browser tab reads as a browser tab and not as a pill. */
+.ld-tab {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
   min-width: 0;
+  width: 190px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 9px 9px 0 0;
+  background: none;
+  color: var(--ink-3);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.ld-tab:hover:not(.active) {
+  background: color-mix(in srgb, var(--surface) 40%, transparent);
+  color: var(--ink-2);
+}
+
+.ld-tab.active {
+  background: var(--surface);
+  color: var(--ink);
+  z-index: 1;
+}
+
+.ld-tab.active::before,
+.ld-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 9px;
+  height: 9px;
+}
+
+.ld-tab.active::before {
+  left: -9px;
+  background: radial-gradient(circle at 0 0, transparent 9px, var(--surface) 9px);
+}
+
+.ld-tab.active::after {
+  right: -9px;
+  background: radial-gradient(circle at 100% 0, transparent 9px, var(--surface) 9px);
+}
+
+.ld-tab-ico { display: inline-flex; flex-shrink: 0; }
+.ld-tab-ico img { display: block; border-radius: 3px; }
+
+.ld-tab-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ld-tab-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: 0 0 4px 8px;
+  border-radius: 50%;
+  color: var(--ink-4);
+}
+
+@media (max-width: 780px) {
+  .ld-tab { width: auto; flex: 1; }
+}
+
+.ld-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: var(--surface);
+}
+
+.ld-tb-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-4);
+  flex-shrink: 0;
 }
 
 .ld-url-pill {
-  grid-column: 1;
-  justify-self: start;
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 7px;
-  min-width: 0;
-  padding: 5px 14px;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  gap: 8px;
+  padding: 5px 12px;
   border-radius: 999px;
-  font-family: var(--f-mono);
-  font-size: 11.5px;
-  color: var(--ink-2);
+  background: var(--bg-sunk);
+  border: 1px solid var(--line);
 }
 
 .ld-url-pill svg { flex-shrink: 0; color: var(--ink-4); }
 
 .ld-url-pill span {
+  font-size: 12px;
+  color: var(--ink-3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* The pill-as-button: same chip, plus a caret and hover affordance. */
-.ld-url-pill--btn {
-  appearance: none;
-  cursor: pointer;
-  font: inherit;
-  font-family: var(--f-mono);
-  font-size: 11.5px;
-  transition: background 0.12s, border-color 0.12s;
-}
-
-.ld-url-pill--btn:hover { border-color: var(--line-2); background: var(--bg-sunk); }
-
-.ld-url-caret {
-  margin-left: 2px;
-  color: var(--ink-4);
-  transition: transform 0.15s ease;
-}
-
-.ld-url-pill--btn[aria-expanded="true"] .ld-url-caret { transform: rotate(180deg); }
-
-/* Address dropdown: the same two choices as the right-hand toggle. */
-.ld-url-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  z-index: 30;
-  width: max-content;
-  min-width: 100%;
-  max-width: 340px;
-  margin: 0;
-  padding: 5px;
-  list-style: none;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: var(--shadow-3);
-}
-
-.ld-url-opt {
-  display: flex;
+.ld-tb-ext {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 10px;
-  border-radius: 8px;
-  font-family: var(--f-mono);
-  font-size: 11.5px;
-  color: var(--ink-2);
-  white-space: nowrap;
-  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.ld-url-opt svg { flex-shrink: 0; color: var(--ink-4); }
-.ld-url-opt:hover { background: var(--bg-sunk); }
+.ld-tb-puzzle { display: inline-flex; color: var(--ink-4); }
 
-.ld-url-opt.active {
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-}
-
-.ld-url-opt.active svg { color: var(--accent-ink); }
-
-.ld-url-opt-host {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ld-url-opt-label {
-  margin-left: auto;
-  padding-left: 16px;
-  font-family: var(--f-sans);
-  font-size: 11px;
-  white-space: nowrap;
-  color: var(--ink-3);
-}
-
-.ld-url-opt.active .ld-url-opt-label { color: var(--accent-ink); }
-
-.ld-seg {
-  grid-column: 2;
-  justify-self: end;
+/* The pinned extension icon, and one of only two live controls in the chrome.
+   Pressed state mirrors the browser's own "this panel is open" treatment. */
+.ld-tb-amarnai {
   display: inline-flex;
-  gap: 2px;
-  padding: 3px;
-  background: var(--surface);
-  border: 1px solid var(--line-2);
-  border-radius: 999px;
-}
-
-.ld-seg button {
-  appearance: none;
-  border: none;
-  background: transparent;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 550;
-  color: var(--ink-3);
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: none;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.12s, color 0.12s;
+  transition: background 0.14s, border-color 0.14s;
 }
 
-.ld-seg button:hover { color: var(--ink); }
+.ld-tb-amarnai img { display: block; border-radius: 4px; }
 
-.ld-seg button[aria-pressed="true"] {
+.ld-tb-amarnai:hover { background: var(--bg-soft); }
+
+.ld-tb-amarnai[aria-pressed="true"] {
   background: var(--accent-soft);
-  color: var(--accent-ink);
-  box-shadow: inset 0 0 0 1px var(--accent-line);
+  border-color: var(--accent-line);
 }
 
-/* Split stage: mock Gmail pane | divider | live workspace pane. Its thread
-   rows open the provider conversation mock; the rest of the pane is
-   decorative. In web mode the Gmail pane and divider are hidden so the
-   workspace fills the frame; the workspace stays mounted across modes and
-   keeps its state. */
+/* The switch above the frame. It governs the injected layer only, which is why
+   its label names the inbox rather than the product. */
+.ld-amarnai-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+/* ── Stage: the page, and the side panel docked beside it ── */
+
 .ld-split-stage {
-  --ld-gmail-w: 52%;
+  --ld-panel-w: 360px;
   display: flex;
 }
 
-.ld-gmail-pane {
-  flex: 0 0 var(--ld-gmail-w);
+.ld-page-pane {
+  flex: 1;
   min-width: 0;
-  border-right: 1px solid var(--line);
+  position: relative;
   overflow: hidden;
-  user-select: none;
 }
 
-.ld-app-pane { flex: 1; min-width: 0; }
+/* One tab body per tab, all kept mounted and swapped with [hidden] so a tab
+   returns in the state it was left in. */
+.ld-tabbody {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
 
-.ld-browser-frame[data-mode="web"] .ld-gmail-pane,
-.ld-browser-frame[data-mode="web"] .ld-split-divider { display: none; }
+.ld-tabbody[hidden] { display: none; }
 
-/* Resize seam where the Amarnai side panel docks against the Gmail inbox.
+.ld-panel-pane {
+  flex: 0 0 var(--ld-panel-w);
+  min-width: 0;
+}
+
+.ld-panel-pane[hidden],
+.ld-split-divider[hidden] { display: none; }
+
+
+/* Resize seam where the Amarnai side panel docks against the page.
    At rest it reads as the panel's own edge: a hairline border matching the
    pane divider, with a slim grab handle that only firms up on hover/drag.
    No two-way chevrons or standing caption, so it doesn't look like a
@@ -898,17 +931,19 @@
   height: 38px;
 }
 .ld-split-stage[data-resizing] .ld-split-hint { opacity: 1; transform: translateX(-50%) translateY(0); }
-.ld-split-stage[data-resizing] .ld-app-pane,
-.ld-split-stage[data-resizing] .ld-gmail-pane { pointer-events: none; }
+.ld-split-stage[data-resizing] .ld-page-pane,
+.ld-split-stage[data-resizing] .ld-panel-pane { pointer-events: none; }
 
 /* Pre-hydration fallback: on narrow viewports the frame is guaranteed to be
-   below the split threshold, so hide the split and toggle without waiting for
-   JS. Once mounted, the ResizeObserver keys the mode off the frame's own
-   rendered width, so a narrow panel on a wide viewport is also handled. */
+   below the split threshold, so the docked panel and its seam are hidden
+   without waiting for JS. The mailbox itself stays — a narrow visitor still
+   gets the labels, the summary and the reply pill, which is the headline.
+   Once mounted, the ResizeObserver keys this off the frame's own rendered
+   width, so a narrow frame on a wide viewport is handled too. */
 @media (max-width: 780px) {
-  .ld-browser-frame .ld-gmail-pane,
+  .ld-browser-frame .ld-panel-pane,
   .ld-browser-frame .ld-split-divider,
-  .ld-browser-frame .ld-seg { display: none; }
+  .ld-browser-frame .ld-tb-ext { display: none; }
 
   /* Browser extensions can't be installed on mobile; hide the CTA there. */
   .ld-ext-btn { display: none; }
@@ -925,724 +960,6 @@
   }
 }
 
-/* ─── Gmail inbox mock ────────────────────────────────────────────────────── */
-
-.ld-gmail {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  overflow: hidden;
-}
-
-.ld-gmail-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  flex-shrink: 0;
-}
-
-.ld-gmail-burger { display: flex; flex-direction: column; gap: 3px; }
-
-.ld-gmail-burger span {
-  width: 14px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--ink-3);
-}
-
-.ld-gmail-logo {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ink-2);
-  letter-spacing: -0.01em;
-}
-
-.ld-gmail-search {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: var(--bg-soft);
-  border-radius: 999px;
-  font-size: 12px;
-  color: var(--ink-4);
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.ld-gmail-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-  font-size: 11px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.ld-gmail-tabs {
-  display: flex;
-  padding: 0 8px;
-  border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-}
-
-.ld-gmail-tab {
-  padding: 9px 14px;
-  font-size: 12.5px;
-  /* Promotions/Social sit dim: Amarnai leaves them out of scope, so they read
-     as quietly out of the way next to the active Primary tab. */
-  color: var(--ink-4);
-}
-
-.ld-gmail-tab.active {
-  color: var(--accent-ink);
-  font-weight: 600;
-  box-shadow: inset 0 -2px 0 var(--accent);
-}
-
-.ld-gmail-list {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.ld-gmail-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 42px;
-  padding: 0 16px;
-  flex-shrink: 0;
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--line);
-  color: inherit;
-  font-family: inherit;
-  font-size: 12.5px;
-}
-
-/* Real thread rows are buttons that open the provider conversation mock; the
-   skeleton filler rows below stay plain divs. */
-button.ld-gmail-row { cursor: pointer; transition: background 0.12s; }
-button.ld-gmail-row:hover { background: var(--bg-soft); }
-
-.ld-gmail-check {
-  width: 12px;
-  height: 12px;
-  border: 1.5px solid var(--line-3);
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-
-.ld-gmail-star { color: var(--line-3); flex-shrink: 0; }
-
-.ld-gmail-sender {
-  width: 132px;
-  flex-shrink: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--ink-2);
-}
-
-.ld-gmail-line {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ld-gmail-subject { color: var(--ink-2); }
-.ld-gmail-snippet { color: var(--ink-4); }
-
-.ld-gmail-time {
-  flex-shrink: 0;
-  font-size: 11px;
-  color: var(--ink-4);
-}
-
-.ld-gmail-row.unread .ld-gmail-sender,
-.ld-gmail-row.unread .ld-gmail-subject {
-  font-weight: 650;
-  color: var(--ink);
-}
-
-.ld-gmail-row.unread .ld-gmail-time {
-  color: var(--accent-ink);
-  font-weight: 600;
-}
-
-/* Filler rows: static, de-emphasized rows standing in for already-read mail
-   below the fold. No fade — the block is hard-clipped at the pane's bottom
-   edge like a real inbox scrolled to the top, so it reads as "more mail
-   continues" rather than a loading or broken state. */
-.ld-gmail-more {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  opacity: 0.55;
-}
-
-.ld-skel-sender,
-.ld-skel-line,
-.ld-skel-time {
-  height: 8px;
-  border-radius: 4px;
-  background: var(--line);
-}
-
-.ld-skel-sender { width: 90px; flex-shrink: 0; }
-.ld-skel-line { flex: 1; max-width: 60%; }
-.ld-skel-time { width: 26px; flex-shrink: 0; margin-left: auto; }
-
-.ld-gmail-skel:nth-child(2n) .ld-skel-line { max-width: 44%; }
-.ld-gmail-skel:nth-child(3n) .ld-skel-line { max-width: 72%; }
-
-/* ─── Provider conversation mock ──────────────────────────────────────────────
-   The "opened in <provider>" view. It covers the whole demo stage (which is
-   position: relative, overflow: hidden) so it reads as clicking through to the
-   provider's reading pane. Opened from an inbox row or the workspace's "Open in
-   <provider>" control; dismissed with Back or Escape. */
-.ld-mailthread {
-  position: absolute;
-  /* In extension mode the conversation view stands in for the provider's
-     inbox only: it spans the Gmail/Outlook pane's width and sits under the
-     resize divider, so the docked Amarnai panel stays visible beside it
-     rather than being masked. Web mode (and the narrow collapse, which also
-     reports data-mode="web") overrides this to cover the whole stage. */
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: var(--ld-gmail-w);
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  animation: ld-mailthread-in 0.22s ease-out;
-}
-
-.ld-browser-frame[data-mode="web"] .ld-mailthread {
-  width: auto;
-  right: 0;
-}
-
-@keyframes ld-mailthread-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.ld-mailthread-bar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 20px;
-  border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-}
-
-.ld-mailthread-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 12px 6px 8px;
-  border: 1px solid var(--line-2);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--ink-2);
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
-}
-
-.ld-mailthread-back:hover {
-  background: var(--bg-soft);
-  border-color: var(--line-3);
-  color: var(--ink);
-}
-
-.ld-mailthread-logo {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink-2);
-  letter-spacing: -0.01em;
-}
-
-.ld-mailthread-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 24px clamp(20px, 5%, 56px) 48px;
-}
-
-.ld-mailthread-subject {
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  line-height: 1.3;
-  margin: 0 0 20px;
-}
-
-.ld-mailthread-msg {
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
-}
-
-.ld-mailthread-msg:first-of-type { border-top: none; padding-top: 0; }
-
-.ld-mailthread-msg-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.ld-mailthread-avatar {
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-  font-size: 15px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Photo variant: the sender's picture clipped to the same 36px circle. */
-.ld-mailthread-avatar--photo { overflow: hidden; background: var(--line); }
-.ld-mailthread-avatar--photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-.ld-mailthread-from {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  gap: 1px;
-}
-
-.ld-mailthread-name {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--ink);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ld-mailthread-email {
-  font-size: 12px;
-  color: var(--ink-4);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ld-mailthread-time {
-  margin-left: auto;
-  flex-shrink: 0;
-  font-size: 12px;
-  color: var(--ink-4);
-}
-
-.ld-mailthread-body {
-  white-space: pre-wrap;
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: var(--ink-2);
-  padding-left: 48px;
-}
-
-.ld-mailthread-reply {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 24px 0 0 48px;
-  padding: 8px 18px;
-  border: 1px solid var(--line-2);
-  border-radius: 999px;
-  font-size: 13px;
-  color: var(--ink-3);
-}
-
-.ld-mailthread-reply-icon { display: inline-flex; color: var(--ink-4); }
-
-@media (max-width: 780px) {
-  .ld-mailthread-body,
-  .ld-mailthread-reply { padding-left: 0; }
-  .ld-mailthread-reply { margin-left: 0; }
-}
-
-/* ─── Outlook inbox mock ──────────────────────────────────────────────────────
-   A distinct layout from the Gmail mock above so the pane reads as real Outlook:
-   a blue app bar, a folder rail, the Focused/Other pivot, and stacked message
-   rows with colored initials avatars. The Outlook-blue accents come from a
-   scoped variable — a third-party brand color used only to make the mock
-   recognizable, not an Amarnai design token (same basis as the provider logos). */
-.ld-ol,
-.ld-mailthread--outlook {
-  --ld-ol-blue: #0f6cbd;
-  --ld-ol-blue-strong: #115ea3;
-}
-
-.ld-ol {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  overflow: hidden;
-}
-
-.ld-ol-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 14px;
-  background: var(--ld-ol-blue);
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.ld-ol-waffle,
-.ld-ol-gear { display: inline-flex; opacity: 0.9; flex-shrink: 0; }
-
-.ld-ol-logo {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.ld-ol-search {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.16);
-  border-radius: 6px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.85);
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.ld-ol-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.ld-ol-body {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-}
-
-.ld-ol-rail {
-  flex: 0 0 132px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  padding: 10px 8px;
-  border-right: 1px solid var(--line);
-  overflow: hidden;
-}
-
-.ld-ol-new {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  align-self: flex-start;
-  padding: 6px 14px 6px 11px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  background: var(--ld-ol-blue);
-  color: #fff;
-  font-size: 12.5px;
-  font-weight: 600;
-}
-
-.ld-ol-rail-label {
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--ink-4);
-}
-
-.ld-ol-folder {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 6px 8px;
-  border-radius: 5px;
-  font-size: 12.5px;
-  color: var(--ink-2);
-}
-
-.ld-ol-folder-ico {
-  display: inline-flex;
-  color: var(--ink-4);
-  flex-shrink: 0;
-}
-
-.ld-ol-folder-name {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ld-ol-folder.active {
-  background: color-mix(in srgb, var(--ld-ol-blue) 12%, transparent);
-  color: var(--ld-ol-blue);
-  font-weight: 600;
-}
-
-.ld-ol-folder.active .ld-ol-folder-ico { color: var(--ld-ol-blue); }
-
-.ld-ol-folder-count {
-  margin-left: auto;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--ld-ol-blue);
-}
-
-.ld-ol-list-col {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.ld-ol-tabs {
-  display: flex;
-  gap: 4px;
-  padding: 8px 12px 0;
-  flex-shrink: 0;
-}
-
-.ld-ol-tab {
-  padding: 6px 10px 8px;
-  font-size: 12.5px;
-  color: var(--ink-4);
-}
-
-.ld-ol-tab.active {
-  color: var(--ink);
-  font-weight: 600;
-  box-shadow: inset 0 -2px 0 var(--ld-ol-blue);
-}
-
-.ld-ol-list {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-top: 1px solid var(--line);
-}
-
-.ld-ol-row {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 9px 14px 9px 12px;
-  flex-shrink: 0;
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--line);
-  color: inherit;
-  font-family: inherit;
-}
-
-/* Real thread rows are buttons that open the Outlook reading-pane mock; the
-   skeleton filler rows below stay plain divs. */
-button.ld-ol-row { cursor: pointer; transition: background 0.12s; }
-button.ld-ol-row:hover { background: var(--bg-soft); }
-
-.ld-ol-unread-bar {
-  position: absolute;
-  left: 0;
-  top: 8px;
-  bottom: 8px;
-  width: 3px;
-  border-radius: 0 2px 2px 0;
-  background: transparent;
-}
-
-.ld-ol-row.unread .ld-ol-unread-bar { background: var(--ld-ol-blue); }
-
-.ld-ol-av {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  margin-top: 1px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.ld-ol-row-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.ld-ol-row-top {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.ld-ol-sender {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 13px;
-  color: var(--ink-2);
-}
-
-.ld-ol-time {
-  flex-shrink: 0;
-  font-size: 11px;
-  color: var(--ink-4);
-}
-
-.ld-ol-row-subject {
-  font-size: 12.5px;
-  color: var(--ink-2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ld-ol-row-preview {
-  font-size: 12px;
-  color: var(--ink-4);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ld-ol-row.unread .ld-ol-sender { color: var(--ink); font-weight: 700; }
-.ld-ol-row.unread .ld-ol-row-subject { color: var(--ink); font-weight: 600; }
-.ld-ol-row.unread .ld-ol-time { color: var(--ld-ol-blue); font-weight: 600; }
-
-.ld-ol-unread-dot {
-  align-self: center;
-  width: 8px;
-  height: 8px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--ld-ol-blue);
-}
-
-/* Filler rows: static, de-emphasized stand-ins for already-read mail below the
-   fold, hard-clipped at the pane edge like the Gmail mock's. */
-.ld-ol-more {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  opacity: 0.5;
-}
-
-.ld-ol-av-skel { background: var(--line); }
-
-/* Photo avatar: the sender's picture clipped to the same circle as the initials
-   variants, so a real face and a colored initials chip line up in the list. */
-.ld-ol-av-photo { overflow: hidden; background: var(--line); }
-.ld-ol-av-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-.ld-ol-skel .ld-skel-sender { width: 84px; }
-.ld-ol-skel .ld-skel-time { width: 24px; }
-.ld-ol-skel .ld-skel-line {
-  flex: none;
-  width: 80%;
-  max-width: none;
-  margin-top: 5px;
-}
-.ld-ol-skel .ld-skel-line--short { width: 55%; }
-
-/* Outlook contact-avatar tints (assigned by outlook-helpers.ts). Decorative
-   brand-style colors for the mock — white initials on each — not Amarnai
-   tokens. Defined after .ld-mailthread-avatar so they win in the reading pane. */
-.ld-ol-av--0 { background: #0f6cbd; color: #fff; }
-.ld-ol-av--1 { background: #0a7b74; color: #fff; }
-.ld-ol-av--2 { background: #8764b8; color: #fff; }
-.ld-ol-av--3 { background: #c4396b; color: #fff; }
-.ld-ol-av--4 { background: #ca6a18; color: #fff; }
-.ld-ol-av--5 { background: #3a7d44; color: #fff; }
-
-/* Outlook reading pane: the same overlay shell as the Gmail thread (position,
-   width, back bar), fronted by Outlook's Reply / Reply all / Forward bar. */
-.ld-ol-actions {
-  display: flex;
-  gap: 4px;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-}
-
-.ld-ol-action {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 5px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--ld-ol-blue-strong);
-}
 
 /* The plan canvas demo (its frame-bar button, connection handles and reveal
    animation) is shared with the extension's first-run tab; those styles ship
@@ -1962,4 +1279,14 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
   .ld-footer-cols { flex-direction: column; gap: 24px; }
 
   .ld-final-note-br { display: inline; }
+}
+
+/* The demo's two controls, side by side above the frame: which mailbox, and
+   whether Amarnai is in it. Different questions, so they read as two controls
+   rather than one segmented group. */
+.ld-demo-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }

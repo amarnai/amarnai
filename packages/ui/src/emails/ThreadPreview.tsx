@@ -51,6 +51,10 @@ export interface ThreadPreviewProps {
   summary?: string | undefined;
   /** Canned bulleted TL;DR for the demo; takes precedence over `summary`. */
   summaryBullets?: string[] | undefined;
+  /** True when the workspace has ≥2 members, so assigning is on offer at all. */
+  canAssign?: boolean | undefined;
+  /** Opens the assignee picker anchored on the control that was clicked. */
+  onOpenAssign?: ((threadId: string, anchor: HTMLElement) => void) | undefined;
 }
 
 export function ThreadPreview({
@@ -68,11 +72,16 @@ export function ThreadPreview({
   onOpenInProvider,
   summary,
   summaryBullets,
+  canAssign,
+  onOpenAssign,
 }: ThreadPreviewProps) {
   const { i18n } = useLingui();
   const [generating, setGenerating] = useState(false);
 
   const isExtension = surface === "extension";
+  const assigneeName = thread.assignment
+    ? (thread.assignment.userName ?? thread.assignment.userEmail)
+    : "";
   const providerLabel = openInProviderLabel(i18n, thread.provider);
   const providerIcon =
     thread.provider === "OUTLOOK" ? (
@@ -211,14 +220,38 @@ export function ThreadPreview({
           )}
         </h2>
 
-        {(onMarkDone || onUnmarkDone) && (
-          <PreviewDoneBar
-            isDone={isDone}
-            doneMark={thread.doneMark}
-            onMark={() => onMarkDone?.(thread.id)}
-            onUnmark={() => onUnmarkDone?.(thread.id)}
-            showDoneBy={false}
-          />
+        {/* Done and assignee share a row: both answer "who has this and is it
+            finished", and in the 360px panel they cannot each have a line. */}
+        {((onMarkDone || onUnmarkDone) || (onOpenAssign && (canAssign || thread.assignment))) && (
+          <div className="em-preview-state-row">
+            {(onMarkDone || onUnmarkDone) && (
+              <PreviewDoneBar
+                isDone={isDone}
+                doneMark={thread.doneMark}
+                onMark={() => onMarkDone?.(thread.id)}
+                onUnmark={() => onUnmarkDone?.(thread.id)}
+                showDoneBy={false}
+              />
+            )}
+            {onOpenAssign && (canAssign || thread.assignment) && (
+              <button
+                type="button"
+                className={`em-preview-assign${thread.assignment ? " is-assigned" : ""}`}
+                aria-label={
+                  thread.assignment
+                    ? i18n._(msg`Assigned to ${assigneeName}. Change assignee`)
+                    : i18n._(msg`Assign to a member`)
+                }
+                onClick={(e) => onOpenAssign(thread.id, e.currentTarget)}
+              >
+                <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+                  <circle cx="6" cy="4" r="2.1" stroke="currentColor" strokeWidth="1.3" />
+                  <path d="M1.9 10.4c0-2 1.8-3.3 4.1-3.3s4.1 1.3 4.1 3.3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                </svg>
+                {thread.assignment ? assigneeName : <Trans>Assign</Trans>}
+              </button>
+            )}
+          </div>
         )}
 
         {summaryBullets && summaryBullets.length > 0 ? (

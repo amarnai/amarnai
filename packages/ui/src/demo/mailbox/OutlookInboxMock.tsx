@@ -3,10 +3,12 @@
 import { useMemo } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { OutlookIcon } from "@amarnai/ui";
-import type { ThreadItem } from "@amarnai/ui/emails";
-import { initial, outlookAvatarClass } from "./outlook-helpers";
-import { DEMO_AVATARS } from "@amarnai/ui/demo";
+import { OutlookIcon } from "../../icons/OutlookIcon.js";
+import type { ThreadItem } from "../../emails/types.js";
+import { initial, outlookAvatarClass } from "./outlook-helpers.js";
+import { DEMO_AVATARS } from "../demo-avatars.js";
+import { ProviderLabelChip } from "./ProviderLabelChip.js";
+import type { AmarnaiDemoData } from "./types.js";
 
 // 3x3 app-launcher waffle, the top-left glyph on every Outlook web page.
 function WaffleIcon() {
@@ -24,20 +26,6 @@ function SearchIcon() {
     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden>
       <circle cx="5.5" cy="5.5" r="3.7" stroke="currentColor" strokeWidth="1.4" />
       <path d="M8.5 8.5l3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function GearIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.3" />
-      <path
-        d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.6 3.4l-1.1 1.1M4.5 11.5l-1.1 1.1M12.6 12.6l-1.1-1.1M4.5 4.5 3.4 3.4"
-        stroke="currentColor"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
     </svg>
   );
 }
@@ -106,14 +94,21 @@ function JunkIcon() {
  * pivot, and stacked message rows with colored initials avatars.
  *
  * It renders the same demo threads the Amarnai workspace beside it sorts, so the
- * two panes show one inbox. Clicking a real row opens the Outlook reading-pane
- * mock (MailThreadMock); the skeleton filler rows below stay decorative.
+ * two panes show one inbox, and it is where the mirrored folders show up as
+ * Outlook categories: a colored pill under the preview line, carrying the same
+ * writeback name Gmail nests as a label.
+ *
+ * Clicking a real row opens the Outlook reading-pane mock (MailThreadMock); the
+ * skeleton filler rows below stay decorative. With `amarnai` null the list is a
+ * plain Outlook inbox, which is the off side of the landing page's switch.
  */
 export function OutlookInboxMock({
   threads,
+  amarnai,
   onOpenThread,
 }: {
   threads: ThreadItem[];
+  amarnai: AmarnaiDemoData | null;
   onOpenThread: (thread: ThreadItem) => void;
 }) {
   const { i18n } = useLingui();
@@ -145,9 +140,6 @@ export function OutlookInboxMock({
         <span className="ld-ol-search">
           <SearchIcon />
           <Trans>Search</Trans>
-        </span>
-        <span className="ld-ol-gear" aria-hidden>
-          <GearIcon />
         </span>
         <span className="ld-ol-avatar">A</span>
       </div>
@@ -206,6 +198,17 @@ export function OutlookInboxMock({
                     </span>
                     <span className="ld-ol-row-subject">{t.subject}</span>
                     <span className="ld-ol-row-preview">{t.snippet}</span>
+                    {/* Outlook stacks a row's categories under the preview
+                        line rather than inline with the subject. */}
+                    {t.folderId && amarnai?.providerLabels[t.folderId] && (
+                      <span className="ld-ol-row-cats">
+                        <ProviderLabelChip
+                          folderId={t.folderId}
+                          segments={amarnai.providerLabels[t.folderId]!}
+                          provider="outlook"
+                        />
+                      </span>
+                    )}
                   </span>
                   {t.unread && <span className="ld-ol-unread-dot" aria-hidden />}
                 </button>

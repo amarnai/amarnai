@@ -5,13 +5,14 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
-import type { ActiveSelection, ThreadItem, DraftItem, SyncInfo } from "./types.js";
+import type { ActiveSelection, ThreadItem, DraftItem, SyncInfo, MemberItem } from "./types.js";
 import { filterThreads } from "./selection.js";
 import { ColumnResizeHandle } from "./ColumnResizeHandle.js";
 import { EmailRail } from "./EmailRail.js";
 import { ThreadList } from "./ThreadList.js";
 import { ThreadPreview } from "./ThreadPreview.js";
 import { ReroutePopover } from "./ReroutePopover.js";
+import { AssigneePicker } from "./AssigneePicker.js";
 
 type Toast = { message: string; onUndo?: () => void };
 
@@ -49,6 +50,13 @@ export interface MockEmailsPageProps {
    * of navigating to the real provider deep link.
    */
   onOpenInProvider?: (thread: ThreadItem) => void;
+  /**
+   * Workspace members, for the assignment UI. With two or more the assign
+   * affordance appears on every row and picking a member is live; omit it (or
+   * pass fewer than two) and the demo runs as a solo workspace, where assignment
+   * is not offered at all — the same rule the real app applies.
+   */
+  members?: MemberItem[];
 }
 
 export function MockEmailsPage({
@@ -64,6 +72,7 @@ export function MockEmailsPage({
   initialRailOpen = true,
   surface = "web",
   onOpenInProvider,
+  members = [],
 }: MockEmailsPageProps) {
   const { _ } = useLingui();
   const now = useRef(new Date()).current;
@@ -80,6 +89,8 @@ export function MockEmailsPage({
   const [railQuery, setRailQuery] = useState("");
   const [openFolderIds, setOpenFolderIds] = useState<Set<string>>(new Set());
   const [rerouteAnchor, setRerouteAnchor] = useState<HTMLElement | null>(null);
+  const [assignAnchor, setAssignAnchor] = useState<HTMLElement | null>(null);
+  const [assignThreadId, setAssignThreadId] = useState<string | null>(null);
   const [rerouteThreadId, setRerouteThreadId] = useState<string | null>(null);
   const [toast, setToast] = useState<Toast | null>(null);
   const [draftMap, setDraftMap] = useState<Map<string, DraftItem>>(new Map());
@@ -187,6 +198,50 @@ export function MockEmailsPage({
     });
   }
 
+  const canAssign = members.length >= 2;
+  const assignThread = assignThreadId ? threads.find((t) => t.id === assignThreadId) ?? null : null;
+
+  function openAssignFor(threadId: string, anchor: HTMLElement) {
+    setAssignThreadId(threadId);
+    setAssignAnchor(anchor);
+  }
+
+  function closeAssign() {
+    setAssignAnchor(null);
+    setAssignThreadId(null);
+  }
+
+  function commitAssign(userId: string | null) {
+    const threadId = assignThreadId;
+    closeAssign();
+    if (!threadId) return;
+    const member = userId ? members.find((m) => m.userId === userId) : undefined;
+    setThreads((ts) =>
+      ts.map((t) =>
+        t.id === threadId
+          ? {
+              ...t,
+              assignment: member
+                ? {
+                    userId: member.userId,
+                    userName: member.name,
+                    userEmail: member.email,
+                    // The demo has no clock of its own; this is only ever read
+                    // back as a tooltip date, never compared against now.
+                    assignedAt: new Date().toISOString(),
+                  }
+                : null,
+            }
+          : t,
+      ),
+    );
+    showToast({
+      message: member
+        ? _(msg`Assigned to ${member.name ?? member.email}`)
+        : _(msg`Unassigned`),
+    });
+  }
+
   function commitReroute(folderId: string) {
     const folder = folders.find((f) => f.id === folderId);
     const folderName = folder?.name ?? _(msg`folder`);
@@ -244,6 +299,8 @@ export function MockEmailsPage({
         onUnmarkDone={handleUnmarkDone}
         onToggleImportant={handleToggleImportant}
         onReroute={openRerouteFor}
+        canAssign={canAssign}
+        {...(members.length > 0 ? { onOpenAssign: openAssignFor } : {})}
         {...(onOpenInProvider
           ? {
               onOpenInGmail: (threadId: string) => {
@@ -273,6 +330,8 @@ export function MockEmailsPage({
           onMarkDone={handleMarkDone}
           onUnmarkDone={handleUnmarkDone}
           onToggleImportant={handleToggleImportant}
+          canAssign={canAssign}
+          {...(members.length > 0 ? { onOpenAssign: openAssignFor } : {})}
         />
       ) : (
         <div className="em-preview-empty">
@@ -285,6 +344,14 @@ export function MockEmailsPage({
         anchor={rerouteAnchor}
         onCommit={commitReroute}
         onClose={closeReroute}
+      />
+
+      <AssigneePicker
+        members={members}
+        assignedUserId={assignThread?.assignment?.userId ?? null}
+        anchor={assignAnchor}
+        onCommit={commitAssign}
+        onClose={closeAssign}
       />
 
       {toast && (

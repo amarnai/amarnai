@@ -7,7 +7,10 @@
 
 export { HeroFeedCard } from "./HeroFeedCard.js";
 export { DemoTaxonomyCanvas } from "./DemoTaxonomyCanvas.js";
-export { FolderIcon, SparkleIcon } from "./icons.js";
+export { MailboxStage } from "./mailbox/MailboxStage.js";
+export { getDemoAmarnaiData } from "./mailbox/amarnaiData.js";
+export type { AmarnaiDemoData, MockProvider } from "./mailbox/types.js";
+export { FolderIcon, SparkleIcon, GmailLogoIcon } from "./icons.js";
 export { DEMO_AVATARS } from "./demo-avatars.js";
 export {
   getDemoNodes,
@@ -16,6 +19,9 @@ export {
   getDemoDraftBodies,
   getDemoSummaries,
   getDemoSummaryBullets,
+  getDemoProviderLabels,
+  getDemoMembers,
+  DEMO_WORKSPACE_PLAN,
   DEMO_EDGES,
   DEMO_NODE_DEPTH,
   DEMO_NODE_SIZE,

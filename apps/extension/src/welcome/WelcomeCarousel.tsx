@@ -10,61 +10,88 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
+import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
 import {
   DemoTaxonomyCanvas,
   HeroFeedCard,
-  getDemoDraftBodies,
+  MailboxStage,
+  getDemoAmarnaiData,
   getDemoFolders,
-  getDemoSummaries,
-  getDemoSummaryBullets,
   getDemoThreads,
+  type MockProvider,
 } from "@amarnai/ui/demo";
-import { MockEmailsPage } from "@amarnai/ui/emails";
+import type { ThreadItem } from "@amarnai/ui/emails";
 
 /** How long a slide stays up before the carousel advances on its own. */
 const SLIDE_MS = 9000;
 
 /**
- * The sorted-inbox preview: the same workspace the side panel shows, seeded
- * with the demo threads. `surface="extension"` and a closed rail match what the
- * real panel looks like beside Gmail or Outlook.
+ * The in-your-inbox preview: Gmail or Outlook with everything the extension
+ * just added to it — the mirrored folder labels, the summary card, the Amarnai
+ * Reply pill, and the panel in the mailbox's right rail.
+ *
+ * The landing page frames this in painted browser chrome. This tab does not:
+ * it is already open in a real browser, a few inches below a real toolbar with
+ * the real Amarnai icon in it, and a second painted browser here would only
+ * make a reader wonder which one to click.
  */
 function EmailsDemo() {
-  const { i18n } = useLingui();
-  const threads = useMemo(() => getDemoThreads(i18n), [i18n]);
-  const folders = useMemo(() => getDemoFolders(i18n), [i18n]);
-  const draftBodies = useMemo(() => getDemoDraftBodies(i18n), [i18n]);
-  const summaries = useMemo(() => getDemoSummaries(i18n), [i18n]);
-  const summaryBullets = useMemo(() => getDemoSummaryBullets(i18n), [i18n]);
+  const { i18n, _ } = useLingui();
+  const [provider, setProvider] = useState<MockProvider>("gmail");
+  const [openThread, setOpenThread] = useState<ThreadItem | null>(null);
 
-  // The frame is capped to side-panel width: the shared emails grid switches to
-  // its compact list/preview layout below 640px of container width, which is
-  // the layout the real panel runs.
+  const threads = useMemo(
+    () => getDemoThreads(i18n, provider === "outlook" ? "OUTLOOK" : "GMAIL"),
+    [i18n, provider],
+  );
+  const folders = useMemo(() => getDemoFolders(i18n), [i18n]);
+  const amarnai = useMemo(() => getDemoAmarnaiData(i18n), [i18n]);
+
+  function chooseProvider(next: MockProvider) {
+    setProvider(next);
+    // The open thread belongs to the mailbox being left.
+    setOpenThread(null);
+  }
+
   return (
-    <div className="ld-app-frame wc-slide-frame wc-slide-frame--panel">
+    <div className="ld-app-frame wc-slide-frame">
       <div className="ld-frame-bar">
         <div className="ld-crumbs">
           <span>
-            <Trans>Workspace</Trans>
+            <Trans>Your mailbox</Trans>
           </span>
           <span className="ld-sep">/</span>
-          <span className="ld-here">
-            <Trans>Emails</Trans>
-          </span>
+          <span className="ld-here">{provider === "outlook" ? "Outlook" : "Gmail"}</span>
         </div>
-        <div className="ld-play-note">
-          <Trans>Browse the folders. It&apos;s fully interactive.</Trans>
+        <div className="wc-provider-seg" role="group" aria-label={_(msg`Choose a mailbox`)}>
+          <button
+            type="button"
+            aria-pressed={provider === "gmail"}
+            onClick={() => chooseProvider("gmail")}
+          >
+            <GoogleGIcon size={13} />
+            Gmail
+          </button>
+          <button
+            type="button"
+            aria-pressed={provider === "outlook"}
+            onClick={() => chooseProvider("outlook")}
+          >
+            <OutlookIcon size={13} />
+            Outlook
+          </button>
         </div>
       </div>
       <div className="wc-slide-stage em-shell">
-        <MockEmailsPage
-          initialThreads={threads}
-          initialFolders={folders}
-          draftBodies={draftBodies}
-          summaries={summaries}
-          summaryBullets={summaryBullets}
-          initialRailOpen={false}
-          surface="extension"
+        <MailboxStage
+          key={provider}
+          provider={provider}
+          threads={threads}
+          folders={folders}
+          amarnai={amarnai}
+          openThread={openThread}
+          onOpenThread={setOpenThread}
+          onCloseThread={() => setOpenThread(null)}
         />
       </div>
     </div>
@@ -109,7 +136,7 @@ const SLIDES: Slide[] = [
     id: "emails",
     Art: EmailsDemo,
     title: msg`Every email goes where it belongs`,
-    body: msg`Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them.`,
+    body: msg`Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it without leaving your mailbox. When a reply is needed, a draft is one click away, ready for your edits and never sent without them.`,
   },
 ];
 

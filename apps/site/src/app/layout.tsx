@@ -7,6 +7,7 @@ import "@amarnai/ui/demo/styles";
 import "./globals.css";
 import "@amarnai/ui/theme/styles";
 import "@amarnai/ui/tooltip/styles";
+import "@amarnai/ui/switch/styles";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });

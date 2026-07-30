@@ -6,6 +6,7 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
 import { FolderIcon } from "@amarnai/ui/demo";
+import { ProviderToggle, type Provider } from "./ProviderToggle";
 
 function StepArt2() {
   const { _ } = useLingui();
@@ -309,45 +310,6 @@ const penIcon = (
     />
   </svg>
 );
-
-type Provider = "gmail" | "outlook";
-
-function ProviderToggle({
-  provider,
-  onChange,
-}: {
-  provider: Provider;
-  onChange: (p: Provider) => void;
-}) {
-  const { _ } = useLingui();
-
-  return (
-    <div
-      className="ld-sa-toggle"
-      role="group"
-      aria-label={_(msg`Choose email provider`)}
-    >
-      <button
-        type="button"
-        className={`ld-sa-toggle-btn${provider === "gmail" ? " active" : ""}`}
-        aria-pressed={provider === "gmail"}
-        aria-label={_(msg`Show Gmail`)}
-        onClick={() => onChange("gmail")}
-      >
-        <GoogleGIcon size={13} />
-      </button>
-      <button
-        type="button"
-        className={`ld-sa-toggle-btn${provider === "outlook" ? " active" : ""}`}
-        aria-pressed={provider === "outlook"}
-        aria-label={_(msg`Show Outlook`)}
-        onClick={() => onChange("outlook")}
-      >
-        <OutlookIcon size={13} />
-      </button>
-    </div>
-  );
-}
 
 function StepArt1({ provider }: { provider: Provider }) {
   const { _ } = useLingui();

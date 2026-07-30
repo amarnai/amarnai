@@ -12,130 +12,106 @@ import {
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { ThreadItem } from "@amarnai/ui/emails";
+import { Switch } from "@amarnai/ui";
 import { MockEmailsPage } from "@amarnai/ui/emails";
-import { MailInboxMock, type MockProvider } from "./MailInboxMock";
-import { MailThreadMock } from "./MailThreadMock";
-import { getDemoThreads, getDemoFolders, getDemoDraftBodies, getDemoSummaries, getDemoSummaryBullets } from "@amarnai/ui/demo";
+import {
+  MailboxStage,
+  type MockProvider,
+  getDemoAmarnaiData,
+  getDemoThreads,
+  getDemoFolders,
+  getDemoDraftBodies,
+  getDemoSummaries,
+  getDemoSummaryBullets,
+  getDemoMembers,
+  DEMO_WORKSPACE_PLAN,
+} from "@amarnai/ui/demo";
+import { BrowserChrome, type DemoTab } from "./BrowserChrome";
+import { ProviderToggle } from "./ProviderToggle";
 
-/** Which surface the frame previews: the docked extension or the full web app. */
-type Surface = "web" | "ext";
-
-/** Below this rendered frame width the Gmail + workspace split doesn't fit. */
+/** Below this rendered frame width there is no room to dock a side panel. */
 const MIN_SPLIT_FRAME_PX = 720;
 
-/** Divider bounds and defaults, as the Gmail pane's share of the stage. */
-const GMAIL_MIN_PCT = 30;
-const GMAIL_MAX_PCT = 68;
-const GMAIL_DEFAULT_PCT = 52;
-const KEY_STEP_PCT = 2;
+/** Side-panel width bounds, in px, matching a real docked panel's range. */
+const PANEL_MIN_PX = 300;
+const PANEL_MAX_PX = 460;
+const PANEL_DEFAULT_PX = 360;
+const KEY_STEP_PX = 16;
 
-const clampPct = (pct: number) => Math.min(GMAIL_MAX_PCT, Math.max(GMAIL_MIN_PCT, pct));
+const clampPanel = (px: number) => Math.min(PANEL_MAX_PX, Math.max(PANEL_MIN_PX, px));
 
 /**
- * The addresses the frame can show, in display order. The extension surface
- * covers both mail providers (Gmail and Outlook); the web app is
- * provider-agnostic. Selecting a provider address switches both the surface and
- * which inbox mock sits beside the workspace.
+ * The demo opens on the inbox list, not on a thread.
+ *
+ * The list is what mail.google.com actually looks like when you land on it, and
+ * it is the only view that can make the plural claim in this section's heading:
+ * a mirrored label on every row, in the folder's own color. A single open thread
+ * shows more of Amarnai at once, but it shows one thread being filed, and it
+ * reads as a state someone staged rather than a mailbox someone has.
+ *
+ * Set this to a thread id to open on that thread instead.
  */
-const URL_OPTIONS: { surface: Surface; provider?: MockProvider; host: string }[] = [
-  { surface: "ext", provider: "gmail", host: "mail.google.com" },
-  { surface: "ext", provider: "outlook", host: "outlook.live.com" },
-  { surface: "web", host: "app.amarnai.com" },
-];
-
-function LockIcon() {
-  return (
-    <svg width="10" height="12" viewBox="0 0 10 12" fill="none" aria-hidden>
-      <rect x="1" y="5" width="8" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M3 5V3.8a2 2 0 014 0V5" stroke="currentColor" strokeWidth="1.3" />
-    </svg>
-  );
-}
+const DEFAULT_OPEN_THREAD_ID: string | null = null;
 
 /**
- * A single browser-framed demo with two modes: the Amarnai web app full-width
- * ("web") and the same workspace docked beside a static Gmail inbox ("ext").
- * One MockEmailsPage instance stays mounted across modes — the Gmail pane and
- * divider are hidden with CSS — so folder/thread/draft state is shared.
- * The mode gate reacts to the frame's own rendered width (ResizeObserver),
- * not the viewport; a viewport media query in landing.css covers the
- * pre-hydration frame.
+ * The in-your-inbox demo: one browser with two tabs open, the visitor's mailbox
+ * with Amarnai injected into it and the Amarnai web app beside it. Which mailbox
+ * is a toggle rather than a third tab, so the demo shows one person's inbox
+ * instead of implying they keep Gmail and Outlook open on the same mail.
+ *
+ * The default view is a mailbox with a thread open, because that is where three
+ * of the four injected things live at once — the folder label on the thread, the
+ * summary card, and the Amarnai Reply entry point. The inbox list, which shows
+ * only the labels, is one Back click away.
+ *
+ * The switch above the frame turns the injected layer off, and it is scoped in
+ * its label ("in your inbox") to exactly what it governs: what the extension
+ * puts inside Gmail's and Outlook's own UI. Amarnai's own surfaces — the app
+ * tab, the toolbar icon, the side panel — are not injections and stay put, which
+ * is also how the real per-workspace settings are drawn.
  */
 export function EmailsDemoSection() {
   const { i18n, _ } = useLingui();
-  const [userMode, setUserMode] = useState<Surface>("ext");
+  const [tab, setTab] = useState<DemoTab>("inbox");
   const [provider, setProvider] = useState<MockProvider>("gmail");
-  // The thread whose provider conversation view is open over the stage, if any.
-  const [openedThread, setOpenedThread] = useState<ThreadItem | null>(null);
+  const [showAmarnai, setShowAmarnai] = useState(true);
+  const [panelOpen, setPanelOpen] = useState(false);
+  // The thread open in the mailbox tab. Held here rather than inside the mailbox
+  // so the side panel's "Open in <provider>" button can drive it, and held as an
+  // id rather than an object so it survives a locale or mailbox change.
+  //
+  // It starts on a thread rather than on the inbox list because the thread view
+  // is where the label, the summary card and the Amarnai Reply pill are all on
+  // screen at once. The list, which carries only the labels, is one Back away.
+  const [openThreadId, setOpenThreadId] = useState<string | null>(DEFAULT_OPEN_THREAD_ID);
   // null until the frame is first measured (SSR and pre-layout render).
   const [wide, setWide] = useState<boolean | null>(null);
-  const mode: Surface = wide === false ? "web" : userMode;
+  // Both workspace views are mounted on first use and kept mounted after, so
+  // switching tabs or reopening the panel does not reset what the visitor did.
+  const [appVisited, setAppVisited] = useState(false);
+  const [panelUsed, setPanelUsed] = useState(false);
 
+  const canDockPanel = wide !== false;
+  const panelVisible = panelOpen && canDockPanel;
+
+  // One provider at a time, so the mailbox, the app tab and the side panel all
+  // agree on which mailbox these threads came from and what "Open in …" means.
   const threads = useMemo(
     () => getDemoThreads(i18n, provider === "outlook" ? "OUTLOOK" : "GMAIL"),
     [i18n, provider],
   );
   const folders = useMemo(() => getDemoFolders(i18n), [i18n]);
+  const amarnai = useMemo(() => getDemoAmarnaiData(i18n), [i18n]);
   const draftBodies = useMemo(() => getDemoDraftBodies(i18n), [i18n]);
   const summaries = useMemo(() => getDemoSummaries(i18n), [i18n]);
   const summaryBullets = useMemo(() => getDemoSummaryBullets(i18n), [i18n]);
+  const members = useMemo(() => getDemoMembers(i18n), [i18n]);
 
   const frameRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const dividerRef = useRef<HTMLDivElement>(null);
-  const dragStart = useRef<{ x: number; pct: number } | null>(null);
-  const gmailPct = useRef(GMAIL_DEFAULT_PCT);
-
-  const currentHost =
-    mode === "web"
-      ? "app.amarnai.com"
-      : provider === "outlook"
-        ? "outlook.live.com"
-        : "mail.google.com";
-
-  // The URL pill doubles as a mode picker (same choices as the right-hand
-  // toggle). Only interactive when both modes are available; in a narrow frame
-  // the split can't fit, so the address is fixed to the web app.
-  const urlNavRef = useRef<HTMLDivElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onPointerDown = (e: PointerEvent) => {
-      if (!urlNavRef.current?.contains(e.target as Node)) setMenuOpen(false);
-    };
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [menuOpen]);
-
-  // A frame that narrows past the split threshold hides the toggle; close the
-  // URL menu with it so it can't linger over the fixed single-URL pill.
-  useEffect(() => {
-    if (wide === false) setMenuOpen(false);
-  }, [wide]);
-
-  function chooseOption(opt: { surface: Surface; provider?: MockProvider }) {
-    setUserMode(opt.surface);
-    if (opt.provider) setProvider(opt.provider);
-    setMenuOpen(false);
-    // The open conversation belongs to the address being left; close it.
-    setOpenedThread(null);
-  }
-
-  // An address in the dropdown is the current one when its surface matches, and,
-  // for the two provider addresses, when its provider matches too.
-  const isCurrentOption = (opt: { surface: Surface; provider?: MockProvider }) =>
-    opt.surface === "web"
-      ? mode === "web"
-      : mode === "ext" && opt.provider === provider;
+  const dragStart = useRef<{ x: number; px: number } | null>(null);
+  const panelPx = useRef(PANEL_DEFAULT_PX);
 
   useLayoutEffect(() => {
     const frame = frameRef.current;
@@ -147,27 +123,51 @@ export function EmailsDemoSection() {
     return () => ro.disconnect();
   }, []);
 
+  const openThread = openThreadId ? threads.find((t) => t.id === openThreadId) ?? null : null;
+
+  useEffect(() => {
+    if (tab === "app") setAppVisited(true);
+  }, [tab]);
+
+  // Switching mailbox is switching product, not switching view: the workspace
+  // views remount (keyed on provider) so their thread lists and their "Open in
+  // …" buttons name the mailbox now on screen.
+  function chooseProvider(next: MockProvider) {
+    setProvider(next);
+    setOpenThreadId(DEFAULT_OPEN_THREAD_ID);
+  }
+
+  // Bring the browser to the mailbox tab and open the thread there, instead of
+  // following the real provider deep link out of the page.
+  function openInMailbox(thread: { id: string }) {
+    setTab("inbox");
+    setOpenThreadId(thread.id);
+  }
+
+  useEffect(() => {
+    if (panelVisible) setPanelUsed(true);
+  }, [panelVisible]);
+
   // The divider drives the split off-React (CSS var + aria attribute) so the
   // workspace doesn't re-render on every pointer move.
-  function applyGmailPct(pct: number) {
-    gmailPct.current = pct;
-    stageRef.current?.style.setProperty("--ld-gmail-w", `${pct}%`);
-    dividerRef.current?.setAttribute("aria-valuenow", String(Math.round(pct)));
+  function applyPanelPx(px: number) {
+    panelPx.current = px;
+    stageRef.current?.style.setProperty("--ld-panel-w", `${px}px`);
+    dividerRef.current?.setAttribute("aria-valuenow", String(Math.round(px)));
   }
 
   function beginDrag(e: ReactPointerEvent<HTMLDivElement>) {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
-    dragStart.current = { x: e.clientX, pct: gmailPct.current };
+    dragStart.current = { x: e.clientX, px: panelPx.current };
     stageRef.current?.setAttribute("data-resizing", "true");
   }
 
   function moveDrag(e: ReactPointerEvent<HTMLDivElement>) {
     const start = dragStart.current;
-    const stage = stageRef.current;
-    if (!start || !stage) return;
-    const deltaPct = ((e.clientX - start.x) / stage.clientWidth) * 100;
-    applyGmailPct(clampPct(start.pct + deltaPct));
+    if (!start) return;
+    // The panel is docked right, so dragging left widens it.
+    applyPanelPx(clampPanel(start.px - (e.clientX - start.x)));
   }
 
   function endDrag() {
@@ -179,9 +179,24 @@ export function EmailsDemoSection() {
   function nudge(e: ReactKeyboardEvent<HTMLDivElement>) {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     e.preventDefault();
-    const delta = e.key === "ArrowLeft" ? -KEY_STEP_PCT : KEY_STEP_PCT;
-    applyGmailPct(clampPct(gmailPct.current + delta));
+    const delta = e.key === "ArrowLeft" ? KEY_STEP_PX : -KEY_STEP_PX;
+    applyPanelPx(clampPanel(panelPx.current + delta));
   }
+
+  const workspaceProps = {
+    initialThreads: threads,
+    initialFolders: folders,
+    draftBodies,
+    summaries,
+    summaryBullets,
+    members,
+    syncInfo: {
+      lastSyncedAt: new Date().toISOString(),
+      backfillStatus: "IDLE" as const,
+      workspacePlan: DEMO_WORKSPACE_PLAN,
+      pushEnabled: true,
+    },
+  };
 
   return (
     <section className="ld-demo-section" id="triage">
@@ -193,160 +208,119 @@ export function EmailsDemoSection() {
             </h2>
             <p className="ld-section-lede">
               <Trans>
-                Every thread lands in one of your folders, exactly where you
-                would expect to find it. When a reply is needed, a draft is one
-                click away, ready for your edits and never sent without them.
+                Your folders become labels in Gmail and categories in Outlook, so
+                every thread is filed where you would expect to find it without
+                leaving your mailbox. When a reply is needed, a draft is one click
+                away, ready for your edits and never sent without them.
               </Trans>
             </p>
           </div>
+
+          <div className="ld-demo-controls">
+            {/* Which mailbox, the same control the connect step above uses. */}
+            <ProviderToggle provider={provider} onChange={chooseProvider} />
+
+            {/* Scoped in its own label to what it governs: what Amarnai puts
+                inside the mailbox. Off is not a broken state — it is the
+                mailbox a visitor already has, which is the comparison worth
+                making. */}
+            <label className="ld-amarnai-toggle">
+              <Switch checked={showAmarnai} onChange={setShowAmarnai} />
+              <span>
+                <Trans>Amarnai in your inbox</Trans>
+              </span>
+            </label>
+          </div>
         </div>
 
-        <div
-          ref={frameRef}
-          className="ld-app-frame ld-browser-frame ld-reveal"
-          data-mode={mode}
-        >
-          <div className="ld-browser-bar">
-            {wide === false ? (
-              <div className="ld-url-pill">
-                <LockIcon />
-                <span>{currentHost}</span>
-              </div>
-            ) : (
-              <div className="ld-url-nav" ref={urlNavRef}>
-                <button
-                  type="button"
-                  className="ld-url-pill ld-url-pill--btn"
-                  aria-haspopup="listbox"
-                  aria-expanded={menuOpen}
-                  aria-label={_(msg`Switch the previewed address`)}
-                  onClick={() => setMenuOpen((open) => !open)}
-                >
-                  <LockIcon />
-                  <span>{currentHost}</span>
-                  <svg
-                    className="ld-url-caret"
-                    width="8"
-                    height="5"
-                    viewBox="0 0 8 5"
-                    fill="none"
-                    aria-hidden
-                  >
-                    <path
-                      d="M1 1l3 3 3-3"
-                      stroke="currentColor"
-                      strokeWidth="1.3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-                {menuOpen && (
-                  <ul className="ld-url-menu" role="listbox" aria-label={_(msg`Available addresses`)}>
-                    {URL_OPTIONS.map((opt) => {
-                      const current = isCurrentOption(opt);
-                      return (
-                        <li
-                          key={opt.host}
-                          role="option"
-                          aria-selected={current}
-                          className={`ld-url-opt${current ? " active" : ""}`}
-                          onClick={() => chooseOption(opt)}
-                        >
-                          <LockIcon />
-                          <span className="ld-url-opt-host">{opt.host}</span>
-                          <span className="ld-url-opt-label">
-                            {opt.surface === "ext" ? <Trans>Browser extension</Trans> : "Web app"}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </div>
-            )}
-            {wide !== false && (
-              <div className="ld-seg" role="group" aria-label={_(msg`Choose how to preview Amarnai`)}>
-                <button
-                  type="button"
-                  aria-pressed={mode === "web"}
-                  onClick={() => { setUserMode("web"); setOpenedThread(null); }}
-                >
-                  Web app
-                </button>
-                <button
-                  type="button"
-                  aria-pressed={mode === "ext"}
-                  onClick={() => { setUserMode("ext"); setOpenedThread(null); }}
-                >
-                  <Trans>Browser extension</Trans>
-                </button>
-              </div>
-            )}
-          </div>
+        <div ref={frameRef} className="ld-app-frame ld-browser-frame ld-reveal" data-tab={tab}>
+          <BrowserChrome
+            tab={tab}
+            provider={provider}
+            onTabChange={setTab}
+            panelOpen={panelVisible}
+            onTogglePanel={() => setPanelOpen((open) => !open)}
+            showToolbarIcon={canDockPanel}
+          />
 
-          <div ref={stageRef} className="ld-demo-stage emails ld-split-stage">
-            <div className="ld-gmail-pane">
-              <MailInboxMock provider={provider} threads={threads} onOpenThread={setOpenedThread} />
-            </div>
-            <div
-              ref={dividerRef}
-              className="ld-split-divider"
-              role="separator"
-              aria-orientation="vertical"
-              aria-label={_(msg`Resize the split between the inbox and Amarnai`)}
-              aria-valuemin={GMAIL_MIN_PCT}
-              aria-valuemax={GMAIL_MAX_PCT}
-              aria-valuenow={GMAIL_DEFAULT_PCT}
-              tabIndex={0}
-              onPointerDown={beginDrag}
-              onPointerMove={moveDrag}
-              onPointerUp={endDrag}
-              onPointerCancel={endDrag}
-              onKeyDown={nudge}
-            >
-              {/* A slim grab handle sitting on the panel's edge, like the
-                  resize seam of a docked side panel rather than a two-way
-                  before/after slider. Quiet at rest, firming up on hover. */}
-              <span className="ld-split-grip" aria-hidden="true" />
-              <span className="ld-split-hint"><Trans>Drag to resize</Trans></span>
-            </div>
-            {/* One MockEmailsPage instance per provider: in "ext" mode it renders
-                the extension's compact side-panel layout beside the inbox mock;
-                in "web" mode the pane widens to the full desktop app. It stays
-                mounted across the surface switch so workspace state is shared,
-                and `surface` swaps the preview chrome to match the extension
-                (Open-in-provider button, star toggle) or the web app. Keying on
-                the provider remounts when the inbox switches (Gmail↔Outlook) so
-                the threads reload with the matching provider. The rail starts
-                closed so the thread list shows first, matching the real side
-                panel. */}
-            <div className="em-shell ld-app-pane">
-              <MockEmailsPage
-                key={provider}
-                initialThreads={threads}
-                initialFolders={folders}
-                draftBodies={draftBodies}
-                summaries={summaries}
-                summaryBullets={summaryBullets}
-                initialRailOpen={false}
-                surface={mode === "web" ? "web" : "extension"}
-                onOpenInProvider={setOpenedThread}
-                syncInfo={{
-                  lastSyncedAt: new Date().toISOString(),
-                  backfillStatus: "IDLE",
-                  workspacePlan: "PRO",
-                  pushEnabled: true,
-                }}
-              />
+          <div
+            ref={stageRef}
+            className="ld-demo-stage emails ld-split-stage"
+            id="ld-tabpanel"
+            role="tabpanel"
+            aria-labelledby={`ld-tab-${tab}`}
+            data-panel={panelVisible ? "open" : undefined}
+          >
+            <div className="ld-page-pane">
+              {/* The mailbox tabs. Keyed on the provider so switching mailboxes
+                  reloads the window rather than morphing one into the other. */}
+              <div className="ld-tabbody" hidden={tab === "app"}>
+                <MailboxStage
+                  key={provider}
+                  provider={provider}
+                  threads={threads}
+                  folders={folders}
+                  amarnai={showAmarnai ? amarnai : null}
+                  openThread={openThread}
+                  onOpenThread={(thread) => setOpenThreadId(thread.id)}
+                  onCloseThread={() => setOpenThreadId(null)}
+                />
+              </div>
+
+              {/* The Amarnai tab. Mounted on first visit and kept mounted, so
+                  coming back to it finds it as it was left. */}
+              {appVisited && (
+                <div className="ld-tabbody em-shell" hidden={tab !== "app"}>
+                  <MockEmailsPage
+                    {...workspaceProps}
+                    key={provider}
+                    surface="web"
+                    onOpenInProvider={openInMailbox}
+                  />
+                </div>
+              )}
             </div>
 
-            {openedThread && (
-              <MailThreadMock
-                provider={provider}
-                thread={openedThread}
-                onBack={() => setOpenedThread(null)}
-              />
+            {panelUsed && (
+              <>
+                <div
+                  ref={dividerRef}
+                  className="ld-split-divider"
+                  role="separator"
+                  aria-orientation="vertical"
+                  aria-label={_(msg`Resize the Amarnai side panel`)}
+                  aria-valuemin={PANEL_MIN_PX}
+                  aria-valuemax={PANEL_MAX_PX}
+                  aria-valuenow={PANEL_DEFAULT_PX}
+                  tabIndex={0}
+                  hidden={!panelVisible}
+                  onPointerDown={beginDrag}
+                  onPointerMove={moveDrag}
+                  onPointerUp={endDrag}
+                  onPointerCancel={endDrag}
+                  onKeyDown={nudge}
+                >
+                  {/* A slim grab handle sitting on the panel's edge, like the
+                      resize seam of a docked side panel rather than a two-way
+                      before/after slider. Quiet at rest, firming up on hover. */}
+                  <span className="ld-split-grip" aria-hidden="true" />
+                  <span className="ld-split-hint">
+                    <Trans>Drag to resize</Trans>
+                  </span>
+                </div>
+
+                {/* The browser's side panel: one workspace, both mailboxes, and
+                    it stays put across tab switches because the real one does. */}
+                <div className="em-shell ld-panel-pane" hidden={!panelVisible}>
+                  <MockEmailsPage
+                    {...workspaceProps}
+                    key={provider}
+                    initialRailOpen={false}
+                    surface="extension"
+                    onOpenInProvider={openInMailbox}
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>

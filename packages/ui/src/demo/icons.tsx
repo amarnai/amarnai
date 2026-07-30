@@ -32,3 +32,17 @@ export function SparkleIcon() {
     </svg>
   );
 }
+
+// Official multicolor Gmail envelope glyph, shown beside the "Gmail" wordmark
+// in the mock inbox so the demo pane reads as the real product.
+export function GmailLogoIcon() {
+  return (
+    <svg width="18" height="14" viewBox="0 0 52 40" fill="none" aria-hidden>
+      <path d="M3.5 40h8V20.5L0 11.4v25.1C0 38.4 1.6 40 3.5 40z" fill="#4285F4" />
+      <path d="M40.5 40h8c1.9 0 3.5-1.6 3.5-3.5V11.4L40.5 20.5V40z" fill="#34A853" />
+      <path d="M40.5 3.5V20.5L52 11.4V5.2c0-5.7-6.5-9-11.1-5.5L40.5 3.5z" fill="#FBBC04" />
+      <path d="M11.5 20.5V3.5L26 14.4 40.5 3.5V20.5L26 31.4z" fill="#EA4335" />
+      <path d="M0 5.2v6.2l11.5 9.1V3.5L11.1-.3C6.5-3.3 0-.5 0 5.2z" fill="#C5221F" />
+    </svg>
+  );
+}
