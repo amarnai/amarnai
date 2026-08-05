@@ -111,7 +111,6 @@ const STYLES = `
   gap: 4px;
   font-family: "Google Sans", Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 9.5px;
-  line-height: 1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--am-accent-ink);
