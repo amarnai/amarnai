@@ -17,7 +17,7 @@ import {
   LabelWritebackSection,
 } from "@amarnai/ui/settings";
 import { useSession } from "../auth/session";
-import { openWebApp } from "./openWebApp";
+import { openWebApp, useWebAppLink } from "./openWebApp";
 
 type Props = {
   api: ApiClient;
@@ -36,11 +36,14 @@ type Props = {
  * link at the bottom: billing, team members, the sender blacklist, connecting
  * and disconnecting a mailbox, and resetting or deleting the workspace. Those
  * either need room to show consequences or are rare enough that the extra step
- * is the right amount of friction.
+ * is the right amount of friction. Collaborators get a dedicated row anyway:
+ * managing them still happens on the web, but the feature is worth advertising
+ * where owners actually spend their time.
  */
 export function SettingsOverlay({ api, workspaceId, onUpgrade, onClose }: Props) {
   const { _ } = useLingui();
   const { workspaces, userId, refreshWorkspaces } = useSession();
+  const webAppLink = useWebAppLink();
   const workspace = workspaces.find((w) => w.id === workspaceId) ?? null;
 
   // Everything below the plan is owner-only server-side: PATCH /workspaces/:id
@@ -189,6 +192,28 @@ export function SettingsOverlay({ api, workspaceId, onUpgrade, onClose }: Props)
                       }
                     />
                   )}
+                </section>
+              )}
+
+              {/* Managing members lives on the web (the invite itself is a web
+                  flow); this row exists so owners triaging here learn the
+                  workspace can be shared at all. Owner-only because inviting
+                  is, and members already know the team exists. */}
+              {isOwner && (
+                <section className="st-section">
+                  <h2 className="st-title">
+                    <Trans>Collaborators</Trans>
+                  </h2>
+                  <p className="st-hint">
+                    <Trans>
+                      Invite teammates to this workspace to triage the inbox together.
+                    </Trans>
+                  </p>
+                  <div className="st-actions">
+                    <a className="st-btn" {...webAppLink("/settings#team-members")}>
+                      <Trans>Invite collaborators</Trans>
+                    </a>
+                  </div>
                 </section>
               )}
 
