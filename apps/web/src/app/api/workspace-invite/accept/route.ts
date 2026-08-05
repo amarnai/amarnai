@@ -115,3 +115,8 @@ export async function GET(req: NextRequest) {
 
   return response;
 }
+
+// The post-sign-in server action redirects here to resume a pending invite, and
+// the Next.js action client follows that redirect with a POST. The handler is
+// token-gated and idempotent, so POST can safely share the GET logic.
+export { GET as POST };

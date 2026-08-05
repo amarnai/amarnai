@@ -14,7 +14,7 @@ vi.mock("@amarnai/db", () => ({
 import { auth } from "@/auth";
 import { db } from "@amarnai/db";
 import { INVITE_COOKIE } from "@/lib/invite-redirect";
-import { GET } from "@/app/api/workspace-invite/accept/route";
+import { GET, POST } from "@/app/api/workspace-invite/accept/route";
 
 const TOKEN = "tok-1";
 const ACCEPT_PATH = `/api/workspace-invite/accept?token=${TOKEN}`;
@@ -27,9 +27,10 @@ const invitation = {
   workspace: { id: "ws-1", name: "Pro Workspace", locale: "en" },
 };
 
-const makeReq = (token: string | null = TOKEN) =>
+const makeReq = (token: string | null = TOKEN, method = "GET") =>
   new NextRequest(
     `http://localhost:3000/api/workspace-invite/accept${token ? `?token=${token}` : ""}`,
+    { method },
   );
 
 const location = (res: Response) => res.headers.get("location") ?? "";
@@ -147,5 +148,34 @@ describe("GET /api/workspace-invite/accept — signed in", () => {
     expect(db.workspaceMember.create).not.toHaveBeenCalled();
     expect(db.workspaceInvitation.delete).toHaveBeenCalledWith({ where: { id: "inv-1" } });
     expect(location(res)).toContain("/emails?joined_workspace=Pro%20Workspace");
+  });
+});
+
+// The post-sign-in server action redirects to this route to resume a pending
+// invite, and the Next.js action client follows that redirect with a POST.
+describe("POST /api/workspace-invite/accept — resumed after sign-in", () => {
+  it("accepts the invite exactly like GET", async () => {
+    vi.mocked(auth).mockResolvedValue({
+      user: { id: "u-1", email: "invitee@example.com" },
+    } as never);
+
+    const res = await POST(makeReq(TOKEN, "POST"));
+
+    expect(db.workspaceMember.create).toHaveBeenCalledWith({
+      data: { workspaceId: "ws-1", userId: "u-1", role: "MEMBER" },
+    });
+    expect(location(res)).toContain("/emails?joined_workspace=Pro%20Workspace");
+    expect(res.cookies.get(INVITE_COOKIE)?.value).toBe("");
+  });
+
+  it("still blocks a wrong-account session", async () => {
+    vi.mocked(auth).mockResolvedValue({
+      user: { id: "u-2", email: "someone.else@example.com" },
+    } as never);
+
+    const res = await POST(makeReq(TOKEN, "POST"));
+
+    expect(location(res)).toContain("/sign-in?error=invite_wrong_account");
+    expect(db.workspaceMember.create).not.toHaveBeenCalled();
   });
 });
