@@ -48,11 +48,14 @@ function xmlEscape(value: string): string {
 function buildManifest(base: string, addinId: string): string {
   const b = xmlEscape(base);
   const paneUrl = `${b}${OUTLOOK_PANEL_PATH}`;
-  // The ribbon's own entry point: same pane, told to get straight to drafting.
-  // The button used to be the whole feature; it is now one action inside the
-  // panel, but the deep link is kept because clicking a ribbon button IS the
-  // request — making the user press a second button in the pane asks twice.
+  // The ribbon's own entry points: same pane, told to get straight to the
+  // requested section. The draft button used to be the whole feature; it is now
+  // one action inside the panel, but the deep links are kept because clicking a
+  // ribbon button IS the request — making the user press a second button in the
+  // pane asks twice. The comments button opens the pane with the team comment
+  // section expanded and scrolled into view.
   const draftUrl = `${paneUrl}?focus=draft`;
+  const commentsUrl = `${paneUrl}?focus=comments`;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <OfficeApp
@@ -62,7 +65,7 @@ function buildManifest(base: string, addinId: string): string {
   xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
   xsi:type="MailApp">
   <Id>${addinId}</Id>
-  <Version>1.0.0.0</Version>
+  <Version>1.1.0.0</Version>
   <ProviderName>Amarnai</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Amarnai" />
@@ -124,6 +127,22 @@ function buildManifest(base: string, addinId: string): string {
                     <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
+                <Control xsi:type="Button" id="amarnaiCommentsButton">
+                  <Label resid="commentsLabel" />
+                  <Supertip>
+                    <Title resid="commentsLabel" />
+                    <Description resid="commentsTip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="commentsUrl" />
+                    <SupportsPinning>true</SupportsPinning>
+                  </Action>
+                </Control>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
@@ -139,13 +158,16 @@ function buildManifest(base: string, addinId: string): string {
       <bt:Urls>
         <bt:Url id="paneUrl" DefaultValue="${paneUrl}" />
         <bt:Url id="draftUrl" DefaultValue="${draftUrl}" />
+        <bt:Url id="commentsUrl" DefaultValue="${commentsUrl}" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="groupLabel" DefaultValue="Amarnai" />
         <bt:String id="panelLabel" DefaultValue="Amarnai" />
+        <bt:String id="commentsLabel" DefaultValue="Comments" />
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="panelTip" DefaultValue="Open the Amarnai panel for this conversation: where it was filed, what it says, and a draft reply you review and send yourself." />
+        <bt:String id="commentsTip" DefaultValue="Discuss this conversation with your team in Amarnai. Comments stay in Amarnai and are never sent by email." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

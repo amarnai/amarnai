@@ -13,6 +13,8 @@ vi.mock("./client", () => {
       trialClaim: { upsert: vi.fn().mockReturnValue({}) },
       draft: del(),
       threadSummary: del(),
+      threadComment: del(),
+      threadCommentRead: del(),
       emailTag: del(),
       emailClassification: del(),
       auditLog: del(),
@@ -88,6 +90,26 @@ describe("deleteUserCascade", () => {
     expect(db.$transaction).toHaveBeenCalledOnce();
   });
 
+  it("removes the user's comments and read markers, including in workspaces they do not own", async () => {
+    vi.mocked(db.user.findUnique).mockResolvedValue({
+      email: "user@example.com",
+      trialUsed: false,
+    } as never);
+
+    await deleteUserCascade(USER_ID);
+
+    // The second OR arm is what clears the author/user FKs in OTHER people's
+    // workspaces before user.delete; without it the delete hits FK violations
+    // and comments by a deleted user would linger (GDPR posture says they must
+    // not).
+    expect(db.threadComment.deleteMany).toHaveBeenCalledWith({
+      where: { OR: [{ workspaceId: { in: ["ws-1"] } }, { authorUserId: USER_ID }] },
+    });
+    expect(db.threadCommentRead.deleteMany).toHaveBeenCalledWith({
+      where: { OR: [{ workspaceId: { in: ["ws-1"] } }, { userId: USER_ID }] },
+    });
+  });
+
   it("is a no-op when the user is already gone (idempotent under retry)", async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue(null);
 
@@ -104,6 +126,13 @@ describe("eraseEmailAccountData", () => {
 
     expect(db.$transaction).toHaveBeenCalledOnce();
     expect(db.emailAccount.delete).toHaveBeenCalledWith({ where: { id: "acct-1" } });
+    // Thread-scoped children go with the threads, including comments.
+    expect(db.threadComment.deleteMany).toHaveBeenCalledWith({
+      where: { emailThread: { emailAccountId: "acct-1" } },
+    });
+    expect(db.threadCommentRead.deleteMany).toHaveBeenCalledWith({
+      where: { emailThread: { emailAccountId: "acct-1" } },
+    });
     // Workspace-level data must NOT be touched by an account-scoped erase.
     expect(db.taxonomyNode.deleteMany).not.toHaveBeenCalled();
     expect(db.taxonomyEdge.deleteMany).not.toHaveBeenCalled();

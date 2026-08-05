@@ -360,6 +360,7 @@ export function EmailsClient({
           members={members}
           canAssign={canAssign}
           onOpenAssign={openAssignFor}
+          currentUserId={currentUserId}
         />
       ) : (
         <div className="em-preview-empty">

@@ -13,6 +13,11 @@ vi.mock("@/lib/api", () => ({
     threadSummary: vi.fn(),
     generateDraft: vi.fn(),
     toggleDraftSent: vi.fn(),
+    listThreadComments: vi.fn().mockResolvedValue({ comments: [], lastReadAt: null }),
+    threadCommentsMeta: vi.fn().mockResolvedValue({ total: 0, unread: 0 }),
+    markThreadCommentsRead: vi.fn().mockResolvedValue({ ok: true, lastReadAt: "2026-07-11T10:00:00.000Z" }),
+    createThreadComment: vi.fn(),
+    deleteThreadComment: vi.fn(),
     inlineImageUrl: (ws: string, threadId: string, messageId: string, attachmentId: string) =>
       `/api/internal/workspaces/${ws}/email-threads/${threadId}/messages/${messageId}/inline-image?attachmentId=${attachmentId}`,
   },
@@ -160,6 +165,7 @@ function renderPreview(thread: ThreadItem) {
       members={[]}
       canAssign={false}
       onOpenAssign={noop}
+      currentUserId="test-user-1"
     />,
   );
 }
@@ -216,6 +222,7 @@ describe("ThreadPreview live update when an open thread gains a message", () => 
         members={[]}
         canAssign={false}
         onOpenAssign={noop}
+        currentUserId="test-user-1"
       />,
     );
 
@@ -252,6 +259,7 @@ describe("ThreadPreview live update when an open thread gains a message", () => 
         members={[]}
         canAssign={false}
         onOpenAssign={noop}
+        currentUserId="test-user-1"
       />,
     );
 
@@ -370,6 +378,7 @@ describe("ThreadPreview thread summary", () => {
         members={[]}
         canAssign={false}
         onOpenAssign={noop}
+        currentUserId="test-user-1"
       />,
     );
 
@@ -423,6 +432,7 @@ describe("ThreadPreview summary request races", () => {
         members={[]}
         canAssign={false}
         onOpenAssign={noop}
+        currentUserId="test-user-1"
       />,
     );
 

@@ -17,6 +17,8 @@ export {
   type CreateWorkspaceNotificationsInput,
   deleteThreadAssignedNotifications,
   type DeleteThreadAssignedNotificationsInput,
+  deleteCommentMentionNotifications,
+  type DeleteCommentMentionNotificationsInput,
   maybeCreateExtensionNudge,
   type MaybeCreateExtensionNudgeInput,
   deleteExtensionNudgeNotifications,

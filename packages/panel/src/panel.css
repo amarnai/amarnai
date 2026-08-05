@@ -463,3 +463,20 @@ html:has(.apn-root)::-webkit-scrollbar,
     padding: 6px 4px;
   }
 }
+
+/* ── Comments section ─────────────────────────────────────────────────────── */
+/*
+ * The section chrome is the queue-header convention; the body is the shared
+ * em-comments card, whose standalone top margin is tightened inside the
+ * section's own spacing.
+ */
+.apn-comments-section .em-comments-card {
+  margin-top: 4px;
+}
+
+/* Unread variant of the count pill: the one accent element in the header, so
+   new activity is visible while the section is collapsed. */
+.apn-queue-count--new {
+  background: var(--accent-soft, #f9efe9);
+  color: var(--accent-ink, #5c3220);
+}

@@ -29,6 +29,10 @@ import type {
   GenerateDraftResult,
   ThreadSummaryResult,
   ThreadSummaryFormat,
+  ThreadCommentItem,
+  ThreadCommentListResult,
+  ThreadCommentsMeta,
+  CreateThreadCommentClientInput,
   MockInboxEventInput,
   MockInboxResult,
   CandidateNodeInput,
@@ -808,6 +812,43 @@ export function makeApiClient(transport: ApiTransport) {
         `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/summary` +
           providerRefQuery(opts.refKind),
         opts
+      ),
+
+    // ── Thread comments ────────────────────────────────────────────────────
+    // Internal-id addressing only: every comments surface (web, extension side
+    // panel, injected panel) already holds the resolved thread id.
+
+    listThreadComments: (workspaceId: string, threadId: string) =>
+      apiFetch<ThreadCommentListResult>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/comments`
+      ),
+
+    threadCommentsMeta: (workspaceId: string, threadId: string) =>
+      apiFetch<ThreadCommentsMeta>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/comments/meta`
+      ),
+
+    createThreadComment: (
+      workspaceId: string,
+      threadId: string,
+      input: CreateThreadCommentClientInput
+    ) =>
+      apiMutate<{ ok: boolean; comment: ThreadCommentItem }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/comments`,
+        "POST",
+        input
+      ),
+
+    deleteThreadComment: (workspaceId: string, threadId: string, commentId: string) =>
+      apiMutate<OkResult>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/comments/${commentId}`,
+        "DELETE"
+      ),
+
+    markThreadCommentsRead: (workspaceId: string, threadId: string) =>
+      apiMutate<{ ok: boolean; lastReadAt: string }>(
+        `/workspaces/${workspaceId}/email-threads/${threadId}/comments/read`,
+        "POST"
       ),
 
     summaryQuota: (workspaceId: string) =>

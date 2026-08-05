@@ -26,6 +26,7 @@ import { closePublisher } from "./redis-publisher.js";
 import { closeAiDedup } from "./ai-dedup.js";
 import { closePushBudget } from "./notifications/notify-threads.js";
 import { closeAssignPushBudget } from "./notifications/notify-thread-assigned.js";
+import { closeMentionPushBudget } from "./notifications/notify-comment-mention.js";
 import { closeGmailDisconnectedPushBudget } from "./notifications/notify-gmail-disconnected.js";
 
 // ─── Watch renewal ────────────────────────────────────────────────────────────
@@ -557,6 +558,7 @@ async function main(): Promise<void> {
       closeAiDedup(),
       closePushBudget(),
       closeAssignPushBudget(),
+      closeMentionPushBudget(),
       closeGmailDisconnectedPushBudget(),
     ]);
 

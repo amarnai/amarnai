@@ -14,6 +14,10 @@ export function notificationTitle(n: NotificationItem, i18n: I18n): string {
       return d.assignedBy
         ? i18n._(msg`${d.assignedBy} assigned you a thread`)
         : i18n._(msg`You were assigned a thread`);
+    case "comment_mention":
+      return d.mentionedBy
+        ? i18n._(msg`${d.mentionedBy} mentioned you in a comment`)
+        : i18n._(msg`You were mentioned in a comment`);
     case "gmail_disconnected":
       return i18n._(msg`Gmail disconnected`);
     case "backfill_complete":

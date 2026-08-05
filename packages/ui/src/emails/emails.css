@@ -1923,3 +1923,236 @@ button.em-pill--assignee:hover { background: var(--accent-line); }
    the metadata uses; unassigned stays muted, as an offer rather than a state. */
 .em-preview-assign.is-assigned { color: var(--ink-2); }
 .em-preview-assign.is-assigned:hover { color: var(--ink); }
+
+/* ── Thread comments ─────────────────────────────────────────────────────────
+   Team discussion card at the end of the preview column. Container takes the
+   quiet-inset summary-card treatment (the component reuses .em-summary-card);
+   items take the elevated message-card treatment scaled down. The mention
+   popover reuses the .em-assignee-panel classes wholesale. */
+
+.em-comments-card { margin-top: 14px; }
+
+/* Collapsed (web + extension previews): the whole widget is one line, so it
+   costs almost no vertical space between the summary and the message list. */
+.em-comments-card.is-collapsed { padding: 9px 16px; }
+
+/* The eyebrow doubling as the expand/collapse control. It keeps the eyebrow's
+   mono voice; the button reset is all that differs. */
+.em-comments-toggle {
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.em-comments-chevron {
+  margin-left: auto;
+  display: inline-flex;
+  color: var(--ink-4);
+  transition: transform 0.15s ease;
+}
+
+.em-comments-toggle[aria-expanded="false"] .em-comments-chevron {
+  transform: rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .em-comments-chevron { transition: none; }
+}
+
+/* Count sits in the eyebrow's mono voice; the "N new" chip is the one accent
+   element, so unread activity is scannable without shouting. */
+.em-comments-count {
+  font-family: var(--f-mono);
+  color: var(--ink-4);
+}
+
+.em-comments-new {
+  font-size: 10px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.em-comments-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0 4px;
+  color: var(--ink-4);
+  font-size: 12.5px;
+}
+
+.em-comments-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0 4px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.em-comments-empty {
+  padding: 14px 0 6px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.em-comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.em-comment-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-1);
+  padding: 8px 12px;
+}
+
+.em-comment-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.em-comment-author {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.em-comment-time {
+  font-size: 11px;
+  color: var(--ink-4);
+  flex-shrink: 0;
+}
+
+/* Author-only affordance (bin icon); quiet until hovered so the list stays
+   calm. align-self keeps it on the meta row's cap line rather than the
+   baseline the text names sit on. */
+.em-comment-delete {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  padding: 2px;
+  background: transparent;
+  border: none;
+  color: var(--ink-4);
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.em-comment-delete:hover { color: var(--danger); }
+
+.em-comment-body {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.em-comment-mention {
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 500;
+}
+
+.em-comment-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Composer input: the .tx-textarea rule set (taxonomy editor) restated under
+   the emails prefix, split across two stacked layers so valid tags can render
+   in the accent color — a textarea cannot style substrings. The backdrop
+   carries the visible text (tags in accent); the textarea on top paints its
+   text transparent and keeps the caret, selection, border and focus ring. The
+   two layers MUST agree on every text metric (font, size, line-height,
+   padding, border width, wrapping), or the visible text drifts from the caret. */
+.em-comment-input-wrap {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--r-sm);
+}
+
+.em-comment-textarea,
+.em-comment-highlight {
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  font-family: inherit;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.em-comment-textarea {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: transparent;
+  border-color: var(--line-2);
+  color: transparent;
+  caret-color: var(--ink);
+  outline: none;
+  transition: border-color 0.1s;
+  resize: vertical;
+  min-height: 64px;
+}
+
+.em-comment-textarea::placeholder { color: var(--ink-4); }
+
+.em-comment-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.em-comment-highlight {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+/* A tag that resolves to a workspace member, live in the composer. Color only
+   — no weight change and no chip chrome, because any metric difference (bold
+   glyphs are wider) would desync the backdrop from the textarea's caret. */
+.em-comment-highlight-mention {
+  color: var(--accent);
+}
+
+.em-comment-error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.em-comment-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}

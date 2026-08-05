@@ -5,17 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ThreadMessage } from "./types.js";
-
-function fmtDateTime(d: Date): string {
-  const crossYear = d.getFullYear() !== new Date().getFullYear();
-  return d.toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    ...(crossYear ? { year: "numeric" } : {}),
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+import { formatDateTime } from "./formatDateTime.js";
 
 export interface MessageCardProps {
   message: ThreadMessage;
@@ -44,7 +34,7 @@ export function MessageCard({ message, defaultExpanded = false, loading = false 
         {!expanded && message.snippet && (
           <span className="em-msg-snippet">{message.snippet}</span>
         )}
-        <span className="em-msg-time">{fmtDateTime(message.time)}</span>
+        <span className="em-msg-time">{formatDateTime(message.time)}</span>
         <svg
           className="em-msg-chevron"
           width="10"

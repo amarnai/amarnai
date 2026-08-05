@@ -37,6 +37,7 @@ import { mailAccountsRoute } from "./routes/mail-accounts.js";
 import { resolveThreadRoute } from "./routes/resolve-thread.js";
 import { assignThreadRoute } from "./routes/assign-thread.js";
 import { threadImportantRoute } from "./routes/thread-important.js";
+import { threadCommentsRoute } from "./routes/thread-comments.js";
 import { notificationsRoute } from "./routes/notifications.js";
 import { gmailWebhookRoute } from "./routes/gmail-webhook.js";
 import { gmailWatchRoute } from "./routes/gmail-watch.js";
@@ -275,6 +276,7 @@ app.route("/", panelQueueRoute);
 app.route("/", resolveThreadRoute);
 app.route("/", assignThreadRoute);
 app.route("/", threadImportantRoute);
+app.route("/", threadCommentsRoute);
 // User-scoped (not under the /workspaces/:workspaceId/* membership guard):
 // tenancy is enforced inside the route by filtering on the authenticated user.
 app.route("/", notificationsRoute);

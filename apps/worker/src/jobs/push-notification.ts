@@ -5,6 +5,7 @@ import {
 } from "../queues.js";
 import { redisConnection } from "../redis.js";
 import { notifyThreadAssigned } from "../notifications/notify-thread-assigned.js";
+import { notifyCommentMention } from "../notifications/notify-comment-mention.js";
 import { notifyGmailDisconnected } from "../notifications/notify-gmail-disconnected.js";
 
 /**
@@ -23,6 +24,14 @@ export function createPushNotificationWorker(): Worker<PushNotificationJobData> 
             workspaceId: data.workspaceId,
             emailThreadId: data.emailThreadId,
             assigneeUserId: data.assigneeUserId,
+          });
+          return;
+        case "comment_mention":
+          await notifyCommentMention({
+            workspaceId: data.workspaceId,
+            emailThreadId: data.emailThreadId,
+            commentId: data.commentId,
+            mentionedUserId: data.mentionedUserId,
           });
           return;
         case "gmail_disconnected":

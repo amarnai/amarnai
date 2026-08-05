@@ -48,6 +48,42 @@ describe("interpretNotification", () => {
     });
   });
 
+  it("maps comment_mention, preferring the mentioner's name over their email", () => {
+    expect(
+      interpretNotification(
+        item("comment_mention", {
+          mentionedByName: "Alice",
+          mentionedByEmail: "alice@example.com",
+          subject: "Invoice",
+          threadId: "t1",
+          commentId: "c1",
+        }),
+      ),
+    ).toEqual({
+      kind: "comment_mention",
+      mentionedBy: "Alice",
+      subject: "Invoice",
+      threadId: "t1",
+    });
+  });
+
+  it("falls back to the mentioner's email and nulls missing comment_mention params", () => {
+    expect(
+      interpretNotification(item("comment_mention", { mentionedByEmail: "alice@example.com" })),
+    ).toEqual({
+      kind: "comment_mention",
+      mentionedBy: "alice@example.com",
+      subject: null,
+      threadId: null,
+    });
+    expect(interpretNotification(item("comment_mention", {}))).toEqual({
+      kind: "comment_mention",
+      mentionedBy: null,
+      subject: null,
+      threadId: null,
+    });
+  });
+
   it("falls back to unknown for an unrecognized type", () => {
     expect(interpretNotification(item("something_new", {}))).toEqual({ kind: "unknown" });
   });

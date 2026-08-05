@@ -178,6 +178,18 @@ export type PushNotificationJobData =
       assignedByUserId: string;
     }
   | {
+      kind: "comment_mention";
+      workspaceId: string;
+      /** Internal EmailThread.id. */
+      emailThreadId: string;
+      /** The comment carrying the mention (its body is never in the payload). */
+      commentId: string;
+      /** Recipient: the mentioned user. */
+      mentionedUserId: string;
+      /** Actor who wrote the comment (for auditing; never pushed to). */
+      mentionedByUserId: string;
+    }
+  | {
       kind: "gmail_disconnected";
       workspaceId: string;
     };

@@ -7,7 +7,7 @@ import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
 import type { ThreadItem, MemberItem, ThreadSummaryCardState } from "@amarnai/ui/emails";
-import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
+import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, ThreadCommentsSection, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
 import { chronologicalMessages } from "@amarnai/core/emails";
 import { Tooltip, GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate } from "@amarnai/shared";
@@ -29,6 +29,7 @@ type Props = {
   members: MemberItem[];
   canAssign: boolean;
   onOpenAssign: (threadId: string, anchor: HTMLElement) => void;
+  currentUserId: string;
 };
 
 export function ThreadPreview({
@@ -46,6 +47,7 @@ export function ThreadPreview({
   members,
   canAssign,
   onOpenAssign,
+  currentUserId,
 }: Props) {
   const { _, i18n } = useLingui();
   const [bodyLoaded, setBodyLoaded] = useState(false);
@@ -445,6 +447,14 @@ export function ThreadPreview({
         />
 
         {summaryState && <ThreadSummaryCard state={summaryState} />}
+
+        <ThreadCommentsSection
+          api={api}
+          workspaceId={workspaceId}
+          threadId={thread.id}
+          currentUserId={currentUserId}
+          members={members}
+        />
 
         <div className="em-msg-list">
           {messages.map((msg, idx) => (

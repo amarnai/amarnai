@@ -274,3 +274,32 @@ export async function deleteThreadAssignedNotifications(
     },
   });
 }
+
+export interface DeleteCommentMentionNotificationsInput {
+  /** Workspace scope. */
+  workspaceId: string;
+  /** The deleted comment the notifications point at (matched inside `params`). */
+  commentId: string;
+}
+
+/**
+ * Remove every recipient's "comment_mention" notifications for a single comment.
+ *
+ * Called when a comment is deleted, so a mention notice never outlives the
+ * comment it points at (the comment body is gone; the bell item would dead-end).
+ * `commentId` lives inside the JSON `params`; there is no index on it, so this is
+ * a scan over the workspace's (retention-bounded) rows. Like the other helpers
+ * here, treat this as best-effort and do not fail the caller's critical path if
+ * it throws.
+ */
+export async function deleteCommentMentionNotifications(
+  input: DeleteCommentMentionNotificationsInput
+): Promise<void> {
+  await db.notification.deleteMany({
+    where: {
+      workspaceId: input.workspaceId,
+      type: "comment_mention",
+      params: { path: ["commentId"], equals: input.commentId },
+    },
+  });
+}

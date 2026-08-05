@@ -347,6 +347,33 @@ export type MailAccount = {
 
 export type MailAccountsResult = { accounts: MailAccount[] };
 
+// ── Thread comments ────────────────────────────────────────────────────────────
+
+// One team comment on a thread. `mentionUserIds` is the structured mention list
+// (validated server-side); the body is plain display text.
+export type ThreadCommentItem = {
+  id: string;
+  body: string;
+  mentionUserIds: string[];
+  author: { userId: string; name: string | null; email: string };
+  createdAt: string;
+};
+
+export type ThreadCommentListResult = {
+  comments: ThreadCommentItem[];
+  // The caller's read marker; null if they never opened this thread's comments.
+  // Unread is derived client-side: comments newer than this, authored by others.
+  lastReadAt: string | null;
+};
+
+// Lightweight counts for a collapsed comments section (badge without the list).
+export type ThreadCommentsMeta = { total: number; unread: number };
+
+export type CreateThreadCommentClientInput = {
+  body: string;
+  mentionUserIds: string[];
+};
+
 // ── Notifications ──────────────────────────────────────────────────────────────
 
 // Generic in-app notification. `type` + `params` are producer-defined; the

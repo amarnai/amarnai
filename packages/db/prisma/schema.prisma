@@ -277,6 +277,8 @@ model User {
   assignedThreads          EmailThread[]         @relation("AssignedToUser")
   assignedByThreads        EmailThread[]         @relation("AssignedByUser")
   notifications            Notification[]
+  threadComments           ThreadComment[]       @relation("CommentAuthor")
+  threadCommentReads       ThreadCommentRead[]
 }
 
 model Workspace {
@@ -331,6 +333,7 @@ model Workspace {
   classifications         EmailClassification[]
   drafts                  Draft[]
   threadSummaries         ThreadSummary[]
+  threadComments          ThreadComment[]
   auditLogs               AuditLog[]
   notifications           Notification[]
 }
@@ -622,6 +625,8 @@ model EmailThread {
   drafts          Draft[]
   nodeReference   TaxonomyNodeReference?
   summary         ThreadSummary?
+  comments        ThreadComment[]
+  commentReads    ThreadCommentRead[]
 
   @@unique([emailAccountId, providerThreadId])
   // Supports resolving a provider thread id straight to our thread within a
@@ -799,6 +804,50 @@ model ThreadSummary {
   workspace   Workspace   @relation(fields: [workspaceId], references: [id])
   emailThread EmailThread @relation(fields: [emailThreadId], references: [id], onDelete: Cascade)
 
+  @@index([workspaceId])
+}
+
+// Team discussion on a thread. Any workspace member can read and write; only the
+// author may delete (hard delete — no soft-delete anywhere in this schema).
+// `body` is user-generated and may quote email content, so it is never logged.
+// Mentions are stored structurally in `mentionUserIds` (validated against
+// workspace membership at create time, capped) — notifications are driven by
+// this array only, never by re-parsing the body text.
+model ThreadComment {
+  id             String   @id @default(cuid())
+  workspaceId    String
+  emailThreadId  String
+  authorUserId   String
+  body           String
+  mentionUserIds String[] @default([])
+  createdAt      DateTime @default(now())
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id])
+  emailThread EmailThread @relation(fields: [emailThreadId], references: [id], onDelete: Cascade)
+  author      User        @relation("CommentAuthor", fields: [authorUserId], references: [id])
+
+  // List order and the per-thread count cap check on create.
+  @@index([emailThreadId, createdAt])
+  // Teardown deletes (workspace reset/delete).
+  @@index([workspaceId])
+}
+
+// Per-member comment read marker, one row per (thread, user), upserted when the
+// member opens the comment section. Unread = comments newer than `lastReadAt`
+// authored by others. Deliberately per-thread (not per-comment): cheap, and it
+// can still derive per-comment "seen by" later without a migration.
+model ThreadCommentRead {
+  id            String   @id @default(cuid())
+  workspaceId   String
+  emailThreadId String
+  userId        String
+  lastReadAt    DateTime
+
+  emailThread EmailThread @relation(fields: [emailThreadId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id])
+
+  @@unique([emailThreadId, userId])
+  // Teardown deletes (workspace reset/delete).
   @@index([workspaceId])
 }
 

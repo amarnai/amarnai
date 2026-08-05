@@ -14,6 +14,7 @@ import { usePanelState } from "./usePanelState.js";
 import { ClassificationCard } from "./ClassificationCard.js";
 import { SummarySection } from "./SummarySection.js";
 import { DraftSection } from "./DraftSection.js";
+import { CommentsSection } from "./CommentsSection.js";
 import { QueuePanel } from "./queue/QueuePanel.js";
 import { invalidateQueue } from "./queue/useQueueState.js";
 import type { EmailThreadDetail, FolderItem, MemberItem } from "./types.js";
@@ -67,6 +68,12 @@ export type InjectedThreadPanelProps = {
    * point — it spends a draft from the monthly allowance.
    */
   autoDraft?: boolean;
+  /**
+   * Open the comments section expanded and scrolled into view as soon as a
+   * thread loads. Same contract as autoDraft: only set from an entry point
+   * that already is the request (Outlook's "Comments" ribbon button).
+   */
+  focusComments?: boolean;
   /** Injected by tests; production builds one from the host's token store. */
   client?: ApiClient;
 };
@@ -75,6 +82,7 @@ export function InjectedThreadPanel({
   host,
   webAppUrl,
   autoDraft = false,
+  focusComments = false,
   client,
 }: InjectedThreadPanelProps) {
   const [visible, setVisible] = useState(true);
@@ -290,6 +298,7 @@ export function InjectedThreadPanel({
           thread={stage.thread}
           accountEmail={stage.accountEmail}
           autoDraft={autoDraft}
+          focusComments={focusComments}
           canInsertDraft={host.capabilities.insertDraft && threadIsOpenInClient}
           folders={folders}
           members={members}
@@ -331,6 +340,7 @@ function ThreadView({
   thread,
   accountEmail,
   autoDraft,
+  focusComments,
   canInsertDraft,
   folders,
   members,
@@ -349,6 +359,7 @@ function ThreadView({
   thread: EmailThreadDetail;
   accountEmail: string;
   autoDraft: boolean;
+  focusComments: boolean;
   /**
    * False while this thread was picked from the queue and the mail client is
    * still showing another one: both hosts insert into whatever conversation the
@@ -410,6 +421,15 @@ function ThreadView({
         autoDraft={autoDraft}
         canInsert={canInsertDraft}
         insertDraft={host.insertDraft.bind(host)}
+      />
+
+      <CommentsSection
+        api={api}
+        host={host}
+        workspaceId={workspaceId}
+        thread={thread}
+        members={members}
+        focus={focusComments}
       />
 
       {host.capabilities.openExternal && (

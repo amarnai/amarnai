@@ -62,6 +62,16 @@ export function describeNotification(n: NotificationItem, i18n: I18n): Notificat
         action: d.threadId ? { kind: "open_thread", threadId: d.threadId } : null,
       };
     }
+    case "comment_mention": {
+      const title = d.mentionedBy
+        ? i18n._(msg`${d.mentionedBy} mentioned you in a comment`)
+        : i18n._(msg`You were mentioned in a comment`);
+      return {
+        title,
+        body: d.subject,
+        action: d.threadId ? { kind: "open_thread", threadId: d.threadId } : null,
+      };
+    }
     case "extension_not_installed": {
       const href = extensionStoreUrl();
       return {

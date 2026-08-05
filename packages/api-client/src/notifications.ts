@@ -47,6 +47,18 @@ export type NotificationDescriptor =
       kind: "extension_not_installed";
     }
   | {
+      /** You were @-mentioned in a thread comment. Params never carry the
+       *  comment body (user-generated, may quote email content) — the subject
+       *  is the only content shown, mirroring thread_assigned. */
+      kind: "comment_mention";
+      /** Mentioner's display name or email; null if the params omit both. */
+      mentionedBy: string | null;
+      /** Thread subject, if the producer included one. */
+      subject: string | null;
+      /** Thread to open on click; null if absent. */
+      threadId: string | null;
+    }
+  | {
       /** The workspace's Gmail connection dropped on an auth failure; triage is
        *  paused until the account is reconnected. */
       kind: "gmail_disconnected";
@@ -85,6 +97,13 @@ export function interpretNotification(n: NotificationItem): NotificationDescript
       return {
         kind: "thread_assigned",
         assignedBy: str(n.params["assignedByName"]) ?? str(n.params["assignedByEmail"]),
+        subject: str(n.params["subject"]),
+        threadId: str(n.params["threadId"]),
+      };
+    case "comment_mention":
+      return {
+        kind: "comment_mention",
+        mentionedBy: str(n.params["mentionedByName"]) ?? str(n.params["mentionedByEmail"]),
         subject: str(n.params["subject"]),
         threadId: str(n.params["threadId"]),
       };

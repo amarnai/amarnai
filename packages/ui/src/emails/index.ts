@@ -29,6 +29,20 @@ export { TriageBar } from "./TriageBar.js";
 export { AssigneePicker } from "./AssigneePicker.js";
 export type { AssigneePickerProps } from "./AssigneePicker.js";
 export { MessageCard } from "./MessageCard.js";
+export { formatDateTime } from "./formatDateTime.js";
+export { ThreadCommentsCard } from "./ThreadCommentsCard.js";
+export type { ThreadCommentsCardProps } from "./ThreadCommentsCard.js";
+export { ThreadCommentsSection } from "./ThreadCommentsSection.js";
+export { MentionTextarea } from "./MentionTextarea.js";
+export type { MentionTextareaProps } from "./MentionTextarea.js";
+export { findMentionSegments } from "./mentionSegments.js";
+export type { MentionSegment } from "./mentionSegments.js";
+export { useThreadComments } from "./useThreadComments.js";
+export type {
+  ThreadCommentsState,
+  CommentPostError,
+  UseThreadCommentsResult,
+} from "./useThreadComments.js";
 export { SuggestedDraftCard } from "./SuggestedDraftCard.js";
 export { ThreadSummaryCard } from "./ThreadSummaryCard.js";
 export type { ThreadSummaryCardState, ThreadSummaryCardProps } from "./ThreadSummaryCard.js";

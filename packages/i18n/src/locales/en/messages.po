@@ -18,7 +18,7 @@ msgstr ""
 #~ msgstr " (Inbox)"
 
 #: ../../apps/mobile/src/components/MessageCard.tsx:57
-#: ../ui/src/emails/MessageCard.tsx:72
+#: ../ui/src/emails/MessageCard.tsx:62
 msgid "(No body)"
 msgstr "(No body)"
 
@@ -43,13 +43,13 @@ msgstr "{0, plural, one {# person} other {# people}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:73
-#: ../../apps/web/src/lib/notifications.ts:95
+#: ../../apps/web/src/lib/notifications.ts:105
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}}"
 msgstr "{0, plural, one {# thread imported.} other {# threads imported.}}"
 
 #. placeholder {0}: d.processed
 #: ../../apps/mobile/src/data/notificationView.ts:67
-#: ../../apps/web/src/lib/notifications.ts:89
+#: ../../apps/web/src/lib/notifications.ts:99
 msgid "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 msgstr "{0, plural, one {# thread imported.} other {# threads imported.}} Your plan's import limit was reached."
 
@@ -98,6 +98,12 @@ msgstr "{0} / {1} left · resets {2}"
 #: ../../apps/web/src/lib/notifications.ts:57
 msgid "{0} assigned you a thread"
 msgstr "{0} assigned you a thread"
+
+#. placeholder {0}: d.mentionedBy
+#: ../../apps/extension/src/panel/notificationText.ts:19
+#: ../../apps/web/src/lib/notifications.ts:67
+msgid "{0} mentioned you in a comment"
+msgstr "{0} mentioned you in a comment"
 
 #. placeholder {0}: threads.length.toLocaleString()
 #. placeholder {1}: (total ?? 0).toLocaleString()
@@ -212,9 +218,17 @@ msgstr "{inFlight, plural, one {Sorting # thread…} other {Sorting # threads…
 #~ msgid "{loaded, plural, one {# thread loaded} other {# threads loaded}}"
 #~ msgstr "{loaded, plural, one {# thread loaded} other {# threads loaded}}"
 
+#: ../ui/src/emails/ThreadCommentsCard.tsx:121
+msgid "{newCount, plural, one {# new} other {# new}}"
+msgstr "{newCount, plural, one {# new} other {# new}}"
+
 #: ../../apps/web/src/app/admin/waitlist/WaitlistShell.tsx:17
 #~ msgid "{pendingCount} pending"
 #~ msgstr "{pendingCount} pending"
+
+#: ../panel/src/CommentsSection.tsx:109
+msgid "{pillUnread, plural, one {# new} other {# new}}"
+msgstr "{pillUnread, plural, one {# new} other {# new}}"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
 msgid "{providerName} Inbox"
@@ -222,8 +236,8 @@ msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
 #. placeholder {0}: quota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:458
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:475
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:470
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:485
 #: ../panel/src/DraftSection.tsx:237
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -616,6 +630,10 @@ msgstr "Ad revenue, fan tips, and creator earnings statements."
 msgid "Add"
 msgstr "Add"
 
+#: ../ui/src/emails/ThreadCommentsCard.tsx:230
+msgid "Add a comment. Type @ to mention a teammate."
+msgstr "Add a comment. Type @ to mention a teammate."
+
 #. placeholder {0}: minNodeDescriptionLength(description)
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:130
 msgid "Add a description (at least {0} characters) so the AI can sort accurately."
@@ -873,7 +891,7 @@ msgid "Amarnai lives in your inbox."
 msgstr "Amarnai lives in your inbox."
 
 #. placeholder {0}: d.gmailAddress
-#: ../../apps/web/src/lib/notifications.ts:77
+#: ../../apps/web/src/lib/notifications.ts:87
 msgid "Amarnai lost access to {0}. Click to reconnect your Google account."
 msgstr "Amarnai lost access to {0}. Click to reconnect your Google account."
 
@@ -882,7 +900,7 @@ msgstr "Amarnai lost access to {0}. Click to reconnect your Google account."
 msgid "Amarnai lost access to {0}. Tap to reconnect your Google account."
 msgstr "Amarnai lost access to {0}. Tap to reconnect your Google account."
 
-#: ../../apps/web/src/lib/notifications.ts:78
+#: ../../apps/web/src/lib/notifications.ts:88
 msgid "Amarnai lost access to your inbox. Click to reconnect your Google account."
 msgstr "Amarnai lost access to your inbox. Click to reconnect your Google account."
 
@@ -908,7 +926,7 @@ msgstr "Amarnai needs access to its server and your inbox to show your emails."
 msgid "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 msgstr "Amarnai needs access to its server and your inbox to work. Please allow access and try again."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:122
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:129
 msgid "Amarnai never sends email. You review and send from Outlook."
 msgstr "Amarnai never sends email. You review and send from Outlook."
 
@@ -1217,10 +1235,10 @@ msgstr "Babylon's third gold consignment is overdue after two messengers. Burna-
 
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:103
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:353
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:357
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:375
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:377
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
@@ -1235,8 +1253,8 @@ msgstr "Back to Gmail"
 #~ msgid "Back to inbox"
 #~ msgstr "Back to inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:349
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:370
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:353
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:372
 #: ../ui/src/emails/ThreadPreview.tsx:118
 msgid "Back to list"
 msgstr "Back to list"
@@ -1629,8 +1647,8 @@ msgstr "Close"
 msgid "Close panel"
 msgstr "Close panel"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:418
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:422
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:424
 #: ../ui/src/emails/ThreadPreview.tsx:149
 #: ../ui/src/emails/ThreadPreview.tsx:153
 msgid "Close preview"
@@ -1683,6 +1701,20 @@ msgstr "Collaborators are available on the Scribe and Pharaoh plans. <0>Upgrade 
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:206
 msgid "Color"
 msgstr "Color"
+
+#: ../ui/src/emails/ThreadCommentsCard.tsx:250
+msgid "Comment"
+msgstr "Comment"
+
+#: ../panel/src/CommentsSection.tsx:105
+#: ../ui/src/emails/ThreadCommentsCard.tsx:117
+#: ../ui/src/emails/ThreadCommentsCard.tsx:143
+msgid "Comments"
+msgstr "Comments"
+
+#: ../ui/src/emails/ThreadCommentsCard.tsx:167
+msgid "Comments could not be loaded."
+msgstr "Comments could not be loaded."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:124
 msgid "Communities"
@@ -2055,7 +2087,7 @@ msgstr "Could not queue rescan. Please try again."
 msgid "Could not reach Amarnai."
 msgstr "Could not reach Amarnai."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:161
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:168
 msgid "Could not reach Amarnai. Check your connection."
 msgstr "Could not reach Amarnai. Check your connection."
 
@@ -2095,7 +2127,7 @@ msgstr "Could not save filter setting. Please try again."
 msgid "Could not save. Please try again."
 msgstr "Could not save. Please try again."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:154
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:161
 msgid "Could not sign in. Please try again."
 msgstr "Could not sign in. Please try again."
 
@@ -2321,6 +2353,10 @@ msgstr "Delete account"
 msgid "Delete account?"
 msgstr "Delete account?"
 
+#: ../ui/src/emails/ThreadCommentsCard.tsx:196
+msgid "Delete comment"
+msgstr "Delete comment"
+
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:186
 #: ../../apps/mobile/app/(app)/account.tsx:94
 msgid "Delete failed"
@@ -2476,11 +2512,11 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:498
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:500
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:410
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:411
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:73
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
@@ -2590,8 +2626,8 @@ msgstr "Draft failed · tap to retry"
 msgid "Draft generation failed."
 msgstr "Draft generation failed."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:473
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:491
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:485
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:501
 msgid "Draft generation failed. Try again."
 msgstr "Draft generation failed. Try again."
 
@@ -2681,7 +2717,7 @@ msgstr "Edit Path"
 #: ../../apps/mobile/app/sign-up.tsx:98
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:72
 #: ../../apps/web/src/app/forgot-password/page.tsx:34
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:173
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:180
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:109
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:98
 msgid "Email"
@@ -3247,9 +3283,9 @@ msgstr "Generate a new draft. Uses one from your monthly allowance"
 #~ msgid "Generate a plan from your inbox"
 #~ msgstr "Generate a plan from your inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:452
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:359
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
 #: ../ui/src/emails/ThreadPreview.tsx:276
 msgid "Generate draft reply"
 msgstr "Generate draft reply"
@@ -3357,9 +3393,9 @@ msgstr "gmail ai assistant"
 #~ msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
 #~ msgstr "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review."
 
-#: ../../apps/extension/src/panel/notificationText.ts:18
+#: ../../apps/extension/src/panel/notificationText.ts:22
 #: ../../apps/mobile/src/data/notificationView.ts:53
-#: ../../apps/web/src/lib/notifications.ts:75
+#: ../../apps/web/src/lib/notifications.ts:85
 msgid "Gmail disconnected"
 msgstr "Gmail disconnected"
 
@@ -3655,9 +3691,9 @@ msgstr "Inbox"
 msgid "Inbox (entry point)"
 msgstr "Inbox (entry point)"
 
-#: ../../apps/extension/src/panel/notificationText.ts:20
+#: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:61
-#: ../../apps/web/src/lib/notifications.ts:83
+#: ../../apps/web/src/lib/notifications.ts:93
 msgid "Inbox import complete"
 msgstr "Inbox import complete"
 
@@ -3689,7 +3725,7 @@ msgstr "Include spam"
 msgid "Included"
 msgstr "Included"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:153
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:160
 msgid "Incorrect email or password."
 msgstr "Incorrect email or password."
 
@@ -3705,7 +3741,7 @@ msgstr "Infrastructure"
 msgid "Initial backfill"
 msgstr "Initial backfill"
 
-#: ../ui/src/emails/MessageCard.tsx:80
+#: ../ui/src/emails/MessageCard.tsx:70
 msgid "Inline image"
 msgstr "Inline image"
 
@@ -3722,7 +3758,7 @@ msgid "Inspections & Appraisals"
 msgstr "Inspections & Appraisals"
 
 #: ../../apps/mobile/src/data/notificationView.ts:47
-#: ../../apps/web/src/lib/notifications.ts:68
+#: ../../apps/web/src/lib/notifications.ts:78
 msgid "Install the Amarnai browser extension"
 msgstr "Install the Amarnai browser extension"
 
@@ -4027,14 +4063,18 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Load more"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:515
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:536
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:558
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:602
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:517
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:538
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:560
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:604
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:127
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
 msgstr "Loading"
+
+#: ../ui/src/emails/ThreadCommentsCard.tsx:161
+msgid "Loading comments…"
+msgstr "Loading comments…"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:147
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
@@ -4055,10 +4095,10 @@ msgstr "Loading past threads…"
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:137
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:158
 #: ../../apps/web/src/app/loading.tsx:6
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:86
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:92
 #: ../../apps/web/src/components/NotificationBell.tsx:161
 #: ../panel/src/states/PanelStates.tsx:157
-#: ../ui/src/emails/MessageCard.tsx:68
+#: ../ui/src/emails/MessageCard.tsx:58
 #: ../ui/src/emails/ThreadList.tsx:265
 msgid "Loading…"
 msgstr "Loading…"
@@ -4116,11 +4156,11 @@ msgstr "Manuscripts & Peer Review"
 msgid "Mark as done"
 msgstr "Mark as done"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:359
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:397
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:403
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
 #: ../ui/src/emails/ThreadRow.tsx:149
@@ -4254,11 +4294,11 @@ msgstr "Monetization"
 msgid "Monthly"
 msgstr "Monthly"
 
-#: ../../apps/extension/src/panel/notificationText.ts:22
+#: ../../apps/extension/src/panel/notificationText.ts:26
 #: ../../apps/mobile/src/data/notificationView.ts:85
 #: ../../apps/mobile/src/data/notificationView.ts:90
-#: ../../apps/web/src/lib/notifications.ts:107
-#: ../../apps/web/src/lib/notifications.ts:112
+#: ../../apps/web/src/lib/notifications.ts:117
+#: ../../apps/web/src/lib/notifications.ts:122
 msgid "Monthly sorting limit reached"
 msgstr "Monthly sorting limit reached"
 
@@ -4360,12 +4400,12 @@ msgstr "New business inquiries, project proposals, and pricing discussions from 
 #~ msgstr "New business inquiries, proposals, pricing discussions, and prospective client outreach."
 
 #: ../../apps/mobile/src/data/notificationView.ts:91
-#: ../../apps/web/src/lib/notifications.ts:113
+#: ../../apps/web/src/lib/notifications.ts:123
 msgid "New emails will wait until next month. Upgrade your plan for a higher limit."
 msgstr "New emails will wait until next month. Upgrade your plan for a higher limit."
 
 #: ../../apps/mobile/src/data/notificationView.ts:86
-#: ../../apps/web/src/lib/notifications.ts:108
+#: ../../apps/web/src/lib/notifications.ts:118
 msgid "New emails will wait until your limit resets next month."
 msgstr "New emails will wait until your limit resets next month."
 
@@ -4383,9 +4423,9 @@ msgstr "New Inquiries"
 msgid "New mail"
 msgstr "New mail"
 
-#: ../../apps/extension/src/panel/notificationText.ts:24
+#: ../../apps/extension/src/panel/notificationText.ts:28
 #: ../../apps/mobile/src/data/notificationView.ts:95
-#: ../../apps/web/src/lib/notifications.ts:117
+#: ../../apps/web/src/lib/notifications.ts:127
 msgid "New notification"
 msgstr "New notification"
 
@@ -4419,12 +4459,16 @@ msgstr "New workspace name"
 msgid "Next preview"
 msgstr "Next preview"
 
+#: ../ui/src/emails/ThreadCommentsCard.tsx:178
+msgid "No comments yet. Start the discussion."
+msgstr "No comments yet. Start the discussion."
+
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:144
 msgid "No drafts remaining"
 msgstr "No drafts remaining"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:457
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:474
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:469
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:484
 #: ../panel/src/DraftSection.tsx:235
 #: ../ui/src/emails/SuggestedDraftCard.tsx:134
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -4434,7 +4478,7 @@ msgstr "No drafts remaining · resets {quotaResetDate}"
 msgid "No drafts remaining · resets {resetDate}"
 msgstr "No drafts remaining · resets {resetDate}"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:463
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:473
 #: ../ui/src/emails/SuggestedDraftCard.tsx:113
 msgid "No drafts remaining this month"
 msgstr "No drafts remaining this month"
@@ -4475,6 +4519,10 @@ msgstr "No inbox connected to this workspace."
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:376
 msgid "No matching folders"
 msgstr "No matching folders"
+
+#: ../ui/src/emails/MentionTextarea.tsx:214
+msgid "No matching members"
+msgstr "No matching members"
 
 #: ../ui/src/emails/AssigneePicker.tsx:111
 msgid "No members"
@@ -4688,17 +4736,17 @@ msgstr "Open an issue on GitHub"
 msgid "Open conversation: {subject}"
 msgstr "Open conversation: {subject}"
 
-#: ../panel/src/InjectedThreadPanel.tsx:421
+#: ../panel/src/InjectedThreadPanel.tsx:441
 msgid "Open in Amarnai"
 msgstr "Open in Amarnai"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:390
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:394
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Gmail"
 msgstr "Open in Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:388
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:392
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Open in Outlook"
@@ -4732,7 +4780,7 @@ msgstr "Open the folder editor"
 #~ msgid "Open the plan editor"
 #~ msgstr "Open the plan editor"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:96
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:102
 msgid "Open this from the Amarnai button in Outlook."
 msgstr "Open this from the Amarnai button in Outlook."
 
@@ -4851,7 +4899,7 @@ msgstr "Passing through the Delta: free to meet?"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:152
 #: ../../apps/mobile/app/sign-in.tsx:106
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:183
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:190
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:126
 msgid "Password"
 msgstr "Password"
@@ -5039,6 +5087,10 @@ msgstr "Platforms"
 msgid "Please try again."
 msgstr "Please try again."
 
+#: ../ui/src/emails/ThreadCommentsCard.tsx:250
+msgid "Posting…"
+msgstr "Posting…"
+
 #: ../ui/src/i18n/taxonomy-template-messages.ts:142
 msgid "Pre-sale questions and messages from prospective shoppers about products."
 msgstr "Pre-sale questions and messages from prospective shoppers about products."
@@ -5215,7 +5267,7 @@ msgstr "Queuing rescan…"
 msgid "Rated 5 out of 5"
 msgstr "Rated 5 out of 5"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:420
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:421
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Re-route {unclassifiedCount} unclassified"
 
@@ -5389,11 +5441,11 @@ msgstr "Remove {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Remove {email} from blacklist"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:359
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:397
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:403
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
 #: ../ui/src/emails/ThreadRow.tsx:148
@@ -5554,10 +5606,11 @@ msgid "Resources"
 msgstr "Resources"
 
 #: ../../apps/extension/src/App.tsx:144
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:475
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:487
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:497
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:507
 #: ../panel/src/DraftSection.tsx:259
+#: ../ui/src/emails/ThreadCommentsCard.tsx:169
 #: ../ui/src/emails/ThreadSummaryCard.tsx:60
 msgid "Retry"
 msgstr "Retry"
@@ -5663,7 +5716,7 @@ msgstr "Save hours of email sorting every week. Let Amarnai sort your inbox, fil
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 msgstr "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
 
-#: ../../apps/web/src/lib/notifications.ts:69
+#: ../../apps/web/src/lib/notifications.ts:79
 msgid "Save time by triaging your inbox without leaving your email."
 msgstr "Save time by triaging your inbox without leaving your email."
 
@@ -5737,8 +5790,8 @@ msgstr "See it work"
 msgid "Select"
 msgstr "Select"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:447
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:366
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:449
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
 #: ../ui/src/emails/MockEmailsPage.tsx:338
 msgid "Select a thread to preview"
 msgstr "Select a thread to preview"
@@ -5832,7 +5885,7 @@ msgstr "Set new password"
 #~ msgstr "Set up at least 3 folders so we can start sorting."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:423
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:435
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 msgid "Set up folders"
 msgstr "Set up folders"
@@ -5915,7 +5968,7 @@ msgstr "Showing requests, buyer tours, open-house sign-ups, and written offers."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:163
 #: ../../apps/mobile/app/sign-in.tsx:133
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:201
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:42
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:146
 #: ../panel/src/states/PanelStates.tsx:46
@@ -5934,7 +5987,7 @@ msgstr "Sign in to Amarnai to see how this thread was sorted."
 msgid "Sign in to triage your inbox"
 msgstr "Sign in to triage your inbox"
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:170
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:177
 msgid "Sign in to your Amarnai account."
 msgstr "Sign in to your Amarnai account."
 
@@ -5996,7 +6049,7 @@ msgstr "Sign-in failed. Please try again."
 msgid "Sign-up failed. Please try again."
 msgstr "Sign-up failed. Please try again."
 
-#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:194
+#: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:201
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:146
 msgid "Signing in…"
 msgstr "Signing in…"
@@ -6457,6 +6510,10 @@ msgstr "The authorization request expired or was tampered with. Please try again
 #~ msgid "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 #~ msgstr "The catch-all folder can't be deleted. Automated and bulk mail is filed here."
 
+#: ../ui/src/emails/ThreadCommentsCard.tsx:240
+msgid "The comment could not be posted. Try again."
+msgstr "The comment could not be posted. Try again."
+
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:74
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:100
 msgid "The connection could not be saved due to a server error. Please try again."
@@ -6531,7 +6588,7 @@ msgstr "These settings control which inbox threads are imported. Trash is always
 msgid "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
 msgstr "This browser is signed in as {currentEmail}, but your extension is signed in as {incomingEmail}."
 
-#: ../panel/src/InjectedThreadPanel.tsx:263
+#: ../panel/src/InjectedThreadPanel.tsx:271
 msgid "This conversation"
 msgstr "This conversation"
 
@@ -6591,7 +6648,11 @@ msgstr "This removes the Gmail connection, deletes all synced emails, and resets
 #~ msgid "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 #~ msgstr "This thread cannot be sorted yet. Add at least {TAXONOMY_MIN_NON_ROOT_NODES} categories to your plan to begin routing."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:428
+#: ../ui/src/emails/ThreadCommentsCard.tsx:238
+msgid "This thread has reached its comment limit."
+msgstr "This thread has reached its comment limit."
+
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:440
 msgid "This thread hasn't been sorted yet."
 msgstr "This thread hasn't been sorted yet."
 
@@ -6599,7 +6660,7 @@ msgstr "This thread hasn't been sorted yet."
 #~ msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 #~ msgstr "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:417
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:429
 msgid "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
 msgstr "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
 
@@ -6673,7 +6734,7 @@ msgstr "Threads sorted into this folder by Amarnai."
 msgid "Threads that haven't been sorted yet."
 msgstr "Threads that haven't been sorted yet."
 
-#: ../panel/src/InjectedThreadPanel.tsx:377
+#: ../panel/src/InjectedThreadPanel.tsx:388
 msgid "Threads to handle"
 msgstr "Threads to handle"
 
@@ -6902,8 +6963,8 @@ msgstr "Unclassified"
 msgid "Unclassified. Change folder"
 msgstr "Unclassified. Change folder"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:491
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:407
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:408
 #: ../ui/src/emails/MockEmailsPage.tsx:365
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
 msgid "Undo"
@@ -7330,9 +7391,9 @@ msgstr "Write sorted folders as Outlook categories"
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "Writeback is on. Your folders are being mirrored into your mailbox."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:467
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:479
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:485
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:495
 #: ../panel/src/DraftSection.tsx:249
 #: ../ui/src/emails/ThreadPreview.tsx:283
 msgid "Writing draft reply…"
@@ -7419,6 +7480,10 @@ msgstr "Yesterday"
 #~ msgid "You approve every action"
 #~ msgstr "You approve every action"
 
+#: ../ui/src/emails/ThreadCommentsCard.tsx:236
+msgid "You are commenting too fast. Try again in a moment."
+msgstr "You are commenting too fast. Try again in a moment."
+
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:136
 msgid "You can invite up to {collaboratorLimit} collaborators to this workspace."
 msgstr "You can invite up to {collaboratorLimit} collaborators to this workspace."
@@ -7467,6 +7532,11 @@ msgstr "You stay in control"
 #: ../../apps/web/src/lib/notifications.ts:58
 msgid "You were assigned a thread"
 msgstr "You were assigned a thread"
+
+#: ../../apps/extension/src/panel/notificationText.ts:20
+#: ../../apps/web/src/lib/notifications.ts:68
+msgid "You were mentioned in a comment"
+msgstr "You were mentioned in a comment"
 
 #: ../../apps/web/src/app/(app)/upgrade/success/page.tsx:118
 #: ../ui/src/upgrade/UpgradeSuccess.tsx:62
@@ -7578,7 +7648,7 @@ msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Cho
 msgstr "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
 
 #: ../../apps/mobile/src/data/notificationView.ts:64
-#: ../../apps/web/src/lib/notifications.ts:86
+#: ../../apps/web/src/lib/notifications.ts:96
 msgid "Your inbox import finished."
 msgstr "Your inbox import finished."
 

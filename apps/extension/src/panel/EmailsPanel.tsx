@@ -441,6 +441,8 @@ export function EmailsPanel({
             canAssign={canAssign}
             onOpenAssign={openAssignFor}
             onOpenPlanSetup={() => setPlanSetup("choice")}
+            members={members}
+            currentUserId={currentUserId}
           />
         ) : (
           <div className="em-preview-empty">

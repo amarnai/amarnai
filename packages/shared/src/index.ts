@@ -13,6 +13,7 @@ export * from "./schemas/gmail-sync-settings.js";
 export * from "./schemas/mail-scope-policy.js";
 export * from "./schemas/push-device.js";
 export * from "./schemas/extension.js";
+export * from "./schemas/thread-comment.js";
 export * from "./inbox-key.js";
 export * from "./draft-quota.js";
 export * from "./summary-quota.js";

@@ -3,8 +3,8 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ApiClient, Draft } from "@amarnai/api-client";
-import type { ThreadItem, ThreadSummaryCardState } from "@amarnai/ui/emails";
-import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, TriageBar } from "@amarnai/ui/emails";
+import type { MemberItem, ThreadItem, ThreadSummaryCardState } from "@amarnai/ui/emails";
+import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, ThreadCommentsSection, TriageBar } from "@amarnai/ui/emails";
 import { chronologicalMessages } from "@amarnai/core/emails";
 import { GmailIcon, OutlookIcon } from "@amarnai/ui";
 import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
@@ -34,6 +34,8 @@ type Props = {
   onOpenAssign: (threadId: string, anchor: HTMLElement) => void;
   /** Open the in-panel plan setup dialog (owned by EmailsPanel). */
   onOpenPlanSetup: () => void;
+  members: MemberItem[];
+  currentUserId: string | null;
 };
 
 // Port of apps/web ThreadPreview, with the internal-secret api client swapped
@@ -59,6 +61,8 @@ export function ThreadPreviewPane({
   canAssign,
   onOpenAssign,
   onOpenPlanSetup,
+  members,
+  currentUserId,
 }: Props) {
   const { _ } = useLingui();
   const [bodyLoaded, setBodyLoaded] = useState(false);
@@ -407,6 +411,14 @@ export function ThreadPreviewPane({
         />
 
         {summaryState && <ThreadSummaryCard state={summaryState} />}
+
+        <ThreadCommentsSection
+          api={api}
+          workspaceId={workspaceId}
+          threadId={thread.id}
+          currentUserId={currentUserId}
+          members={members}
+        />
 
         {isUnsorted && (
           routableNodeCount < TAXONOMY_MIN_NON_ROOT_NODES ? (

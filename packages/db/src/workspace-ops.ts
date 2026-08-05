@@ -53,6 +53,8 @@ export async function eraseEmailAccountData(emailAccountId: string): Promise<voi
     }),
     db.draft.deleteMany({ where: { emailThread: { emailAccountId } } }),
     db.threadSummary.deleteMany({ where: { emailThread: { emailAccountId } } }),
+    db.threadComment.deleteMany({ where: { emailThread: { emailAccountId } } }),
+    db.threadCommentRead.deleteMany({ where: { emailThread: { emailAccountId } } }),
     db.emailClassification.deleteMany({ where: { emailThread: { emailAccountId } } }),
     db.taxonomyNodeReference.deleteMany({ where: { emailThread: { emailAccountId } } }),
     db.emailMessage.deleteMany({ where: { emailAccountId } }),
@@ -101,6 +103,8 @@ export async function resetWorkspaceData(workspaceId: string): Promise<void> {
   await db.$transaction([
     db.draft.deleteMany({ where: { workspaceId } }),
     db.threadSummary.deleteMany({ where: { workspaceId } }),
+    db.threadComment.deleteMany({ where: { workspaceId } }),
+    db.threadCommentRead.deleteMany({ where: { workspaceId } }),
     db.emailTag.deleteMany({
       where: {
         OR: [{ emailThread: { workspaceId } }, { emailMessage: { workspaceId } }],
@@ -156,6 +160,15 @@ export async function deleteUserCascade(userId: string): Promise<void> {
       : []),
     db.draft.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
     db.threadSummary.deleteMany({ where: { workspaceId: { in: workspaceIds } } }),
+    // Comments in owned workspaces die with the workspace; the second arm also
+    // removes this user's comments and read markers in OTHER people's
+    // workspaces, clearing the author/user FKs before `user.delete`.
+    db.threadComment.deleteMany({
+      where: { OR: [{ workspaceId: { in: workspaceIds } }, { authorUserId: userId }] },
+    }),
+    db.threadCommentRead.deleteMany({
+      where: { OR: [{ workspaceId: { in: workspaceIds } }, { userId }] },
+    }),
     db.emailTag.deleteMany({
       where: {
         OR: [
@@ -193,6 +206,8 @@ export async function deleteWorkspaceCascade(workspaceId: string): Promise<void>
   await db.$transaction([
     db.draft.deleteMany({ where: { workspaceId } }),
     db.threadSummary.deleteMany({ where: { workspaceId } }),
+    db.threadComment.deleteMany({ where: { workspaceId } }),
+    db.threadCommentRead.deleteMany({ where: { workspaceId } }),
     db.emailTag.deleteMany({
       where: {
         OR: [{ emailThread: { workspaceId } }, { emailMessage: { workspaceId } }],

@@ -36,7 +36,13 @@ type Stage =
  * The pane still never sends. Its one mailbox write is `displayReplyForm`, which
  * opens Outlook's own compose for the user to review and send themselves.
  */
-export function OutlookPanel({ autoStart }: { autoStart: boolean }) {
+export function OutlookPanel({
+  autoStart,
+  focusComments,
+}: {
+  autoStart: boolean;
+  focusComments: boolean;
+}) {
   const [stage, setStage] = useState<Stage>({ kind: "loading" });
   // Bumped by the sign-in form so the panel re-reads the token store, which is
   // the only signal it has that a session appeared.
@@ -117,6 +123,7 @@ export function OutlookPanel({ autoStart }: { autoStart: boolean }) {
         host={host}
         webAppUrl={window.location.origin}
         autoDraft={autoStart}
+        focusComments={focusComments}
       />
       <p className="outlook-pane-footnote">
         <Trans>Amarnai never sends email. You review and send from Outlook.</Trans>
