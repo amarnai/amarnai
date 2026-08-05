@@ -15,6 +15,14 @@ export const STRINGS = {
   error: "Could not summarize this thread.",
   retry: "Retry",
   quota: (resetsAt: string) => `No summaries remaining this month · resets ${resetsAt}`,
+  /** Eyebrow of the comments-only strip (threads with discussion but no summary card). */
+  commentsEyebrow: "Comments",
+  /** Accessible name of the comment bubble; the visible control is icon + count. */
+  commentsLabel: (total: number, unread: number) => {
+    if (total === 0) return "Open team comments";
+    const base = total === 1 ? "Open team comments (1 comment" : `Open team comments (${total} comments`;
+    return unread > 0 ? `${base}, ${unread} new)` : `${base})`;
+  },
 } as const;
 
 /**

@@ -2,6 +2,7 @@ import type { PanelThreadContext } from "@amarnai/panel";
 import { debugLog } from "../core/debug.js";
 import { createLogoMark } from "../core/logoMark.js";
 import { attachPanelFrame } from "../core/panelFrame.js";
+import { inertPanelHandle, type InjectedPanelHandle } from "../core/panelHandle.js";
 import { startDomTicker } from "../core/scheduler.js";
 import { OPEN_PANEL_MESSAGE } from "../core/messaging.js";
 import { PANEL_EMBED_PARAM } from "../core/panelProtocol.js";
@@ -169,7 +170,9 @@ async function readExpanded(): Promise<boolean> {
 }
 
 /**
- * Put the Amarnai panel on the right edge of OWA. Resolves to a teardown.
+ * Put the Amarnai panel on the right edge of OWA. Resolves to a handle other
+ * features can point controls at (the summary card's comment bubble); the
+ * no-panel paths resolve to the inert handle.
  *
  * Async because the drawer's remembered state has to be read from storage before
  * the frame is told whether anyone is looking at it — otherwise the panel opens
@@ -178,11 +181,12 @@ async function readExpanded(): Promise<boolean> {
  */
 export async function startOutlookInjectedPanel(
   doc: Document = document,
-): Promise<() => void> {
+  options: { onCommentsChanged?: () => void } = {},
+): Promise<InjectedPanelHandle> {
   if (doc.querySelector(`[${PANEL_HOST_ATTRIBUTE}]`)) {
     // Already mounted — a second drawer would answer the same handshake twice.
     debugLog("panel (owa): already mounted");
-    return () => {};
+    return inertPanelHandle;
   }
 
   const expanded = await readExpanded();
@@ -268,6 +272,7 @@ export async function startOutlookInjectedPanel(
       debugLog("panel (owa): disabled for this workspace — removing the drawer");
       stop();
     },
+    ...(options.onCommentsChanged ? { onCommentsChanged: options.onCommentsChanged } : {}),
   });
 
   // Seeded before the frame can load, so the opening handshake already carries
@@ -303,5 +308,19 @@ export async function startOutlookInjectedPanel(
     tab.removeEventListener("click", onTabClick);
     host.remove();
   };
-  return stop;
+
+  // `teardown` doubles as the liveness flag, exactly as in the Gmail host: the
+  // kill-switch relay runs the same stop(), which nulls it.
+  return {
+    stop,
+    reveal() {
+      // Through setExpanded so the drawer's remembered state and the frame's
+      // visibility gate stay correct, same as a tab click.
+      if (teardown && !isExpanded) setExpanded(true);
+    },
+    focusComments() {
+      if (teardown) link.focusComments();
+    },
+    isLive: () => teardown !== null,
+  };
 }

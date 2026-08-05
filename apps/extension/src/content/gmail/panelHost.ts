@@ -5,6 +5,7 @@ import { hasInboxSdkAppId, loadInboxSDK } from "./inboxSdk.js";
 import { armReply } from "./armedReply.js";
 import { startDomTicker } from "../core/scheduler.js";
 import { attachPanelFrame } from "../core/panelFrame.js";
+import { inertPanelHandle, type InjectedPanelHandle } from "../core/panelHandle.js";
 import { OPEN_PANEL_MESSAGE } from "../core/messaging.js";
 
 // The Gmail half of the injected panel: an extension-origin iframe living in
@@ -73,14 +74,18 @@ function watchThreadContext(onChange: (context: PanelThreadContext | null) => vo
 /**
  * Put the Amarnai panel in Gmail's sidebar.
  *
- * Resolves to a teardown. A missing InboxSDK app id is not an error: a build
- * without one simply ships no panel, which is how self-hosters who have not
- * registered with InboxSDK run the extension.
+ * Resolves to a handle other features can point controls at (the summary
+ * card's comment bubble); every no-panel path resolves to the inert handle. A
+ * missing InboxSDK app id is not an error: a build without one simply ships no
+ * panel, which is how self-hosters who have not registered with InboxSDK run
+ * the extension.
  */
-export async function startInjectedPanel(): Promise<() => void> {
+export async function startInjectedPanel(
+  options: { onCommentsChanged?: () => void } = {},
+): Promise<InjectedPanelHandle> {
   if (!hasInboxSdkAppId()) {
     debugLog("panel: no VITE_INBOXSDK_APP_ID in this build — panel disabled");
-    return () => {};
+    return inertPanelHandle;
   }
 
   const sdk = await loadInboxSDK();
@@ -128,6 +133,7 @@ export async function startInjectedPanel(): Promise<() => void> {
       debugLog("panel: disabled for this workspace — removing the sidebar entry");
       stop();
     },
+    ...(options.onCommentsChanged ? { onCommentsChanged: options.onCommentsChanged } : {}),
   });
 
   const sidebarPanel = await sdk.Global.addSidebarContentPanel({
@@ -141,7 +147,7 @@ export async function startInjectedPanel(): Promise<() => void> {
     // shouting about: the page keeps working with no panel.
     debugLog("panel: Gmail exposed no sidebar to mount into");
     link.stop();
-    return () => {};
+    return inertPanelHandle;
   }
 
   // A collapsed sidebar is not a hidden document: Gmail keeps the panel in the
@@ -166,7 +172,20 @@ export async function startInjectedPanel(): Promise<() => void> {
     sidebarPanel.off("deactivate", onDeactivate);
     sidebarPanel.remove();
   };
-  return stop;
+
+  // `teardown` doubling as the liveness flag is what keeps the handle honest
+  // after the kill-switch relay: onDisabled runs the same stop(), which nulls
+  // it, and every handle method checks it first.
+  return {
+    stop,
+    reveal() {
+      if (teardown) sidebarPanel.open();
+    },
+    focusComments() {
+      if (teardown) link.focusComments();
+    },
+    isLive: () => teardown !== null,
+  };
 }
 
 /**

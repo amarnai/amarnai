@@ -11,6 +11,8 @@ import {
   PANEL_INSERT_DRAFT,
   PANEL_OPEN_PANEL,
   PANEL_DISABLED,
+  PANEL_COMMENTS_CHANGED,
+  isPanelFocusCommentsMessage,
   isPanelInsertResultMessage,
   isPanelThreadContextMessage,
   isPanelVisibilityMessage,
@@ -159,6 +161,7 @@ function buildInjectedPanelHost(embed: Embed): PanelHost {
 
   const contextListeners = new Set<(ctx: PanelThreadContext | null) => void>();
   const visibilityListeners = new Set<(visible: boolean) => void>();
+  const focusCommentsListeners = new Set<() => void>();
   const pendingInserts = new Map<string, (ok: boolean) => void>();
   let insertCounter = 0;
 
@@ -201,6 +204,10 @@ function buildInjectedPanelHost(embed: Embed): PanelHost {
       for (const listener of visibilityListeners) listener(event.data.visible);
       return;
     }
+    if (isPanelFocusCommentsMessage(event.data)) {
+      for (const listener of focusCommentsListeners) listener();
+      return;
+    }
     if (isPanelInsertResultMessage(event.data)) {
       const resolve = pendingInserts.get(event.data.requestId);
       if (resolve) {
@@ -230,6 +237,11 @@ function buildInjectedPanelHost(embed: Embed): PanelHost {
     onVisibilityChanged(listener) {
       visibilityListeners.add(listener);
       return () => visibilityListeners.delete(listener);
+    },
+
+    onFocusComments(listener) {
+      focusCommentsListeners.add(listener);
+      return () => focusCommentsListeners.delete(listener);
     },
 
     insertDraft(html) {
@@ -275,6 +287,12 @@ function buildInjectedPanelHost(embed: Embed): PanelHost {
       // it (chrome.sidePanel needs a user gesture in an extension context the
       // content script owns), so the request is relayed through the host.
       post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_OPEN_PANEL });
+    },
+
+    notifyCommentsChanged() {
+      // A nudge, not data: the host re-fetches the counts through its own
+      // background path, so nothing numeric crosses this boundary.
+      post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_COMMENTS_CHANGED });
     },
 
     reportInjectionDisabled() {

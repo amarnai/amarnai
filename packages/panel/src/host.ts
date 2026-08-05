@@ -100,6 +100,28 @@ export type PanelHost = {
   onVisibilityChanged(listener: (visible: boolean) => void): () => void;
 
   /**
+   * Subscribe to "expand + scroll the Comments section" requests — fired when
+   * the user clicks an in-page comments control (the bubble on the injected
+   * summary card). Returns an unsubscribe function.
+   *
+   * Optional because only a host with in-page chrome has anywhere to fire it
+   * from: the Outlook task pane's whole surface is the panel, and its ribbon
+   * entry point is expressed as the mount-time focusComments prop instead.
+   */
+  onFocusComments?(listener: () => void): () => void;
+
+  /**
+   * Tell the host the open thread's comment list changed (a post, a delete, or
+   * the section's poll discovering one), so an in-page comments badge can
+   * refresh immediately instead of waiting out its own poll. A nudge, not
+   * data: the host re-fetches counts through its own path.
+   *
+   * Optional for the same reason as onFocusComments — only a host with
+   * in-page chrome has a badge to refresh.
+   */
+  notifyCommentsChanged?(): void;
+
+  /**
    * Hand an HTML draft to the mail client's own compose window. Resolves true
    * when the client accepted it. Never sends: composing is where Amarnai's
    * involvement ends, in both hosts, structurally.

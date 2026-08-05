@@ -11,6 +11,7 @@ import {
 } from "@amarnai/shared";
 import type { AppEnv } from "../env.js";
 import { recordAudit } from "../services/audit.js";
+import { loadThreadCommentsMeta } from "../services/thread-comment-meta.js";
 import { throttleOnce } from "../services/rate-limit.js";
 import { pushNotificationQueue } from "../queues.js";
 
@@ -119,23 +120,7 @@ threadComments.get(
     const thread = await findThread(workspaceId, threadId);
     if (!thread) return c.json({ error: "Thread not found" }, 404);
 
-    const read = await db.threadCommentRead.findUnique({
-      where: { emailThreadId_userId: { emailThreadId: threadId, userId } },
-      select: { lastReadAt: true },
-    });
-
-    const [total, unread] = await Promise.all([
-      db.threadComment.count({ where: { emailThreadId: threadId } }),
-      db.threadComment.count({
-        where: {
-          emailThreadId: threadId,
-          authorUserId: { not: userId },
-          ...(read ? { createdAt: { gt: read.lastReadAt } } : {}),
-        },
-      }),
-    ]);
-
-    return c.json({ total, unread });
+    return c.json(await loadThreadCommentsMeta(threadId, userId));
   },
 );
 

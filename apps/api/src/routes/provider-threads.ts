@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { isInjectionEnabled, resolveProviderRef } from "../services/provider-thread.js";
 import { loadThreadDetail } from "../services/thread-detail.js";
+import { loadThreadCommentsMeta } from "../services/thread-comment-meta.js";
 import type { AppEnv } from "../env.js";
 
 const providerThreadParams = z.object({
@@ -62,6 +63,43 @@ providerThreads.get(
     if (!detail) return c.json({ error: "Thread not found" }, 404);
 
     return c.json(detail);
+  },
+);
+
+// ─── GET /workspaces/:workspaceId/provider-threads/:providerThreadId/comments/meta
+//
+// The comments badge for the in-page bubble on the injected summary card: the
+// count is the only comment-derived data that may enter the mail page's DOM
+// (comment content stays in the extension-origin panel). Same counts as the
+// internal-id meta route via the shared service. Gated by the injected-panel
+// kill switch because the bubble's sole purpose is to open that panel — when
+// the panel is off there is nothing for the bubble to serve.
+
+providerThreads.get(
+  "/workspaces/:workspaceId/provider-threads/:providerThreadId/comments/meta",
+  async (c) => {
+    const parsed = providerThreadParams.safeParse({
+      workspaceId: c.req.param("workspaceId"),
+      providerThreadId: c.req.param("providerThreadId"),
+      ref: c.req.query("ref") ?? undefined,
+    });
+    if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
+    const { workspaceId, providerThreadId, ref } = parsed.data;
+
+    if (!(await isInjectionEnabled(workspaceId, "injectedPanel"))) {
+      return c.json(
+        {
+          error: "The in-mail panel is disabled for this workspace",
+          injectionDisabled: true,
+        },
+        403,
+      );
+    }
+
+    const threadId = await resolveProviderRef(workspaceId, ref, providerThreadId);
+    if (!threadId) return c.json({ error: "Thread not found" }, 404);
+
+    return c.json(await loadThreadCommentsMeta(threadId, c.get("userId")));
   },
 );
 

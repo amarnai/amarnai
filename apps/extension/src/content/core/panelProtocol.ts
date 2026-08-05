@@ -41,6 +41,17 @@ export const PANEL_EMBED_PARAM = "embed";
 export const PANEL_THREAD_CONTEXT = "amarnai:panel:threadContext" as const;
 export const PANEL_VISIBILITY = "amarnai:panel:visibility" as const;
 export const PANEL_INSERT_RESULT = "amarnai:panel:insertResult" as const;
+/**
+ * The user clicked an in-page comments control (the bubble on the injected
+ * summary card): expand the panel's Comments section and scroll it into view.
+ * An event, not state — deliberately not replayed by the handshake, because a
+ * reloaded frame should not spontaneously re-focus comments.
+ *
+ * Additive without a version bump, like PANEL_DISABLED but in the other
+ * direction: an old frame drops the unknown type through its guards and the
+ * click simply reveals the panel, and an old host never sends it.
+ */
+export const PANEL_FOCUS_COMMENTS = "amarnai:panel:focusComments" as const;
 
 export type PanelThreadContextMessage = {
   v: typeof PANEL_PROTOCOL_VERSION;
@@ -80,10 +91,16 @@ export type PanelInsertResultMessage = {
   ok: boolean;
 };
 
+export type PanelFocusCommentsMessage = {
+  v: typeof PANEL_PROTOCOL_VERSION;
+  type: typeof PANEL_FOCUS_COMMENTS;
+};
+
 export type HostToPanelMessage =
   | PanelThreadContextMessage
   | PanelVisibilityMessage
-  | PanelInsertResultMessage;
+  | PanelInsertResultMessage
+  | PanelFocusCommentsMessage;
 
 // ── Iframe → host ─────────────────────────────────────────────────────────────
 
@@ -106,6 +123,14 @@ export const PANEL_OPEN_PANEL = "amarnai:panel:openPanel" as const;
  * today, and an old frame never sends it. Nothing can misread it.
  */
 export const PANEL_DISABLED = "amarnai:panel:disabled" as const;
+/**
+ * The panel's comment list for the open thread changed (a comment was posted
+ * or deleted there, or its poll discovered one). A nudge, not data: the host
+ * re-fetches the badge counts through its own background path rather than
+ * trusting numbers posted by a frame. Additive without a version bump, like
+ * PANEL_DISABLED: an old host drops it and simply stays on its poll cadence.
+ */
+export const PANEL_COMMENTS_CHANGED = "amarnai:panel:commentsChanged" as const;
 
 export type PanelReadyMessage = {
   v: typeof PANEL_PROTOCOL_VERSION;
@@ -131,11 +156,17 @@ export type PanelDisabledMessage = {
   type: typeof PANEL_DISABLED;
 };
 
+export type PanelCommentsChangedMessage = {
+  v: typeof PANEL_PROTOCOL_VERSION;
+  type: typeof PANEL_COMMENTS_CHANGED;
+};
+
 export type PanelToHostMessage =
   | PanelReadyMessage
   | PanelInsertDraftMessage
   | PanelOpenPanelMessage
-  | PanelDisabledMessage;
+  | PanelDisabledMessage
+  | PanelCommentsChangedMessage;
 
 // ── Guards ────────────────────────────────────────────────────────────────────
 
@@ -175,6 +206,11 @@ export function isPanelVisibilityMessage(msg: unknown): msg is PanelVisibilityMe
   return !!m && m["type"] === PANEL_VISIBILITY && typeof m["visible"] === "boolean";
 }
 
+export function isPanelFocusCommentsMessage(msg: unknown): msg is PanelFocusCommentsMessage {
+  const m = envelope(msg);
+  return !!m && m["type"] === PANEL_FOCUS_COMMENTS;
+}
+
 export function isPanelInsertResultMessage(msg: unknown): msg is PanelInsertResultMessage {
   const m = envelope(msg);
   return (
@@ -208,4 +244,9 @@ export function isPanelOpenPanelMessage(msg: unknown): msg is PanelOpenPanelMess
 export function isPanelDisabledMessage(msg: unknown): msg is PanelDisabledMessage {
   const m = envelope(msg);
   return !!m && m["type"] === PANEL_DISABLED;
+}
+
+export function isPanelCommentsChangedMessage(msg: unknown): msg is PanelCommentsChangedMessage {
+  const m = envelope(msg);
+  return !!m && m["type"] === PANEL_COMMENTS_CHANGED;
 }

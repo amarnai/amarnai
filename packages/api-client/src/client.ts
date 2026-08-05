@@ -526,6 +526,39 @@ export function makeApiClient(transport: ApiTransport) {
       return res.json() as Promise<EmailThreadDetail>;
     },
 
+    // The comments badge for the in-page bubble on the injected summary card,
+    // addressed by the provider's own thread id (the only id the mail page
+    // knows). Null means the thread was never synced (no bubble — not an
+    // error); a workspace that turned the panel off raises
+    // InjectionDisabledError, same as resolveProviderThread.
+    providerThreadCommentsMeta: async (
+      workspaceId: string,
+      providerThreadId: string,
+      refKind: ProviderRefKind = "thread",
+    ): Promise<ThreadCommentsMeta | null> => {
+      const res = await apiRequest(
+        `/workspaces/${workspaceId}/provider-threads/${encodeURIComponent(providerThreadId)}/comments/meta` +
+          (refKind === "message" ? "?ref=message" : ""),
+        { cache: "no-store" },
+      );
+      if (res.status === 404) return null;
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          injectionDisabled?: boolean;
+        };
+        if (res.status === 403 && err.injectionDisabled) {
+          throw new InjectionDisabledError(err.error ?? "The in-mail panel is disabled");
+        }
+        throw new ApiHttpError(
+          err.error ?? `API returned ${res.status}`,
+          res.status,
+          null,
+        );
+      }
+      return res.json() as Promise<ThreadCommentsMeta>;
+    },
+
     // What the injected panel shows when no conversation is open: the threads
     // waiting on this user, plus the counts its sorting strip needs. One slim
     // call instead of three to `emailThreads`, which would fetch every message

@@ -1,14 +1,52 @@
 // Outlook-web content-script entrypoint. Injected at document_idle on all three
 // OWA hosts (office.com / office365.com / live.com); see manifest.config.ts.
-import { runContentScript } from "../core/runner.js";
+import { runContentScript, type ContentScriptController } from "../core/runner.js";
+import { inertPanelHandle, type InjectedPanelHandle } from "../core/panelHandle.js";
 import { detectOutlookThread, findOutlookInjectionAnchor } from "./detectThread.js";
 import { startOutlookReplyButton } from "./replyButton.js";
 import { startOutlookInjectedPanel } from "./panelHost.js";
 
+// Same bridge as the Gmail entrypoint: the summary card's comment bubble
+// targets the drawer, but the features stay decoupled. While the panel start
+// is still pending the target counts as live optimistically (the drawer
+// mounts in the ordinary case; a click meanwhile waits on the promise); once
+// settled, the handle is the whole truth.
+let panelHandle: InjectedPanelHandle | null = null;
+// Filled once runContentScript returns; the panel's commentsChanged nudge
+// routes through it so the bubble refreshes the moment a comment is posted.
+let content: ContentScriptController | null = null;
+
+// The drawer, absorbed into an inert handle on any failure — sync throw or
+// rejection — because every consumer wants "a handle, possibly dead", never an
+// exception.
+const panelStart: Promise<InjectedPanelHandle> = (() => {
+  try {
+    return startOutlookInjectedPanel(document, {
+      onCommentsChanged: () => content?.refreshComments(),
+    }).catch((e: unknown) => {
+      console.warn("[amarnai] Amarnai panel (OWA) failed to start:", e);
+      return inertPanelHandle;
+    });
+  } catch (e) {
+    console.warn("[amarnai] Amarnai panel (OWA) failed to start:", e);
+    return Promise.resolve(inertPanelHandle);
+  }
+})().then((handle) => {
+  panelHandle = handle;
+  return handle;
+});
+
 try {
-  runContentScript({
+  content = runContentScript({
     detectThread: () => detectOutlookThread(),
     findInjectionAnchor: () => findOutlookInjectionAnchor(),
+    onOpenComments: () => {
+      void panelStart.then((handle) => {
+        handle.reveal();
+        handle.focusComments();
+      });
+    },
+    isCommentsTargetLive: () => (panelHandle ? panelHandle.isLive() : true),
   });
 } catch (e) {
   // A content script that throws on load must still leave OWA usable.
@@ -24,14 +62,3 @@ try {
   console.warn("[amarnai] Amarnai Reply button (OWA) failed to start:", e);
 }
 
-// The third injected surface, independent of the other two for the same reason.
-// It reads the drawer's remembered state from storage before it mounts, so it is
-// a promise — and a rejection sails straight past a synchronous catch, hence the
-// .catch as well as the try (same shape as the Gmail entrypoint).
-try {
-  startOutlookInjectedPanel().catch((e: unknown) => {
-    console.warn("[amarnai] Amarnai panel (OWA) failed to start:", e);
-  });
-} catch (e) {
-  console.warn("[amarnai] Amarnai panel (OWA) failed to start:", e);
-}

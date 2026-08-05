@@ -89,6 +89,16 @@ export function InjectedThreadPanel({
 
   useEffect(() => host.onVisibilityChanged(setVisible), [host]);
 
+  // "Expand + scroll the Comments section" requests, as a nonce so repeat
+  // clicks on the in-page bubble re-focus an already-open section. Seeded from
+  // the mount-time focusComments prop (Outlook's ribbon deep-link); bumped by
+  // hosts with in-page chrome via onFocusComments (the summary-card bubble).
+  const [focusCommentsNonce, setFocusCommentsNonce] = useState(focusComments ? 1 : 0);
+  useEffect(
+    () => host.onFocusComments?.(() => setFocusCommentsNonce((n) => n + 1)),
+    [host],
+  );
+
   const api = useMemo(
     () =>
       client ??
@@ -298,7 +308,7 @@ export function InjectedThreadPanel({
           thread={stage.thread}
           accountEmail={stage.accountEmail}
           autoDraft={autoDraft}
-          focusComments={focusComments}
+          focusCommentsNonce={focusCommentsNonce}
           canInsertDraft={host.capabilities.insertDraft && threadIsOpenInClient}
           folders={folders}
           members={members}
@@ -340,7 +350,7 @@ function ThreadView({
   thread,
   accountEmail,
   autoDraft,
-  focusComments,
+  focusCommentsNonce,
   canInsertDraft,
   folders,
   members,
@@ -359,7 +369,7 @@ function ThreadView({
   thread: EmailThreadDetail;
   accountEmail: string;
   autoDraft: boolean;
-  focusComments: boolean;
+  focusCommentsNonce: number;
   /**
    * False while this thread was picked from the queue and the mail client is
    * still showing another one: both hosts insert into whatever conversation the
@@ -429,7 +439,7 @@ function ThreadView({
         workspaceId={workspaceId}
         thread={thread}
         members={members}
-        focus={focusComments}
+        focusNonce={focusCommentsNonce}
       />
 
       {host.capabilities.openExternal && (

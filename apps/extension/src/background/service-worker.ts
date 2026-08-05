@@ -13,6 +13,7 @@
 // is woken BY the event, so a listener added later would miss it.
 import { ext } from "../platform/ext";
 import { registerThreadSummaryHandler } from "./summaryHandler";
+import { registerCommentMetaHandler } from "./commentMetaHandler";
 import { registerGenerateDraftHandler } from "./draftHandler";
 import { registerOpenPanelHandler } from "./openPanelHandler";
 import { registerOpenMailThreadHandler } from "./openThreadHandler";
@@ -22,6 +23,7 @@ import { registerInstallHandler } from "./installHandler";
 // Each handler discriminates on its own message type and bails on anything else,
 // so registration order carries no meaning.
 registerThreadSummaryHandler();
+registerCommentMetaHandler();
 registerGenerateDraftHandler();
 registerOpenPanelHandler();
 registerOpenMailThreadHandler();

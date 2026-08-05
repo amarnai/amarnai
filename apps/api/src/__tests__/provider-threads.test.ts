@@ -24,6 +24,8 @@ vi.mock("@amarnai/db", () => ({
     emailAccount: { findMany: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
+    threadComment: { count: vi.fn() },
+    threadCommentRead: { findUnique: vi.fn() },
   },
 }));
 
@@ -301,5 +303,74 @@ describe("GET provider-threads with ref=message", () => {
     vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(null as never);
     expect((await messageRef(STORED_MESSAGE_ID)).status).toBe(404);
     expect(db.emailMessage.findFirst).not.toHaveBeenCalled();
+  });
+});
+
+// The comments badge for the in-page bubble on the injected summary card. Only
+// the two counts ever leave this route — comment content stays in the panel —
+// and it wears the same injected-panel kill switch as the routes it serves.
+describe("GET provider-threads .../comments/meta", () => {
+  const meta = (id: string, query = "") =>
+    app.request(
+      `/workspaces/${WS_ID}/provider-threads/${encodeURIComponent(id)}/comments/meta${query}`,
+      authed(),
+    );
+
+  beforeEach(() => {
+    vi.mocked(db.threadCommentRead.findUnique).mockResolvedValue(null as never);
+    vi.mocked(db.threadComment.count).mockResolvedValue(0 as never);
+  });
+
+  it("returns the total and the caller's unread count", async () => {
+    vi.mocked(db.threadCommentRead.findUnique).mockResolvedValue({
+      lastReadAt: new Date("2026-08-04T09:00:00Z"),
+    } as never);
+    vi.mocked(db.threadComment.count).mockImplementation((async (args: {
+      where: { authorUserId?: { not: string } };
+    }) => (args.where.authorUserId ? 2 : 5)) as never);
+
+    const res = await meta(STORED_CONVERSATION_ID);
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ total: 5, unread: 2 });
+    // Unread excludes the caller's own comments and respects the read marker.
+    expect(db.threadComment.count).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          authorUserId: { not: TEST_USER_ID },
+          createdAt: { gt: new Date("2026-08-04T09:00:00Z") },
+        }),
+      }),
+    );
+  });
+
+  it("resolves the deeplink read view's message id to its thread", async () => {
+    const res = await meta(STORED_MESSAGE_ID, "?ref=message");
+    expect(res.status).toBe(200);
+    expect(db.emailMessage.findFirst).toHaveBeenCalled();
+  });
+
+  it("404s a thread that was never synced (no bubble, not an error)", async () => {
+    vi.mocked(db.emailThread.findFirst).mockResolvedValue(null as never);
+    expect((await meta("never-synced")).status).toBe(404);
+    expect(db.threadComment.count).not.toHaveBeenCalled();
+  });
+
+  it("403s with injectionDisabled when the workspace has the panel switched off", async () => {
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({
+      threadSummaryInjectionEnabled: true,
+      replyButtonInjectionEnabled: true,
+      injectedPanelEnabled: false,
+    } as never);
+    const res = await meta(STORED_CONVERSATION_ID);
+    expect(res.status).toBe(403);
+    expect(await res.json()).toMatchObject({ injectionDisabled: true });
+    expect(db.threadComment.count).not.toHaveBeenCalled();
+  });
+
+  it("404s a workspace the caller is not a member of", async () => {
+    vi.mocked(db.workspaceMember.findUnique).mockResolvedValue(null as never);
+    expect((await meta(STORED_CONVERSATION_ID)).status).toBe(404);
+    expect(db.threadComment.count).not.toHaveBeenCalled();
   });
 });

@@ -1,8 +1,18 @@
 import { ext } from "../../platform/ext.js";
 import { startScheduler, type Scheduler, type ThreadContext } from "./scheduler.js";
-import { mountSummaryWidget, removeExistingWidgets, type SummaryWidget } from "./summaryWidget.js";
 import {
+  mountSummaryWidget,
+  removeExistingWidgets,
+  type MountOptions,
+  type SummaryWidget,
+  type WidgetComments,
+} from "./summaryWidget.js";
+import {
+  COMMENT_META_MESSAGE,
   THREAD_SUMMARY_MESSAGE,
+  type CommentMetaRequest,
+  type CommentMetaResponse,
+  type ThreadSummaryPayload,
   type ThreadSummaryRequest,
   type ThreadSummaryResponse,
 } from "./messaging.js";
@@ -26,6 +36,33 @@ export interface ProviderAdapter {
    * not). Omit for flush-left.
    */
   gutterLeft?: string;
+  /**
+   * Open the injected panel with its Comments section focused. Omitted when the
+   * provider has no panel to open; the comment bubble then never renders.
+   */
+  onOpenComments?: (context: ThreadContext) => void;
+  /**
+   * Whether the panel the bubble targets is currently mounted. Checked before
+   * every render of the bubble, not just once: the workspace's kill switch can
+   * tear the panel down mid-session, after which the bubble must disappear
+   * rather than click into nothing.
+   */
+  isCommentsTargetLive?: () => boolean;
+}
+
+/** How often the comments badge re-checks while a thread stays open and the
+ *  tab is visible. Comments are human-paced; this only covers teammate
+ *  activity — the user's own actions in the panel refresh instantly via the
+ *  commentsChanged nudge. */
+const COMMENT_META_POLL_MS = 30_000;
+
+/** What runContentScript hands back to the entrypoint. */
+export interface ContentScriptController {
+  /**
+   * Re-fetch the open thread's comment counts now (the panel just reported a
+   * change). No-op when no thread is being rendered.
+   */
+  refreshComments(): void;
 }
 
 /**
@@ -37,16 +74,29 @@ export interface ProviderAdapter {
  * snippet) — renders nothing rather than putting an Amarnai error in someone's
  * mailbox.
  */
-export function runContentScript(adapter: ProviderAdapter): void {
+export function runContentScript(adapter: ProviderAdapter): ContentScriptController {
   let widget: SummaryWidget | null = null;
   let scheduler: Scheduler | null = null;
   // Guards against a slow response landing after the user moved on.
   let requestToken = 0;
+  // The active request's comment-count refetch, kept for the badge poll and
+  // for the panel's commentsChanged nudge. Null while no thread is rendered.
+  let refetchCommentsMeta: (() => void) | null = null;
+  let commentsPollTimer: ReturnType<typeof setInterval> | null = null;
+
+  function clearCommentsPoll(): void {
+    if (commentsPollTimer) {
+      clearInterval(commentsPollTimer);
+      commentsPollTimer = null;
+    }
+    refetchCommentsMeta = null;
+  }
 
   function teardownWidget(): void {
     widget?.remove();
     widget = null;
     requestToken++;
+    clearCommentsPoll();
   }
 
   /**
@@ -68,10 +118,15 @@ export function runContentScript(adapter: ProviderAdapter): void {
       return false;
     }
 
-    widget?.remove();
-    widget = mountSummaryWidget(anchor, { kind: "loading" }, {
+    const mountOpts: MountOptions = {
       ...(adapter.gutterLeft ? { gutterLeft: adapter.gutterLeft } : {}),
-    });
+      ...(adapter.onOpenComments
+        ? { onOpenComments: () => adapter.onOpenComments?.(context) }
+        : {}),
+    };
+
+    widget?.remove();
+    widget = mountSummaryWidget(anchor, { kind: "loading" }, mountOpts);
     if (!widget) {
       debugLog("anchor detached before mount");
       return false;
@@ -79,6 +134,57 @@ export function runContentScript(adapter: ProviderAdapter): void {
     debugLog(
       `requesting summary — account=${context.accountEmail} thread=${context.providerThreadId}`,
     );
+
+    // The two responses for THIS request. The summary decides the card's shape;
+    // the comment count decorates it — or, on a snippet thread with discussion,
+    // IS the card. Whichever lands second recomposes via apply().
+    let outcome: ThreadSummaryPayload | null = null;
+    let summaryResolved = false;
+    let comments: WidgetComments | null = null;
+
+    // The bubble targets the injected panel; a dead target (kill switch,
+    // build without a panel) means no bubble, checked at every recompose.
+    function currentComments(): WidgetComments | null {
+      return comments && (adapter.isCommentsTargetLive?.() ?? false) ? comments : null;
+    }
+
+    function apply(): void {
+      if (token !== requestToken || !summaryResolved) return;
+      const c = currentComments();
+      if (outcome === null || outcome.kind === "snippet") {
+        // Gmail and OWA already show their own snippet; repeating it adds
+        // noise. But a thread with team discussion still gets the one-line
+        // comments strip — removed (not torn down: the token stays valid so a
+        // count that arrives later can still mount the strip) otherwise.
+        if (c && c.total > 0) {
+          if (widget) {
+            widget.update({ kind: "commentsOnly", comments: c });
+          } else {
+            const stripAnchor = adapter.findInjectionAnchor();
+            if (stripAnchor) {
+              widget = mountSummaryWidget(
+                stripAnchor,
+                { kind: "commentsOnly", comments: c },
+                mountOpts,
+              );
+            }
+          }
+        } else if (widget) {
+          widget.remove();
+          widget = null;
+        }
+        return;
+      }
+      if (outcome.kind === "quota") {
+        widget?.update({ kind: "quota", resetsAt: outcome.resetsAt });
+        return;
+      }
+      if (outcome.kind === "bullets") {
+        widget?.update({ kind: "bullets", bullets: outcome.bullets, ...(c ? { comments: c } : {}) });
+        return;
+      }
+      widget?.update({ kind: "summary", text: outcome.text, ...(c ? { comments: c } : {}) });
+    }
 
     const message: ThreadSummaryRequest = {
       type: THREAD_SUMMARY_MESSAGE,
@@ -93,28 +199,18 @@ export function runContentScript(adapter: ProviderAdapter): void {
         if (token !== requestToken) return;
         if (!response?.ok) {
           debugLog(`background declined: ${response?.reason ?? "no response"}`);
+          // A decline covers the count too (same auth, same workspace), so the
+          // token bump that kills the pending meta response is correct here.
           teardownWidget();
           // A settled "no" for the whole workspace, not a miss on this thread:
           // stop watching rather than spending a roundtrip per thread open.
           if (response?.reason === "injectionDisabled") stop();
           return;
         }
-        const result = response.result;
-        debugLog(`background returned kind=${result.kind}`);
-        if (result.kind === "snippet") {
-          // Gmail and OWA already show their own snippet; repeating it adds noise.
-          teardownWidget();
-          return;
-        }
-        if (result.kind === "quota") {
-          widget?.update({ kind: "quota", resetsAt: result.resetsAt });
-          return;
-        }
-        if (result.kind === "bullets") {
-          widget?.update({ kind: "bullets", bullets: result.bullets });
-          return;
-        }
-        widget?.update({ kind: "summary", text: result.text });
+        debugLog(`background returned kind=${response.result.kind}`);
+        outcome = response.result;
+        summaryResolved = true;
+        apply();
       })
       .catch((e) => {
         if (token !== requestToken) return;
@@ -127,6 +223,42 @@ export function runContentScript(adapter: ProviderAdapter): void {
         });
       });
 
+    // The count rides in parallel and never blocks the summary. Any failure
+    // renders no bubble — the summary-reason convention: nothing, not an error.
+    // While the thread stays open the count stays fresh two ways: a background
+    // poll (teammate activity) and the panel's commentsChanged nudge routed in
+    // through refetchCommentsMeta (the user's own posts, instantly).
+    clearCommentsPoll();
+    if (adapter.onOpenComments) {
+      const metaMessage: CommentMetaRequest = {
+        type: COMMENT_META_MESSAGE,
+        accountEmail: context.accountEmail,
+        providerThreadId: context.providerThreadId,
+      };
+      const sendMeta = () => {
+        void ext.runtime
+          .sendMessage(metaMessage)
+          .then((response: CommentMetaResponse | undefined) => {
+            if (token !== requestToken) return;
+            if (!response?.ok) return;
+            comments = response.meta;
+            apply();
+          })
+          .catch(() => {});
+      };
+      sendMeta();
+      refetchCommentsMeta = sendMeta;
+      commentsPollTimer = setInterval(() => {
+        if (token !== requestToken) {
+          clearCommentsPoll();
+          return;
+        }
+        // A background tab pays nothing; the next visible poll catches up.
+        if (typeof document !== "undefined" && document.visibilityState !== "visible") return;
+        sendMeta();
+      }, COMMENT_META_POLL_MS);
+    }
+
     // Mounted and in flight: the scheduler can stop retrying this thread.
     return true;
   }
@@ -138,6 +270,12 @@ export function runContentScript(adapter: ProviderAdapter): void {
     teardownWidget();
     removeExistingWidgets();
   }
+
+  const controller: ContentScriptController = {
+    refreshComments() {
+      refetchCommentsMeta?.();
+    },
+  };
 
   function start(): void {
     if (scheduler) return;
@@ -161,4 +299,6 @@ export function runContentScript(adapter: ProviderAdapter): void {
   // takes effect on the next page load, which is the right trade for not paying
   // a roundtrip per thread open forever.
   start();
+
+  return controller;
 }

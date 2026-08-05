@@ -22,7 +22,7 @@ export function CommentsSection({
   workspaceId,
   thread,
   members,
-  focus,
+  focusNonce,
 }: {
   api: ApiClient;
   host: PanelHost;
@@ -31,17 +31,19 @@ export function CommentsSection({
   /** null while the per-workspace member fetch is in flight. */
   members: MemberItem[] | null;
   /**
-   * Open the section immediately and scroll it into view. For entry points
-   * that already ARE the request — Outlook's "Comments" ribbon button
-   * deep-links into the pane with ?focus=comments (autoDraft precedent).
+   * "Open the section and scroll it into view" requests, as a monotonically
+   * increasing nonce. 0 = never requested; an initial value > 0 focuses at
+   * mount (Outlook's "Comments" ribbon deep-link, autoDraft precedent); every
+   * later increment re-focuses a mounted section (the in-page comment bubble
+   * relayed through host.onFocusComments).
    */
-  focus: boolean;
+  focusNonce: number;
 }) {
-  const [expanded, setExpanded] = useState(focus);
+  const [expanded, setExpanded] = useState(focusNonce > 0);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [meta, setMeta] = useState<ThreadCommentsMeta | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
-  const focusScrolledRef = useRef(false);
+  const seenFocusNonceRef = useRef(0);
 
   // The comment author check needs the session's own user id; same derivation
   // as the done-mark handler (the server ignores client-supplied actor ids).
@@ -63,11 +65,31 @@ export function CommentsSection({
     active: expanded,
   });
 
+  // Nudge a host with an in-page comments badge (the summary-card bubble)
+  // whenever the loaded list's size changes — a post, a delete, or the poll
+  // discovering a teammate's comment — so the badge refreshes immediately
+  // instead of waiting out its own cadence. The first load is baseline, not a
+  // change; the ref resets per thread below.
+  const seenCountRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (comments.state.kind !== "ready") return;
+    const count = comments.state.comments.length;
+    if (seenCountRef.current === null) {
+      seenCountRef.current = count;
+      return;
+    }
+    if (count !== seenCountRef.current) {
+      seenCountRef.current = count;
+      host.notifyCommentsChanged?.();
+    }
+  }, [comments.state, host]);
+
   // Collapsed-state badge. Keyed on the thread only: expanding supersedes it
   // (the list itself carries the counts) and collapsing again keeps the last
   // known numbers rather than refetching.
   useEffect(() => {
     setMeta(null);
+    seenCountRef.current = null;
     let cancelled = false;
     void api
       .threadCommentsMeta(workspaceId, thread.id)
@@ -81,10 +103,11 @@ export function CommentsSection({
   }, [api, workspaceId, thread.id]);
 
   useEffect(() => {
-    if (!focus || focusScrolledRef.current) return;
-    focusScrolledRef.current = true;
+    if (focusNonce <= seenFocusNonceRef.current) return;
+    seenFocusNonceRef.current = focusNonce;
+    setExpanded(true);
     sectionRef.current?.scrollIntoView({ block: "start" });
-  }, [focus]);
+  }, [focusNonce]);
 
   const total =
     comments.state.kind === "ready" ? comments.state.comments.length : (meta?.total ?? null);

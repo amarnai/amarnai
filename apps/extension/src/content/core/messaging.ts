@@ -107,6 +107,39 @@ export function isThreadSummaryRequest(msg: unknown): msg is ThreadSummaryReques
   );
 }
 
+// ─── Comment count ────────────────────────────────────────────────────────────
+//
+// The badge for the comment bubble on the injected summary card. Fired by the
+// same runner as the summary, in parallel with it, and held to the same
+// contract: only identifiers leave the page, and every failure renders nothing
+// (a mail page must never sprout an Amarnai error). Only the two count
+// integers ever come back — comment content stays in the extension-origin
+// panel.
+
+export const COMMENT_META_MESSAGE = "amarnai:commentMeta" as const;
+
+export type CommentMetaRequest = {
+  type: typeof COMMENT_META_MESSAGE;
+  /** The mailbox address currently visible in the mail UI (multi-login safety). */
+  accountEmail: string;
+  /** The provider's own thread id (Gmail thread id / Outlook conversationId). */
+  providerThreadId: string;
+};
+
+export type CommentMetaResponse =
+  | { ok: true; meta: { total: number; unread: number } }
+  | { ok: false; reason: ThreadSummaryFailureReason };
+
+export function isCommentMetaRequest(msg: unknown): msg is CommentMetaRequest {
+  if (typeof msg !== "object" || msg === null) return false;
+  const m = msg as Record<string, unknown>;
+  return (
+    m["type"] === COMMENT_META_MESSAGE &&
+    typeof m["accountEmail"] === "string" &&
+    typeof m["providerThreadId"] === "string"
+  );
+}
+
 // ─── Open the panel ───────────────────────────────────────────────────────────
 //
 // Sent when the user clicks an injected control that needs an account: signing

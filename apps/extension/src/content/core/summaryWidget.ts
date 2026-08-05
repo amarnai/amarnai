@@ -11,10 +11,17 @@ import { createLogoMark } from "./logoMark.js";
 // The palette echoes em-summary-card without importing it, and follows the
 // viewer's OS colour scheme.
 
+/** The comments badge: the ONLY comment-derived data allowed into the page DOM
+ *  (comment content stays in the extension-origin panel). */
+export type WidgetComments = { total: number; unread: number };
+
 export type WidgetState =
   | { kind: "loading" }
-  | { kind: "summary"; text: string }
-  | { kind: "bullets"; bullets: string[] }
+  | { kind: "summary"; text: string; comments?: WidgetComments }
+  | { kind: "bullets"; bullets: string[]; comments?: WidgetComments }
+  /** A thread with team discussion but no summary card (single-message threads
+   *  render no summary): a one-line strip whose only content is the bubble. */
+  | { kind: "commentsOnly"; comments: WidgetComments }
   | { kind: "error"; onRetry: () => void }
   | { kind: "quota"; resetsAt: string };
 
@@ -149,6 +156,33 @@ const STYLES = `
 .retry:hover { background: var(--am-hover); }
 /* all:initial on :host drops the UA focus ring; restore a visible one. */
 .retry:focus-visible { outline: 2px solid var(--am-accent); outline-offset: 1px; }
+/* Header row: the eyebrow left, the comment bubble pushed to the right edge. */
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.header .eyebrow { margin-bottom: 0; }
+.comments {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--am-muted);
+  padding: 2px 6px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.comments:hover { background: var(--am-hover); color: var(--am-accent-ink); }
+.comments:focus-visible { outline: 2px solid var(--am-accent); outline-offset: 1px; }
+/* Unread activity is the one accent moment; a read bubble stays muted. */
+.comments.unread { color: var(--am-accent-ink); font-weight: 600; }
 @media (prefers-reduced-motion: reduce) {
   .pulse { animation: none; }
 }
@@ -205,6 +239,14 @@ export interface MountOptions {
    * content column rather than the raw edge of the pane. Defaults to none.
    */
   gutterLeft?: string;
+  /**
+   * Open the injected panel with its Comments section focused. A persistent
+   * callback like gutterLeft, not per-state data: the bubble appears on every
+   * content-bearing state. Without it no bubble ever renders — the states'
+   * `comments` data is ignored, because a bubble with nowhere to go is a
+   * broken button.
+   */
+  onOpenComments?: () => void;
 }
 
 /**
@@ -239,7 +281,7 @@ export function mountSummaryWidget(
   const widget: SummaryWidget = {
     host,
     update(next) {
-      render(root, next, dark);
+      render(root, next, dark, options);
     },
     remove() {
       host.remove();
@@ -254,7 +296,53 @@ export function removeExistingWidgets(): void {
   for (const el of document.querySelectorAll(`[${HOST_ATTRIBUTE}]`)) el.remove();
 }
 
-function render(root: ShadowRoot, state: WidgetState, dark = false): void {
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+/**
+ * The comment bubble: a speech-bubble glyph plus the count (omitted at zero,
+ * where the bubble is the "start a discussion" affordance). Everything is
+ * createElement/createElementNS + textContent — never innerHTML — and the only
+ * comment-derived content is the two integers.
+ */
+function buildCommentsBubble(comments: WidgetComments, onOpen: () => void): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = comments.unread > 0 ? "comments unread" : "comments";
+  button.setAttribute("aria-label", STRINGS.commentsLabel(comments.total, comments.unread));
+
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 14 14");
+  svg.setAttribute("width", "12");
+  svg.setAttribute("height", "12");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS(SVG_NS, "path");
+  path.setAttribute(
+    "d",
+    "M3 2.5h8a1.5 1.5 0 011.5 1.5v4a1.5 1.5 0 01-1.5 1.5H7.2L4.5 11.8V9.5H3A1.5 1.5 0 011.5 8V4A1.5 1.5 0 013 2.5z",
+  );
+  path.setAttribute("stroke", "currentColor");
+  path.setAttribute("stroke-width", "1.3");
+  path.setAttribute("stroke-linejoin", "round");
+  svg.append(path);
+  button.append(svg);
+
+  if (comments.total > 0) {
+    const count = document.createElement("span");
+    count.textContent = String(comments.total);
+    button.append(count);
+  }
+
+  button.addEventListener("click", onOpen);
+  return button;
+}
+
+function render(
+  root: ShadowRoot,
+  state: WidgetState,
+  dark = false,
+  options: MountOptions = {},
+): void {
   // Drop everything except the <style> node and rebuild — the card is four
   // elements at most, so diffing would cost more than it saves.
   for (const child of Array.from(root.children)) {
@@ -309,6 +397,26 @@ function render(root: ShadowRoot, state: WidgetState, dark = false): void {
     return;
   }
 
+  if (state.kind === "commentsOnly") {
+    // The whole card is one line: the comments eyebrow and the bubble. Only
+    // mounted when the thread actually has discussion, so a thread without a
+    // summary and without comments stays untouched.
+    card.className = `${base} row`;
+    card.setAttribute("aria-label", "Amarnai team comments");
+    const eyebrow = document.createElement("span");
+    eyebrow.className = "eyebrow";
+    eyebrow.append(createLogoMark(document, 11));
+    const eyebrowLabel = document.createElement("span");
+    eyebrowLabel.textContent = STRINGS.commentsEyebrow;
+    eyebrow.append(eyebrowLabel);
+    card.append(eyebrow);
+    if (options.onOpenComments) {
+      card.append(buildCommentsBubble(state.comments, options.onOpenComments));
+    }
+    root.append(card);
+    return;
+  }
+
   card.className = base;
 
   const eyebrow = document.createElement("span");
@@ -317,6 +425,15 @@ function render(root: ShadowRoot, state: WidgetState, dark = false): void {
   const eyebrowLabel = document.createElement("span");
   eyebrowLabel.textContent = STRINGS.eyebrow;
   eyebrow.append(eyebrowLabel);
+
+  // Eyebrow left, bubble right. The header exists even without a bubble so the
+  // summary/bullets layout is identical whether or not a panel is available.
+  const header = document.createElement("div");
+  header.className = "header";
+  header.append(eyebrow);
+  if (state.comments && options.onOpenComments) {
+    header.append(buildCommentsBubble(state.comments, options.onOpenComments));
+  }
 
   if (state.kind === "bullets") {
     const list = document.createElement("ul");
@@ -327,7 +444,7 @@ function render(root: ShadowRoot, state: WidgetState, dark = false): void {
       item.textContent = bullet;
       list.append(item);
     }
-    card.append(eyebrow, list);
+    card.append(header, list);
     root.append(card);
     return;
   }
@@ -337,6 +454,6 @@ function render(root: ShadowRoot, state: WidgetState, dark = false): void {
   // textContent, never innerHTML: the summary is model output derived from
   // untrusted email content and is being injected into the user's mailbox.
   text.textContent = state.text;
-  card.append(eyebrow, text);
+  card.append(header, text);
   root.append(card);
 }

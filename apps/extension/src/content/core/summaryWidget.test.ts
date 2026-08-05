@@ -175,13 +175,17 @@ describe("bullets rendering", () => {
 });
 
 describe("card structure and accessibility", () => {
-  it("stacks the eyebrow above the content, not beside it", () => {
+  it("stacks the header (eyebrow row) above the content, not beside it", () => {
     const widget = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!;
     const card = widget.host.shadowRoot!.querySelector(".card")!;
     // No `row` modifier: the summary state is a block stack, matching the
-    // in-app ThreadSummaryCard so all three surfaces read identically.
+    // in-app ThreadSummaryCard so all three surfaces read identically. The
+    // first row is the header, which leads with the eyebrow (and hosts the
+    // comment bubble at its right edge when one renders).
     expect(card.classList.contains("row")).toBe(false);
-    expect(card.firstElementChild!.classList.contains("eyebrow")).toBe(true);
+    const header = card.firstElementChild!;
+    expect(header.classList.contains("header")).toBe(true);
+    expect(header.firstElementChild!.classList.contains("eyebrow")).toBe(true);
   });
 
   it("keeps the transient states on one row", () => {
@@ -238,5 +242,90 @@ describe("card structure and accessibility", () => {
     const card = widget.host.shadowRoot!.querySelector(".card")!;
     expect(card.getAttribute("role")).toBe("note");
     expect(card.getAttribute("aria-live")).toBe("polite");
+  });
+});
+
+describe("comment bubble", () => {
+  const OPEN = () => vi.fn();
+
+  function bubbleOf(host: HTMLElement): HTMLButtonElement | null {
+    return host.shadowRoot!.querySelector<HTMLButtonElement>(".comments");
+  }
+
+  it("renders in the header with the count when comments data and a callback exist", () => {
+    const widget = mountSummaryWidget(
+      anchorInPage(),
+      { kind: "summary", text: "hi", comments: { total: 3, unread: 0 } },
+      { onOpenComments: OPEN() },
+    )!;
+    const bubble = bubbleOf(widget.host)!;
+    expect(bubble).not.toBeNull();
+    expect(bubble.closest(".header")).not.toBeNull();
+    expect(bubble.textContent).toContain("3");
+    expect(bubble.getAttribute("aria-label")).toBe(STRINGS.commentsLabel(3, 0));
+    expect(bubble.classList.contains("unread")).toBe(false);
+  });
+
+  it("omits the count at zero (the bubble is the start-a-discussion affordance)", () => {
+    const widget = mountSummaryWidget(
+      anchorInPage(),
+      { kind: "bullets", bullets: ["a"], comments: { total: 0, unread: 0 } },
+      { onOpenComments: OPEN() },
+    )!;
+    const bubble = bubbleOf(widget.host)!;
+    expect(bubble.textContent).toBe("");
+    expect(bubble.querySelector("svg")).not.toBeNull();
+  });
+
+  it("takes the unread accent variant when there is unread activity", () => {
+    const widget = mountSummaryWidget(
+      anchorInPage(),
+      { kind: "summary", text: "hi", comments: { total: 4, unread: 2 } },
+      { onOpenComments: OPEN() },
+    )!;
+    expect(bubbleOf(widget.host)!.classList.contains("unread")).toBe(true);
+    expect(bubbleOf(widget.host)!.getAttribute("aria-label")).toContain("2 new");
+  });
+
+  it("never renders without the callback: a bubble with nowhere to go is a broken button", () => {
+    const widget = mountSummaryWidget(anchorInPage(), {
+      kind: "summary",
+      text: "hi",
+      comments: { total: 3, unread: 1 },
+    })!;
+    expect(bubbleOf(widget.host)).toBeNull();
+  });
+
+  it("never renders without comments data", () => {
+    const widget = mountSummaryWidget(
+      anchorInPage(),
+      { kind: "summary", text: "hi" },
+      { onOpenComments: OPEN() },
+    )!;
+    expect(bubbleOf(widget.host)).toBeNull();
+  });
+
+  it("fires the callback on click", () => {
+    const onOpen = vi.fn();
+    const widget = mountSummaryWidget(
+      anchorInPage(),
+      { kind: "summary", text: "hi", comments: { total: 1, unread: 0 } },
+      { onOpenComments: onOpen },
+    )!;
+    bubbleOf(widget.host)!.click();
+    expect(onOpen).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders the commentsOnly strip as one row with the comments eyebrow", () => {
+    const widget = mountSummaryWidget(
+      anchorInPage(),
+      { kind: "commentsOnly", comments: { total: 2, unread: 1 } },
+      { onOpenComments: OPEN() },
+    )!;
+    const card = widget.host.shadowRoot!.querySelector(".card")!;
+    expect(card.classList.contains("row")).toBe(true);
+    expect(card.getAttribute("aria-label")).toBe("Amarnai team comments");
+    expect(shadowText(widget.host)).toContain(STRINGS.commentsEyebrow);
+    expect(bubbleOf(widget.host)!.textContent).toContain("2");
   });
 });

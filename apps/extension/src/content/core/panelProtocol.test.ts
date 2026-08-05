@@ -7,6 +7,10 @@ import {
   PANEL_READY,
   PANEL_INSERT_DRAFT,
   PANEL_OPEN_PANEL,
+  PANEL_FOCUS_COMMENTS,
+  PANEL_COMMENTS_CHANGED,
+  isPanelCommentsChangedMessage,
+  isPanelFocusCommentsMessage,
   isPanelThreadContextMessage,
   isPanelVisibilityMessage,
   isPanelInsertResultMessage,
@@ -104,5 +108,27 @@ describe("panel protocol guards", () => {
     expect(
       isPanelInsertDraftMessage({ v: V, type: PANEL_INSERT_DRAFT, requestId: "i-1", html: null }),
     ).toBe(false);
+  });
+});
+
+describe("focus-comments message", () => {
+  it("accepts the well-formed event and refuses everything near it", () => {
+    expect(isPanelFocusCommentsMessage({ v: V, type: PANEL_FOCUS_COMMENTS })).toBe(true);
+    // Wrong version, wrong type, and a bare object are all refused: an old
+    // frame must drop this addition silently rather than half-understand it.
+    expect(isPanelFocusCommentsMessage({ v: V - 1, type: PANEL_FOCUS_COMMENTS })).toBe(false);
+    expect(isPanelFocusCommentsMessage({ v: V, type: PANEL_OPEN_PANEL })).toBe(false);
+    expect(isPanelFocusCommentsMessage({})).toBe(false);
+    expect(isPanelFocusCommentsMessage(null)).toBe(false);
+  });
+});
+
+describe("comments-changed message", () => {
+  it("accepts the well-formed nudge and refuses everything near it", () => {
+    expect(isPanelCommentsChangedMessage({ v: V, type: PANEL_COMMENTS_CHANGED })).toBe(true);
+    expect(isPanelCommentsChangedMessage({ v: V - 1, type: PANEL_COMMENTS_CHANGED })).toBe(false);
+    expect(isPanelCommentsChangedMessage({ v: V, type: PANEL_FOCUS_COMMENTS })).toBe(false);
+    expect(isPanelCommentsChangedMessage({})).toBe(false);
+    expect(isPanelCommentsChangedMessage(null)).toBe(false);
   });
 });

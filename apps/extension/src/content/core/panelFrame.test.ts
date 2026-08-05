@@ -9,6 +9,8 @@ import {
   PANEL_INSERT_RESULT,
   PANEL_OPEN_PANEL,
   PANEL_DISABLED,
+  PANEL_FOCUS_COMMENTS,
+  PANEL_COMMENTS_CHANGED,
 } from "./panelProtocol";
 import { attachPanelFrame, type PanelFrameLink } from "./panelFrame";
 
@@ -37,6 +39,7 @@ let fakeContentWindow: object;
 let insertDraft: ReturnType<typeof vi.fn>;
 let openPanel: ReturnType<typeof vi.fn>;
 let disabled: ReturnType<typeof vi.fn>;
+let commentsChanged: ReturnType<typeof vi.fn>;
 let link: PanelFrameLink;
 
 /** Deliver a message as the browser would, with an origin we do not control. */
@@ -66,11 +69,13 @@ beforeEach(() => {
   insertDraft = vi.fn(() => true);
   openPanel = vi.fn();
   disabled = vi.fn();
+  commentsChanged = vi.fn();
   link = attachPanelFrame({
     iframe,
     onInsertDraft: insertDraft as unknown as (html: string) => boolean,
     onOpenPanel: openPanel,
     onDisabled: disabled,
+    onCommentsChanged: commentsChanged,
   });
 });
 
@@ -290,5 +295,40 @@ describe("attachPanelFrame — stop", () => {
     vi.advanceTimersByTime(5_000);
 
     expect(posted).toEqual([]);
+  });
+});
+
+describe("attachPanelFrame — focus comments", () => {
+  it("posts the event once, targeted at the extension origin", () => {
+    link.focusComments();
+
+    const events = messagesOfType(PANEL_FOCUS_COMMENTS);
+    expect(events).toHaveLength(1);
+    expect(events[0]!.targetOrigin).toBe(EXTENSION_ORIGIN);
+    expect(events[0]!.message).toEqual({ v: PANEL_PROTOCOL_VERSION, type: PANEL_FOCUS_COMMENTS });
+  });
+
+  it("is an event, not state: the handshake never replays it", () => {
+    link.focusComments();
+
+    // A frame (re)load replays context + visibility — and must NOT replay the
+    // focus request, or a reloaded panel would spontaneously re-open comments.
+    iframe.dispatchEvent(new Event("load"));
+    vi.advanceTimersByTime(1000);
+
+    expect(messagesOfType(PANEL_FOCUS_COMMENTS)).toHaveLength(1);
+  });
+});
+
+describe("attachPanelFrame — comments changed nudge", () => {
+  it("relays the frame's nudge to the host callback", () => {
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_COMMENTS_CHANGED });
+    expect(commentsChanged).toHaveBeenCalledTimes(1);
+  });
+
+  it("refuses the nudge from any other origin or source", () => {
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_COMMENTS_CHANGED }, "https://evil.example");
+    deliver({ v: PANEL_PROTOCOL_VERSION, type: PANEL_COMMENTS_CHANGED }, EXTENSION_ORIGIN, {});
+    expect(commentsChanged).not.toHaveBeenCalled();
   });
 });

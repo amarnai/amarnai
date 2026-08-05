@@ -40,9 +40,8 @@ function makeApi(overrides: Partial<ApiClient> = {}): ApiClient {
   } as unknown as ApiClient;
 }
 
-function renderSection(opts: { api?: ApiClient; focus?: boolean } = {}) {
-  const api = opts.api ?? makeApi();
-  render(
+function sectionEl(api: ApiClient, focusNonce: number) {
+  return (
     <I18nProvider i18n={i18n}>
       <CommentsSection
         api={api}
@@ -50,11 +49,16 @@ function renderSection(opts: { api?: ApiClient; focus?: boolean } = {}) {
         workspaceId="ws-1"
         thread={THREAD}
         members={[]}
-        focus={opts.focus ?? false}
+        focusNonce={focusNonce}
       />
-    </I18nProvider>,
+    </I18nProvider>
   );
-  return { api };
+}
+
+function renderSection(opts: { api?: ApiClient; focusNonce?: number } = {}) {
+  const api = opts.api ?? makeApi();
+  const view = render(sectionEl(api, opts.focusNonce ?? 0));
+  return { api, view };
 }
 
 describe("CommentsSection", () => {
@@ -86,12 +90,70 @@ describe("CommentsSection", () => {
     await waitFor(() => expect(api.markThreadCommentsRead).toHaveBeenCalledWith("ws-1", "t1"));
   });
 
-  it("mounts expanded when deep-linked with focus", async () => {
-    const { api } = renderSection({ focus: true });
+  it("mounts expanded when deep-linked with an initial focus nonce", async () => {
+    const { api } = renderSection({ focusNonce: 1 });
 
     await waitFor(() => expect(api.listThreadComments).toHaveBeenCalledTimes(1));
     expect(screen.getByRole("button", { name: /Comments/ }).getAttribute("aria-expanded")).toBe(
       "true",
     );
+  });
+
+  it("nudges the host when a posted comment changes the list, not on first load", async () => {
+    const notifyCommentsChanged = vi.fn();
+    const host = {
+      tokenStore: { get: vi.fn().mockResolvedValue(null) },
+      notifyCommentsChanged,
+    } as unknown as PanelHost;
+    const api = makeApi({
+      createThreadComment: vi.fn().mockResolvedValue({
+        ok: true,
+        comment: {
+          id: "c1",
+          body: "hi",
+          mentionUserIds: [],
+          author: { userId: "u-me", name: "Me", email: "me@example.com" },
+          createdAt: "2026-08-05T10:00:00.000Z",
+        },
+      }),
+    } as Partial<ApiClient>);
+    render(
+      <I18nProvider i18n={i18n}>
+        <CommentsSection
+          api={api}
+          host={host}
+          workspaceId="ws-1"
+          thread={THREAD}
+          members={[]}
+          focusNonce={1}
+        />
+      </I18nProvider>,
+    );
+
+    // The initial (empty) load is baseline, never a change.
+    const textbox = await screen.findByRole("textbox");
+    expect(notifyCommentsChanged).not.toHaveBeenCalled();
+
+    fireEvent.change(textbox, { target: { value: "hi" } });
+    fireEvent.click(screen.getByRole("button", { name: "Comment" }));
+
+    await waitFor(() => expect(notifyCommentsChanged).toHaveBeenCalledTimes(1));
+  });
+
+  it("re-expands and re-scrolls a mounted section when the nonce increments", async () => {
+    const { api, view } = renderSection();
+
+    // Open, then collapse again, so the nonce has to do real work.
+    const toggle = screen.getByRole("button", { name: /Comments/ });
+    fireEvent.click(toggle);
+    await waitFor(() => expect(api.listThreadComments).toHaveBeenCalled());
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    const scrollsBefore = vi.mocked(Element.prototype.scrollIntoView).mock.calls.length;
+
+    view.rerender(sectionEl(api, 1));
+
+    expect(toggle.getAttribute("aria-expanded")).toBe("true");
+    expect(vi.mocked(Element.prototype.scrollIntoView).mock.calls.length).toBe(scrollsBefore + 1);
   });
 });

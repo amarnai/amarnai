@@ -10,6 +10,7 @@ import {
   PANEL_VISIBILITY,
   PANEL_INSERT_DRAFT,
   PANEL_INSERT_RESULT,
+  PANEL_FOCUS_COMMENTS,
 } from "../core/panelProtocol";
 
 // The OWA drawer. jsdom has no layout engine, so nothing here can check that the
@@ -122,7 +123,7 @@ afterEach(() => {
 describe("startOutlookInjectedPanel — mounting", () => {
   it("puts exactly one host on the body, with a shadow root", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
 
     const hosts = document.querySelectorAll(HOST_SELECTOR);
     expect(hosts).toHaveLength(1);
@@ -134,7 +135,7 @@ describe("startOutlookInjectedPanel — mounting", () => {
 
   it("loads the panel as the outlook embed", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
 
     expect(frame().src).toContain("injected.html");
     expect(frame().src).toContain(`${PANEL_EMBED_PARAM}=outlook`);
@@ -143,7 +144,7 @@ describe("startOutlookInjectedPanel — mounting", () => {
   // Without the delegation the panel's Copy silently rejects inside the frame.
   it("asks OWA to delegate clipboard-write, and nothing else", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
 
     expect(frame().getAttribute("allow")).toBe("clipboard-write");
     // A sandbox would cut the frame off from its own token storage.
@@ -152,20 +153,22 @@ describe("startOutlookInjectedPanel — mounting", () => {
 
   it("refuses to mount a second drawer over the first", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     const second = await startOutlookInjectedPanel(document);
 
     expect(document.querySelectorAll(HOST_SELECTOR)).toHaveLength(1);
-    second();
+    second.stop();
     // The stray teardown must not have taken the real drawer with it.
     expect(document.querySelectorAll(HOST_SELECTOR)).toHaveLength(1);
+    // A refused mount hands back the inert handle, never a live one.
+    expect(second.isLive()).toBe(false);
   });
 });
 
 describe("startOutlookInjectedPanel — the drawer", () => {
   it("starts collapsed on a first visit", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
 
     expect(hostEl()?.getAttribute("data-expanded")).toBe("false");
     expect(tab().getAttribute("aria-expanded")).toBe("false");
@@ -173,7 +176,7 @@ describe("startOutlookInjectedPanel — the drawer", () => {
 
   it("expands on the tab, and says so to the panel", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     posted.length = 0;
 
@@ -188,7 +191,7 @@ describe("startOutlookInjectedPanel — the drawer", () => {
 
   it("collapses again on a second click", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
 
     tab().click();
@@ -205,12 +208,12 @@ describe("startOutlookInjectedPanel — the drawer", () => {
   // navigations, so the drawer has to be remembered rather than reset.
   it("reopens expanded after a reload", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     tab().click();
     teardown();
 
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
 
     expect(hostEl()?.getAttribute("data-expanded")).toBe("true");
   });
@@ -219,12 +222,12 @@ describe("startOutlookInjectedPanel — the drawer", () => {
   // SSE connection for a drawer that turns out to be shut.
   it("seeds visibility from storage before the frame is addressed", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     tab().click();
     teardown();
 
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     posted.length = 0;
     // The handshake replays whatever state was recorded at mount.
@@ -244,7 +247,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
   // thread screen for a thread nobody opened.
   it("reports the mailbox but no conversation on the list view", async () => {
     buildListOnly();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     posted.length = 0;
     frame().dispatchEvent(new Event("load"));
@@ -258,7 +261,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
 
   it("reports the conversation once one is open", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     posted.length = 0;
     frame().dispatchEvent(new Event("load"));
@@ -289,7 +292,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
         </div>
       </div>
     `;
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     posted.length = 0;
     frame().dispatchEvent(new Event("load"));
@@ -321,7 +324,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
         </div>
       </div>
     `;
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     frame().dispatchEvent(new Event("load"));
     posted.length = 0;
@@ -347,7 +350,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
   // believing the text landed in a compose.
   it("refuses to insert when no conversation is open", async () => {
     buildListOnly();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     frame().dispatchEvent(new Event("load"));
     posted.length = 0;
@@ -371,7 +374,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
   it("does not claim a message ref before the item pane renders", async () => {
     window.history.replaceState({}, "", "/mail/deeplink/read/AAkALg_HYQ");
     document.body.innerHTML = `<div id="app"></div>`;
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     posted.length = 0;
     frame().dispatchEvent(new Event("load"));
@@ -393,7 +396,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
         <div id="ConversationReadingPaneContainer" data-convid="AAQkAD1="></div>
       </div>
     `;
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
     posted.length = 0;
     frame().dispatchEvent(new Event("load"));
@@ -407,11 +410,53 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
 describe("startOutlookInjectedPanel — teardown", () => {
   it("takes the drawer off the page", async () => {
     buildConversation();
-    teardown = await startOutlookInjectedPanel(document);
+    teardown = (await startOutlookInjectedPanel(document)).stop;
 
     teardown();
     teardown = () => {};
 
     expect(hostEl()).toBeNull();
+  });
+});
+
+describe("startOutlookInjectedPanel — the handle", () => {
+  it("reveal() expands a collapsed drawer through the remembered-state path", async () => {
+    buildConversation();
+    const handle = await startOutlookInjectedPanel(document);
+    teardown = handle.stop;
+
+    expect(hostEl()!.getAttribute("data-expanded")).toBe("false");
+    handle.reveal();
+    expect(hostEl()!.getAttribute("data-expanded")).toBe("true");
+    // Through setExpanded, so the choice is remembered like a tab click.
+    const stored = await chrome.storage.local.get("owaPanelExpanded");
+    expect(stored["owaPanelExpanded"]).toBe(true);
+  });
+
+  it("focusComments() posts the protocol event to the frame", async () => {
+    buildConversation();
+    const handle = await startOutlookInjectedPanel(document);
+    teardown = handle.stop;
+    stubFrameWindow();
+
+    handle.focusComments();
+
+    expect(posted.some((m) => m["type"] === PANEL_FOCUS_COMMENTS)).toBe(true);
+  });
+
+  it("goes dead after stop(): isLive() false and reveal()/focusComments() inert", async () => {
+    buildConversation();
+    const handle = await startOutlookInjectedPanel(document);
+    teardown = handle.stop;
+
+    expect(handle.isLive()).toBe(true);
+    handle.stop();
+    expect(handle.isLive()).toBe(false);
+
+    const postedBefore = posted.length;
+    handle.reveal();
+    handle.focusComments();
+    expect(posted.length).toBe(postedBefore);
+    expect(document.querySelector(HOST_SELECTOR)).toBeNull();
   });
 });

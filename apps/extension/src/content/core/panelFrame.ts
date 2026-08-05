@@ -5,6 +5,8 @@ import {
   PANEL_THREAD_CONTEXT,
   PANEL_VISIBILITY,
   PANEL_INSERT_RESULT,
+  PANEL_FOCUS_COMMENTS,
+  isPanelCommentsChangedMessage,
   isPanelDisabledMessage,
   isPanelInsertDraftMessage,
   isPanelOpenPanelMessage,
@@ -51,6 +53,11 @@ export type PanelFrameOptions = {
    * two hosts would end up with different ones.
    */
   onDisabled: () => void;
+  /**
+   * The panel's comment list for the open thread changed. Optional: only a
+   * host with an in-page comments badge has anything to refresh.
+   */
+  onCommentsChanged?: () => void;
 };
 
 export type PanelFrameLink = {
@@ -58,6 +65,12 @@ export type PanelFrameLink = {
   postContext(context: PanelThreadContext | null): void;
   /** Tell the panel whether anyone is looking at it. Gates the SSE connection. */
   setVisible(visible: boolean): void;
+  /**
+   * Ask the panel to expand + scroll its Comments section. Fire-and-forget and
+   * an event rather than state: it is NOT replayed by the handshake, so a
+   * frame that reloads never spontaneously re-focuses comments.
+   */
+  focusComments(): void;
   /** Drop the listeners and stop the handshake. */
   stop(): void;
 };
@@ -72,6 +85,7 @@ export function attachPanelFrame({
   onInsertDraft,
   onOpenPanel,
   onDisabled,
+  onCommentsChanged,
 }: PanelFrameOptions): PanelFrameLink {
   const origin = extensionOrigin();
   let pendingContext: PanelThreadContext | null = null;
@@ -150,6 +164,11 @@ export function attachPanelFrame({
       return;
     }
 
+    if (isPanelCommentsChangedMessage(event.data)) {
+      onCommentsChanged?.();
+      return;
+    }
+
     if (isPanelDisabledMessage(event.data)) {
       // The host tears itself down, which drops this listener too — so the
       // handshake is stopped first rather than left running against a frame that
@@ -172,6 +191,10 @@ export function attachPanelFrame({
       // in which case this post goes nowhere and the handshake carries the value
       // across instead.
       post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_VISIBILITY, visible });
+    },
+
+    focusComments() {
+      post({ v: PANEL_PROTOCOL_VERSION, type: PANEL_FOCUS_COMMENTS });
     },
 
     stop() {
