@@ -18,7 +18,15 @@ const session = vi.hoisted(() => ({
 }));
 
 vi.mock("../auth/session", () => ({ useSession: () => session }));
-vi.mock("./openWebApp", () => ({ openWebApp: vi.fn() }));
+vi.mock("./openWebApp", () => ({
+  openWebApp: vi.fn(),
+  useWebAppLink: () => (path: string) => ({
+    href: path,
+    target: "_blank",
+    rel: "noopener noreferrer",
+    onClick: vi.fn(),
+  }),
+}));
 
 import { SettingsOverlay } from "./SettingsOverlay";
 import { openWebApp } from "./openWebApp";
@@ -80,6 +88,7 @@ describe("SettingsOverlay — which controls a member sees", () => {
 
     await waitFor(() => expect(screen.getByText(/workspace details/i)).toBeTruthy());
     expect(screen.getByText(/^Language$/)).toBeTruthy();
+    expect(screen.getByText(/invite collaborators/i)).toBeTruthy();
   });
 
   it("hides them from a plain member even when ownerUserId points at them", async () => {
@@ -93,6 +102,7 @@ describe("SettingsOverlay — which controls a member sees", () => {
     // The plan section always renders, so wait on that before asserting absence.
     await waitFor(() => expect(screen.getByText(/^Plan$/)).toBeTruthy());
     expect(screen.queryByText(/workspace details/i)).toBeNull();
+    expect(screen.queryByText(/invite collaborators/i)).toBeNull();
     expect(screen.queryByText(/^Language$/)).toBeNull();
   });
 
@@ -104,6 +114,7 @@ describe("SettingsOverlay — which controls a member sees", () => {
 
     await waitFor(() => expect(screen.getByText(/^Plan$/)).toBeTruthy());
     expect(screen.queryByText(/workspace details/i)).toBeNull();
+    expect(screen.queryByText(/invite collaborators/i)).toBeNull();
   });
 });
 
