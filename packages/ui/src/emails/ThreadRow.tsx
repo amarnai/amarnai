@@ -229,18 +229,20 @@ export function ThreadRow({
           )}
           {assignment && (
             assignInteractive ? (
-              <button
-                type="button"
-                className="em-pill em-pill--assignee"
-                aria-label={i18n._(msg`Assigned to ${assigneeName}. Change assignee`)}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onOpenAssign?.(e.currentTarget);
-                }}
-              >
-                {PERSON_ICO}
-                {assigneeName}
-              </button>
+              <Tooltip content={i18n._(msg`Change assignment`)}>
+                <button
+                  type="button"
+                  className="em-pill em-pill--assignee"
+                  aria-label={i18n._(msg`Assigned to ${assigneeName}. Change assignee`)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenAssign?.(e.currentTarget);
+                  }}
+                >
+                  {PERSON_ICO}
+                  {assigneeName}
+                </button>
+              </Tooltip>
             ) : (
               <span className="em-pill em-pill--assignee">
                 {PERSON_ICO}
