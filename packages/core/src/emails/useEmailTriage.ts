@@ -443,6 +443,25 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     );
   }, []);
 
+  // ─── Comments sync ─────────────────────────────────────────────────────────
+  //
+  // The comments section reported its loaded list's size (on open, post,
+  // delete, or poll). That list is authoritative and this member's read marker
+  // just advanced, so the row's comments tag takes the new total (appearing or
+  // disappearing across 0) and clears its unread accent immediately instead of
+  // waiting for the next list refresh.
+  const handleCommentsSync = useCallback((threadId: string, commentCount: number) => {
+    setThreads((ts) => {
+      const cur = ts.find((t) => t.id === threadId);
+      if (!cur || (cur.commentCount === commentCount && cur.unreadCommentCount === 0)) {
+        return ts;
+      }
+      return ts.map((t) =>
+        t.id === threadId ? { ...t, commentCount, unreadCommentCount: 0 } : t
+      );
+    });
+  }, []);
+
   // ─── Reroute unclassified ──────────────────────────────────────────────────
 
   const handleReroute = useCallback(() => {
@@ -543,6 +562,7 @@ export function useEmailTriage(options: UseEmailTriageOptions) {
     handleDraftFailed,
     handleDraftGenerated,
     handleDraftSentToggled,
+    handleCommentsSync,
     handleReroute,
     markWaitingClassifying,
     // toast

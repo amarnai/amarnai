@@ -437,6 +437,7 @@ export function EmailsPanel({
             onDraftSentToggled={triage.handleDraftSentToggled}
             onMarkDone={triage.handleMarkDone}
             onUnmarkDone={triage.handleUnmarkDone}
+            onCommentsSync={triage.handleCommentsSync}
             onToggleImportant={triage.handleToggleImportant}
             canAssign={canAssign}
             onOpenAssign={openAssignFor}

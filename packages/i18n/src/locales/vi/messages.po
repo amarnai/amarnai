@@ -28,6 +28,19 @@ msgstr "(Không có nội dung)"
 msgid "(no subject)"
 msgstr "(Không có chủ đề)"
 
+#. placeholder {0}: thread.commentCount
+#: ../ui/src/emails/ThreadRow.tsx:324
+#: ../ui/src/emails/ThreadRow.tsx:338
+#, fuzzy
+msgid "{0, plural, one {# comment} other {# comments}}"
+msgstr "{0, plural, one {# bình luận} other {# bình luận}}"
+
+#. placeholder {0}: thread.commentCount
+#. placeholder {1}: thread.unreadCommentCount
+#: ../ui/src/emails/ThreadRow.tsx:335
+msgid "{0, plural, one {# comment} other {# comments}}, {1, plural, one {# unread} other {# unread}}"
+msgstr "{0, plural, one {# bình luận} other {# bình luận}}, {1, plural, one {# chưa đọc} other {# chưa đọc}}"
+
 #. placeholder {0}: thread.attachmentCount
 #: ../../apps/mobile/src/components/ThreadRow.tsx:115
 #, fuzzy
@@ -170,7 +183,7 @@ msgstr "{blacklistCount, plural, one {# bị chặn} other {# bị chặn}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} đã giao cho bạn: {subject}"
 
-#: ../ui/src/emails/ThreadRow.tsx:272
+#: ../ui/src/emails/ThreadRow.tsx:283
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}. Thay đổi thư mục"
 
@@ -264,8 +277,8 @@ msgstr "Hộp thư {providerName}"
 
 #. placeholder {0}: draftQuota.limit
 #. placeholder {0}: quota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:470
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:485
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:473
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:488
 #: ../panel/src/DraftSection.tsx:237
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -605,17 +618,19 @@ msgstr "500 luồng"
 msgid "75,000 threads"
 msgstr "75.000 cuộc trò chuyện"
 
-#: ../ui/src/demo/demo-seed.ts:437
+#: ../ui/src/demo/demo-seed.ts:441
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín."
 
-#: ../ui/src/demo/demo-seed.ts:451
+#: ../ui/src/demo/demo-seed.ts:455
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n\nXem hồ sơ trong Nhà Lưu trữ."
+msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n"
+"\n"
+"Xem hồ sơ trong Nhà Lưu trữ."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -630,7 +645,7 @@ msgstr "Chủ sở hữu không gian làm việc quản lý các thư mục củ
 #~ msgid "A workspace owner manages this workspace's sorting plan."
 #~ msgstr "Chủ sở hữu không gian làm việc quản lý kế hoạch sắp xếp của không gian này."
 
-#: ../ui/src/demo/demo-seed.ts:521
+#: ../ui/src/demo/demo-seed.ts:529
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba của Urushalim"
@@ -642,7 +657,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nTôi sẽ ở gần vùng Đồng bằng vào tuần đó. Chúng ta hãy gặp nhau tại trạm dừng chân vào ngày thứ hai; tôi có thể dành ra buổi sáng.\n\nHẹn gặp lại,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Tôi sẽ ở gần vùng Đồng bằng vào tuần đó. Chúng ta hãy gặp nhau tại trạm dừng chân vào ngày thứ hai; tôi có thể dành ra buổi sáng.\n"
+"\n"
+"Hẹn gặp lại,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -863,7 +882,7 @@ msgstr "Toàn bộ dữ liệu không gian làm việc sẽ bị xóa vĩnh vi�
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Toàn bộ không gian làm việc, email và cài đặt của bạn sẽ bị xóa vĩnh viễn."
 
-#: ../ui/src/demo/demo-seed.ts:393
+#: ../ui/src/demo/demo-seed.ts:395
 #, fuzzy
 msgid "Alliance proposal: house of Amurru"
 msgstr "Đề nghị liên minh: Gia tộc Amurru"
@@ -1193,7 +1212,7 @@ msgstr "Lỗi API {0}"
 msgid "Appearance"
 msgstr "Giao diện"
 
-#: ../ui/src/demo/demo-seed.ts:432
+#: ../ui/src/demo/demo-seed.ts:436
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Ứng tuyển: Chánh văn phòng"
@@ -1274,8 +1293,8 @@ msgid "Assign to"
 msgstr "Giao cho"
 
 #: ../ui/src/emails/ThreadPreview.tsx:243
-#: ../ui/src/emails/ThreadRow.tsx:349
-#: ../ui/src/emails/ThreadRow.tsx:358
+#: ../ui/src/emails/ThreadRow.tsx:386
+#: ../ui/src/emails/ThreadRow.tsx:395
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1303,8 +1322,8 @@ msgid "Assigned to {assigneeName}"
 msgstr "Giao cho {assigneeName}"
 
 #: ../ui/src/emails/ThreadPreview.tsx:242
-#: ../ui/src/emails/ThreadRow.tsx:236
-#: ../ui/src/emails/ThreadRow.tsx:357
+#: ../ui/src/emails/ThreadRow.tsx:247
+#: ../ui/src/emails/ThreadRow.tsx:394
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1349,7 +1368,7 @@ msgstr "Thư tự động và thư hàng loạt ({0}) luôn được chuyển đ
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Thư tự động và thư hàng loạt không thuộc thư mục nào khác sẽ tự động chuyển đến đây. Thư mục này khác với <em>Cần xem lại</em>, nơi chứa các cuộc hội thoại quá mơ hồ để trợ lý có thể sắp xếp."
 
-#: ../ui/src/demo/demo-seed.ts:442
+#: ../ui/src/demo/demo-seed.ts:446
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Thông báo tự động từ Cục Bổ nhiệm Hoàng gia. Chủ đề và người gửi cho thấy đây là đơn ứng tuyển mới cho một vị trí đang tuyển."
@@ -1368,7 +1387,7 @@ msgstr "Thông báo tự động, bản tin và cập nhật dịch vụ không 
 msgid "Aziru"
 msgstr "Aziru"
 
-#: ../ui/src/demo/demo-seed.ts:408
+#: ../ui/src/demo/demo-seed.ts:410
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Aziru xứ Amurru"
@@ -1384,7 +1403,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nLời hữu nghị của ngài đã đến tai chúng tôi. Chúng tôi sẵn lòng lắng nghe thêm về đề xuất của Gia tộc Amurru. Xin hãy gửi các điều khoản của ngài qua sứ giả kế tiếp.\n\nTrân trọng,"
+msgstr "Aziru,\n"
+"\n"
+"Lời hữu nghị của ngài đã đến tai chúng tôi. Chúng tôi sẵn lòng lắng nghe thêm về đề xuất của Gia tộc Amurru. Xin hãy gửi các điều khoản của ngài qua sứ giả kế tiếp.\n"
+"\n"
+"Trân trọng,"
 
 #: ../ui/src/demo/demo-seed.ts:292
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1392,10 +1415,10 @@ msgstr "Lô vàng thứ ba của Babylon đã quá hạn sau hai người đưa 
 
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:106
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:357
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:359
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:377
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
@@ -1411,8 +1434,8 @@ msgstr "Quay lại Gmail"
 #~ msgid "Back to inbox"
 #~ msgstr "Về hộp thư đến"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:353
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:372
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:355
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:374
 #: ../ui/src/emails/ThreadPreview.tsx:118
 #, fuzzy
 msgid "Back to list"
@@ -1556,7 +1579,7 @@ msgstr "Tạo gói"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Sắp xếp hộp thư đến hàng loạt"
 
-#: ../ui/src/demo/demo-seed.ts:447
+#: ../ui/src/demo/demo-seed.ts:451
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Cục Bổ nhiệm Hoàng gia"
@@ -1704,16 +1727,16 @@ msgstr "Ghi danh mục cần quyền quản lý email Outlook của bạn. Thử
 msgid "Change"
 msgstr "Thay đổi"
 
-#: ../ui/src/emails/ThreadRow.tsx:348
+#: ../ui/src/emails/ThreadRow.tsx:385
 msgid "Change assignee"
 msgstr "Thay đổi người được giao"
 
-#: ../ui/src/emails/ThreadRow.tsx:232
+#: ../ui/src/emails/ThreadRow.tsx:243
 #, fuzzy
 msgid "Change assignment"
 msgstr "Thay đổi phân công"
 
-#: ../ui/src/emails/ThreadRow.tsx:170
+#: ../ui/src/emails/ThreadRow.tsx:181
 msgid "Change folder"
 msgstr "Thay đổi thư mục"
 
@@ -1867,8 +1890,8 @@ msgstr "Đóng"
 msgid "Close panel"
 msgstr "Đóng bảng điều khiển"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:424
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:422
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:426
 #: ../ui/src/emails/ThreadPreview.tsx:149
 #: ../ui/src/emails/ThreadPreview.tsx:153
 #, fuzzy
@@ -2499,12 +2522,12 @@ msgstr "Không thể bắt đầu tạo."
 msgid "Council convenes at the start of Shemu"
 msgstr "Hội đồng triệu tập vào đầu Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:543
+#: ../ui/src/demo/demo-seed.ts:553
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Triệu tập Hội đồng: mùa Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:553
+#: ../ui/src/demo/demo-seed.ts:563
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Yêu cầu chuẩn bị Hội đồng từ một đồng minh hoàng gia đã biết. Tên miền người gửi và ngữ cảnh khớp rõ ràng với thư mục Nhà đầu tư hiện tại."
@@ -2863,11 +2886,11 @@ msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quy
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ngắt kết nối không gian làm việc này. Amarnai vẫn giữ quyền truy cập vì hộp thư này vẫn được kết nối trong {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:500
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:501
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:411
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:412
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:73
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
@@ -2935,7 +2958,7 @@ msgstr "Các chiến dịch quyên góp, vận động tài trợ và phản h�
 #: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:62
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/emails/ThreadRow.tsx:238
 #: ../ui/src/upgrade/UpgradeDialog.tsx:200
 #, fuzzy
 msgid "Done"
@@ -2955,7 +2978,7 @@ msgstr "Người quyên góp"
 msgid "Downgrade to {planName}"
 msgstr "Hạ cấp xuống {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:299
+#: ../ui/src/emails/ThreadRow.tsx:310
 #, fuzzy
 msgid "draft"
 msgstr "bản nháp"
@@ -2988,8 +3011,8 @@ msgstr "Bản nháp thất bại · chạm để thử lại"
 msgid "Draft generation failed."
 msgstr "Không thể tạo bản nháp."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:485
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:501
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:488
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Tạo bản nháp thất bại. Vui lòng thử lại."
@@ -3018,7 +3041,7 @@ msgstr "Hướng dẫn phong cách bản nháp"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #: ../ui/src/demo/mailbox/AmarnaiReply.tsx:65
-#: ../ui/src/emails/ThreadRow.tsx:293
+#: ../ui/src/emails/ThreadRow.tsx:304
 #, fuzzy
 msgid "Drafting…"
 msgstr "Đang soạn nháp…"
@@ -3467,7 +3490,7 @@ msgstr "Yêu cầu từ người mua/bán ban đầu và giới thiệu đại l
 msgid "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "Năm điều giúp hộp thư đến của bạn an toàn. Thứ nhất, quyền truy cập của Amarnai bị hạn chế theo thiết kế: nó không bao giờ có thể gửi, xóa hoặc di chuyển thư của bạn, và điều duy nhất nó ghi là các nhãn sắp xếp của riêng nó, bạn có thể tắt chúng. Thứ hai, Amarnai đã vượt qua đánh giá bảo mật của Google, hoàn thành đánh giá bảo mật CASA bắt buộc đối với bất kỳ ứng dụng nào truy cập Gmail. Thứ ba, bạn luôn kiểm soát: các thư trả lời vẫn ở dạng nháp cho đến khi bạn quyết định, không có gì được gửi thay mặt bạn, và bạn có thể ngắt kết nối Amarnai bất cứ lúc nào. Thứ tư, không có nội dung email nào được lưu trữ: Amarnai chỉ giữ các nhãn và siêu dữ liệu, không bao giờ lưu nội dung tin nhắn của bạn. Thứ năm, mã nguồn công khai, vì vậy bất kỳ ai cũng có thể kiểm tra chính xác những gì tương tác với email của bạn."
 
-#: ../ui/src/demo/demo-seed.ts:403
+#: ../ui/src/demo/demo-seed.ts:405
 #, fuzzy
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Được gắn cờ là lời giới thiệu liên minh/nhà đầu tư dựa trên ngôn ngữ (\"lợi ích chung\", \"tình hữu nghị lâu đời\"). Độ tin cậy trung bình; Aziru được biết là đã gửi những lời mời tương tự đến nhiều triều đình."
@@ -3602,7 +3625,7 @@ msgstr "Dành cho giáo viên K-12 quản lý lớp học, phụ huynh và hành
 msgid "For larger organizations."
 msgstr "Dành cho các tổ chức lớn."
 
-#: ../ui/src/demo/demo-seed.ts:398
+#: ../ui/src/demo/demo-seed.ts:400
 #, fuzzy
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Trong nhiều năm, các gia tộc chúng ta đã như anh em. Tôi viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc."
@@ -3752,9 +3775,9 @@ msgstr "Tạo bản nháp mới. Tính vào hạn mức hàng tháng của bạn
 #~ msgid "Generate a plan from your inbox"
 #~ msgstr "Tạo kế hoạch từ hộp thư đến của bạn"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:467
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:363
 #: ../ui/src/emails/ThreadPreview.tsx:276
 #, fuzzy
 msgid "Generate draft reply"
@@ -4005,7 +4028,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Kính gửi Đại vương,\n\nCác báo cáo ngài yêu cầu sẽ được chuẩn bị trước khi hội đồng nhóm họp. Thần sẽ lệnh cho các thư lại tổng hợp sổ sách các lãnh thổ phía đông và gửi trước bằng sứ giả tốc hành.\n\nTrong tình huynh đệ,"
+msgstr "Kính gửi Đại vương,\n"
+"\n"
+"Các báo cáo ngài yêu cầu sẽ được chuẩn bị trước khi hội đồng nhóm họp. Thần sẽ lệnh cho các thư lại tổng hợp sổ sách các lãnh thổ phía đông và gửi trước bằng sứ giả tốc hành.\n"
+"\n"
+"Trong tình huynh đệ,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4127,7 +4154,7 @@ msgstr "Cách thức hoạt động"
 msgid "How to write a good description"
 msgstr "Cách viết mô tả hay"
 
-#: ../ui/src/demo/demo-seed.ts:411
+#: ../ui/src/demo/demo-seed.ts:413
 #, fuzzy
 msgid "I write to propose that we formalise our friendship."
 msgstr "Tôi viết thư này để đề xuất chúng ta chính thức hóa tình bạn."
@@ -4268,7 +4295,7 @@ msgstr "Đã bao gồm"
 msgid "Incorrect email or password."
 msgstr "Email hoặc mật khẩu không chính xác."
 
-#: ../ui/src/demo/demo-seed.ts:516
+#: ../ui/src/demo/demo-seed.ts:524
 #, fuzzy
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Tin nhắn không trang trọng, không có danh mục rõ ràng: chuyến thăm cá nhân hay buổi tiếp kiến chính trị? Giọng điệu mang tính cá nhân nhưng người gửi là một thống đốc chư hầu đã biết. Được chuyển đến mục Khác với độ tin cậy thấp."
@@ -4658,10 +4685,10 @@ msgstr "Hoạt động"
 msgid "Load more"
 msgstr "Tải thêm"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:517
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:538
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:560
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:604
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:518
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:539
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:561
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:605
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:130
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
@@ -4755,24 +4782,24 @@ msgstr "Bài viết & Phản biện đồng cấp"
 
 #: ../panel/src/queue/QueueRow.tsx:44
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:146
+#: ../ui/src/emails/ThreadRow.tsx:157
 #, fuzzy
 msgid "Mark as done"
 msgstr "Đánh dấu đã hoàn thành"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:365
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:401
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:407
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
-#: ../ui/src/emails/ThreadRow.tsx:149
+#: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Đánh dấu quan trọng"
 
 #: ../panel/src/queue/QueueRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:156
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Đánh dấu chưa hoàn thành"
@@ -4973,7 +5000,7 @@ msgstr "Chuyển đến…"
 msgid "Moved to {folderName}"
 msgstr "Đã chuyển đến {folderName}"
 
-#: ../ui/src/demo/demo-seed.ts:511
+#: ../ui/src/demo/demo-seed.ts:519
 #, fuzzy
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Hạ thần sẽ đến gần khu vực Đồng bằng trong vài ngày tới. Nếu Đức Vua vĩ đại có thể dành một giờ rảnh rỗi, hạ thần rất mong có cơ hội được diện kiến trực tiếp."
@@ -5021,7 +5048,7 @@ msgstr "Không gửi thư · OAuth · Hủy bất kỳ lúc nào"
 msgid "Never sends or deletes"
 msgstr "Không gửi hoặc xóa"
 
-#: ../ui/src/demo/demo-seed.ts:450
+#: ../ui/src/demo/demo-seed.ts:454
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Đơn đăng ký mới từ Horemheb xứ Thebes."
@@ -5112,8 +5139,8 @@ msgstr "Chưa có bình luận nào. Hãy bắt đầu thảo luận."
 msgid "No drafts remaining"
 msgstr "Không còn bản nháp nào"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:469
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:484
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:472
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:487
 #: ../panel/src/DraftSection.tsx:235
 #: ../ui/src/emails/SuggestedDraftCard.tsx:134
 #, fuzzy
@@ -5125,7 +5152,7 @@ msgstr "Hết bản nháp · đặt lại vào {quotaResetDate}"
 msgid "No drafts remaining · resets {resetDate}"
 msgstr "Hết bản nháp · đặt lại vào {resetDate}"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:473
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:476
 #: ../ui/src/emails/SuggestedDraftCard.tsx:113
 #, fuzzy
 msgid "No drafts remaining this month"
@@ -5368,7 +5395,7 @@ msgstr "Chỉ một lần đăng nhập để tạo tài khoản và kết nối
 #~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 #~ msgstr "Chỉ một lần đăng nhập sẽ tạo tài khoản, kết nối hộp thư đến và giúp bạn xây dựng kế hoạch sắp xếp. Amarnai không bao giờ gửi hoặc xóa thư."
 
-#: ../ui/src/demo/demo-seed.ts:477
+#: ../ui/src/demo/demo-seed.ts:483
 #, fuzzy
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Cuộc trò chuyện đang diễn ra với một thống đốc thành phố quen thuộc về vấn đề cung ứng định kỳ. Tông giọng leo thang và các lần theo dõi lặp lại phù hợp với thư mục Hỗ trợ."
@@ -5419,14 +5446,14 @@ msgstr "Mở cuộc hội thoại: {subject}"
 msgid "Open in Amarnai"
 msgstr "Mở trong Amarnai"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:394
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:396
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Mở trong Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:392
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:394
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Mở trong Outlook"
@@ -5589,8 +5616,8 @@ msgstr "Đối tác"
 msgid "Passed Google's security review"
 msgstr "Đã vượt qua đánh giá bảo mật của Google"
 
-#: ../ui/src/demo/demo-seed.ts:506
-#: ../ui/src/demo/demo-seed.ts:524
+#: ../ui/src/demo/demo-seed.ts:514
+#: ../ui/src/demo/demo-seed.ts:532
 #, fuzzy
 msgid "Passing through the Delta: free to meet?"
 msgstr "Đang đi qua Đồng bằng: có rảnh gặp mặt không?"
@@ -5838,7 +5865,7 @@ msgstr "Bạn muốn tự host?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Bạn muốn tự host? Đây là mã nguồn mở:<0/> <1>clone và chạy miễn phí</1>."
 
-#: ../ui/src/demo/demo-seed.ts:561
+#: ../ui/src/demo/demo-seed.ts:571
 #, fuzzy
 msgid "Prepare your accounts before the council convenes."
 msgstr "Chuẩn bị tài khoản của bạn trước khi hội đồng nhóm họp."
@@ -6021,7 +6048,7 @@ msgstr "Đang xếp hàng quét lại…"
 msgid "Rated 5 out of 5"
 msgstr "Xếp hạng 5/5"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:421
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:422
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Chuyển hướng {unclassifiedCount} mục chưa phân loại"
@@ -6045,7 +6072,7 @@ msgstr "Việc sắp xếp lại các luồng đã được sắp xếp trong th
 msgid "Re-sorting…"
 msgstr "Đang sắp xếp lại…"
 
-#: ../ui/src/demo/demo-seed.ts:467
+#: ../ui/src/demo/demo-seed.ts:473
 #, fuzzy
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Lô hàng ngũ cốc: lần trì hoãn thứ ba trong mùa này"
@@ -6224,14 +6251,14 @@ msgstr "Xóa {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Gỡ {email} khỏi danh sách đen"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:365
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:401
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:407
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
 msgstr "Bỏ đánh dấu quan trọng"
@@ -6416,9 +6443,9 @@ msgid "Resources"
 msgstr "Tài nguyên"
 
 #: ../../apps/extension/src/App.tsx:144
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:487
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:490
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:507
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:510
 #: ../panel/src/DraftSection.tsx:259
 #: ../ui/src/emails/ThreadCommentsCard.tsx:169
 #: ../ui/src/emails/ThreadSummaryCard.tsx:60
@@ -6457,7 +6484,7 @@ msgstr "Đánh giá từ người dùng tiên phong"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr ""
 
-#: ../ui/src/demo/demo-seed.ts:482
+#: ../ui/src/demo/demo-seed.ts:488
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda của Byblos"
@@ -6469,7 +6496,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nChúng tôi đã nhận được thông tin. Ngũ cốc bổ sung đã được đặt hàng từ các kho phía nam và sẽ đến trước lễ hội thu hoạch. Kính mong ngài kiên nhẫn chờ đợi cho đến lúc đó.\n\nChúc ngài mọi sự tốt lành,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Chúng tôi đã nhận được thông tin. Ngũ cốc bổ sung đã được đặt hàng từ các kho phía nam và sẽ đến trước lễ hội thu hoạch. Kính mong ngài kiên nhẫn chờ đợi cho đến lúc đó.\n"
+"\n"
+"Chúc ngài mọi sự tốt lành,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6619,8 +6650,8 @@ msgstr "Xem cách hoạt động"
 msgid "Select"
 msgstr "Chọn"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:449
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:450
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:368
 #: ../ui/src/emails/MockEmailsPage.tsx:338
 #, fuzzy
 msgid "Select a thread to preview"
@@ -6731,7 +6762,7 @@ msgstr "Đặt mật khẩu mới"
 #~ msgstr "Hãy thiết lập ít nhất 3 thư mục để chúng tôi có thể bắt đầu sắp xếp."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:435
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 #, fuzzy
 msgid "Set up folders"
@@ -7042,7 +7073,7 @@ msgstr "Khối lượng sắp xếp"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
 #: ../panel/src/ClassificationCard.tsx:79
 #: ../ui/src/demo/HeroFeedCard.tsx:95
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:267
 #, fuzzy
 msgid "Sorting…"
 msgstr "Đang sắp xếp…"
@@ -7465,12 +7496,12 @@ msgstr "Hội đồng triệu tập vào đầu Shemu. Tushratta yêu cầu báo
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "Kết nối Gmail, tất cả email đã đồng bộ và hệ thống phân loại sẽ bị xóa vĩnh viễn. Việc nhập lại hộp thư này sẽ dùng đến hạn mức nhập hàng tháng của bạn; nếu hết, bạn có thể nhập lại sau {allowanceResetsAt} hoặc bằng cách nâng cấp gói."
 
-#: ../ui/src/demo/demo-seed.ts:472
+#: ../ui/src/demo/demo-seed.ts:478
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "Số ngũ cốc người gửi tháng trước đã được nhận với lòng biết ơn. Nhưng ta phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang dần náo động."
 
-#: ../ui/src/demo/demo-seed.ts:548
+#: ../ui/src/demo/demo-seed.ts:558
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "Đại hội đồng triệu tập vào đầu Shemu. Ta yêu cầu ngươi chuẩn bị đầy đủ báo cáo về các vùng lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh."
@@ -7489,7 +7520,7 @@ msgstr "Lô vàng thứ ba theo thỏa thuận trong hiệp ước của chúng 
 msgid "The third gold consignment is overdue."
 msgstr "Lô vàng thứ ba đã quá hạn."
 
-#: ../ui/src/demo/demo-seed.ts:485
+#: ../ui/src/demo/demo-seed.ts:491
 #, fuzzy
 msgid "The third grain shipment has not arrived."
 msgstr "Chuyến hàng ngũ cốc thứ ba vẫn chưa đến."
@@ -7605,7 +7636,7 @@ msgstr "Thao tác này sẽ xóa kết nối Gmail, tất cả email đã đồn
 msgid "This thread has reached its comment limit."
 msgstr "Luồng này đã đạt giới hạn bình luận."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:440
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:443
 msgid "This thread hasn't been sorted yet."
 msgstr "Luồng này chưa được phân loại."
 
@@ -7613,7 +7644,7 @@ msgstr "Luồng này chưa được phân loại."
 #~ msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 #~ msgstr "Luồng này chưa được phân loại. Tạo kế hoạch phân loại để Amarnai biết nơi lưu trữ."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:429
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:432
 msgid "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
 msgstr "Luồng này chưa được sắp xếp. Thiết lập thư mục của bạn để Amarnai biết nơi lưu trữ."
 
@@ -7721,7 +7752,7 @@ msgstr "3 bước để hộp thư ngăn nắp."
 msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 msgstr "Mẹo: Ghim biểu tượng Amarnai trên thanh công cụ để truy cập chỉ bằng một cú nhấp chuột."
 
-#: ../ui/src/demo/demo-seed.ts:562
+#: ../ui/src/demo/demo-seed.ts:572
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -7730,7 +7761,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Gửi Hoàng đế vĩ đại, huynh đệ của ta,\n\nĐại hội đồng sẽ họp vào đầu Shemu. Ta yêu cầu huynh chuẩn bị một bản kê khai đầy đủ về các lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh, nếu có thể thì trước kỳ trăng non.\n\nLiên minh của chúng ta rất mạnh. Hãy để chúng ta cho hội đồng thấy rằng nó vẫn vững chắc.\n\nTushratta, Đại Vương Mitanni"
+msgstr "Gửi Hoàng đế vĩ đại, huynh đệ của ta,\n"
+"\n"
+"Đại hội đồng sẽ họp vào đầu Shemu. Ta yêu cầu huynh chuẩn bị một bản kê khai đầy đủ về các lãnh thổ phía đông và gửi trước bằng chuyển phát nhanh, nếu có thể thì trước kỳ trăng non.\n"
+"\n"
+"Liên minh của chúng ta rất mạnh. Hãy để chúng ta cho hội đồng thấy rằng nó vẫn vững chắc.\n"
+"\n"
+"Tushratta, Đại Vương Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:256
 #, fuzzy
@@ -7739,9 +7776,13 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n\nChúng tôi đã nhận được đơn xin của Horemheb xứ Thebes và sẽ xem xét hồ sơ của ông ấy trước kỳ trăng non tới. Vui lòng thông báo cho ông ấy rằng chúng tôi sẽ gửi tin tức vào thời điểm thích hợp.\n\nTheo sắc lệnh hoàng gia,"
+msgstr "Gửi Cục Bổ nhiệm Hoàng gia,\n"
+"\n"
+"Chúng tôi đã nhận được đơn xin của Horemheb xứ Thebes và sẽ xem xét hồ sơ của ông ấy trước kỳ trăng non tới. Vui lòng thông báo cho ông ấy rằng chúng tôi sẽ gửi tin tức vào thời điểm thích hợp.\n"
+"\n"
+"Theo sắc lệnh hoàng gia,"
 
-#: ../ui/src/demo/demo-seed.ts:412
+#: ../ui/src/demo/demo-seed.ts:414
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -7750,16 +7791,26 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Gửi Đại Vương,\n\nTrong nhiều năm, các gia tộc của chúng ta đã như huynh đệ. Nay thần viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc: một hiệp ước bảo vệ lẫn nhau và chia sẻ các tuyến đường.\n\nThần chỉ yêu cầu ngài lắng nghe các điều khoản của thần. Xin gửi tin tức bằng người đưa thư tiếp theo và thần sẽ cử sứ giả của mình đi ngay lập tức.\n\nAziru, bầy tôi của Đại Vương, chúa tể Amurru"
+msgstr "Gửi Đại Vương,\n"
+"\n"
+"Trong nhiều năm, các gia tộc của chúng ta đã như huynh đệ. Nay thần viết thư này để đề xuất chúng ta chính thức hóa tình hữu nghị này vì lợi ích của cả hai dân tộc: một hiệp ước bảo vệ lẫn nhau và chia sẻ các tuyến đường.\n"
+"\n"
+"Thần chỉ yêu cầu ngài lắng nghe các điều khoản của thần. Xin gửi tin tức bằng người đưa thư tiếp theo và thần sẽ cử sứ giả của mình đi ngay lập tức.\n"
+"\n"
+"Aziru, bầy tôi của Đại Vương, chúa tể Amurru"
 
-#: ../ui/src/demo/demo-seed.ts:525
+#: ../ui/src/demo/demo-seed.ts:533
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Gửi Đại Vương,\n\nChuyến du hành của thần sẽ đưa thần đến gần Đồng bằng sông trong những ngày tới. Nếu Đại Vương có một giờ rảnh rỗi, thần rất hoan nghênh cơ hội được nói chuyện trực tiếp; có những vấn đề nói ra dễ hơn viết.\n\nBầy tôi của ngài, Abdi-Heba, thống đốc Urushalim"
+msgstr "Gửi Đại Vương,\n"
+"\n"
+"Chuyến du hành của thần sẽ đưa thần đến gần Đồng bằng sông trong những ngày tới. Nếu Đại Vương có một giờ rảnh rỗi, thần rất hoan nghênh cơ hội được nói chuyện trực tiếp; có những vấn đề nói ra dễ hơn viết.\n"
+"\n"
+"Bầy tôi của ngài, Abdi-Heba, thống đốc Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:246
 #, fuzzy
@@ -7768,7 +7819,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa đã nghe lời huynh nói. Vàng sẽ được gửi đi trước khi sứ giả tiếp theo khởi hành. Chúng ta trân trọng mối giao hảo giữa các gia tộc và không muốn nó nguội lạnh.\n\nTrong tình hữu nghị,"
+msgstr "Gửi Đại Vương, huynh đệ của ta,\n"
+"\n"
+"Ta đã nghe lời huynh nói. Vàng sẽ được gửi đi trước khi sứ giả tiếp theo khởi hành. Chúng ta trân trọng mối giao hảo giữa các gia tộc và không muốn nó nguội lạnh.\n"
+"\n"
+"Trong tình hữu nghị,"
 
 #: ../ui/src/demo/demo-seed.ts:373
 #, fuzzy
@@ -7779,9 +7834,15 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Gửi Đại Vương, huynh đệ của ta,\n\nTa viết thư này trong tình hữu nghị, như cha ông chúng ta đã viết trước đây. Lô vàng thứ ba đã thỏa thuận theo hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua mà chúng ta vẫn chờ đợi.\n\nChúng ta yêu cầu huynh gửi nó đi mà không trì hoãn thêm, như lẽ phải của mối giao hảo giữa các gia tộc chúng ta.\n\nBurna-Buriash II, Vua Babylon"
+msgstr "Gửi Đại Vương, huynh đệ của ta,\n"
+"\n"
+"Ta viết thư này trong tình hữu nghị, như cha ông chúng ta đã viết trước đây. Lô vàng thứ ba đã thỏa thuận theo hiệp ước của chúng ta vẫn chưa đến. Hai sứ giả đã đi qua mà chúng ta vẫn chờ đợi.\n"
+"\n"
+"Chúng ta yêu cầu huynh gửi nó đi mà không trì hoãn thêm, như lẽ phải của mối giao hảo giữa các gia tộc chúng ta.\n"
+"\n"
+"Burna-Buriash II, Vua Babylon"
 
-#: ../ui/src/demo/demo-seed.ts:486
+#: ../ui/src/demo/demo-seed.ts:492
 #, fuzzy
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
@@ -7790,7 +7851,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Gửi Đại Vương, chúa tể của thần, mặt trời của thần,\n\nLượng ngũ cốc ngài gửi tháng trước đã được đón nhận với lòng biết ơn và thần đã ca ngợi tên ngài trước dân chúng. Nhưng thần phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang trở nên bất ổn.\n\nThần đã viết bảy lần rồi. Thần không muốn làm phiền ngài, nhưng thần còn có thể làm gì khác?\n\nBầy tôi của ngài, Rib-Hadda, thống đốc Byblos"
+msgstr "Gửi Đại Vương, chúa tể của thần, mặt trời của thần,\n"
+"\n"
+"Lượng ngũ cốc ngài gửi tháng trước đã được đón nhận với lòng biết ơn và thần đã ca ngợi tên ngài trước dân chúng. Nhưng thần phải viết lại: chuyến hàng thứ ba vẫn chưa đến và thành phố đang trở nên bất ổn.\n"
+"\n"
+"Thần đã viết bảy lần rồi. Thần không muốn làm phiền ngài, nhưng thần còn có thể làm gì khác?\n"
+"\n"
+"Bầy tôi của ngài, Rib-Hadda, thống đốc Byblos"
 
 #: ../ui/src/demo/mailbox/AmarnaiReply.tsx:107
 #, fuzzy
@@ -7881,7 +7948,7 @@ msgstr "Dùng thử Amarnai"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "Bật tính năng này sẽ yêu cầu quyền quản lý nhãn của bạn."
 
-#: ../ui/src/demo/demo-seed.ts:558
+#: ../ui/src/demo/demo-seed.ts:568
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta xứ Mitanni"
@@ -7907,17 +7974,17 @@ msgid "Unavailable"
 msgstr "Không khả dụng"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:266
+#: ../ui/src/emails/ThreadRow.tsx:277
 #, fuzzy
 msgid "Unclassified"
 msgstr "Chưa được phân loại"
 
-#: ../ui/src/emails/ThreadRow.tsx:265
+#: ../ui/src/emails/ThreadRow.tsx:276
 msgid "Unclassified. Change folder"
 msgstr "Chưa phân loại. Thay đổi thư mục"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:408
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:494
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:409
 #: ../ui/src/emails/MockEmailsPage.tsx:365
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
 #, fuzzy
@@ -8204,7 +8271,7 @@ msgstr "Tình nguyện viên"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:43
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:271
 #, fuzzy
 msgid "Waiting"
 msgstr "Đang chờ"
@@ -8228,7 +8295,7 @@ msgstr "Đang chờ bạn xem xét · Chắc chắn {confidence}%"
 #~ msgid "Waitlist"
 #~ msgstr "Danh sách chờ"
 
-#: ../ui/src/emails/ThreadRow.tsx:139
+#: ../ui/src/emails/ThreadRow.tsx:150
 #, fuzzy
 msgid "Wants {folderName}"
 msgstr "Muốn {folderName}"
@@ -8410,9 +8477,9 @@ msgstr "Ghi thư mục đã sắp xếp dưới dạng danh mục Outlook"
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "Đã bật tính năng ghi. Các thư mục của bạn đang được phản ánh vào hộp thư."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:479
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:495
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
 #: ../panel/src/DraftSection.tsx:249
 #: ../ui/src/emails/ThreadPreview.tsx:283
 #, fuzzy

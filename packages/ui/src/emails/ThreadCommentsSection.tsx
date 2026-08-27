@@ -19,12 +19,18 @@ export function ThreadCommentsSection({
   threadId,
   currentUserId,
   members,
+  onCommentsSync,
 }: {
   api: ApiClient;
   workspaceId: string;
   threadId: string;
   currentUserId: string | null;
   members: MemberItem[] | null;
+  /** Called with the loaded list's size whenever it is known or changes (open,
+   * post, delete, poll). The loaded list is authoritative and the read marker
+   * has just advanced, so the caller can update this thread's comment tag
+   * elsewhere (count + clear unread) without waiting for a list refresh. */
+  onCommentsSync?: (threadId: string, commentCount: number) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [meta, setMeta] = useState<ThreadCommentsMeta | null>(null);
@@ -48,6 +54,18 @@ export function ThreadCommentsSection({
       cancelled = true;
     };
   }, [api, workspaceId, threadId]);
+
+  // The hook advances the read marker whenever the expanded list is loaded, so
+  // "list is ready while expanded" is exactly "this thread was marked read",
+  // and the list length is the authoritative comment count. Effect (not a
+  // callback from the hook) so it also fires on every length change — post,
+  // delete, poll — and when switching threads with the section already
+  // expanded.
+  const readyCount =
+    comments.state.kind === "ready" ? comments.state.comments.length : null;
+  useEffect(() => {
+    if (expanded && readyCount !== null) onCommentsSync?.(threadId, readyCount);
+  }, [expanded, readyCount, threadId, onCommentsSync]);
 
   return (
     <ThreadCommentsCard

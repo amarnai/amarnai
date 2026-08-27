@@ -82,6 +82,11 @@ export function mapThreadDetail(detail: EmailThreadDetail): ThreadItem {
     isDrafting: detail.isDrafting,
     doneMark: detail.doneMark,
     assignment: detail.assignment,
+    // The detail endpoint carries no comment meta (the comments section fetches
+    // its own); a deep-link-injected row starts without the comments tag and
+    // picks up real counts on the next list refresh.
+    commentCount: 0,
+    unreadCommentCount: 0,
   };
   return mapThreads([summary])[0]!;
 }
@@ -131,6 +136,8 @@ export function mapThreads(threads: EmailThreadSummary[]): ThreadItem[] {
       isImportant: t.isImportant,
       isClassifying: t.isClassifying,
       attachmentCount: t.messages.reduce((sum, m) => sum + m.attachments.length, 0),
+      commentCount: t.commentCount,
+      unreadCommentCount: t.unreadCommentCount,
       messages: t.messages.map((m) => ({
         id: m.id,
         fromName: m.senderName ?? m.senderEmail,

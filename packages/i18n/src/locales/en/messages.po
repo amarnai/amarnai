@@ -26,6 +26,18 @@ msgstr "(No body)"
 msgid "(no subject)"
 msgstr "(no subject)"
 
+#. placeholder {0}: thread.commentCount
+#: ../ui/src/emails/ThreadRow.tsx:324
+#: ../ui/src/emails/ThreadRow.tsx:338
+msgid "{0, plural, one {# comment} other {# comments}}"
+msgstr "{0, plural, one {# comment} other {# comments}}"
+
+#. placeholder {0}: thread.commentCount
+#. placeholder {1}: thread.unreadCommentCount
+#: ../ui/src/emails/ThreadRow.tsx:335
+msgid "{0, plural, one {# comment} other {# comments}}, {1, plural, one {# unread} other {# unread}}"
+msgstr "{0, plural, one {# comment} other {# comments}}, {1, plural, one {# unread} other {# unread}}"
+
 #. placeholder {0}: thread.attachmentCount
 #: ../../apps/mobile/src/components/ThreadRow.tsx:115
 msgid "{0, plural, one {# file} other {# files}}"
@@ -153,7 +165,7 @@ msgstr "{blacklistCount, plural, one {# blocked} other {# blocked}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} assigned you: {subject}"
 
-#: ../ui/src/emails/ThreadRow.tsx:272
+#: ../ui/src/emails/ThreadRow.tsx:283
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}. Change folder"
 
@@ -236,8 +248,8 @@ msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
 #. placeholder {0}: quota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:470
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:485
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:473
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:488
 #: ../panel/src/DraftSection.tsx:237
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
 msgstr "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -526,11 +538,11 @@ msgstr "500 threads"
 msgid "75,000 threads"
 msgstr "75,000 threads"
 
-#: ../ui/src/demo/demo-seed.ts:437
+#: ../ui/src/demo/demo-seed.ts:441
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 
-#: ../ui/src/demo/demo-seed.ts:451
+#: ../ui/src/demo/demo-seed.ts:455
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
@@ -550,7 +562,7 @@ msgstr "A workspace owner manages this workspace's folders."
 #~ msgid "A workspace owner manages this workspace's sorting plan."
 #~ msgstr "A workspace owner manages this workspace's sorting plan."
 
-#: ../ui/src/demo/demo-seed.ts:521
+#: ../ui/src/demo/demo-seed.ts:529
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba of Urushalim"
 
@@ -758,7 +770,7 @@ msgstr "All workspace data will be permanently deleted."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "All your workspaces, emails, and settings will be deleted permanently."
 
-#: ../ui/src/demo/demo-seed.ts:393
+#: ../ui/src/demo/demo-seed.ts:395
 msgid "Alliance proposal: house of Amurru"
 msgstr "Alliance proposal: house of Amurru"
 
@@ -1055,7 +1067,7 @@ msgstr "API error {0}"
 msgid "Appearance"
 msgstr "Appearance"
 
-#: ../ui/src/demo/demo-seed.ts:432
+#: ../ui/src/demo/demo-seed.ts:436
 msgid "Application: Chief of Correspondence"
 msgstr "Application: Chief of Correspondence"
 
@@ -1125,8 +1137,8 @@ msgid "Assign to"
 msgstr "Assign to"
 
 #: ../ui/src/emails/ThreadPreview.tsx:243
-#: ../ui/src/emails/ThreadRow.tsx:349
-#: ../ui/src/emails/ThreadRow.tsx:358
+#: ../ui/src/emails/ThreadRow.tsx:386
+#: ../ui/src/emails/ThreadRow.tsx:395
 #: ../ui/src/emails/TriageBar.tsx:63
 msgid "Assign to a member"
 msgstr "Assign to a member"
@@ -1151,8 +1163,8 @@ msgid "Assigned to {assigneeName}"
 msgstr "Assigned to {assigneeName}"
 
 #: ../ui/src/emails/ThreadPreview.tsx:242
-#: ../ui/src/emails/ThreadRow.tsx:236
-#: ../ui/src/emails/ThreadRow.tsx:357
+#: ../ui/src/emails/ThreadRow.tsx:247
+#: ../ui/src/emails/ThreadRow.tsx:394
 #: ../ui/src/emails/TriageBar.tsx:62
 msgid "Assigned to {assigneeName}. Change assignee"
 msgstr "Assigned to {assigneeName}. Change assignee"
@@ -1192,7 +1204,7 @@ msgstr "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 
-#: ../ui/src/demo/demo-seed.ts:442
+#: ../ui/src/demo/demo-seed.ts:446
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 
@@ -1209,7 +1221,7 @@ msgstr "Automated notifications, newsletters, and service updates that don't fit
 msgid "Aziru"
 msgstr "Aziru"
 
-#: ../ui/src/demo/demo-seed.ts:408
+#: ../ui/src/demo/demo-seed.ts:410
 msgid "Aziru of Amurru"
 msgstr "Aziru of Amurru"
 
@@ -1235,10 +1247,10 @@ msgstr "Babylon's third gold consignment is overdue after two messengers. Burna-
 
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:106
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:357
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:359
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:377
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
@@ -1253,8 +1265,8 @@ msgstr "Back to Gmail"
 #~ msgid "Back to inbox"
 #~ msgstr "Back to inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:353
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:372
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:355
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:374
 #: ../ui/src/emails/ThreadPreview.tsx:118
 msgid "Back to list"
 msgstr "Back to list"
@@ -1378,7 +1390,7 @@ msgstr "Build plan"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Bulk triage your inbox"
 
-#: ../ui/src/demo/demo-seed.ts:447
+#: ../ui/src/demo/demo-seed.ts:451
 msgid "Bureau of Royal Appointments"
 msgstr "Bureau of Royal Appointments"
 
@@ -1507,15 +1519,15 @@ msgstr "Category writeback needs permission to manage your Outlook mail. Try aga
 msgid "Change"
 msgstr "Change"
 
-#: ../ui/src/emails/ThreadRow.tsx:348
+#: ../ui/src/emails/ThreadRow.tsx:385
 msgid "Change assignee"
 msgstr "Change assignee"
 
-#: ../ui/src/emails/ThreadRow.tsx:232
+#: ../ui/src/emails/ThreadRow.tsx:243
 msgid "Change assignment"
 msgstr "Change assignment"
 
-#: ../ui/src/emails/ThreadRow.tsx:170
+#: ../ui/src/emails/ThreadRow.tsx:181
 msgid "Change folder"
 msgstr "Change folder"
 
@@ -1651,8 +1663,8 @@ msgstr "Close"
 msgid "Close panel"
 msgstr "Close panel"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:424
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:422
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:426
 #: ../ui/src/emails/ThreadPreview.tsx:149
 #: ../ui/src/emails/ThreadPreview.tsx:153
 msgid "Close preview"
@@ -2203,11 +2215,11 @@ msgstr "Couldn't start generation."
 msgid "Council convenes at the start of Shemu"
 msgstr "Council convenes at the start of Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:543
+#: ../ui/src/demo/demo-seed.ts:553
 msgid "Council convening: season of Shemu"
 msgstr "Council convening: season of Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:553
+#: ../ui/src/demo/demo-seed.ts:563
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 
@@ -2517,11 +2529,11 @@ msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:500
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:501
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:411
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:412
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:73
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
@@ -2585,7 +2597,7 @@ msgstr "Donation drives, giving campaigns, and fundraising appeal responses."
 #: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:62
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/emails/ThreadRow.tsx:238
 #: ../ui/src/upgrade/UpgradeDialog.tsx:200
 msgid "Done"
 msgstr "Done"
@@ -2602,7 +2614,7 @@ msgstr "Donors"
 msgid "Downgrade to {planName}"
 msgstr "Downgrade to {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:299
+#: ../ui/src/emails/ThreadRow.tsx:310
 msgid "draft"
 msgstr "draft"
 
@@ -2631,8 +2643,8 @@ msgstr "Draft failed · tap to retry"
 msgid "Draft generation failed."
 msgstr "Draft generation failed."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:485
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:501
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:488
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
 msgid "Draft generation failed. Try again."
 msgstr "Draft generation failed. Try again."
 
@@ -2657,7 +2669,7 @@ msgstr "Draft style guidance"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #: ../ui/src/demo/mailbox/AmarnaiReply.tsx:65
-#: ../ui/src/emails/ThreadRow.tsx:293
+#: ../ui/src/emails/ThreadRow.tsx:304
 msgid "Drafting…"
 msgstr "Drafting…"
 
@@ -3042,7 +3054,7 @@ msgstr "First-contact buyer and seller enquiries and new agent introductions."
 msgid "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 
-#: ../ui/src/demo/demo-seed.ts:403
+#: ../ui/src/demo/demo-seed.ts:405
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 
@@ -3159,7 +3171,7 @@ msgstr "For K-12 educators managing classroom, parents, and school administratio
 msgid "For larger organizations."
 msgstr "For larger organizations."
 
-#: ../ui/src/demo/demo-seed.ts:398
+#: ../ui/src/demo/demo-seed.ts:400
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 
@@ -3288,9 +3300,9 @@ msgstr "Generate a new draft. Uses one from your monthly allowance"
 #~ msgid "Generate a plan from your inbox"
 #~ msgstr "Generate a plan from your inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:467
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:363
 #: ../ui/src/emails/ThreadPreview.tsx:276
 msgid "Generate draft reply"
 msgstr "Generate draft reply"
@@ -3612,7 +3624,7 @@ msgstr "How it works"
 msgid "How to write a good description"
 msgstr "How to write a good description"
 
-#: ../ui/src/demo/demo-seed.ts:411
+#: ../ui/src/demo/demo-seed.ts:413
 msgid "I write to propose that we formalise our friendship."
 msgstr "I write to propose that we formalise our friendship."
 
@@ -3734,7 +3746,7 @@ msgstr "Included"
 msgid "Incorrect email or password."
 msgstr "Incorrect email or password."
 
-#: ../ui/src/demo/demo-seed.ts:516
+#: ../ui/src/demo/demo-seed.ts:524
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 
@@ -4076,10 +4088,10 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Load more"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:517
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:538
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:560
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:604
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:518
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:539
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:561
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:605
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:130
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 msgid "Loading"
@@ -4165,23 +4177,23 @@ msgstr "Manuscripts & Peer Review"
 
 #: ../panel/src/queue/QueueRow.tsx:44
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:146
+#: ../ui/src/emails/ThreadRow.tsx:157
 msgid "Mark as done"
 msgstr "Mark as done"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:365
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:401
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:407
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
-#: ../ui/src/emails/ThreadRow.tsx:149
+#: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Mark as important"
 
 #: ../panel/src/queue/QueueRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:156
 msgid "Mark as not done"
 msgstr "Mark as not done"
 
@@ -4359,7 +4371,7 @@ msgstr "Move to…"
 msgid "Moved to {folderName}"
 msgstr "Moved to {folderName}"
 
-#: ../ui/src/demo/demo-seed.ts:511
+#: ../ui/src/demo/demo-seed.ts:519
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 
@@ -4400,7 +4412,7 @@ msgstr "Never sends · OAuth · revoke anytime"
 msgid "Never sends or deletes"
 msgstr "Never sends or deletes"
 
-#: ../ui/src/demo/demo-seed.ts:450
+#: ../ui/src/demo/demo-seed.ts:454
 msgid "New application from Horemheb of Thebes."
 msgstr "New application from Horemheb of Thebes."
 
@@ -4480,8 +4492,8 @@ msgstr "No comments yet. Start the discussion."
 msgid "No drafts remaining"
 msgstr "No drafts remaining"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:469
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:484
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:472
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:487
 #: ../panel/src/DraftSection.tsx:235
 #: ../ui/src/emails/SuggestedDraftCard.tsx:134
 msgid "No drafts remaining · resets {quotaResetDate}"
@@ -4491,7 +4503,7 @@ msgstr "No drafts remaining · resets {quotaResetDate}"
 msgid "No drafts remaining · resets {resetDate}"
 msgstr "No drafts remaining · resets {resetDate}"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:473
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:476
 #: ../ui/src/emails/SuggestedDraftCard.tsx:113
 msgid "No drafts remaining this month"
 msgstr "No drafts remaining this month"
@@ -4707,7 +4719,7 @@ msgstr "One sign-in creates your account and connects Gmail or Outlook. Amarnai 
 #~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 #~ msgstr "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 
-#: ../ui/src/demo/demo-seed.ts:477
+#: ../ui/src/demo/demo-seed.ts:483
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 
@@ -4753,13 +4765,13 @@ msgstr "Open conversation: {subject}"
 msgid "Open in Amarnai"
 msgstr "Open in Amarnai"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:394
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:396
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Gmail"
 msgstr "Open in Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:392
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:394
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Open in Outlook"
@@ -4905,8 +4917,8 @@ msgstr "Partners"
 msgid "Passed Google's security review"
 msgstr "Passed Google's security review"
 
-#: ../ui/src/demo/demo-seed.ts:506
-#: ../ui/src/demo/demo-seed.ts:524
+#: ../ui/src/demo/demo-seed.ts:514
+#: ../ui/src/demo/demo-seed.ts:532
 msgid "Passing through the Delta: free to meet?"
 msgstr "Passing through the Delta: free to meet?"
 
@@ -5124,7 +5136,7 @@ msgstr "Prefer to self-host?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 
-#: ../ui/src/demo/demo-seed.ts:561
+#: ../ui/src/demo/demo-seed.ts:571
 msgid "Prepare your accounts before the council convenes."
 msgstr "Prepare your accounts before the council convenes."
 
@@ -5280,7 +5292,7 @@ msgstr "Queuing rescan…"
 msgid "Rated 5 out of 5"
 msgstr "Rated 5 out of 5"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:421
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:422
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "Re-route {unclassifiedCount} unclassified"
 
@@ -5300,7 +5312,7 @@ msgstr "Re-sorting threads already sorted this month is free. If you reach your 
 msgid "Re-sorting…"
 msgstr "Re-sorting…"
 
-#: ../ui/src/demo/demo-seed.ts:467
+#: ../ui/src/demo/demo-seed.ts:473
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Grain shipment: third delay this season"
 
@@ -5454,14 +5466,14 @@ msgstr "Remove {0}"
 msgid "Remove {email} from blacklist"
 msgstr "Remove {email} from blacklist"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:365
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:401
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:407
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:159
 msgid "Remove from important"
 msgstr "Remove from important"
 
@@ -5619,9 +5631,9 @@ msgid "Resources"
 msgstr "Resources"
 
 #: ../../apps/extension/src/App.tsx:144
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:487
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:490
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:507
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:510
 #: ../panel/src/DraftSection.tsx:259
 #: ../ui/src/emails/ThreadCommentsCard.tsx:169
 #: ../ui/src/emails/ThreadSummaryCard.tsx:60
@@ -5656,7 +5668,7 @@ msgstr "Reviews from early users"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr "Reviews from our earliest correspondents"
 
-#: ../ui/src/demo/demo-seed.ts:482
+#: ../ui/src/demo/demo-seed.ts:488
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda of Byblos"
 
@@ -5803,8 +5815,8 @@ msgstr "See it work"
 msgid "Select"
 msgstr "Select"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:449
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:450
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:368
 #: ../ui/src/emails/MockEmailsPage.tsx:338
 msgid "Select a thread to preview"
 msgstr "Select a thread to preview"
@@ -5898,7 +5910,7 @@ msgstr "Set new password"
 #~ msgstr "Set up at least 3 folders so we can start sorting."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:435
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 msgid "Set up folders"
 msgstr "Set up folders"
@@ -6173,7 +6185,7 @@ msgstr "Sorting volume"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
 #: ../panel/src/ClassificationCard.tsx:79
 #: ../ui/src/demo/HeroFeedCard.tsx:95
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:267
 msgid "Sorting…"
 msgstr "Sorting…"
 
@@ -6544,11 +6556,11 @@ msgstr "The council convenes at the start of Shemu. Tushratta asks for a full ac
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 
-#: ../ui/src/demo/demo-seed.ts:472
+#: ../ui/src/demo/demo-seed.ts:478
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 
-#: ../ui/src/demo/demo-seed.ts:548
+#: ../ui/src/demo/demo-seed.ts:558
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 
@@ -6564,7 +6576,7 @@ msgstr "The third gold consignment agreed under our treaty has not arrived. Two 
 msgid "The third gold consignment is overdue."
 msgstr "The third gold consignment is overdue."
 
-#: ../ui/src/demo/demo-seed.ts:485
+#: ../ui/src/demo/demo-seed.ts:491
 msgid "The third grain shipment has not arrived."
 msgstr "The third grain shipment has not arrived."
 
@@ -6665,7 +6677,7 @@ msgstr "This removes the Gmail connection, deletes all synced emails, and resets
 msgid "This thread has reached its comment limit."
 msgstr "This thread has reached its comment limit."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:440
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:443
 msgid "This thread hasn't been sorted yet."
 msgstr "This thread hasn't been sorted yet."
 
@@ -6673,7 +6685,7 @@ msgstr "This thread hasn't been sorted yet."
 #~ msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 #~ msgstr "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:429
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:432
 msgid "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
 msgstr "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
 
@@ -6767,7 +6779,7 @@ msgstr "Three steps to a sorted inbox."
 msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 msgstr "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 
-#: ../ui/src/demo/demo-seed.ts:562
+#: ../ui/src/demo/demo-seed.ts:572
 msgid "To my brother, the Great King,\n"
 "\n"
 "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier, before the new moon if possible.\n"
@@ -6795,7 +6807,7 @@ msgstr "To the Bureau of Royal Appointments,\n"
 "\n"
 "By royal decree,"
 
-#: ../ui/src/demo/demo-seed.ts:412
+#: ../ui/src/demo/demo-seed.ts:414
 msgid "To the Great King,\n"
 "\n"
 "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples: a pact of mutual protection and shared routes.\n"
@@ -6811,7 +6823,7 @@ msgstr "To the Great King,\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
 
-#: ../ui/src/demo/demo-seed.ts:525
+#: ../ui/src/demo/demo-seed.ts:533
 msgid "To the Great King,\n"
 "\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
@@ -6851,7 +6863,7 @@ msgstr "To the Great King, my brother,\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
 
-#: ../ui/src/demo/demo-seed.ts:486
+#: ../ui/src/demo/demo-seed.ts:492
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -6945,7 +6957,7 @@ msgstr "Try Amarnai"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "Turning this on will ask for permission to manage your labels."
 
-#: ../ui/src/demo/demo-seed.ts:558
+#: ../ui/src/demo/demo-seed.ts:568
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta of Mitanni"
 
@@ -6968,16 +6980,16 @@ msgid "Unavailable"
 msgstr "Unavailable"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:266
+#: ../ui/src/emails/ThreadRow.tsx:277
 msgid "Unclassified"
 msgstr "Unclassified"
 
-#: ../ui/src/emails/ThreadRow.tsx:265
+#: ../ui/src/emails/ThreadRow.tsx:276
 msgid "Unclassified. Change folder"
 msgstr "Unclassified. Change folder"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:408
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:494
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:409
 #: ../ui/src/emails/MockEmailsPage.tsx:365
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
 msgid "Undo"
@@ -7224,7 +7236,7 @@ msgstr "Volunteers"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:43
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:271
 msgid "Waiting"
 msgstr "Waiting"
 
@@ -7244,7 +7256,7 @@ msgstr "Waiting for your review · {confidence}% sure"
 #~ msgid "Waitlist"
 #~ msgstr "Waitlist"
 
-#: ../ui/src/emails/ThreadRow.tsx:139
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Wants {folderName}"
 msgstr "Wants {folderName}"
 
@@ -7404,9 +7416,9 @@ msgstr "Write sorted folders as Outlook categories"
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "Writeback is on. Your folders are being mirrored into your mailbox."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:479
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:495
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
 #: ../panel/src/DraftSection.tsx:249
 #: ../ui/src/emails/ThreadPreview.tsx:283
 msgid "Writing draft reply…"

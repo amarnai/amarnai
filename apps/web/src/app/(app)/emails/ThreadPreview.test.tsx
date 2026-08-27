@@ -63,6 +63,8 @@ function threadV1(): ThreadItem {
     isImportant: false,
     isClassifying: false,
     attachmentCount: 0,
+    commentCount: 0,
+    unreadCommentCount: 0,
   };
 }
 
@@ -160,6 +162,7 @@ function renderPreview(thread: ThreadItem) {
       onDraftGenerated={noop}
       onDraftSentToggled={noop}
       onMarkDone={noop}
+      onCommentsSync={noop}
       onUnmarkDone={noop}
       onToggleImportant={noop}
       members={[]}
@@ -217,6 +220,7 @@ describe("ThreadPreview live update when an open thread gains a message", () => 
         onDraftGenerated={noop}
         onDraftSentToggled={noop}
         onMarkDone={noop}
+        onCommentsSync={noop}
         onUnmarkDone={noop}
         onToggleImportant={noop}
         members={[]}
@@ -254,6 +258,7 @@ describe("ThreadPreview live update when an open thread gains a message", () => 
         onDraftGenerated={noop}
         onDraftSentToggled={noop}
         onMarkDone={noop}
+        onCommentsSync={noop}
         onUnmarkDone={noop}
         onToggleImportant={noop}
         members={[]}
@@ -373,6 +378,7 @@ describe("ThreadPreview thread summary", () => {
         onDraftGenerated={noop}
         onDraftSentToggled={noop}
         onMarkDone={noop}
+        onCommentsSync={noop}
         onUnmarkDone={noop}
         onToggleImportant={noop}
         members={[]}
@@ -427,6 +433,7 @@ describe("ThreadPreview summary request races", () => {
         onDraftGenerated={noop}
         onDraftSentToggled={noop}
         onMarkDone={noop}
+        onCommentsSync={noop}
         onUnmarkDone={noop}
         onToggleImportant={noop}
         members={[]}

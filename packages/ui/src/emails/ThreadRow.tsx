@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { msg } from "@lingui/core/macro";
+import { msg, plural } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem } from "./types.js";
 import { buildThreadUrl, folderColorVars } from "@amarnai/core/emails";
@@ -43,6 +43,17 @@ const CLIP_ICO = (
       stroke="currentColor"
       strokeWidth="1.3"
       strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const COMMENT_ICO = (
+  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden>
+    <path
+      d="M1.5 2.5h9v5.5H6L3.8 9.9V8H1.5V2.5z"
+      stroke="currentColor"
+      strokeWidth="1.2"
       strokeLinejoin="round"
     />
   </svg>
@@ -306,6 +317,32 @@ export function ThreadRow({
               {CLIP_ICO}
               {thread.attachmentCount}
             </span>
+          )}
+          {thread.commentCount > 0 && (
+            <Tooltip
+              content={i18n._(
+                msg`${plural(thread.commentCount, { one: "# comment", other: "# comments" })}`,
+              )}
+            >
+              {/* Same pill treatment as the Done/assignee/draft tags; accent
+                  (the draft pill's unread-ish state) while this member has
+                  unread comments. */}
+              <span
+                className={`em-pill${thread.unreadCommentCount > 0 ? " accent" : ""}`}
+                aria-label={
+                  thread.unreadCommentCount > 0
+                    ? i18n._(
+                        msg`${plural(thread.commentCount, { one: "# comment", other: "# comments" })}, ${plural(thread.unreadCommentCount, { one: "# unread", other: "# unread" })}`,
+                      )
+                    : i18n._(
+                        msg`${plural(thread.commentCount, { one: "# comment", other: "# comments" })}`,
+                      )
+                }
+              >
+                {COMMENT_ICO}
+                {thread.commentCount}
+              </span>
+            </Tooltip>
           )}
         </div>
       </div>

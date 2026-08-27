@@ -81,6 +81,9 @@ export type ThreadItem = {
   isImportant: boolean;
   isClassifying: boolean;
   attachmentCount: number;
+  commentCount: number;
+  // Comments newer than the current member's read marker (authored by others).
+  unreadCommentCount: number;
 };
 
 export type DraftItem = {

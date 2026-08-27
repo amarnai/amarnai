@@ -356,6 +356,7 @@ export function EmailsClient({
           onDraftSentToggled={triage.handleDraftSentToggled}
           onMarkDone={triage.handleMarkDone}
           onUnmarkDone={triage.handleUnmarkDone}
+          onCommentsSync={triage.handleCommentsSync}
           onToggleImportant={triage.handleToggleImportant}
           members={members}
           canAssign={canAssign}

@@ -25,6 +25,7 @@ type Props = {
   onDraftSentToggled: (threadId: string, sent: boolean) => void;
   onMarkDone: (threadId: string) => void;
   onUnmarkDone: (threadId: string) => void;
+  onCommentsSync: (threadId: string, commentCount: number) => void;
   onToggleImportant: (threadId: string) => void;
   members: MemberItem[];
   canAssign: boolean;
@@ -43,6 +44,7 @@ export function ThreadPreview({
   onDraftSentToggled,
   onMarkDone,
   onUnmarkDone,
+  onCommentsSync,
   onToggleImportant,
   members,
   canAssign,
@@ -454,6 +456,7 @@ export function ThreadPreview({
           threadId={thread.id}
           currentUserId={currentUserId}
           members={members}
+          onCommentsSync={onCommentsSync}
         />
 
         <div className="em-msg-list">

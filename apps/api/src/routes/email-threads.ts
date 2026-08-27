@@ -10,6 +10,7 @@ import {
   loadThreadDetail,
 } from "../services/thread-detail.js";
 import { buildThreadVisibilityWhere } from "../services/thread-visibility.js";
+import { loadThreadCommentsMetaForThreads } from "../services/thread-comment-meta.js";
 import type { AppEnv } from "../env.js";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
@@ -305,6 +306,13 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
     assigned:        assignedCount,
   };
 
+  // Per-thread comment counts for the list rows' comments tag. Batched over the
+  // page (not per row); unread is scoped to the current member's read markers.
+  const commentsMeta = await loadThreadCommentsMetaForThreads(
+    pageThreads.map((t) => t.id),
+    currentUserId,
+  );
+
   const threads = pageThreads.map((thread) => {
     const {
       classifications, classifyingAt, drafts,
@@ -312,8 +320,11 @@ emailThreads.get("/workspaces/:workspaceId/email-threads", async (c) => {
       assignedToUserId, assignedAt, assignedToUser,
       ...rest
     } = thread;
+    const threadComments = commentsMeta.get(thread.id);
     return {
       ...rest,
+      commentCount: threadComments?.total ?? 0,
+      unreadCommentCount: threadComments?.unread ?? 0,
       isClassifying: deriveIsClassifying(classifyingAt),
       // true whenever classifyingAt is set, regardless of staleness — the
       // thread has a classify job enqueued or in progress.

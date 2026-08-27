@@ -28,6 +28,8 @@ function makeThread(id: string): ThreadItem {
     isImportant: false,
     isClassifying: false,
     attachmentCount: 0,
+    commentCount: 0,
+    unreadCommentCount: 0,
   };
 }
 

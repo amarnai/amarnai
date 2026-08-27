@@ -278,6 +278,10 @@ export type EmailThreadSummary = {
   isDrafting: boolean;
   doneMark: DoneMark | null;
   assignment: ThreadAssignment | null;
+  // Thread-comment counts for the list row's comments tag. `unreadCommentCount`
+  // is scoped to the requesting member's read marker.
+  commentCount: number;
+  unreadCommentCount: number;
 };
 
 export type EmailThreadListResult = {

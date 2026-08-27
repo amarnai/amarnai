@@ -28,6 +28,19 @@ msgstr "(Geen inhoud)"
 msgid "(no subject)"
 msgstr "(geen onderwerp)"
 
+#. placeholder {0}: thread.commentCount
+#: ../ui/src/emails/ThreadRow.tsx:324
+#: ../ui/src/emails/ThreadRow.tsx:338
+#, fuzzy
+msgid "{0, plural, one {# comment} other {# comments}}"
+msgstr "{0, plural, one {# reactie} other {# reacties}}"
+
+#. placeholder {0}: thread.commentCount
+#. placeholder {1}: thread.unreadCommentCount
+#: ../ui/src/emails/ThreadRow.tsx:335
+msgid "{0, plural, one {# comment} other {# comments}}, {1, plural, one {# unread} other {# unread}}"
+msgstr "{0, plural, one {# reactie} other {# reacties}}, {1, plural, one {# ongelezen} other {# ongelezen}}"
+
 #. placeholder {0}: thread.attachmentCount
 #: ../../apps/mobile/src/components/ThreadRow.tsx:115
 #, fuzzy
@@ -169,7 +182,7 @@ msgstr "{blacklistCount, plural, one {# geblokkeerd} other {# geblokkeerd}}"
 #~ msgid "{by} assigned you: {subject}"
 #~ msgstr "{by} heeft je toegewezen: {subject}"
 
-#: ../ui/src/emails/ThreadRow.tsx:272
+#: ../ui/src/emails/ThreadRow.tsx:283
 msgid "{chipLabel}. Change folder"
 msgstr "{chipLabel}. Map wijzigen"
 
@@ -260,8 +273,8 @@ msgstr "{providerName} Inbox"
 
 #. placeholder {0}: draftQuota.limit
 #. placeholder {0}: quota.limit
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:470
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:485
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:473
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:488
 #: ../panel/src/DraftSection.tsx:237
 #, fuzzy
 msgid "{quotaRemaining} of {0} remaining · resets {quotaResetDate}"
@@ -595,17 +608,19 @@ msgstr "500 gesprekken"
 msgid "75,000 threads"
 msgstr "75.000 gesprekken"
 
-#: ../ui/src/demo/demo-seed.ts:437
+#: ../ui/src/demo/demo-seed.ts:441
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "Er is een nieuwe sollicitatie ontvangen van Horemheb van Thebe voor de functie van Hoofd Correspondentie."
 
-#: ../ui/src/demo/demo-seed.ts:451
+#: ../ui/src/demo/demo-seed.ts:455
 #, fuzzy
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Een nieuwe sollicitatie is ontvangen van Horemheb van Thebe voor de functie van Hoofd Correspondentiezaken.\n\nBekijk de sollicitatie in het Huis van Archieven."
+msgstr "Een nieuwe sollicitatie is ontvangen van Horemheb van Thebe voor de functie van Hoofd Correspondentiezaken.\n"
+"\n"
+"Bekijk de sollicitatie in het Huis van Archieven."
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
 #, fuzzy
@@ -620,7 +635,7 @@ msgstr "Een workspace-eigenaar beheert de mappen van deze workspace."
 #~ msgid "A workspace owner manages this workspace's sorting plan."
 #~ msgstr "Een workspace-eigenaar beheert het sorteerplan van deze workspace."
 
-#: ../ui/src/demo/demo-seed.ts:521
+#: ../ui/src/demo/demo-seed.ts:529
 #, fuzzy
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba van Urushalim"
@@ -631,7 +646,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nIk zal diezelfde week in de buurt van de Delta zijn. Laten we elkaar op de tweede dag bij het wegstation ontmoeten; de ochtend kan ik vrijmaken.\n\nTot dan,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Ik zal diezelfde week in de buurt van de Delta zijn. Laten we elkaar op de tweede dag bij het wegstation ontmoeten; de ochtend kan ik vrijmaken.\n"
+"\n"
+"Tot dan,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -853,7 +872,7 @@ msgstr "Alle werkruimtegegevens worden permanent verwijderd."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "Al je werkruimtes, e-mails en instellingen worden permanent verwijderd."
 
-#: ../ui/src/demo/demo-seed.ts:393
+#: ../ui/src/demo/demo-seed.ts:395
 msgid "Alliance proposal: house of Amurru"
 msgstr "Alliantievoorstel: huis van Amurru"
 
@@ -1184,7 +1203,7 @@ msgstr "API-fout {0}"
 msgid "Appearance"
 msgstr "Weergave"
 
-#: ../ui/src/demo/demo-seed.ts:432
+#: ../ui/src/demo/demo-seed.ts:436
 #, fuzzy
 msgid "Application: Chief of Correspondence"
 msgstr "Sollicitatie: Hoofd Correspondentie"
@@ -1264,8 +1283,8 @@ msgid "Assign to"
 msgstr "Toewijzen aan"
 
 #: ../ui/src/emails/ThreadPreview.tsx:243
-#: ../ui/src/emails/ThreadRow.tsx:349
-#: ../ui/src/emails/ThreadRow.tsx:358
+#: ../ui/src/emails/ThreadRow.tsx:386
+#: ../ui/src/emails/ThreadRow.tsx:395
 #: ../ui/src/emails/TriageBar.tsx:63
 #, fuzzy
 msgid "Assign to a member"
@@ -1293,8 +1312,8 @@ msgid "Assigned to {assigneeName}"
 msgstr "Toegewezen aan {assigneeName}"
 
 #: ../ui/src/emails/ThreadPreview.tsx:242
-#: ../ui/src/emails/ThreadRow.tsx:236
-#: ../ui/src/emails/ThreadRow.tsx:357
+#: ../ui/src/emails/ThreadRow.tsx:247
+#: ../ui/src/emails/ThreadRow.tsx:394
 #: ../ui/src/emails/TriageBar.tsx:62
 #, fuzzy
 msgid "Assigned to {assigneeName}. Change assignee"
@@ -1338,7 +1357,7 @@ msgstr "Geautomatiseerde en bulkmail ({0}) verhuist altijd naar de nieuwe vangne
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Geautomatiseerde en bulkmail die niet in een andere map past, komt hier automatisch terecht. Dit is anders dan 'Ter beoordeling', waar gesprekken staan die te dubbelzinnig zijn voor de assistent om te sorteren."
 
-#: ../ui/src/demo/demo-seed.ts:442
+#: ../ui/src/demo/demo-seed.ts:446
 #, fuzzy
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Geautomatiseerde melding van het Bureau voor Koninklijke Benoemingen. Onderwerp en afzender duiden duidelijk op een nieuwe sollicitatie voor een openstaande functie."
@@ -1356,7 +1375,7 @@ msgstr "Geautomatiseerde meldingen, nieuwsbrieven en service-updates die niet in
 msgid "Aziru"
 msgstr "Aziru"
 
-#: ../ui/src/demo/demo-seed.ts:408
+#: ../ui/src/demo/demo-seed.ts:410
 #, fuzzy
 msgid "Aziru of Amurru"
 msgstr "Aziru van Amurru"
@@ -1372,7 +1391,11 @@ msgid "Aziru,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Aziru,\n\nUw vriendschappelijke woorden hebben ons goed bereikt. We horen graag meer over wat het huis Amurru voorstelt. Stuur uw voorwaarden met de volgende koerier.\n\nMet vriendelijke groet,"
+msgstr "Aziru,\n"
+"\n"
+"Uw vriendschappelijke woorden hebben ons goed bereikt. We horen graag meer over wat het huis Amurru voorstelt. Stuur uw voorwaarden met de volgende koerier.\n"
+"\n"
+"Met vriendelijke groet,"
 
 #: ../ui/src/demo/demo-seed.ts:292
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1380,10 +1403,10 @@ msgstr "De derde goudzending van Babylon is na twee koeriers nog steeds niet aan
 
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:106
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:71
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:357
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:359
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:69
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:377
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
@@ -1399,8 +1422,8 @@ msgstr "Terug naar Gmail"
 #~ msgid "Back to inbox"
 #~ msgstr "Terug naar inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:353
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:372
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:355
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:374
 #: ../ui/src/emails/ThreadPreview.tsx:118
 #, fuzzy
 msgid "Back to list"
@@ -1539,7 +1562,7 @@ msgstr "Bouwplan"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Sorteer je inbox bulksgewijs"
 
-#: ../ui/src/demo/demo-seed.ts:447
+#: ../ui/src/demo/demo-seed.ts:451
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Bureau voor Koninklijke Benoemingen"
@@ -1687,16 +1710,16 @@ msgstr "Voor categorie-terugschrijven is toestemming nodig om uw Outlook-e-mail 
 msgid "Change"
 msgstr "Wijzigen"
 
-#: ../ui/src/emails/ThreadRow.tsx:348
+#: ../ui/src/emails/ThreadRow.tsx:385
 #, fuzzy
 msgid "Change assignee"
 msgstr "Wijzig toegewezene"
 
-#: ../ui/src/emails/ThreadRow.tsx:232
+#: ../ui/src/emails/ThreadRow.tsx:243
 msgid "Change assignment"
 msgstr "Wijzig toewijzing"
 
-#: ../ui/src/emails/ThreadRow.tsx:170
+#: ../ui/src/emails/ThreadRow.tsx:181
 #, fuzzy
 msgid "Change folder"
 msgstr "Map wijzigen"
@@ -1848,8 +1871,8 @@ msgstr "Sluiten"
 msgid "Close panel"
 msgstr "Paneel sluiten"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:420
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:424
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:422
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:426
 #: ../ui/src/emails/ThreadPreview.tsx:149
 #: ../ui/src/emails/ThreadPreview.tsx:153
 #, fuzzy
@@ -2471,12 +2494,12 @@ msgstr "Kon de generatie niet starten."
 msgid "Council convenes at the start of Shemu"
 msgstr "De Raad komt bijeen aan het begin van Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:543
+#: ../ui/src/demo/demo-seed.ts:553
 #, fuzzy
 msgid "Council convening: season of Shemu"
 msgstr "Raadsvergadering: seizoen van Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:553
+#: ../ui/src/demo/demo-seed.ts:563
 #, fuzzy
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Verzoek om raadsvoorbereiding van een bekende koninklijke bondgenoot. Afzenderdomein en context komen duidelijk overeen met de map 'Huidige investeerders'."
@@ -2829,11 +2852,11 @@ msgstr "Ontkoppelt deze werkruimte. Amarnai behoudt toegang omdat deze mailbox o
 msgid "Disconnects this workspace. Amarnai keeps access because this mailbox is still connected in {sharedNames}."
 msgstr "Ontkoppelt deze werkruimte. Amarnai behoudt toegang omdat deze mailbox nog steeds is verbonden in {sharedNames}."
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:500
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:501
 #: ../../apps/extension/src/panel/StatusSlot.tsx:113
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:51
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:65
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:411
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:412
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:57
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:73
 #: ../../apps/web/src/components/JoinedWorkspaceToast.tsx:46
@@ -2904,7 +2927,7 @@ msgstr "Donatieacties, inzamelingscampagnes en reacties op fondsenwervingsoproep
 #: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:62
 #: ../../apps/mobile/app/(app)/notifications.tsx:278
 #: ../../apps/mobile/src/components/ThreadRow.tsx:35
-#: ../ui/src/emails/ThreadRow.tsx:227
+#: ../ui/src/emails/ThreadRow.tsx:238
 #: ../ui/src/upgrade/UpgradeDialog.tsx:200
 #, fuzzy
 msgid "Done"
@@ -2923,7 +2946,7 @@ msgstr "Donoren"
 msgid "Downgrade to {planName}"
 msgstr "Downgraden naar {planName}"
 
-#: ../ui/src/emails/ThreadRow.tsx:299
+#: ../ui/src/emails/ThreadRow.tsx:310
 #, fuzzy
 msgid "draft"
 msgstr "concept"
@@ -2955,8 +2978,8 @@ msgstr "Concept mislukt · tik om opnieuw te proberen"
 msgid "Draft generation failed."
 msgstr "Concept genereren mislukt."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:485
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:501
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:488
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:504
 #, fuzzy
 msgid "Draft generation failed. Try again."
 msgstr "Genereren van concept mislukt. Probeer het opnieuw."
@@ -2984,7 +3007,7 @@ msgstr "Richtlijnen voor conceptstijl"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:106
 #: ../ui/src/demo/mailbox/AmarnaiReply.tsx:65
-#: ../ui/src/emails/ThreadRow.tsx:293
+#: ../ui/src/emails/ThreadRow.tsx:304
 msgid "Drafting…"
 msgstr "Concept aanmaken…"
 
@@ -3425,7 +3448,7 @@ msgstr "Eerste vragen van kopers en verkopers en introducties van nieuwe makelaa
 msgid "Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
 msgstr "Vijf zaken houden je inbox veilig. Ten eerste is Amarnai's toegang van nature beperkt: het kan je mail nooit verzenden, verwijderen of verplaatsen, en het enige wat het schrijft, zijn zijn eigen sorteerlabels, die je kunt uitschakelen. Ten tweede heeft Amarnai de beveiligingscontrole van Google doorstaan, inclusief de CASA-beveiligingsbeoordeling die vereist is voor elke app die toegang heeft tot Gmail. Ten derde houd je de controle: antwoorden blijven concepten totdat jij het zegt, er wordt nooit iets namens jou verzonden, en je kunt Amarnai op elk moment loskoppelen. Ten vierde worden er geen e-mailteksten opgeslagen: Amarnai bewaart labels en metadata, nooit de inhoud van je berichten. Ten vijfde is de code openbaar, dus iedereen kan precies controleren wat er met je e-mail gebeurt."
 
-#: ../ui/src/demo/demo-seed.ts:403
+#: ../ui/src/demo/demo-seed.ts:405
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 msgstr "Gemarkeerd als alliantie/investeerdersintroductie op basis van de taal ('wederzijds voordeel', 'langdurige vriendschap'). Betrouwbaarheid is matig; Aziru staat erom bekend vergelijkbare toenaderingen naar meerdere hoven te sturen."
 
@@ -3558,7 +3581,7 @@ msgstr "Voor onderwijzers die klas, ouders en schooladministratie beheren."
 msgid "For larger organizations."
 msgstr "Voor grotere organisaties."
 
-#: ../ui/src/demo/demo-seed.ts:398
+#: ../ui/src/demo/demo-seed.ts:400
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "Al vele jaren zijn onze huizen als broeders. Ik schrijf u nu voor te stellen deze vriendschap te formaliseren ten behoeve van beide volkeren."
 
@@ -3703,9 +3726,9 @@ msgstr "Genereer een nieuw concept. Dit telt mee voor je maandelijkse tegoed."
 #~ msgid "Generate a plan from your inbox"
 #~ msgstr "Genereer een plan vanuit je inbox"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:464
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:467
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:361
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:363
 #: ../ui/src/emails/ThreadPreview.tsx:276
 #, fuzzy
 msgid "Generate draft reply"
@@ -3950,7 +3973,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Grote Koning,\n\nDe door u gevraagde rapporten zullen worden voorbereid voordat de raad bijeenkomt. Ik zal mijn schrijvers de verslagen van de oostelijke gebieden laten samenstellen en deze per snelle koerier vooruitsturen.\n\nIn broederschap,"
+msgstr "Grote Koning,\n"
+"\n"
+"De door u gevraagde rapporten zullen worden voorbereid voordat de raad bijeenkomt. Ik zal mijn schrijvers de verslagen van de oostelijke gebieden laten samenstellen en deze per snelle koerier vooruitsturen.\n"
+"\n"
+"In broederschap,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4067,7 +4094,7 @@ msgstr "Hoe het werkt"
 msgid "How to write a good description"
 msgstr "Hoe schrijf je een goede beschrijving"
 
-#: ../ui/src/demo/demo-seed.ts:411
+#: ../ui/src/demo/demo-seed.ts:413
 msgid "I write to propose that we formalise our friendship."
 msgstr "Ik schrijf u voor te stellen onze vriendschap te formaliseren."
 
@@ -4206,7 +4233,7 @@ msgstr "Inbegrepen"
 msgid "Incorrect email or password."
 msgstr "Onjuist e-mailadres of wachtwoord."
 
-#: ../ui/src/demo/demo-seed.ts:516
+#: ../ui/src/demo/demo-seed.ts:524
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Informele boodschap zonder duidelijke categorie: persoonlijk bezoek of politieke audiëntie? De toon is persoonlijk, maar de afzender is een bekende vazalvorst. Doorgestuurd naar 'Overig' met lage betrouwbaarheid."
 
@@ -4596,10 +4623,10 @@ msgstr "Live"
 msgid "Load more"
 msgstr "Laad meer"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:517
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:538
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:560
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:604
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:518
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:539
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:561
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:605
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:130
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:95
 #, fuzzy
@@ -4693,24 +4720,24 @@ msgstr "Manuscripten & Peerreview"
 
 #: ../panel/src/queue/QueueRow.tsx:44
 #: ../ui/src/emails/PreviewDoneBar.tsx:23
-#: ../ui/src/emails/ThreadRow.tsx:146
+#: ../ui/src/emails/ThreadRow.tsx:157
 #, fuzzy
 msgid "Mark as done"
 msgstr "Markeren als gereed"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:365
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:244
 #: ../../apps/mobile/src/components/ThreadRow.tsx:58
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:401
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:407
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
-#: ../ui/src/emails/ThreadRow.tsx:149
+#: ../ui/src/emails/ThreadRow.tsx:160
 msgid "Mark as important"
 msgstr "Markeren als belangrijk"
 
 #: ../panel/src/queue/QueueRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:145
+#: ../ui/src/emails/ThreadRow.tsx:156
 #, fuzzy
 msgid "Mark as not done"
 msgstr "Markeren als niet gereed"
@@ -4907,7 +4934,7 @@ msgstr "Verplaatsen naar…"
 msgid "Moved to {folderName}"
 msgstr "Verplaatst naar {folderName}"
 
-#: ../ui/src/demo/demo-seed.ts:511
+#: ../ui/src/demo/demo-seed.ts:519
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "Mijn reizen brengen mij de komende dagen nabij de Delta. Als de Grote Koning een uur vrij kan maken, dan zou ik de kans om persoonlijk te spreken zeer op prijs stellen."
 
@@ -4953,7 +4980,7 @@ msgstr "Verzendt nooit · OAuth · altijd intrekbaar"
 msgid "Never sends or deletes"
 msgstr "Verzendt of verwijdert nooit"
 
-#: ../ui/src/demo/demo-seed.ts:450
+#: ../ui/src/demo/demo-seed.ts:454
 #, fuzzy
 msgid "New application from Horemheb of Thebes."
 msgstr "Nieuwe sollicitatie van Horemheb van Thebe."
@@ -5043,8 +5070,8 @@ msgstr "Nog geen reacties. Start de discussie."
 msgid "No drafts remaining"
 msgstr "Geen concepten meer"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:469
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:484
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:472
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:487
 #: ../panel/src/DraftSection.tsx:235
 #: ../ui/src/emails/SuggestedDraftCard.tsx:134
 #, fuzzy
@@ -5055,7 +5082,7 @@ msgstr "Geen concepten meer · reset op {quotaResetDate}"
 msgid "No drafts remaining · resets {resetDate}"
 msgstr "Geen concepten meer · reset {resetDate}"
 
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:473
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:476
 #: ../ui/src/emails/SuggestedDraftCard.tsx:113
 #, fuzzy
 msgid "No drafts remaining this month"
@@ -5297,7 +5324,7 @@ msgstr "Met één keer inloggen maak je een account aan en verbind je Gmail of O
 #~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Amarnai never sends or deletes mail."
 #~ msgstr "Met één aanmelding maak je een account, koppel je je inbox en stel je je sorteerplan op. Amarnai verzendt of verwijdert nooit mail."
 
-#: ../ui/src/demo/demo-seed.ts:477
+#: ../ui/src/demo/demo-seed.ts:483
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Lopend gesprek met een bekende stadsgouverneur over een terugkerend leveringsprobleem. De escalerende toon en herhaalde follow-ups komen overeen met de map 'Support'."
 
@@ -5347,14 +5374,14 @@ msgstr "Open gesprek: {subject}"
 msgid "Open in Amarnai"
 msgstr "Openen in Amarnai"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:394
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:396
 #: ../../apps/mobile/src/components/DraftSheet.tsx:97
 #: ../ui/src/emails/providerLabels.ts:11
 #, fuzzy
 msgid "Open in Gmail"
 msgstr "Openen in Gmail"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:392
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:394
 #: ../ui/src/emails/providerLabels.ts:11
 msgid "Open in Outlook"
 msgstr "Openen in Outlook"
@@ -5517,8 +5544,8 @@ msgstr "Partners"
 msgid "Passed Google's security review"
 msgstr "Google's beveiligingscontrole doorstaan"
 
-#: ../ui/src/demo/demo-seed.ts:506
-#: ../ui/src/demo/demo-seed.ts:524
+#: ../ui/src/demo/demo-seed.ts:514
+#: ../ui/src/demo/demo-seed.ts:532
 msgid "Passing through the Delta: free to meet?"
 msgstr "Doorreis door de Delta: gelegenheid om af te spreken?"
 
@@ -5767,7 +5794,7 @@ msgstr "Liever zelf hosten?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Liever zelf hosten? Het is open source:<0/> <1>clone het en draai het gratis</1>."
 
-#: ../ui/src/demo/demo-seed.ts:561
+#: ../ui/src/demo/demo-seed.ts:571
 msgid "Prepare your accounts before the council convenes."
 msgstr "Bereid uw rekeningen voor voordat de raad bijeenkomt."
 
@@ -5946,7 +5973,7 @@ msgstr "Opnieuw scannen wordt in de wachtrij geplaatst…"
 msgid "Rated 5 out of 5"
 msgstr "Beoordeeld met 5 van 5"
 
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:421
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:422
 #, fuzzy
 msgid "Re-route {unclassifiedCount} unclassified"
 msgstr "{unclassifiedCount} ongeclassificeerde omleiden"
@@ -5970,7 +5997,7 @@ msgstr "Het opnieuw sorteren van reeds gesorteerde gesprekken deze maand is grat
 msgid "Re-sorting…"
 msgstr "Opnieuw sorteren…"
 
-#: ../ui/src/demo/demo-seed.ts:467
+#: ../ui/src/demo/demo-seed.ts:473
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Betreft: Graanlevering: derde vertraging dit seizoen"
 
@@ -6146,14 +6173,14 @@ msgstr "{0} verwijderen"
 msgid "Remove {email} from blacklist"
 msgstr "{email} van de zwarte lijst verwijderen"
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:363
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:365
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:243
 #: ../../apps/mobile/src/components/ThreadRow.tsx:57
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:399
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:405
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:401
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:407
 #: ../ui/src/emails/ThreadPreview.tsx:128
 #: ../ui/src/emails/ThreadPreview.tsx:132
-#: ../ui/src/emails/ThreadRow.tsx:148
+#: ../ui/src/emails/ThreadRow.tsx:159
 #, fuzzy
 msgid "Remove from important"
 msgstr "Markering 'Belangrijk' opheffen"
@@ -6335,9 +6362,9 @@ msgid "Resources"
 msgstr "Bronnen"
 
 #: ../../apps/extension/src/App.tsx:144
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:487
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:490
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:345
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:507
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:510
 #: ../panel/src/DraftSection.tsx:259
 #: ../ui/src/emails/ThreadCommentsCard.tsx:169
 #: ../ui/src/emails/ThreadSummaryCard.tsx:60
@@ -6376,7 +6403,7 @@ msgstr "Recensies van vroege gebruikers"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr ""
 
-#: ../ui/src/demo/demo-seed.ts:482
+#: ../ui/src/demo/demo-seed.ts:488
 #, fuzzy
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda van Byblos"
@@ -6387,7 +6414,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nWij horen u. Extra graan is besteld bij de zuidelijke voorraden en zal vóór het oogstfeest arriveren. Wij vragen uw geduld tot die tijd.\n\nWees gegroet,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Wij horen u. Extra graan is besteld bij de zuidelijke voorraden en zal vóór het oogstfeest arriveren. Wij vragen uw geduld tot die tijd.\n"
+"\n"
+"Wees gegroet,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6536,8 +6567,8 @@ msgstr "Zie hoe het werkt"
 msgid "Select"
 msgstr "Selecteren"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:449
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:367
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:450
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:368
 #: ../ui/src/emails/MockEmailsPage.tsx:338
 #, fuzzy
 msgid "Select a thread to preview"
@@ -6645,7 +6676,7 @@ msgstr "Nieuw wachtwoord instellen"
 #~ msgstr "Stel minstens 3 mappen in zodat we kunnen beginnen met sorteren."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:435
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
 #, fuzzy
 msgid "Set up folders"
@@ -6949,7 +6980,7 @@ msgstr "Sorteervolume"
 #: ../../apps/mobile/src/components/RationaleCard.tsx:34
 #: ../panel/src/ClassificationCard.tsx:79
 #: ../ui/src/demo/HeroFeedCard.tsx:95
-#: ../ui/src/emails/ThreadRow.tsx:256
+#: ../ui/src/emails/ThreadRow.tsx:267
 msgid "Sorting…"
 msgstr "Sorteren…"
 
@@ -7366,12 +7397,12 @@ msgstr "De raad komt bijeen aan het begin van Shemu. Tushratta vraagt om een vol
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "De Gmail-verbinding, alle gesynchroniseerde e-mails en de taxonomie worden permanent verwijderd. Deze inbox opnieuw importeren gebruikt uw maandelijkse importtegoed; als dit op is, kunt u na {allowanceResetsAt} opnieuw importeren of door te upgraden."
 
-#: ../ui/src/demo/demo-seed.ts:472
+#: ../ui/src/demo/demo-seed.ts:478
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "Het graan dat u vorige maand stuurde, is met dankbaarheid ontvangen. Maar ik moet opnieuw schrijven: de derde zending is niet gearriveerd en de stad wordt onrustig."
 
-#: ../ui/src/demo/demo-seed.ts:548
+#: ../ui/src/demo/demo-seed.ts:558
 #, fuzzy
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "De grote raad komt bijeen aan het begin van Shemu. Ik verzoek u een volledige rekening van de oostelijke gebieden voor te bereiden en deze vooruit te sturen per snelle koerier."
@@ -7390,7 +7421,7 @@ msgstr "De derde goudzending die onder ons verdrag is overeengekomen, is niet ge
 msgid "The third gold consignment is overdue."
 msgstr "De derde goudzending is te laat."
 
-#: ../ui/src/demo/demo-seed.ts:485
+#: ../ui/src/demo/demo-seed.ts:491
 msgid "The third grain shipment has not arrived."
 msgstr "De derde graanzending is niet aangekomen."
 
@@ -7503,7 +7534,7 @@ msgstr "Hiermee wordt de Gmail-verbinding verbroken, alle gesynchroniseerde e-ma
 msgid "This thread has reached its comment limit."
 msgstr "Dit gesprek heeft de limiet voor reacties bereikt."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:440
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:443
 #, fuzzy
 msgid "This thread hasn't been sorted yet."
 msgstr "Dit gesprek is nog niet gesorteerd."
@@ -7513,7 +7544,7 @@ msgstr "Dit gesprek is nog niet gesorteerd."
 #~ msgid "This thread hasn't been sorted yet. Create a sorting plan so Amarnai knows where to file it."
 #~ msgstr "Dit gesprek is nog niet gesorteerd. Maak een sorteerplan zodat Amarnai weet waar het naartoe moet."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:429
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:432
 #, fuzzy
 msgid "This thread hasn't been sorted yet. Set up your folders so Amarnai knows where to file it."
 msgstr "Dit gesprek is nog niet gesorteerd. Stel uw mappen in zodat Amarnai weet waar het moet worden gearchiveerd."
@@ -7617,7 +7648,7 @@ msgstr "Drie stappen naar een opgeruimde inbox."
 msgid "Tip: pin the Amarnai icon in your toolbar to keep it one click away."
 msgstr "Tip: pin het Amarnai-icoon in je werkbalk om het altijd binnen handbereik te hebben."
 
-#: ../ui/src/demo/demo-seed.ts:562
+#: ../ui/src/demo/demo-seed.ts:572
 #, fuzzy
 msgid "To my brother, the Great King,\n"
 "\n"
@@ -7626,7 +7657,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "Aan mijn broeder, de Grote Koning,\n\nDe grote raad komt bijeen aan het begin van Shemu. Ik vraag u om een volledige verantwoording van de oostelijke gebieden voor te bereiden en deze per snelle koerier vooruit te sturen, indien mogelijk vóór de nieuwe maan.\n\nOnze alliantie is sterk. Laten we de raad tonen dat dit zo blijft.\n\nTushratta, Grote Koning van Mitanni"
+msgstr "Aan mijn broeder, de Grote Koning,\n"
+"\n"
+"De grote raad komt bijeen aan het begin van Shemu. Ik vraag u om een volledige verantwoording van de oostelijke gebieden voor te bereiden en deze per snelle koerier vooruit te sturen, indien mogelijk vóór de nieuwe maan.\n"
+"\n"
+"Onze alliantie is sterk. Laten we de raad tonen dat dit zo blijft.\n"
+"\n"
+"Tushratta, Grote Koning van Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:256
 #, fuzzy
@@ -7635,9 +7672,13 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Aan het Bureau voor Koninklijke Benoemingen,\n\nWe hebben de sollicitatie van Horemheb van Thebe ontvangen en zullen zijn dossier bekijken vóór de volgende nieuwe maan. Gelieve hem te informeren dat we te zijner tijd bericht zullen sturen.\n\nBij koninklijk besluit,"
+msgstr "Aan het Bureau voor Koninklijke Benoemingen,\n"
+"\n"
+"We hebben de sollicitatie van Horemheb van Thebe ontvangen en zullen zijn dossier bekijken vóór de volgende nieuwe maan. Gelieve hem te informeren dat we te zijner tijd bericht zullen sturen.\n"
+"\n"
+"Bij koninklijk besluit,"
 
-#: ../ui/src/demo/demo-seed.ts:412
+#: ../ui/src/demo/demo-seed.ts:414
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
@@ -7646,16 +7687,26 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Aziru, servant of the Great King, lord of Amurru"
-msgstr "Aan de Grote Koning,\n\nVele jaren zijn onze huizen als broeders geweest. Ik schrijf u nu om voor te stellen deze vriendschap te formaliseren ten behoeve van beide volkeren: een pact van wederzijdse bescherming en gedeelde routes.\n\nIk vraag slechts dat u mijn voorwaarden aanhoort. Stuur bericht met de volgende koerier en ik zal mijn gezant onmiddellijk sturen.\n\nAziru, dienaar van de Grote Koning, heer van Amurru"
+msgstr "Aan de Grote Koning,\n"
+"\n"
+"Vele jaren zijn onze huizen als broeders geweest. Ik schrijf u nu om voor te stellen deze vriendschap te formaliseren ten behoeve van beide volkeren: een pact van wederzijdse bescherming en gedeelde routes.\n"
+"\n"
+"Ik vraag slechts dat u mijn voorwaarden aanhoort. Stuur bericht met de volgende koerier en ik zal mijn gezant onmiddellijk sturen.\n"
+"\n"
+"Aziru, dienaar van de Grote Koning, heer van Amurru"
 
-#: ../ui/src/demo/demo-seed.ts:525
+#: ../ui/src/demo/demo-seed.ts:533
 #, fuzzy
 msgid "To the Great King,\n"
 "\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Aan de Grote Koning,\n\nMijn reizen brengen mij de komende dagen in de buurt van de Delta. Als de Grote Koning een uur kan missen, zou ik de gelegenheid om van aangezicht tot aangezicht te spreken zeer op prijs stellen; sommige zaken zijn makkelijker te zeggen dan te schrijven.\n\nUw dienaar, Abdi-Heba, gouverneur van Urushalim"
+msgstr "Aan de Grote Koning,\n"
+"\n"
+"Mijn reizen brengen mij de komende dagen in de buurt van de Delta. Als de Grote Koning een uur kan missen, zou ik de gelegenheid om van aangezicht tot aangezicht te spreken zeer op prijs stellen; sommige zaken zijn makkelijker te zeggen dan te schrijven.\n"
+"\n"
+"Uw dienaar, Abdi-Heba, gouverneur van Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:246
 #, fuzzy
@@ -7664,7 +7715,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Aan de Grote Koning, mijn broeder,\n\nIk heb uw woorden gehoord. Het goud zal worden verzonden voordat de volgende bode vertrekt. We waarderen de band tussen onze huizen en wensen niet dat deze bekoelt.\n\nIn vriendschap,"
+msgstr "Aan de Grote Koning, mijn broeder,\n"
+"\n"
+"Ik heb uw woorden gehoord. Het goud zal worden verzonden voordat de volgende bode vertrekt. We waarderen de band tussen onze huizen en wensen niet dat deze bekoelt.\n"
+"\n"
+"In vriendschap,"
 
 #: ../ui/src/demo/demo-seed.ts:373
 #, fuzzy
@@ -7675,9 +7730,15 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Aan de Grote Koning, mijn broeder,\n\nIk schrijf u in vriendschap, zoals onze vaders voor ons schreven. De derde goudzending die onder ons verdrag is overeengekomen, is niet aangekomen. Twee boodschappers zijn gepasseerd en nog steeds wachten we.\n\nWij vragen u deze zonder verdere vertraging te verzenden, zoals de band tussen onze huizen betaamt.\n\nBurna-Buriash II, Koning van Babylon"
+msgstr "Aan de Grote Koning, mijn broeder,\n"
+"\n"
+"Ik schrijf u in vriendschap, zoals onze vaders voor ons schreven. De derde goudzending die onder ons verdrag is overeengekomen, is niet aangekomen. Twee boodschappers zijn gepasseerd en nog steeds wachten we.\n"
+"\n"
+"Wij vragen u deze zonder verdere vertraging te verzenden, zoals de band tussen onze huizen betaamt.\n"
+"\n"
+"Burna-Buriash II, Koning van Babylon"
 
-#: ../ui/src/demo/demo-seed.ts:486
+#: ../ui/src/demo/demo-seed.ts:492
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -7685,7 +7746,13 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Aan de Grote Koning, mijn heer, mijn zon,\n\nHet graan dat u vorige maand stuurde, werd met dankbaarheid ontvangen en ik prees uw naam voor het volk. Maar ik moet opnieuw schrijven: de derde zending is niet aangekomen en de stad wordt onrustig.\n\nIk heb zevenmaal geschreven. Ik wil u niet storen, doch wat kan ik anders doen?\n\nUw dienaar, Rib-Hadda, gouverneur van Byblos"
+msgstr "Aan de Grote Koning, mijn heer, mijn zon,\n"
+"\n"
+"Het graan dat u vorige maand stuurde, werd met dankbaarheid ontvangen en ik prees uw naam voor het volk. Maar ik moet opnieuw schrijven: de derde zending is niet aangekomen en de stad wordt onrustig.\n"
+"\n"
+"Ik heb zevenmaal geschreven. Ik wil u niet storen, doch wat kan ik anders doen?\n"
+"\n"
+"Uw dienaar, Rib-Hadda, gouverneur van Byblos"
 
 #: ../ui/src/demo/mailbox/AmarnaiReply.tsx:107
 #, fuzzy
@@ -7777,7 +7844,7 @@ msgstr "Probeer Amarnai"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "Als u dit inschakelt, wordt u om toestemming gevraagd om uw labels te beheren."
 
-#: ../ui/src/demo/demo-seed.ts:558
+#: ../ui/src/demo/demo-seed.ts:568
 #, fuzzy
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta van Mitanni"
@@ -7803,16 +7870,16 @@ msgid "Unavailable"
 msgstr "Niet beschikbaar"
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:41
-#: ../ui/src/emails/ThreadRow.tsx:266
+#: ../ui/src/emails/ThreadRow.tsx:277
 msgid "Unclassified"
 msgstr "Ongeclassificeerd"
 
-#: ../ui/src/emails/ThreadRow.tsx:265
+#: ../ui/src/emails/ThreadRow.tsx:276
 msgid "Unclassified. Change folder"
 msgstr "Ongeclassificeerd. Map wijzigen"
 
-#: ../../apps/extension/src/panel/EmailsPanel.tsx:493
-#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:408
+#: ../../apps/extension/src/panel/EmailsPanel.tsx:494
+#: ../../apps/web/src/app/(app)/emails/EmailsClient.tsx:409
 #: ../ui/src/emails/MockEmailsPage.tsx:365
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:729
 #, fuzzy
@@ -8092,7 +8159,7 @@ msgstr "Vrijwilligers"
 
 #: ../../apps/mobile/src/components/RationaleCard.tsx:43
 #: ../../apps/mobile/src/components/ThreadRow.tsx:44
-#: ../ui/src/emails/ThreadRow.tsx:260
+#: ../ui/src/emails/ThreadRow.tsx:271
 msgid "Waiting"
 msgstr "Wachtend"
 
@@ -8114,7 +8181,7 @@ msgstr "Wachten op revisie · {confidence}% zeker"
 #~ msgid "Waitlist"
 #~ msgstr "Wachtlijst"
 
-#: ../ui/src/emails/ThreadRow.tsx:139
+#: ../ui/src/emails/ThreadRow.tsx:150
 msgid "Wants {folderName}"
 msgstr "Wil {folderName}"
 
@@ -8292,9 +8359,9 @@ msgstr "Schrijf gesorteerde mappen weg als Outlook-categorieën"
 msgid "Writeback is on. Your folders are being mirrored into your mailbox."
 msgstr "Terugschrijven is ingeschakeld. Uw mappen worden gespiegeld in uw mailbox."
 
-#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:479
+#: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:482
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:168
-#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:495
+#: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:498
 #: ../panel/src/DraftSection.tsx:249
 #: ../ui/src/emails/ThreadPreview.tsx:283
 #, fuzzy

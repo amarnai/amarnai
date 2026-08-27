@@ -38,6 +38,7 @@ type TriageActions = Pick<
   | 'handleDraftFailed'
   | 'handleDraftGenerated'
   | 'handleDraftSentToggled'
+  | 'handleCommentsSync'
   | 'handleReroute'
   | 'markWaitingClassifying'
   | 'showToast'
@@ -164,6 +165,7 @@ function TriageInner({
       handleDraftFailed: triage.handleDraftFailed,
       handleDraftGenerated: triage.handleDraftGenerated,
       handleDraftSentToggled: triage.handleDraftSentToggled,
+      handleCommentsSync: triage.handleCommentsSync,
       handleReroute: triage.handleReroute,
       markWaitingClassifying: triage.markWaitingClassifying,
       showToast: triage.showToast,
@@ -190,6 +192,7 @@ function TriageInner({
       triage.handleDraftFailed,
       triage.handleDraftGenerated,
       triage.handleDraftSentToggled,
+      triage.handleCommentsSync,
       triage.handleReroute,
       triage.markWaitingClassifying,
       triage.showToast,

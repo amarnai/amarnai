@@ -23,6 +23,8 @@ function makeThread(triageStatus: EmailThreadSummary["triageStatus"]): EmailThre
     isDrafting: false,
     doneMark: null,
     assignment: null,
+    commentCount: 0,
+    unreadCommentCount: 0,
   };
 }
 
@@ -145,5 +147,23 @@ describe("mapThreadDetail", () => {
     expect(t.snippet).toBe("latest");
     expect(t.messages[0]!.id).toBe("m-new");
     expect(t.messages[t.messages.length - 1]!.id).toBe("m-old");
+  });
+});
+
+describe("mapThreads — comment counts", () => {
+  it("carries commentCount and unreadCommentCount into the view model", () => {
+    const [t] = mapThreads([
+      { ...makeThread("SORTED"), commentCount: 3, unreadCommentCount: 2 },
+    ]);
+    expect(t!.commentCount).toBe(3);
+    expect(t!.unreadCommentCount).toBe(2);
+  });
+
+  // The detail endpoint has no comment meta; an injected row starts at zero
+  // (no comments tag) until the next list refresh supplies real counts.
+  it("defaults a detail-injected thread to zero comment counts", () => {
+    const t = mapThreadDetail(makeDetail());
+    expect(t.commentCount).toBe(0);
+    expect(t.unreadCommentCount).toBe(0);
   });
 });
