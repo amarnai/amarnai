@@ -788,9 +788,6 @@ importers:
         specifier: ^6.4.0
         version: 6.4.0(react@19.1.0)
     devDependencies:
-      '@amarnai/ai':
-        specifier: workspace:*
-        version: link:../ai
       '@lingui/cli':
         specifier: ^6.4.0
         version: 6.4.0
@@ -803,18 +800,9 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.13.2
-      pofile:
-        specifier: ^1.1.4
-        version: 1.1.4
       typescript:
         specifier: ^5.8.0
         version: 5.9.3
-      vitest:
-        specifier: ^3.0.0
-        version: 3.2.6(@types/debug@4.1.13)(@types/node@24.13.2)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@1.8.0))(lightningcss@1.32.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
-      zod:
-        specifier: ^3.25.0
-        version: 3.25.76
 
   packages/mail:
     dependencies:
@@ -5738,6 +5726,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -7928,9 +7917,6 @@ packages:
   pofile-ts@4.0.3:
     resolution: {integrity: sha512-sz1pnjgEfPyZ+QvaeX3NtCmbYnEvG01LZRLoN/uXoLtPZtxCIH5IctL7yXXc0fFyk/fqV6K8g3hlNfr6IJwupA==}
     engines: {node: '>=20'}
-
-  pofile@1.1.4:
-    resolution: {integrity: sha512-r6Q21sKsY1AjTVVjOuU02VYKVNQGJNQHjTIvs4dEbeuuYfxgYk/DGD2mqqq4RDaVkwdSq0VEtmQUOPe/wH8X3g==}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -18073,8 +18059,6 @@ snapshots:
   pngjs@7.0.0: {}
 
   pofile-ts@4.0.3: {}
-
-  pofile@1.1.4: {}
 
   possible-typed-array-names@1.1.0: {}
 

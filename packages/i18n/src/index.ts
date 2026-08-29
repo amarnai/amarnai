@@ -11,10 +11,3 @@ export {
   localeFromAcceptLanguage,
   type SupportedLocale,
 } from "./locales.js";
-export {
-  validateTranslations,
-  extractPlaceholders,
-  buildTranslationSchema,
-  type TranslationEntry,
-  type ValidationResult,
-} from "./validate-translations.js";
