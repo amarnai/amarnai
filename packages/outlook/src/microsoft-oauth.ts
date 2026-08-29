@@ -340,9 +340,3 @@ export async function fetchOutlookProfile(accessToken: string): Promise<OutlookP
   if (!data.id) throw new Error("Graph /me returned no id");
   return { emailAddress, subjectId: data.id, displayName: data.displayName ?? null };
 }
-
-/** The stable Entra object id for the token's account (the `providerAccountId`). */
-export async function fetchSubjectId(accessToken: string): Promise<string> {
-  const { subjectId } = await fetchOutlookProfile(accessToken);
-  return subjectId;
-}

@@ -1,4 +1,5 @@
-import type { AIProviderConfig, EmbeddingProviderConfig } from "./types.js";
+import type { AIProviderConfig } from "./types.js";
+import type { EmbeddingProviderConfig } from "./embedding/types.js";
 
 export function getAIProviderConfig(): AIProviderConfig {
   const cfg: AIProviderConfig = {

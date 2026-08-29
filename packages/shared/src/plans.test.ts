@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { PLANS, PLAN_FEATURES } from "./plans.js";
+import { PLANS, FEATURE_GROUPS, type FeatureRow } from "./plans.js";
 import { THREAD_SUMMARY_LIMITS } from "./summary-quota.js";
 
 // These constants moved out of @amarnai/ui so non-DOM clients (mobile) can use
@@ -13,9 +13,14 @@ describe("@amarnai/shared plans", () => {
     expect(pro?.annualMonthlyPrice).toBe(5);
   });
 
-  it("exposes feature definitions for every plan id", () => {
-    for (const feature of PLAN_FEATURES) {
-      expect(Object.keys(feature.values).sort()).toEqual(["business", "free", "pro"]);
+  it("exposes a value per plan on every comparison row", () => {
+    for (const group of FEATURE_GROUPS) {
+      for (const row of group.rows) {
+        const cells = "values" in row ? [row.values] : Object.values(row.billing);
+        for (const values of cells) {
+          expect(values, `${group.name} / ${row.label}`).toHaveLength(PLANS.length);
+        }
+      }
     }
   });
 });
@@ -23,15 +28,16 @@ describe("@amarnai/shared plans", () => {
 // The pricing copy and the enforced caps are two hand-maintained lists. A drift
 // between them shows a user one number and bills them against another.
 describe("plan copy matches the enforced quotas", () => {
-  const summaries = PLAN_FEATURES.find((f) => f.id === "thread_summaries");
+  const summaries = FEATURE_GROUPS.flatMap((g) => g.rows).find(
+    (r): r is FeatureRow => "values" in r && r.label === "Thread summaries",
+  );
 
   it("advertises the same thread-summary caps the meter enforces", () => {
     expect(summaries).toBeDefined();
-    expect(summaries!.values.free).toContain(THREAD_SUMMARY_LIMITS["FREE"]!.toLocaleString("en"));
-    expect(summaries!.values.pro).toContain(THREAD_SUMMARY_LIMITS["PRO"]!.toLocaleString("en"));
-    expect(summaries!.values.business).toContain(
-      THREAD_SUMMARY_LIMITS["BUSINESS"]!.toLocaleString("en"),
-    );
+    const [free, pro, business] = summaries!.values;
+    expect(free).toContain(THREAD_SUMMARY_LIMITS["FREE"]!.toLocaleString("en"));
+    expect(pro).toContain(THREAD_SUMMARY_LIMITS["PRO"]!.toLocaleString("en"));
+    expect(business).toContain(THREAD_SUMMARY_LIMITS["BUSINESS"]!.toLocaleString("en"));
   });
 
   it("lists a summaries highlight on every plan card", () => {

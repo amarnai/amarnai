@@ -5,15 +5,14 @@ import {
   GmailApiError,
   exchangeAuthCode,
   fetchGmailProfile,
-  fetchGoogleSubjectId,
 } from "@amarnai/gmail";
 import type { GmailProfile, GmailTokens } from "@amarnai/gmail";
 import { isLabelWritebackEnabled } from "./writeback-flag";
 
-// HTTP helpers (token exchange, profile, subject id) now live in @amarnai/gmail
+// HTTP helpers (token exchange, profile) now live in @amarnai/gmail
 // so the API can share them. Re-export them here so existing web imports from
 // "@/lib/gmail-oauth" keep working unchanged.
-export { GmailApiError, fetchGmailProfile, fetchGoogleSubjectId };
+export { GmailApiError, fetchGmailProfile };
 export type { GmailProfile, GmailTokens };
 
 const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";

@@ -466,30 +466,4 @@ summary.post("/workspaces/:workspaceId/provider-threads/:providerThreadId/summar
   return c.json(outcome.body, outcome.status);
 });
 
-// ─── GET /workspaces/:workspaceId/summary-quota ────────────────────────────────
-//
-// Point-in-time read of the workspace's summary usage for the active
-// calendar-month window: { used, limit, resetsAt }.
-
-summary.get("/workspaces/:workspaceId/summary-quota", async (c) => {
-  const workspaceId = c.req.param("workspaceId");
-  if (!workspaceId) return c.json({ error: "Invalid params" }, 400);
-
-  const connection = await db.emailConnection.findUnique({
-    where: { workspaceId },
-    select: { emailAddress: true },
-  });
-
-  const now = new Date();
-  const quota = connection
-    ? await resolveInboxQuota(connection.emailAddress, "THREAD_SUMMARY", now)
-    : null;
-
-  return c.json({
-    used: quota?.used ?? 0,
-    limit: getThreadSummaryLimit(quota?.plan ?? "FREE"),
-    resetsAt: getSummaryQuotaResetsAt(now).toISOString(),
-  });
-});
-
 export { summary as threadSummaryRoute };

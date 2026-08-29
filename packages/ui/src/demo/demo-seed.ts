@@ -221,25 +221,6 @@ export function getDemoProviderLabels(i18n: I18n): Record<string, string[]> {
   );
 }
 
-// ─── Hero card ───────────────────────────────────────────────────────────────
-
-type HeroLeaf = { id: string; label: string; count: number };
-type HeroFolder = { id: string; label: string; children: HeroLeaf[] } | HeroLeaf;
-
-export function getHeroTreeItems(i18n: I18n): HeroFolder[] {
-  return TAXONOMY.filter((item) => !item.isRoot && item.parentId === null).map((item) => {
-    const children = TAXONOMY.filter((c) => c.parentId === item.id);
-    if (children.length > 0) {
-      return {
-        id: item.id,
-        label: i18n._(item.label),
-        children: children.map((c) => ({ id: c.id, label: i18n._(c.label), count: c.heroCount ?? 0 })),
-      };
-    }
-    return { id: item.id, label: i18n._(item.label), count: item.heroCount ?? 0 };
-  });
-}
-
 // ─── Draft bodies ─────────────────────────────────────────────────────────────
 
 const DRAFT_BODIES: Record<string, MessageDescriptor> = {

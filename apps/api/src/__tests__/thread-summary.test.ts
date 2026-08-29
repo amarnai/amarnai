@@ -532,33 +532,6 @@ describe("POST /workspaces/:workspaceId/provider-threads/:providerThreadId/summa
   });
 });
 
-// ─── Quota read ────────────────────────────────────────────────────────────────
-
-describe("GET /workspaces/:workspaceId/summary-quota", () => {
-  it("returns used, limit, and resetsAt", async () => {
-    mockResolveInboxQuota.mockResolvedValue({
-      inboxKey: "ben@gmail.com",
-      windowStart: new Date(Date.UTC(2026, 6, 1)),
-      plan: "FREE",
-      used: 7,
-    });
-    const res = await app.request(`/workspaces/${WS_ID}/summary-quota`, authed());
-    expect(res.status).toBe(200);
-    const body = (await res.json()) as Record<string, unknown>;
-    expect(body.used).toBe(7);
-    expect(body.limit).toBe(FREE_LIMIT);
-    expect(typeof body.resetsAt).toBe("string");
-  });
-
-  it("reports zero usage with the FREE limit when no inbox is connected", async () => {
-    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(null as never);
-    const res = await app.request(`/workspaces/${WS_ID}/summary-quota`, authed());
-    const body = (await res.json()) as Record<string, unknown>;
-    expect(body.used).toBe(0);
-    expect(body.limit).toBe(FREE_LIMIT);
-  });
-});
-
 describe("summary format", () => {
   it("persists and returns a bulleted summary", async () => {
     mockGenerateThreadSummary.mockResolvedValue({

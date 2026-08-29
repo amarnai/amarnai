@@ -3,7 +3,6 @@ import { z } from "zod";
 import { db, resolveInboxQuota } from "@amarnai/db";
 import { getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
 import { config } from "@amarnai/config";
-import { mockClassify } from "../services/mock-classifier.js";
 import { isWorkspaceTaxonomyRoutable } from "../services/taxonomy-routable.js";
 import { classifyThreadQueue } from "../queues.js";
 
@@ -154,103 +153,6 @@ classify.post(
     );
 
     return c.json({ queued: true }, 202);
-  }
-);
-
-// ─── POST /workspaces/:workspaceId/email-threads/:threadId/mock-classify ───────
-
-classify.post(
-  "/workspaces/:workspaceId/email-threads/:threadId/mock-classify",
-  async (c) => {
-    const parsed = params.safeParse({
-      workspaceId: c.req.param("workspaceId"),
-      threadId: c.req.param("threadId"),
-    });
-    if (!parsed.success) {
-      return c.json({ error: "Invalid params" }, 400);
-    }
-    const { workspaceId, threadId } = parsed.data;
-
-    const thread = await db.emailThread.findFirst({
-      where: { id: threadId, workspaceId },
-      select: {
-        id: true,
-        messages: {
-          orderBy: { receivedAt: "asc" },
-          select: {
-            subject: true,
-            senderEmail: true,
-            senderName: true,
-            bodyText: true,
-          },
-        },
-      },
-    });
-    if (!thread) {
-      return c.json({ error: "Thread not found" }, 404);
-    }
-
-    const nodes = await db.taxonomyNode.findMany({
-      where: { workspaceId },
-      select: { id: true, name: true, isRoot: true, isCatchAll: true },
-    });
-
-    // The catch-all is filtered out inside mockClassify; require at least one
-    // real (routable) folder before attempting a mock classification.
-    if (nodes.every((n) => n.isRoot || n.isCatchAll)) {
-      return c.json({ error: "Taxonomy has too few folders for classification" }, 422);
-    }
-
-    const result = mockClassify(thread.messages, nodes);
-
-    const classification = await db.emailClassification.create({
-      data: {
-        workspaceId,
-        emailThreadId: threadId,
-        finalNodeId: result.finalNodeId,
-        confidence: result.confidence,
-        explanation: result.explanation,
-        priority: result.priority,
-        urgency: result.urgency,
-        riskLevel: result.riskLevel,
-        requiredAction: result.requiredAction,
-        sensitivity: result.sensitivity,
-        suggestedNextStep: result.suggestedNextStep,
-        needsHumanReview: result.needsHumanReview,
-        source: "MANUAL",
-        decisionSource: "mock",
-        modelProvider: "mock",
-        modelName: "mock-classifier-v1",
-        promptVersion: "1.0.0",
-      },
-      select: { id: true },
-    });
-
-    await db.emailThread.update({
-      where: { id: threadId },
-      data: { triageStatus: result.needsHumanReview ? "NEEDS_REVIEW" : "SORTED" },
-    });
-
-    return c.json(
-      {
-        classification: {
-          id: classification.id,
-          finalNodeId: result.finalNodeId,
-          confidence: result.confidence,
-          explanation: result.explanation,
-          priority: result.priority,
-          urgency: result.urgency,
-          riskLevel: result.riskLevel,
-          requiredAction: result.requiredAction,
-          sensitivity: result.sensitivity,
-          suggestedNextStep: result.suggestedNextStep,
-          needsHumanReview: result.needsHumanReview,
-          modelProvider: "mock",
-          modelName: "mock-classifier-v1",
-        },
-      },
-      201
-    );
   }
 );
 

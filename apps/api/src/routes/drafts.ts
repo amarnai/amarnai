@@ -570,35 +570,4 @@ drafts.patch(
   }
 );
 
-// ─── DELETE /workspaces/:workspaceId/email-threads/:threadId/drafts/:draftId ──
-//
-// Marks the draft as CREATED_IN_GMAIL (user sent the reply). The draft is
-// excluded from future PROPOSED queries and the thread row indicator clears.
-
-drafts.delete(
-  "/workspaces/:workspaceId/email-threads/:threadId/drafts/:draftId",
-  async (c) => {
-    const parsed = draftParams.safeParse({
-      workspaceId: c.req.param("workspaceId"),
-      threadId: c.req.param("threadId"),
-      draftId: c.req.param("draftId"),
-    });
-    if (!parsed.success) {
-      return c.json({ error: "Invalid params" }, 400);
-    }
-    const { workspaceId, threadId, draftId } = parsed.data;
-
-    const updated = await db.draft.updateMany({
-      where: { id: draftId, emailThreadId: threadId, workspaceId, status: "PROPOSED" },
-      data: { status: "CREATED_IN_GMAIL" },
-    });
-
-    if (updated.count === 0) {
-      return c.json({ error: "Draft not found" }, 404);
-    }
-
-    return c.json({ ok: true });
-  }
-);
-
 export { drafts as draftsRoute };

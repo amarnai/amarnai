@@ -44,7 +44,6 @@ export function hasWritebackScope(grantedScopes: readonly string[]): boolean {
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 // v1 tokeninfo is used (not v3) because v3 uses `sub` which is only reliably
 // populated for ID tokens. v1 returns `user_id` for any valid access token.
-const GOOGLE_TOKENINFO_V1_URL = "https://www.googleapis.com/oauth2/v1/tokeninfo";
 const GMAIL_PROFILE_URL = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
 const GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo";
 
@@ -169,29 +168,6 @@ export async function fetchGmailProfile(accessToken: string): Promise<GmailProfi
     throw new GmailApiError(`Gmail profile fetch failed: ${res.status}`, res.status, googleError);
   }
   return res.json() as Promise<GmailProfile>;
-}
-
-// ─── Google subject ID via tokeninfo ─────────────────────────────────────────
-// The OIDC userinfo endpoint requires the `openid` scope, which a
-// gmail.readonly-only token does not carry. The tokeninfo endpoint works with
-// any valid Google OAuth access token and returns the stable account ID without
-// additional scopes. Server-side only; the token never appears in URLs or logs.
-
-export async function fetchGoogleSubjectId(accessToken: string): Promise<string> {
-  const url = new URL(GOOGLE_TOKENINFO_V1_URL);
-  url.searchParams.set("access_token", accessToken);
-  // Do not log `url` — it contains the access token in the query string.
-  const res = await fetch(url.toString());
-  if (!res.ok) {
-    type ErrorBody = { error?: string; error_description?: string };
-    const body = (await res.json().catch(() => ({}))) as ErrorBody;
-    devLog("google_tokeninfo", res.status, body.error);
-    throw new GmailApiError(`Google tokeninfo failed: ${res.status}`, res.status, body.error);
-  }
-  // v1 tokeninfo returns `user_id`, not `sub`.
-  const data = (await res.json()) as { user_id?: string };
-  if (!data.user_id) throw new Error("Missing user_id in tokeninfo response");
-  return data.user_id;
 }
 
 // ─── OIDC user info ───────────────────────────────────────────────────────────

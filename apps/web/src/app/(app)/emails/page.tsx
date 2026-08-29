@@ -6,7 +6,7 @@ import { initServerI18n } from "@/lib/i18n-server";
 import { ConnectGmailCta } from "@/components/ConnectGmailCta";
 import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { EmailsClient } from "./EmailsClient";
-import { mapFolders, mapThreads } from "./queries";
+import { mapFolders, mapThreads } from "@amarnai/core/emails";
 import type { ActiveSelection } from "@amarnai/ui/emails";
 import { QUEUES } from "@amarnai/ui/emails";
 import { mapMembers } from "@amarnai/core/emails";

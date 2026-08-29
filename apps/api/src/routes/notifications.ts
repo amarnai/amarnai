@@ -20,7 +20,6 @@ const listQuery = z.object({
     .transform((v) => v !== undefined),
 });
 
-const idParam = z.object({ id: z.string().min(1) });
 
 const notifications = new Hono<AppEnv>();
 
@@ -98,23 +97,6 @@ notifications.get("/notifications/unread-count", async (c) => {
   });
   return c.json({ count });
 });
-
-// ─── POST /notifications/:id/read ──────────────────────────────────────────────
-// Idempotent: updateMany scoped to the owner + unread rows. A second call, a
-// foreign id, or an already-read row all resolve to { ok: true } with no effect.
-
-notifications.post("/notifications/:id/read", async (c) => {
-  const parsed = idParam.safeParse({ id: c.req.param("id") });
-  if (!parsed.success) return c.json({ error: "Invalid params" }, 400);
-
-  const userId = c.get("userId");
-  await db.notification.updateMany({
-    where: { id: parsed.data.id, userId, readAt: null },
-    data: { readAt: new Date() },
-  });
-  return c.json({ ok: true });
-});
-
 // ─── POST /notifications/read-all ──────────────────────────────────────────────
 
 notifications.post("/notifications/read-all", async (c) => {

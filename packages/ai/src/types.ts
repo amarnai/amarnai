@@ -90,18 +90,3 @@ export type AIProviderConfig = {
     reasoningEffort?: "low" | "medium" | "high" | "none";
   };
 };
-
-export type EmbeddingProviderConfig = {
-  provider: "mock" | "ollama" | "frontier";
-  ollama?: {
-    baseUrl?: string;
-    model?: string;
-  };
-  frontier?: {
-    /** Which embedding API to call: "gemini" or any OpenAI-compatible provider. */
-    provider?: string;
-    apiKey?: string;
-    model?: string;
-    baseUrl?: string;
-  };
-};

@@ -48,7 +48,6 @@ export async function requireUser(): Promise<AuthUser> {
   return user;
 }
 
-export { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 
 /** Returns the user's role in the workspace, or null if not a member. */
 export async function getUserWorkspaceRole(

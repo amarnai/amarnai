@@ -22,11 +22,9 @@ export const PLAN_TIER: Record<BillingPlan, number> = { FREE: 0, PRO: 1, BUSINES
 // Derived from the shared backfill caps so the marketing copy never duplicates
 // the numbers. Keep wording here; the caps live in ./backfill-quota.
 
-const PLAN_KEY: Record<PlanId, string> = { free: "FREE", pro: "PRO", business: "BUSINESS" };
-
 /** Format an integer with thousands separators, locale-independently. */
 function formatCount(n: number): string {
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return n.toLocaleString("en-US");
 }
 
 /**
@@ -39,8 +37,8 @@ function backfillLabel(
   cycle: "monthly" | "annual",
   noun: "threads" | "historical threads"
 ): string {
-  const monthly = getBackfillCap(PLAN_KEY[plan], "MONTHLY");
-  const cap = getBackfillCap(PLAN_KEY[plan], cycle === "annual" ? "ANNUAL" : "MONTHLY");
+  const monthly = getBackfillCap(PLAN_TO_BILLING[plan], "MONTHLY");
+  const cap = getBackfillCap(PLAN_TO_BILLING[plan], cycle === "annual" ? "ANNUAL" : "MONTHLY");
 
   // Plans whose annual cap matches monthly (e.g. Free) collapse to one label.
   if (
@@ -56,9 +54,6 @@ function backfillLabel(
   }
   return `${formatCount(cap.maxThreads)} ${noun}`;
 }
-
-/** null = coming soon / not yet available */
-export type FeatureValue = string | boolean | null;
 
 /** Value in a comparison matrix cell */
 export type CellValue =
@@ -78,13 +73,6 @@ export interface Plan {
   badge?: string;
   highlights: string[];
   cta: { label: string; kind: "primary" | "secondary" };
-}
-
-export interface PlanFeature {
-  id: string;
-  label: string;
-  showInCard: boolean;
-  values: Record<PlanId, FeatureValue>;
 }
 
 export interface FeatureRow {
@@ -249,94 +237,3 @@ export const SELF_HOST_NOTE = {
   body: "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.",
   cta: { label: "Self-host guide", href: "https://docs.amarnai.com/docs/self-hosting" },
 };
-
-export const PLAN_FEATURES: PlanFeature[] = [
-  {
-    id: "billing_unit",
-    label: "Billing unit",
-    showInCard: false,
-    values: { free: "Workspace", pro: "Workspace", business: "Workspace" },
-  },
-  {
-    id: "collaborators",
-    label: "Collaborators",
-    showInCard: true,
-    values: { free: "1 person", pro: "2 people", business: "3 people" },
-  },
-  {
-    id: "monthly_threads",
-    label: "Threads / month",
-    showInCard: true,
-    values: { free: "50", pro: "5,000", business: "10,000" },
-  },
-  {
-    id: "backfill_monthly",
-    label: "Initial backfill (monthly plan)",
-    showInCard: false,
-    values: {
-      free: backfillLabel("free", "monthly", "historical threads"),
-      pro: backfillLabel("pro", "monthly", "historical threads"),
-      business: backfillLabel("business", "monthly", "historical threads"),
-    },
-  },
-  {
-    id: "backfill_annual",
-    label: "Initial backfill (annual plan)",
-    showInCard: false,
-    values: {
-      free: backfillLabel("free", "annual", "historical threads"),
-      pro: backfillLabel("pro", "annual", "historical threads"),
-      business: backfillLabel("business", "annual", "historical threads"),
-    },
-  },
-  {
-    id: "ai_drafts",
-    label: "Reply drafts / month",
-    showInCard: true,
-    values: { free: "3", pro: "200 pooled", business: "500 pooled" },
-  },
-  {
-    id: "thread_summaries",
-    label: "Thread summaries / month",
-    showInCard: true,
-    values: { free: "50", pro: "5,000 pooled", business: "10,000 pooled" },
-  },
-  {
-    id: "model_quality",
-    label: "Model quality",
-    showInCard: true,
-    values: {
-      free: "Standard sorting",
-      pro: "Enhanced sorting + fallback",
-      business: "Enhanced sorting + higher fallback budget",
-    },
-  },
-  {
-    id: "taxonomy_nodes",
-    label: "Plan nodes",
-    showInCard: true,
-    values: { free: "12", pro: "Unlimited", business: "Unlimited" },
-  },
-  {
-    id: "shared_taxonomy",
-    label: "Shared plan",
-    showInCard: true,
-    values: { free: false, pro: true, business: true },
-  },
-  {
-    id: "gmail_label_sync",
-    label: "Gmail label sync",
-    showInCard: false,
-    values: { free: null, pro: null, business: null },
-  },
-  {
-    id: "support",
-    label: "Support",
-    showInCard: true,
-    values: {
-      free: "Community / docs",
-      pro: "Email support",
-      business: "Priority support",
-    },
-  },
-];

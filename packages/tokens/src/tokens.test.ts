@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, it, expect } from "vitest";
-import { colors, radii, shadows, typography, space, fontSize } from "./index.js";
+import { colors, radii, shadows, space, fontSize } from "./index.js";
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 
@@ -160,13 +160,6 @@ describe("@amarnai/tokens", () => {
       const match = css.match(/--r-xl\s*:\s*(\d+)px/);
       expect(match, "--r-xl present in globals.css").not.toBeNull();
       expect(Number(match?.[1])).toBe(radii.xl);
-    });
-  });
-
-  describe("typography", () => {
-    it("web font stacks are non-empty strings", () => {
-      expect(typography.web.sans.length).toBeGreaterThan(0);
-      expect(typography.web.mono.length).toBeGreaterThan(0);
     });
   });
 });

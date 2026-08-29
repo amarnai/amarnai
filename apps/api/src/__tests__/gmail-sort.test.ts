@@ -51,7 +51,6 @@ vi.mock("@amarnai/gmail", () => ({
   exchangeServerAuthCode: vi.fn(),
   parseGrantedScopes: vi.fn(),
   fetchGmailProfile: vi.fn(),
-  fetchGoogleSubjectId: vi.fn(),
   fetchGoogleUserInfo: vi.fn(),
 }));
 

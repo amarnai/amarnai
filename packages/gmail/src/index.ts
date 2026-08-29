@@ -20,7 +20,6 @@ export {
   parseGrantedScopes,
   hasWritebackScope,
   fetchGmailProfile,
-  fetchGoogleSubjectId,
   fetchGoogleUserInfo,
 } from "./google-oauth.js";
 export type { GmailTokens, GoogleUserInfo } from "./google-oauth.js";

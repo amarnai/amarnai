@@ -5,7 +5,6 @@ import {
   CreateTaxonomyEdgeInputSchema,
   ClassificationPathStepSchema,
   UpdateTaxonomyNodeInputSchema,
-  gmailLabelSyncCandidates,
   nodeNameSchema,
   nodeDescriptionSchema,
   isPredominantlyCJK,
@@ -220,34 +219,6 @@ describe("Inbox node policies", () => {
         // description intentionally omitted
       })
     ).toThrow();
-  });
-});
-
-// ─── Gmail label sync ─────────────────────────────────────────────────────────
-
-describe("gmailLabelSyncCandidates", () => {
-  const inboxNode = { id: "inbox", isRoot: true, name: "Inbox" };
-  const clientsNode = { id: "clients", isRoot: false, name: "Clients" };
-  const vendorsNode = { id: "vendors", isRoot: false, name: "Vendors" };
-
-  it("excludes root (Inbox) from Gmail label sync candidates", () => {
-    const candidates = gmailLabelSyncCandidates([inboxNode, clientsNode, vendorsNode]);
-    expect(candidates).toHaveLength(2);
-    expect(candidates.map((n) => n.id)).not.toContain("inbox");
-  });
-
-  it("returns all non-root nodes when they are the only nodes", () => {
-    const candidates = gmailLabelSyncCandidates([clientsNode, vendorsNode]);
-    expect(candidates).toHaveLength(2);
-    expect(candidates.every((n) => !n.isRoot)).toBe(true);
-  });
-
-  it("returns empty array when all nodes are root (only Inbox exists)", () => {
-    expect(gmailLabelSyncCandidates([inboxNode])).toHaveLength(0);
-  });
-
-  it("returns empty array for an empty node list", () => {
-    expect(gmailLabelSyncCandidates([])).toHaveLength(0);
   });
 });
 

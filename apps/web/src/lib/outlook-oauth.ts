@@ -4,16 +4,15 @@ import {
   MicrosoftApiError,
   exchangeAuthCode,
   fetchOutlookProfile,
-  fetchSubjectId,
 } from "@amarnai/outlook";
 import type { OutlookProfile, OutlookTokens } from "@amarnai/outlook";
 import { isLabelWritebackEnabled } from "./writeback-flag";
 
-// HTTP helpers (token exchange, profile, subject id) live in @amarnai/outlook so
+// HTTP helpers (token exchange, profile) live in @amarnai/outlook so
 // the API can share them, mirroring how @/lib/gmail-oauth re-exports @amarnai/gmail.
 // State signing (generateState/verifyState) is provider-neutral and reused from
 // @/lib/gmail-oauth — do not duplicate it here.
-export { MicrosoftApiError, fetchOutlookProfile, fetchSubjectId };
+export { MicrosoftApiError, fetchOutlookProfile };
 export type { OutlookProfile, OutlookTokens };
 
 /**

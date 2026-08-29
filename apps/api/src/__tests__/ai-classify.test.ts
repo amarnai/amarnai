@@ -209,23 +209,3 @@ describe("POST /workspaces/:workspaceId/email-threads/:threadId/ai-classify — 
     expect(mockResolveInboxQuota).not.toHaveBeenCalled();
   });
 });
-
-// ─── mock-classify ────────────────────────────────────────────────────────────
-
-describe("POST /workspaces/:workspaceId/email-threads/:threadId/mock-classify", () => {
-  it("returns 201 with classification result", async () => {
-    const res = await post(
-      `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/mock-classify`
-    );
-    expect(res.status).toBe(201);
-    expect(db.emailClassification.create).toHaveBeenCalledTimes(1);
-  });
-
-  it("returns 404 when thread not found", async () => {
-    vi.mocked(db.emailThread.findFirst).mockResolvedValue(null);
-    const res = await post(
-      `/workspaces/${WS_ID}/email-threads/${THREAD_ID}/mock-classify`
-    );
-    expect(res.status).toBe(404);
-  });
-});

@@ -106,31 +106,6 @@ describe("GET /notifications/unread-count", () => {
   });
 });
 
-describe("POST /notifications/:id/read", () => {
-  it("marks one notification read, scoped to the user (idempotent)", async () => {
-    vi.mocked(db.notification.updateMany).mockResolvedValue({ count: 1 } as never);
-
-    const res = await app.request("/notifications/n1/read", authed({ method: "POST" }));
-
-    expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true });
-    expect(db.notification.updateMany).toHaveBeenCalledWith({
-      where: { id: "n1", userId: TEST_USER_ID, readAt: null },
-      data: expect.objectContaining({ readAt: expect.any(Date) }),
-    });
-  });
-
-  it("is a no-op on a foreign id (still ok)", async () => {
-    // updateMany matches zero rows when the id belongs to someone else.
-    vi.mocked(db.notification.updateMany).mockResolvedValue({ count: 0 } as never);
-
-    const res = await app.request("/notifications/other/read", authed({ method: "POST" }));
-
-    expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true });
-  });
-});
-
 describe("POST /notifications/read-all", () => {
   it("marks all the user's unread notifications read", async () => {
     vi.mocked(db.notification.updateMany).mockResolvedValue({ count: 4 } as never);

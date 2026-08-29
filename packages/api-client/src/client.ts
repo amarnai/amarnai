@@ -40,7 +40,6 @@ import type {
   LLMNodeSelectionResult,
   GmailRecentThreadsResult,
   GmailSortResult,
-  ClassifyResult,
   QueuedResult,
   OkResult,
   QuotaInfo,
@@ -705,9 +704,6 @@ export function makeApiClient(transport: ApiTransport) {
     notificationsUnreadCount: () =>
       apiFetch<UnreadCountResult>("/notifications/unread-count"),
 
-    markNotificationRead: (id: string) =>
-      apiMutate<OkResult>(`/notifications/${id}/read`, "POST"),
-
     markAllNotificationsRead: () =>
       apiMutate<{ ok: boolean; updated: number }>("/notifications/read-all", "POST"),
 
@@ -735,12 +731,6 @@ export function makeApiClient(transport: ApiTransport) {
     aiTriage: (workspaceId: string, threadId: string) =>
       apiMutate<QueuedResult>(
         `/workspaces/${workspaceId}/email-threads/${threadId}/ai-triage`,
-        "POST"
-      ),
-
-    mockClassifyThread: (workspaceId: string, threadId: string) =>
-      apiMutate<ClassifyResult>(
-        `/workspaces/${workspaceId}/email-threads/${threadId}/mock-classify`,
         "POST"
       ),
 
@@ -884,21 +874,12 @@ export function makeApiClient(transport: ApiTransport) {
         "POST"
       ),
 
-    summaryQuota: (workspaceId: string) =>
-      apiFetch<QuotaInfo>(`/workspaces/${workspaceId}/summary-quota`),
-
     threadSortQuota: (workspaceId: string) =>
       apiFetch<QuotaInfo>(`/workspaces/${workspaceId}/thread-sort-quota`),
 
     threadDrafts: (workspaceId: string, threadId: string) =>
       apiFetch<{ drafts: Draft[] }>(
         `/workspaces/${workspaceId}/email-threads/${threadId}/drafts`
-      ),
-
-    dismissDraft: (workspaceId: string, threadId: string, draftId: string) =>
-      apiMutate<OkResult>(
-        `/workspaces/${workspaceId}/email-threads/${threadId}/drafts/${draftId}`,
-        "DELETE"
       ),
 
     toggleDraftSent: (

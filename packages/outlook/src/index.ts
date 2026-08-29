@@ -20,6 +20,5 @@ export {
   scopeForCodeRedemption,
   exchangeAuthCode,
   fetchOutlookProfile,
-  fetchSubjectId,
 } from "./microsoft-oauth.js";
 export type { OutlookTokens, OutlookProfile, OutlookAccountType } from "./microsoft-oauth.js";
