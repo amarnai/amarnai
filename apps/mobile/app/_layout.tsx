@@ -9,7 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { colors } from '@amarnai/tokens';
+import { colors } from '@aziru/tokens';
 import { SessionProvider } from '../src/auth/session';
 import { PortalProvider } from '../src/portal';
 import { SessionLocaleProvider } from '../src/i18n/SessionLocaleProvider';

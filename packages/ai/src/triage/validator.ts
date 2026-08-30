@@ -23,7 +23,7 @@ import {
   RequiredActionSchema,
   SensitivitySchema,
   SuggestedNextStepSchema,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 
 export type TriageMetadata = {
   priority: z.infer<typeof PrioritySchema>;

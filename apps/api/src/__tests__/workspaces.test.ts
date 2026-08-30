@@ -5,7 +5,7 @@ function authedUser(userId = "u1"): RequestInit {
   return authed({ headers: { "X-User-Id": userId } });
 }
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspace: {
       findMany: vi.fn(),
@@ -18,7 +18,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 describe("GET /workspaces", () => {
   beforeEach(() => {

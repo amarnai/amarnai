@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { ApiClient, ThreadCommentsMeta } from "@amarnai/api-client";
+import type { ApiClient, ThreadCommentsMeta } from "@aziru/api-client";
 import type { MemberItem } from "./types.js";
 import { useThreadComments } from "./useThreadComments.js";
 import { ThreadCommentsCard } from "./ThreadCommentsCard.js";

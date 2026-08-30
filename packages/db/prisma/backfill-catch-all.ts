@@ -9,7 +9,7 @@
  * start auto-filing future automated/bulk mail to the catch-all.
  *
  * Usage:
- *   pnpm --filter @amarnai/db backfill-catch-all
+ *   pnpm --filter @aziru/db backfill-catch-all
  */
 import { db, ensureInboxTaxonomy } from "../src/index.js";
 

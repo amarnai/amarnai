@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { isStripeConfigured } from "./stripe.js";
 import { ensureSubscriptionCanceled, clampError } from "./cancel-subscription.js";
 

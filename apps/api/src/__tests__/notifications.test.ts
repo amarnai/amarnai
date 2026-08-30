@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, TEST_USER_ID } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     notification: {
       findMany: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 beforeEach(() => {
   vi.clearAllMocks();

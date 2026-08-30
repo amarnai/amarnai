@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { requireUser } from "@/lib/session";
 import { getStripe } from "@/lib/stripe";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { provisionFromCheckoutSession } from "@/lib/billing-provision";
 import { switchWorkspaceAction } from "@/actions/workspace";
 import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";

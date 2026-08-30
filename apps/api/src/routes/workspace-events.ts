@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { streamSSE } from "hono/streaming";
 import { Redis } from "ioredis";
 import { z } from "zod";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 

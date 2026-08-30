@@ -1,8 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({ db: {} }));
+vi.mock("@aziru/db", () => ({ db: {} }));
 
-vi.mock("@amarnai/gmail", () => {
+vi.mock("@aziru/gmail", () => {
   class GmailApiError extends Error {
     status: number;
     constructor(message: string, status = 400) {
@@ -23,7 +23,7 @@ vi.mock("@amarnai/gmail", () => {
   };
 });
 
-vi.mock("@amarnai/auth", () => ({
+vi.mock("@aziru/auth", () => ({
   registerEmail: vi.fn(),
   rotateVerificationToken: vi.fn(async () => "verif-tok"),
   issueAccessToken: vi.fn(async () => "access-tok"),
@@ -50,7 +50,7 @@ vi.mock("@amarnai/auth", () => ({
   },
 }));
 
-vi.mock("@amarnai/email", () => ({
+vi.mock("@aziru/email", () => ({
   sendVerificationEmail: vi.fn(async () => {}),
   sendAccountExistsEmail: vi.fn(async () => {}),
   sendGoogleAccountEmail: vi.fn(async () => {}),
@@ -63,13 +63,13 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { registerEmail } from "@amarnai/auth";
+import { registerEmail } from "@aziru/auth";
 import {
   sendVerificationEmail,
   sendAccountExistsEmail,
   sendGoogleAccountEmail,
   sendMicrosoftAccountEmail,
-} from "@amarnai/email";
+} from "@aziru/email";
 
 async function post(body: unknown): Promise<Response> {
   return app.request("/auth/register", {

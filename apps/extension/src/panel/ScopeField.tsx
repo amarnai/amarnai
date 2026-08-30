@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { ActiveSelection, FolderItem } from "@amarnai/ui/emails";
-import { QUEUE_LABELS, ReroutePopover, getFolderAncestry } from "@amarnai/ui/emails";
-import { folderInkVar } from "@amarnai/core/emails";
+import type { ActiveSelection, FolderItem } from "@aziru/ui/emails";
+import { QUEUE_LABELS, ReroutePopover, getFolderAncestry } from "@aziru/ui/emails";
+import { folderInkVar } from "@aziru/core/emails";
 
 type Props = {
   folders: FolderItem[];

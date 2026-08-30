@@ -1,9 +1,9 @@
-import type { PlanId, BillingCycle } from "@amarnai/ui";
+import type { PlanId, BillingCycle } from "@aziru/ui";
 
-// The Stripe client singleton lives in @amarnai/billing so the api and worker
+// The Stripe client singleton lives in @aziru/billing so the api and worker
 // packages can share it. Re-exported here so existing `@/lib/stripe` imports (and
 // their test mocks) keep working unchanged. Price-ID lookup stays web-only.
-export { getStripe } from "@amarnai/billing";
+export { getStripe } from "@aziru/billing";
 
 const PRICE_IDS: Record<PlanId, Record<BillingCycle, string | undefined>> = {
   free: { monthly: undefined, annual: undefined },

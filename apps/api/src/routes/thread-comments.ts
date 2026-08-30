@@ -4,11 +4,11 @@ import {
   db,
   createNotification,
   deleteCommentMentionNotifications,
-} from "@amarnai/db";
+} from "@aziru/db";
 import {
   CreateThreadCommentSchema,
   MAX_COMMENTS_PER_THREAD,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import type { AppEnv } from "../env.js";
 import { recordAudit } from "../services/audit.js";
 import { loadThreadCommentsMeta } from "../services/thread-comment-meta.js";

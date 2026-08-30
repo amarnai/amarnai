@@ -1,7 +1,7 @@
 import { render, cleanup } from "@/test-utils";
 import { describe, it, expect, afterEach } from "vitest";
-import { BackfillCard } from "@amarnai/ui/emails";
-import type { SyncInfo } from "@amarnai/ui/emails/types";
+import { BackfillCard } from "@aziru/ui/emails";
+import type { SyncInfo } from "@aziru/ui/emails/types";
 
 afterEach(cleanup);
 

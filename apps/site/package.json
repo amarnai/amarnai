@@ -1,10 +1,10 @@
 {
-  "name": "@amarnai/site",
+  "name": "@aziru/site",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack --port 3002",
-    "prebuild": "pnpm --filter @amarnai/i18n compile",
+    "prebuild": "pnpm --filter @aziru/i18n compile",
     "build": "next build --webpack",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
@@ -13,8 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@amarnai/i18n": "workspace:*",
-    "@amarnai/ui": "workspace:*",
+    "@aziru/i18n": "workspace:*",
+    "@aziru/ui": "workspace:*",
     "@lingui/core": "^6.4.0",
     "@lingui/react": "^6.4.0",
     "@opennextjs/cloudflare": "^1.19.11",

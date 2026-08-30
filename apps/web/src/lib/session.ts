@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 export type AuthUser = {
   id: string;

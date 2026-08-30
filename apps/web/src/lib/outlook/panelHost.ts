@@ -1,4 +1,4 @@
-import type { PanelHost, PanelThreadContext } from "@amarnai/panel";
+import type { PanelHost, PanelThreadContext } from "@aziru/panel";
 import { paneTokenStore } from "./paneTokenStore";
 import { insertReplyDraft, subscribeOutlookContext, type OfficeLike } from "./officeHost";
 

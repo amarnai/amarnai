@@ -1,5 +1,5 @@
 import { serve } from "@hono/node-server";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import app from "./app.js";
 
 const PORT = Number(process.env["PORT"] ?? 3001);

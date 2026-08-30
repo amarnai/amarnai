@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, space, fontSize } from '@amarnai/tokens';
-import type { ApiClient } from '@amarnai/api-client';
+import { colors, space, fontSize } from '@aziru/tokens';
+import type { ApiClient } from '@aziru/api-client';
 import { SheetLayout } from './SheetLayout';
 import { FormInput } from './FormInput';
 import { PrimaryButton } from './PrimaryButton';

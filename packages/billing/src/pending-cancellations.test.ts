@@ -9,13 +9,13 @@ vi.mock("./stripe", () => ({
   getStripe: () => mockStripe,
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     pendingSubscriptionCancellation: { findMany: vi.fn(), delete: vi.fn(), update: vi.fn() },
   },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { isStripeConfigured } from "./stripe";
 import { processPendingSubscriptionCancellations } from "./pending-cancellations";
 

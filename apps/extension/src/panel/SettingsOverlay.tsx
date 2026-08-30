@@ -8,14 +8,14 @@ import type {
   GmailSyncSettingsResponse,
   MailProvider,
   SyncStatus,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import {
   PlanSection,
   WorkspaceNameSection,
   WorkspaceLanguageSection,
   GmailSyncSettingsSection,
   LabelWritebackSection,
-} from "@amarnai/ui/settings";
+} from "@aziru/ui/settings";
 import { useSession } from "../auth/session";
 import { openWebApp, useWebAppLink } from "./openWebApp";
 

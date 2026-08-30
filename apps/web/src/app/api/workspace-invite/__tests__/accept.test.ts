@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspaceInvitation: { findUnique: vi.fn(), delete: vi.fn() },
     user: { findFirst: vi.fn() },
@@ -12,7 +12,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import { auth } from "@/auth";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { INVITE_COOKIE } from "@/lib/invite-redirect";
 import { GET, POST } from "@/app/api/workspace-invite/accept/route";
 

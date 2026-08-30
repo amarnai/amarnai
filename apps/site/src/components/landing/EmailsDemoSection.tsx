@@ -12,8 +12,8 @@ import {
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { Switch } from "@amarnai/ui";
-import { MockEmailsPage } from "@amarnai/ui/emails";
+import { Switch } from "@aziru/ui";
+import { MockEmailsPage } from "@aziru/ui/emails";
 import {
   MailboxStage,
   type MockProvider,
@@ -25,7 +25,7 @@ import {
   getDemoSummaryBullets,
   getDemoMembers,
   DEMO_WORKSPACE_PLAN,
-} from "@amarnai/ui/demo";
+} from "@aziru/ui/demo";
 import { BrowserChrome, type DemoTab } from "./BrowserChrome";
 import { ProviderToggle } from "./ProviderToggle";
 

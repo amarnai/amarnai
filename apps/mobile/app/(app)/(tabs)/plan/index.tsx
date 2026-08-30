@@ -13,13 +13,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { translateSource } from '@amarnai/i18n';
-import { countRoutableNonRootNodes, TAXONOMY_MIN_NON_ROOT_NODES } from '@amarnai/shared';
-import type { TaxonomyTransferFile } from '@amarnai/shared';
-import { TAXONOMY_TEMPLATES, matchesTemplate, localizeTemplate } from '@amarnai/core/taxonomy';
-import type { Toast as ToastModel } from '@amarnai/core';
-import type { TaxonomyNode } from '@amarnai/api-client';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { translateSource } from '@aziru/i18n';
+import { countRoutableNonRootNodes, TAXONOMY_MIN_NON_ROOT_NODES } from '@aziru/shared';
+import type { TaxonomyTransferFile } from '@aziru/shared';
+import { TAXONOMY_TEMPLATES, matchesTemplate, localizeTemplate } from '@aziru/core/taxonomy';
+import type { Toast as ToastModel } from '@aziru/core';
+import type { TaxonomyNode } from '@aziru/api-client';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 import { useSession } from '../../../../src/auth/session';
 import {
   useApplyTemplate,

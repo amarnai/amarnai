@@ -1,4 +1,4 @@
-import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/api-client";
+import type { TaxonomyNode, TaxonomyEdge } from "@aziru/api-client";
 
 export type GraphSnapshot = {
   nodes: TaxonomyNode[];

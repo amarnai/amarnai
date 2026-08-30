@@ -18,7 +18,7 @@ const {
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db = {
     workspace: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn().mockResolvedValue(null) },
@@ -37,17 +37,17 @@ vi.mock("@amarnai/db", () => {
   };
 });
 
-vi.mock("@amarnai/ai", () => ({
+vi.mock("@aziru/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({ providerName: "mock", modelName: "mock-model" }),
   getTaxonomyAIProviderConfig: vi.fn().mockReturnValue({}),
   generateTaxonomyFromProfile: mockGenerateTaxonomyFromProfile,
 }));
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: { billing: { enforceTaxonomyQuota: true } },
 }));
 
-vi.mock("@amarnai/core/taxonomy", () => ({
+vi.mock("@aziru/core/taxonomy", () => ({
   matchTemplateToProfile: vi.fn().mockReturnValue({ id: "tmpl-1", name: "Work", file: { nodes: [] } }),
   layoutTaxonomyTransfer: (f: unknown) => f,
   localizeTransferFile: (f: unknown) => f,
@@ -55,14 +55,14 @@ vi.mock("@amarnai/core/taxonomy", () => ({
 
 vi.mock("@lingui/core", () => ({ setupI18n: vi.fn().mockReturnValue({}) }));
 
-vi.mock("@amarnai/i18n", () => ({
+vi.mock("@aziru/i18n", () => ({
   loadCatalog: vi.fn().mockResolvedValue({}),
   matchLocale: vi.fn().mockReturnValue("en"),
   translateSource: (_i: unknown, s: string) => s,
   LOCALE_ENGLISH_LANGUAGE_NAMES: { en: "English" },
 }));
 
-vi.mock("@amarnai/shared", () => ({
+vi.mock("@aziru/shared", () => ({
   computeGenerationEligibility: mockComputeGenerationEligibility,
 }));
 
@@ -78,7 +78,7 @@ vi.mock("../queues.js", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { runGenerateTaxonomyJob } from "../jobs/generate-taxonomy.js";
 
 const WS_ID = "ws-1";

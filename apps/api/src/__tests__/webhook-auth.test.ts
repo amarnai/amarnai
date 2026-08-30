@@ -22,10 +22,10 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { syncInboxQueue } from "../services/queue-client.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailConnection: {
       findMany: vi.fn(),

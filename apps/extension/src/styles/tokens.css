@@ -1,7 +1,7 @@
 /*
  * Design tokens — SYNCED COPY of the token + base block from
  * apps/web/src/app/globals.css (lines 1-262: :root, dark theme, body).
- * @amarnai/ui emails components reference these CSS custom properties but
+ * @aziru/ui emails components reference these CSS custom properties but
  * the definitions live only in the web app, so the extension ships its own
  * copy. Keep in sync until the block is extracted into a shared package
  * (see apps/extension/README + plan risk #1). Do not edit values here.
@@ -34,7 +34,7 @@
   --avatar-grad: linear-gradient(135deg, oklch(82% 0.08 50), oklch(72% 0.10 30)); /* user avatar fill */
 
   /* ── Folder colors — per-folder swatches (mirrors apps/web globals.css).
-       Keys resolved in @amarnai/core folderColor. Each swatch is defined ONCE:
+       Keys resolved in @aziru/core folderColor. Each swatch is defined ONCE:
        a per-key hue plus the ink/soft/line lightness+chroma role constants
        below; the dark block overrides only the role constants. ── */
   --folder-l-ink:  36%; --folder-c-ink:  0.10;
@@ -106,7 +106,7 @@
   --shadow-2: 0 1px 2px oklch(20% 0.01 80 / 0.06), 0 8px 24px oklch(20% 0.01 80 / 0.08);
   --shadow-3: 0 2px 4px oklch(20% 0.01 80 / 0.06), 0 18px 48px oklch(20% 0.01 80 / 0.12);
 
-  /* ── Spacing scale (shared with @amarnai/tokens `space`; locked by tokens.test) ── */
+  /* ── Spacing scale (shared with @aziru/tokens `space`; locked by tokens.test) ── */
   --space-xxs: 2px;
   --space-xs:  4px;
   --space-sm:  6px;
@@ -115,7 +115,7 @@
   --space-xl:  16px;
   --space-xxl: 24px;
 
-  /* ── Type scale (shared with @amarnai/tokens `fontSize`; locked by tokens.test) ── */
+  /* ── Type scale (shared with @aziru/tokens `fontSize`; locked by tokens.test) ── */
   --fs-xs:   11px;
   --fs-sm:   12px;
   --fs-base: 13px;

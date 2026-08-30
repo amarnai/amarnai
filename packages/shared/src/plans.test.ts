@@ -2,10 +2,10 @@ import { describe, it, expect } from "vitest";
 import { PLANS, FEATURE_GROUPS, type FeatureRow } from "./plans.js";
 import { THREAD_SUMMARY_LIMITS } from "./summary-quota.js";
 
-// These constants moved out of @amarnai/ui so non-DOM clients (mobile) can use
+// These constants moved out of @aziru/ui so non-DOM clients (mobile) can use
 // them. This guards against re-introducing a DOM/React dependency: the module
 // must import cleanly in a plain Node (non-jsdom) environment.
-describe("@amarnai/shared plans", () => {
+describe("@aziru/shared plans", () => {
   it("exposes the three plans with prices", () => {
     expect(PLANS.map((p) => p.id)).toEqual(["free", "pro", "business"]);
     const pro = PLANS.find((p) => p.id === "pro");

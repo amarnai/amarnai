@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { TaxonomyNode, TaxonomyEdge } from '@amarnai/api-client';
+import type { TaxonomyNode, TaxonomyEdge } from '@aziru/api-client';
 import { buildTaxonomyTree, flattenVisible } from './buildTree';
 
 let seq = 0;

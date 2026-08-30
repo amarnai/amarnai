@@ -3,7 +3,7 @@ import {
   buildThreadUrl,
   type OutlookAccountType,
   type ThreadUrlInput,
-} from "@amarnai/core/emails";
+} from "@aziru/core/emails";
 
 // Full account-routed Gmail URL (`?authuser=<email>`), shared with the web app
 // via core's buildThreadUrl. The extension has no webLink at this point; Gmail

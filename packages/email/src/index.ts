@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
-import { colors } from "@amarnai/tokens";
+import { colors } from "@aziru/tokens";
 
 /** Base URL of the web app, trailing slash stripped. Exported so other packages
  * (e.g. the worker building unsubscribe links) resolve it from one place. */

@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient } from "@aziru/api-client";
 import {
   useWorkspaceEvents as useSharedWorkspaceEvents,
   type WorkspaceThreadEvent,
-} from "@amarnai/panel/realtime";
+} from "@aziru/panel/realtime";
 import { API_BASE_URL } from "../config";
 import { extensionTokenStore } from "../auth/tokenStore";
 
@@ -12,7 +12,7 @@ export type { WorkspaceThreadEvent };
 /**
  * The side panel's binding of the shared workspace event stream.
  *
- * The reconnect loop, framing, and visibility gating live in @amarnai/panel so
+ * The reconnect loop, framing, and visibility gating live in @aziru/panel so
  * the side panel and the panel injected into Gmail/Outlook cannot drift; what is
  * extension-specific is only where the tokens live and how they are refreshed.
  *

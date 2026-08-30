@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@amarnai/db";
-import { verifyUnsubscribeToken } from "@amarnai/auth/unsubscribe-token";
-import { colors } from "@amarnai/tokens";
+import { db } from "@aziru/db";
+import { verifyUnsubscribeToken } from "@aziru/auth/unsubscribe-token";
+import { colors } from "@aziru/tokens";
 
 // One-click unsubscribe for weekly lifecycle reminder emails.
 //

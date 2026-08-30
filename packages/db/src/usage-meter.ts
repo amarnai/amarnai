@@ -1,5 +1,5 @@
 import { MeterKind, WorkspacePlan, Prisma } from "@prisma/client";
-import { normalizeInboxKey, getDraftQuotaWindowStart } from "@amarnai/shared";
+import { normalizeInboxKey, getDraftQuotaWindowStart } from "@aziru/shared";
 import { db } from "./client.js";
 import { getInboxPlanCeiling } from "./inbox-entitlement.js";
 

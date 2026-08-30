@@ -3,7 +3,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 
 // The colorKey column is display-only; a PATCH that only touches it must
 // persist and echo it back without any embedding invalidation.
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspaceMember: { findUnique: vi.fn() },
     workspace: { findUnique: vi.fn() },
@@ -13,7 +13,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WORKSPACE_ID = "ws-1";
 const NODE_ID = "node-1";

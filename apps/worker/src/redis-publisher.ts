@@ -1,4 +1,4 @@
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 import { createRedisSingleton } from "./redis-singleton.js";
 
 // Lazily-created singleton publisher connection.

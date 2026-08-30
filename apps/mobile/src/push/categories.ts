@@ -5,7 +5,7 @@ import {
   PUSH_CATEGORY_THREAD_ASSIGNED,
   PUSH_CATEGORY_GMAIL_DISCONNECTED,
   PUSH_CHANNEL_TRIAGE,
-} from '@amarnai/shared';
+} from '@aziru/shared';
 
 // Inline notification action ids for the "thread needs attention" category.
 //

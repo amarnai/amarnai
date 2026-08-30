@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { setupI18n } from "@lingui/core";
-import { getCollaboratorLimit } from "@amarnai/shared";
+import { getCollaboratorLimit } from "@aziru/shared";
 import { DEMO_WORKSPACE_PLAN, getDemoMembers, getDemoThreads } from "./demo-seed.js";
 
 // No catalog: every getDemo* builder resolves its descriptors through i18n._,

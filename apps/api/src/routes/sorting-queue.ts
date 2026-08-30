@@ -1,15 +1,15 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { Job } from "bullmq";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { classifyThreadQueue } from "../queues.js";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
 import {
   DEDUP_CLASSIFY_UNROUTED,
   DEDUP_CLASSIFY_UNCLASSIFIED,
   DEDUP_CLASSIFY_NEEDS_REVIEW,
   DEDUP_CLASSIFY_MIGRATION,
-} from "@amarnai/queue";
+} from "@aziru/queue";
 import { resolveEmailAccountId } from "../services/email-account.js";
 import { isWorkspaceTaxonomyRoutable } from "../services/taxonomy-routable.js";
 

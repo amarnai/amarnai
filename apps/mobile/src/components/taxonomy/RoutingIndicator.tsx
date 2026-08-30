@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 import { BannerActionButton } from '../BannerActionButton';
 
 interface RoutingIndicatorProps {

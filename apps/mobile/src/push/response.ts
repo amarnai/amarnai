@@ -1,6 +1,6 @@
 import * as Notifications from 'expo-notifications';
-import { PUSH_CATEGORY_GMAIL_DISCONNECTED } from '@amarnai/shared';
-import type { ApiClient } from '@amarnai/api-client';
+import { PUSH_CATEGORY_GMAIL_DISCONNECTED } from '@aziru/shared';
+import type { ApiClient } from '@aziru/api-client';
 import { THREAD_ACTION_MARK_REVIEWED, THREAD_ACTION_OPEN } from './categories';
 
 // Shape of the payload the worker attaches to a push. Thread pushes carry an

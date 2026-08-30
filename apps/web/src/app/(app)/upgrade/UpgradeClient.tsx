@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PricingPlans, type PlanId, type BillingCycle } from "@amarnai/ui";
+import { PricingPlans, type PlanId, type BillingCycle } from "@aziru/ui";
 import { WorkspaceChoiceModal } from "./WorkspaceChoiceModal";
 
 interface Props {

@@ -2,12 +2,12 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { ApiClient, FilterCounts, MailProvider, SyncStatus } from "@amarnai/api-client";
-import type { ActiveSelection, FolderItem, ThreadItem } from "@amarnai/ui/emails";
-import { ThreadList, ReroutePopover, AssigneePicker } from "@amarnai/ui/emails";
-import type { PlanSetupMode } from "@amarnai/ui/plan-setup";
-import { useEmailTriage, resolveInboxStatus, mapFolders, mapMembers } from "@amarnai/core/emails";
-import { getCollaboratorLimit } from "@amarnai/shared";
+import type { ApiClient, FilterCounts, MailProvider, SyncStatus } from "@aziru/api-client";
+import type { ActiveSelection, FolderItem, ThreadItem } from "@aziru/ui/emails";
+import { ThreadList, ReroutePopover, AssigneePicker } from "@aziru/ui/emails";
+import type { PlanSetupMode } from "@aziru/ui/plan-setup";
+import { useEmailTriage, resolveInboxStatus, mapFolders, mapMembers } from "@aziru/core/emails";
+import { getCollaboratorLimit } from "@aziru/shared";
 import { useSession } from "../auth/session";
 import { useWorkspaceEvents } from "../realtime/useWorkspaceEvents";
 import { ThreadPreviewPane } from "./ThreadPreviewPane";
@@ -15,7 +15,7 @@ import { StatusSlot, NoPlanEmptyState } from "./StatusSlot";
 import { PanelHeader } from "./WorkspacePicker";
 import { ScopeField } from "./ScopeField";
 import { openThreadInMail } from "../gmail/openInGmail";
-import type { OutlookAccountType } from "@amarnai/core/emails";
+import type { OutlookAccountType } from "@aziru/core/emails";
 import { openWebApp, openWebAppTab } from "./openWebApp";
 import { focusMailTab, closeTab } from "../gmail/focusMailTab";
 import { MASCOT_SRC } from "./assets";
@@ -26,12 +26,12 @@ import { usePendingCheckout } from "../billing/usePendingCheckout";
 // the rest of the panel. Loaded on demand so users who already have a plan
 // never pay for it.
 const PlanSetupDialog = lazy(() =>
-  import("@amarnai/ui/plan-setup").then((m) => ({ default: m.PlanSetupDialog })),
+  import("@aziru/ui/plan-setup").then((m) => ({ default: m.PlanSetupDialog })),
 );
 
 // Only ever opened from a quota-gated CTA, so most sessions never load it.
 const UpgradeDialog = lazy(() =>
-  import("@amarnai/ui/upgrade").then((m) => ({ default: m.UpgradeDialog })),
+  import("@aziru/ui/upgrade").then((m) => ({ default: m.UpgradeDialog })),
 );
 
 // Shares the ReactFlow canvas chunk with the plan-setup preview, so opening the
@@ -79,7 +79,7 @@ type Props = {
 };
 
 // Recomposition of apps/web EmailsClient for the side panel: the shared
-// useEmailTriage view-model drives the same @amarnai/ui components, but without
+// useEmailTriage view-model drives the same @aziru/ui components, but without
 // Next routing or keyboard nav. The web app stacks its sorting-status banners;
 // at 360px the panel collapses them into one pinned StatusSlot whose state is
 // picked by the shared resolveInboxStatus. The panel owns the SSE stream (via
@@ -236,7 +236,7 @@ export function EmailsPanel({
   const routableNodeCount = folders.length;
 
   // The single sorting-status state to surface (or null). Shared with web via
-  // @amarnai/core; the panel renders the empty case full-pane and the rest as
+  // @aziru/core; the panel renders the empty case full-pane and the rest as
   // one pinned row.
   const inboxStatus = resolveInboxStatus({
     waitingCount: triage.serverWaitingCount,

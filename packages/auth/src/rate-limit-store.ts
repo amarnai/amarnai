@@ -1,5 +1,5 @@
 import { Redis } from "ioredis";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 // Redis-backed fixed-window rate limiting, shared by the API's public /auth/*
 // middleware and the web server-action auth throttles. One store so the limit

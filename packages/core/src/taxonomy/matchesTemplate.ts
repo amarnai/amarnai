@@ -1,7 +1,7 @@
 import type { TaxonomyTemplate } from "./templates.js";
 
-// Minimal structural shapes so this works for both the @amarnai/shared and
-// @amarnai/api-client taxonomy node/edge types without coupling to either.
+// Minimal structural shapes so this works for both the @aziru/shared and
+// @aziru/api-client taxonomy node/edge types without coupling to either.
 type MatchNode = { id: string; name: string };
 type MatchEdge = { sourceNodeId: string; targetNodeId: string };
 

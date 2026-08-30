@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, TEST_USER_ID } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     pushDevice: { upsert: vi.fn(), findUnique: vi.fn() },
     user: { findUnique: vi.fn() },
@@ -9,8 +9,8 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
-import { issueAccessToken } from "@amarnai/auth";
+import { db } from "@aziru/db";
+import { issueAccessToken } from "@aziru/auth";
 
 const VALID_BODY = { expoPushToken: "ExponentPushToken[abc123]", platform: "ANDROID" };
 

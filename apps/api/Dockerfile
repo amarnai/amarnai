@@ -29,7 +29,7 @@ RUN pnpm install --frozen-lockfile
 FROM installer AS runner
 WORKDIR /repo
 COPY . .
-RUN pnpm --filter @amarnai/db generate
+RUN pnpm --filter @aziru/db generate
 ENV NODE_ENV=production
 EXPOSE 3001
 WORKDIR /repo/apps/api

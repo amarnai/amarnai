@@ -5,21 +5,21 @@ import {
   markGmailConnectionAuthFailed,
   deleteQuotaBlockedNotifications,
   messageSetSignature,
-} from "@amarnai/db";
-import { config } from "@amarnai/config";
+} from "@aziru/db";
+import { config } from "@aziru/config";
 import {
   createMailProvider,
   MailAuthError,
   MailCursorExpiredError,
   MailThreadNotFoundError,
   type MailProvider,
-} from "@amarnai/mail";
-import type { GmailSyncSettings } from "@amarnai/shared";
+} from "@aziru/mail";
+import type { GmailSyncSettings } from "@aziru/shared";
 import {
   isTaxonomyRoutable,
   isBackfillResumable,
   getThreadSortLimit,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import {
   classifyThreadQueue,
   backfillInboxQueue,
@@ -27,7 +27,7 @@ import {
   QUEUE_SYNC_INBOX,
   type SyncInboxJobData,
 } from "../queues.js";
-import { DEDUP_CLASSIFY_LIVE } from "@amarnai/queue";
+import { DEDUP_CLASSIFY_LIVE } from "@aziru/queue";
 import { redisConnection } from "../redis.js";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
 import { applyThreadFilter, computeThreadLabelFlags, isAlwaysExcludedMessage, isSentOnlyThreadSnapshot } from "./filter-thread-messages.js";
@@ -187,7 +187,7 @@ const QUOTA_RECOVERY_BATCH = 200;
 const MAX_CLASSIFY_ATTEMPTS = 5;
 
 // messageSetSignature (folded into the LIVE classify dedup key below) now lives in
-// @amarnai/db so the thread-summary cache can invalidate on the same signature.
+// @aziru/db so the thread-summary cache can invalidate on the same signature.
 
 /**
  * Quota-bound a candidate list, stamp classifyingAt, and enqueue LIVE classify

@@ -1,7 +1,7 @@
 "use client";
 
 import { Trans } from "@lingui/react/macro";
-import type { MailAccount } from "@amarnai/api-client";
+import type { MailAccount } from "@aziru/api-client";
 
 // The screens for every way the mail client can be in a state Amarnai cannot act
 // on. They share a shape deliberately: one sentence saying what is true, and at

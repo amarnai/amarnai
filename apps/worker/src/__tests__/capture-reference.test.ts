@@ -10,7 +10,7 @@ const { mockEmbed, mockBuildThreadEmbeddingText, mockHashEmbeddingInput } = vi.h
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     taxonomyNodeReference: {
       findFirst: vi.fn(),
@@ -22,7 +22,7 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-vi.mock("@amarnai/ai", () => ({
+vi.mock("@aziru/ai", () => ({
   createEmbeddingProvider: vi.fn().mockReturnValue({ embed: mockEmbed, modelName: "mock-embed" }),
   getEmbeddingProviderConfig: vi.fn().mockReturnValue({}),
   buildThreadEmbeddingText: mockBuildThreadEmbeddingText,
@@ -54,7 +54,7 @@ vi.mock("../ai-dedup.js", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { Worker } from "bullmq";
 import { createCaptureReferenceWorker } from "../jobs/capture-reference.js";
 

@@ -1,5 +1,5 @@
 import type { SVGAttributes } from "react";
-import { navIconDefs, type NavIconName, type IconShape } from "@amarnai/tokens";
+import { navIconDefs, type NavIconName, type IconShape } from "@aziru/tokens";
 
 // Shared inline SVG glyphs used across folder/taxonomy views so the same
 // folder appears with the same icon everywhere. Paths are stroked with

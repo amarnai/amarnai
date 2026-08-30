@@ -1,5 +1,5 @@
-import { db } from "@amarnai/db";
-import type { SnapshotMessage } from "@amarnai/ai";
+import { db } from "@aziru/db";
+import type { SnapshotMessage } from "@aziru/ai";
 import type { ThreadLabelFlags } from "./filter-thread-messages.js";
 
 /**

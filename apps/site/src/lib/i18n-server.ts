@@ -6,7 +6,7 @@ import {
   isSupportedLocale,
   SOURCE_LOCALE,
   type SupportedLocale,
-} from "@amarnai/i18n";
+} from "@aziru/i18n";
 
 // Coerces an arbitrary route param into a supported locale, falling back to the
 // source locale. The marketing site is rendered per-locale (one static segment

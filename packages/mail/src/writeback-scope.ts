@@ -1,5 +1,5 @@
-import { hasWritebackScope as gmailHasWriteback } from "@amarnai/gmail";
-import { hasWritebackScope as outlookHasWriteback } from "@amarnai/outlook";
+import { hasWritebackScope as gmailHasWriteback } from "@aziru/gmail";
+import { hasWritebackScope as outlookHasWriteback } from "@aziru/outlook";
 
 /**
  * Whether a connection's granted scopes include the provider's write scope

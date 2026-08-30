@@ -1,4 +1,4 @@
-import "@amarnai/ui/emails/styles";
+import "@aziru/ui/emails/styles";
 
 export default function EmailsLayout({
   children,

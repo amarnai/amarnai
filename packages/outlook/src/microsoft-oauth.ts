@@ -203,8 +203,8 @@ export type OutlookTokens = {
 };
 
 /**
- * Mirrors the OutlookAccountType enum in @amarnai/db and the union in
- * @amarnai/core. Redeclared here so this package keeps its two dependencies.
+ * Mirrors the OutlookAccountType enum in @aziru/db and the union in
+ * @aziru/core. Redeclared here so this package keeps its two dependencies.
  */
 export type OutlookAccountType = "PERSONAL" | "ORGANIZATION";
 

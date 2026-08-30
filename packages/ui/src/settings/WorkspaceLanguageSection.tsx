@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient } from "@aziru/api-client";
 import {
   SUPPORTED_LOCALES,
   LOCALE_DISPLAY_NAMES,
   isSupportedLocale,
   type SupportedLocale,
-} from "@amarnai/i18n";
+} from "@aziru/i18n";
 import "./settings.css";
 
 export type WorkspaceLanguageSectionProps = {

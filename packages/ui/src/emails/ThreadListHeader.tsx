@@ -3,7 +3,7 @@
 import { Trans, Plural } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { folderInkVar } from "@amarnai/core/emails";
+import { folderInkVar } from "@aziru/core/emails";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ActiveSelection } from "./types.js";
 import { QUEUES } from "./selection.js";

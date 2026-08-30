@@ -1,19 +1,19 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailConnection: { upsert: vi.fn(), findUnique: vi.fn() },
   },
   deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock("@amarnai/gmail", () => ({
+vi.mock("@aziru/gmail", () => ({
   encrypt: vi.fn((v: string) => `enc(${v})`),
   fetchGmailProfile: vi.fn(),
 }));
 
-import { db } from "@amarnai/db";
-import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
+import { db } from "@aziru/db";
+import { encrypt, fetchGmailProfile } from "@aziru/gmail";
 import { storeGmailConnection, ProviderMismatchError } from "./gmail-connection.js";
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";

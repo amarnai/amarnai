@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, fontSize, fontWeight, space } from '@amarnai/tokens';
+import { colors, fontSize, fontWeight, space } from '@aziru/tokens';
 
 interface Props {
   title: string;

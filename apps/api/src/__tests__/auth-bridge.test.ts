@@ -1,10 +1,10 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: { user: { findUnique: vi.fn(), update: vi.fn() } },
 }));
 
-vi.mock("@amarnai/gmail", () => ({
+vi.mock("@aziru/gmail", () => ({
   exchangeAuthCode: vi.fn(),
   fetchGmailProfile: vi.fn(),
   fetchGoogleUserInfo: vi.fn(),
@@ -16,7 +16,7 @@ vi.mock("@amarnai/gmail", () => ({
   revokeGoogleToken: vi.fn(),
 }));
 
-vi.mock("@amarnai/auth", () => ({
+vi.mock("@aziru/auth", () => ({
   registerEmail: vi.fn(),
   rotateVerificationToken: vi.fn(),
   issueAccessToken: vi.fn(),
@@ -41,13 +41,13 @@ vi.mock("@amarnai/auth", () => ({
   },
 }));
 
-vi.mock("@amarnai/auth/bridge-code", () => ({
+vi.mock("@aziru/auth/bridge-code", () => ({
   createBridgeCode: vi.fn(),
   inspectBridgeCode: vi.fn(),
   redeemBridgeCode: vi.fn(),
 }));
 
-vi.mock("@amarnai/email", () => ({ sendVerificationEmail: vi.fn(async () => {}) }));
+vi.mock("@aziru/email", () => ({ sendVerificationEmail: vi.fn(async () => {}) }));
 
 vi.mock("../services/queue-client.js", () => ({
   syncInboxQueue: { add: vi.fn().mockResolvedValue({}) },
@@ -62,7 +62,7 @@ vi.mock("../services/rate-limit.js", () => ({
 }));
 
 import app from "../app.js";
-import { createBridgeCode, inspectBridgeCode, redeemBridgeCode } from "@amarnai/auth/bridge-code";
+import { createBridgeCode, inspectBridgeCode, redeemBridgeCode } from "@aziru/auth/bridge-code";
 import { throttleOnce } from "../services/rate-limit.js";
 import { authed, INTERNAL_TOKEN } from "./helpers.js";
 

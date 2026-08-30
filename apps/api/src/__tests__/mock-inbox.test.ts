@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { authed } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     workspace: { findUnique: vi.fn() },
@@ -23,7 +23,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 const mockSortThreadByEmbedding = vi.fn();
-vi.mock("@amarnai/ai", () => ({
+vi.mock("@aziru/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({
     providerName: "test-provider",
     modelName: "test-model",
@@ -40,7 +40,7 @@ vi.mock("@amarnai/ai", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";

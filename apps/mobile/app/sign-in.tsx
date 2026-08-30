@@ -15,7 +15,7 @@ import { Link, Redirect } from 'expo-router';
 import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { colors, radii, space, fontSize } from '@amarnai/tokens';
+import { colors, radii, space, fontSize } from '@aziru/tokens';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
 import { GoogleSignInButton } from '../src/auth/GoogleSignInButton';

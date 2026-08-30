@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { I18nProvider } from "@lingui/react";
-import { i18n, activateLocale, type SupportedLocale } from "@amarnai/i18n";
+import { i18n, activateLocale, type SupportedLocale } from "@aziru/i18n";
 
 export function LinguiClientProvider({
   locale,

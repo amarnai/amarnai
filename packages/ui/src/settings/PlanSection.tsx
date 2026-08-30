@@ -2,7 +2,7 @@
 
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { PLAN_TIER, TOP_PLAN, type BillingPlan } from "@amarnai/shared";
+import { PLAN_TIER, TOP_PLAN, type BillingPlan } from "@aziru/shared";
 import { billingPlanLabel } from "../pricing/planLabel.js";
 import "./settings.css";
 

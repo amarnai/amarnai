@@ -5,7 +5,7 @@ import {
   type GraphSnapshot,
   type HistoryState,
 } from "./history.js";
-import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/api-client";
+import type { TaxonomyNode, TaxonomyEdge } from "@aziru/api-client";
 
 function makeNode(id: string, overrides: Partial<TaxonomyNode> = {}): TaxonomyNode {
   return {

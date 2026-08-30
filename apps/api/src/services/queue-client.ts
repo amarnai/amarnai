@@ -1,16 +1,16 @@
 import { Queue } from "bullmq";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 import {
   parseRedisUrl,
   QUEUE_SYNC_INBOX,
   QUEUE_BACKFILL_INBOX,
   QUEUE_GENERATE_TAXONOMY,
-} from "@amarnai/queue";
+} from "@aziru/queue";
 import type {
   SyncInboxJobData,
   BackfillInboxJobData,
   GenerateTaxonomyJobData,
-} from "@amarnai/queue";
+} from "@aziru/queue";
 
 const connection = parseRedisUrl(config.redis.url);
 

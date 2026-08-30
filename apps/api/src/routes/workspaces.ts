@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { db, resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "@amarnai/db";
-import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
+import { db, resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "@aziru/db";
+import { isSupportedLocale, localeFromAcceptLanguage } from "@aziru/i18n";
 import type { AppEnv } from "../env.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
 

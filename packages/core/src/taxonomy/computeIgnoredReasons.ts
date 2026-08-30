@@ -1,7 +1,7 @@
 export type IgnoredReason = "no-incoming" | null;
 
-// Minimal structural shapes so this works for both the @amarnai/shared and
-// @amarnai/api-client taxonomy node/edge types without coupling to either.
+// Minimal structural shapes so this works for both the @aziru/shared and
+// @aziru/api-client taxonomy node/edge types without coupling to either.
 type IgnoredNode = { id: string; isRoot: boolean };
 type IgnoredEdge = { sourceNodeId: string; targetNodeId: string };
 

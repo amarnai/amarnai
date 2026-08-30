@@ -19,12 +19,12 @@
  * easiest way is to inject the worker's env from Railway:
  *
  *   railway run --service worker -- \
- *     pnpm --filter @amarnai/ai benchmark:reasoning
+ *     pnpm --filter @aziru/ai benchmark:reasoning
  *
  * Or export FRONTIER_LLM_API_KEY (and optionally FRONTIER_LLM_MODEL /
  * FRONTIER_LLM_BASE_URL) yourself and run:
  *
- *   pnpm --filter @amarnai/ai benchmark:reasoning
+ *   pnpm --filter @aziru/ai benchmark:reasoning
  */
 import OpenAI from "openai";
 import { sortThreadByEmbedding } from "../embedding/sorter.js";

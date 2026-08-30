@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import {
   buildThreadVisibilityWhere,
   DEFAULT_THREAD_VISIBILITY,

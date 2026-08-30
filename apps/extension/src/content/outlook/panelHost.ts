@@ -1,4 +1,4 @@
-import type { PanelThreadContext } from "@amarnai/panel";
+import type { PanelThreadContext } from "@aziru/panel";
 import { debugLog } from "../core/debug.js";
 import { createLogoMark } from "../core/logoMark.js";
 import { attachPanelFrame } from "../core/panelFrame.js";

@@ -8,7 +8,7 @@
  * To run locally:
  *   ollama pull qwen3-embedding
  *   ollama pull qwen3:14b   # or set OLLAMA_MODEL
- *   pnpm --filter @amarnai/ai test routing-ollama
+ *   pnpm --filter @aziru/ai test routing-ollama
  */
 import { describe, it, expect, beforeAll } from "vitest";
 import { sortThreadByEmbedding } from "../embedding/sorter.js";

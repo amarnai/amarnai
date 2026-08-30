@@ -1,7 +1,7 @@
-import { db } from "@amarnai/db";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
-import { config } from "@amarnai/config";
-import { providerHasWritebackScope } from "@amarnai/mail";
+import { db } from "@aziru/db";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
+import { config } from "@aziru/config";
+import { providerHasWritebackScope } from "@aziru/mail";
 import { provisionLabelsQueue } from "../queues.js";
 
 /**

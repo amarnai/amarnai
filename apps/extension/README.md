@@ -1,4 +1,4 @@
-# @amarnai/extension
+# @aziru/extension
 
 The Amarnai extension for Chrome and Firefox (MV3). **Its primary surface is
 Amarnai inside Gmail and Outlook on the web**: content scripts inject a thread
@@ -48,7 +48,7 @@ script, and a runtime host-permission gate (`src/platform/permissions.ts`).
   before signing in, and `HostPermissionGate` offers a re-grant to an already
   signed-in session that is missing them. On Chrome the permissions are granted at
   install, so both resolve without a prompt — a no-op there.
-- Auth mirrors mobile: per-user JWT via `makeBearerTransport` (`@amarnai/api-client`),
+- Auth mirrors mobile: per-user JWT via `makeBearerTransport` (`@aziru/api-client`),
   tokens in `storage.local`, transparent refresh-on-401.
 
 ## Build
@@ -97,7 +97,7 @@ addons.mozilla.org (AMO). The AMO submission requires a data-collection
 disclosure, and the `gecko.id` in the manifest is permanent — it must match the
 listing forever.
 
-`pnpm --filter @amarnai/extension dev` (or `dev:firefox`) runs a watch build
+`pnpm --filter @aziru/extension dev` (or `dev:firefox`) runs a watch build
 (rebuild + reload the unpacked extension; there is no HMR — an accepted trade-off
 of the plain-Vite, no-framework setup).
 

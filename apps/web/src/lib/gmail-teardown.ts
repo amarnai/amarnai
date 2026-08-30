@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { apiFor } from "@/lib/api";
 
 /**

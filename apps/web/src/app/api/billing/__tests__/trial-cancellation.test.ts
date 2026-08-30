@@ -6,7 +6,7 @@ const mockStripe = vi.hoisted(() => ({
 
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspace: { findUnique: vi.fn(), update: vi.fn() },
     workspaceMember: { deleteMany: vi.fn() },
@@ -25,7 +25,7 @@ vi.mock("@/lib/workspace", () => ({
 }));
 
 import { auth } from "@/auth";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { getStripe } from "@/lib/stripe";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { POST } from "@/app/api/billing/cancel-subscription/route";

@@ -15,11 +15,11 @@ import {
   createPasswordResetToken,
   type IssuedRefreshToken,
   type RegisterEmailResult,
-} from "@amarnai/auth";
+} from "@aziru/auth";
 import { throttleOnce } from "../services/rate-limit.js";
-// node:crypto keeps these out of the @amarnai/auth barrel (the web Edge bundle
+// node:crypto keeps these out of the @aziru/auth barrel (the web Edge bundle
 // imports it), so they come from the subpath export.
-import { createBridgeCode, inspectBridgeCode, redeemBridgeCode } from "@amarnai/auth/bridge-code";
+import { createBridgeCode, inspectBridgeCode, redeemBridgeCode } from "@aziru/auth/bridge-code";
 import { constantTimeEqual } from "../services/constant-time-equal.js";
 import {
   fetchGmailProfile,
@@ -28,26 +28,26 @@ import {
   exchangeServerAuthCode,
   exchangeAuthCode,
   type GoogleUserInfo,
-} from "@amarnai/gmail";
+} from "@aziru/gmail";
 import {
   parseGrantedScopes as parseOutlookScopes,
   exchangeAuthCode as exchangeOutlookAuthCode,
   scopeForCodeRedemption,
   fetchOutlookProfile,
   type OutlookAccountType,
-} from "@amarnai/outlook";
-import { RegisterEmailSchema, type MailScopePolicy } from "@amarnai/shared";
-import { isSupportedLocale, localeFromAcceptLanguage } from "@amarnai/i18n";
-import { config } from "@amarnai/config";
+} from "@aziru/outlook";
+import { RegisterEmailSchema, type MailScopePolicy } from "@aziru/shared";
+import { isSupportedLocale, localeFromAcceptLanguage } from "@aziru/i18n";
+import { config } from "@aziru/config";
 import {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendAccountExistsEmail,
   sendGoogleAccountEmail,
   sendMicrosoftAccountEmail,
-} from "@amarnai/email";
-import { db, deleteUserCascade, maybeCreateExtensionNudge } from "@amarnai/db";
-import { cancelSubscriptionsForAccountDeletion } from "@amarnai/billing";
+} from "@aziru/email";
+import { db, deleteUserCascade, maybeCreateExtensionNudge } from "@aziru/db";
+import { cancelSubscriptionsForAccountDeletion } from "@aziru/billing";
 import type { AppEnv } from "../env.js";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";

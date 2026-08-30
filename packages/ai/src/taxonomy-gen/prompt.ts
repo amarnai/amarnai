@@ -4,7 +4,7 @@ import {
   type SenderCluster,
   type TaxonomySizeBand,
   type TaxonomyTransferFile,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 
 // Builds the LLM messages that personalize a seed template into a taxonomy that
 // fits a specific inbox. The model receives only aggregated, body-free signal

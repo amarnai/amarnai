@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { RoutingTelemetrySchema } from "@amarnai/shared";
+import { RoutingTelemetrySchema } from "@aziru/shared";
 import { buildRoutingTelemetry, TELEMETRY_TOP_K } from "../embedding/telemetry.js";
 
 describe("buildRoutingTelemetry", () => {

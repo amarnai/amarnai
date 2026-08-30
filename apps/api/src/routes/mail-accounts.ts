@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import type { AppEnv } from "../env.js";
 
 const mailAccounts = new Hono<AppEnv>();

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { PLANS, type PlanId, type BillingCycle } from "@amarnai/ui";
+import { PLANS, type PlanId, type BillingCycle } from "@aziru/ui";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";

@@ -1,4 +1,4 @@
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 
 // Deterministic left-to-right tree layout for a TaxonomyTransferFile, matching
 // the hand-authored convention used by the built-in templates:

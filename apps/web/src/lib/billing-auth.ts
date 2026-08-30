@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import { db } from "@amarnai/db";
-import { verifyAccessToken } from "@amarnai/auth";
+import { db } from "@aziru/db";
+import { verifyAccessToken } from "@aziru/auth";
 import { getSelectedWorkspace } from "@/lib/workspace";
 
 export type BillingAuthResult =

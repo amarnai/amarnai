@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { GetExtensionBanner } from "@/components/GetExtensionBanner";
 import { getSessionUser } from "@/lib/session";
 

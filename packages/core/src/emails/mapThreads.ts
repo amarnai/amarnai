@@ -3,7 +3,7 @@ import type {
   EmailThreadDetail,
   TaxonomyNode,
   TaxonomyEdge,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import type { FolderItem, ThreadItem } from "./types.js";
 
 export function mapFolders(

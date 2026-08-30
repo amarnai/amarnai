@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, createNotification, deleteThreadAssignedNotifications } from "@amarnai/db";
+import { db, createNotification, deleteThreadAssignedNotifications } from "@aziru/db";
 import type { AppEnv } from "../env.js";
 import { recordAudit } from "../services/audit.js";
 import { pushNotificationQueue } from "../queues.js";

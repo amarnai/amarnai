@@ -2,10 +2,10 @@
 
 import crypto from "crypto";
 import { revalidatePath } from "next/cache";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { requireUser } from "@/lib/session";
 import { sendWorkspaceInvitationEmail } from "@/lib/email";
-import { getCollaboratorLimit } from "@amarnai/shared";
+import { getCollaboratorLimit } from "@aziru/shared";
 
 function generateInviteToken(): string {
   return crypto.randomBytes(32).toString("hex");

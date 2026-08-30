@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { computeIgnoredReasons } from "./computeIgnoredReasons.js";
-import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/api-client";
+import type { TaxonomyNode, TaxonomyEdge } from "@aziru/api-client";
 
 function makeNode(overrides: Partial<TaxonomyNode> & { id: string }): TaxonomyNode {
   return {

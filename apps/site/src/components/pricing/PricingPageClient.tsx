@@ -1,6 +1,6 @@
 "use client";
 
-import { PricingPlans, type PlanId, type BillingCycle } from "@amarnai/ui";
+import { PricingPlans, type PlanId, type BillingCycle } from "@aziru/ui";
 import { ExtensionBanner } from "./ExtensionBanner";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.amarnai.com";

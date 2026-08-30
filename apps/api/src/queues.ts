@@ -6,15 +6,15 @@ import {
   QUEUE_CAPTURE_REFERENCE,
   QUEUE_PROVISION_LABELS,
   QUEUE_WRITEBACK_THREAD_LABEL,
-} from "@amarnai/queue";
+} from "@aziru/queue";
 import type {
   ClassifyThreadJobData,
   PushNotificationJobData,
   CaptureReferenceJobData,
   ProvisionLabelsJobData,
   WritebackThreadLabelJobData,
-} from "@amarnai/queue";
-import { config } from "@amarnai/config";
+} from "@aziru/queue";
+import { config } from "@aziru/config";
 
 /**
  * Shared classify-thread queue instance for the API process.

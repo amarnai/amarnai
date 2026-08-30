@@ -9,7 +9,7 @@
 // Each injector keeps its own emitter (Kefir stream vs. direct DOM write) and
 // its own insertion, which is where the real provider differences are.
 
-import { draftBodyToHtml } from "@amarnai/core/drafts";
+import { draftBodyToHtml } from "@aziru/core/drafts";
 import { REPLY_BUTTON_STRINGS, formatResetDate } from "./strings.js";
 import type { GenerateDraftResponse } from "./messaging.js";
 

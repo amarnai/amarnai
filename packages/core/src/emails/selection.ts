@@ -1,4 +1,4 @@
-import type { FilterCounts } from "@amarnai/api-client";
+import type { FilterCounts } from "@aziru/api-client";
 import type { FolderItem, QueueId, ActiveSelection, SegFilter, ThreadItem } from "./types.js";
 
 // Ordered action-first: views that require the user to act (Assigned, Needs

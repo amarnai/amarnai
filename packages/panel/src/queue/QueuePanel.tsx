@@ -1,7 +1,7 @@
 "use client";
 
 import { Trans } from "@lingui/react/macro";
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient } from "@aziru/api-client";
 import type { PanelHost } from "../host.js";
 import type { PanelQueueSection, PanelQueueThread } from "../types.js";
 import { ErrorState, LoadingState } from "../states/PanelStates.js";

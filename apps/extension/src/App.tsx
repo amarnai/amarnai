@@ -12,8 +12,8 @@ import { HostPermissionGate } from "./platform/HostPermissionGate";
 import { ensureHostPermissions } from "./platform/permissions";
 import { currentBrowser, extensionVersion } from "./platform/ext";
 import { MS_CLIENT_ID } from "./config";
-import { GoogleGIcon, OutlookIcon, ThemeProvider } from "@amarnai/ui";
-import type { SupportedLocale } from "@amarnai/i18n";
+import { GoogleGIcon, OutlookIcon, ThemeProvider } from "@aziru/ui";
+import type { SupportedLocale } from "@aziru/i18n";
 
 function Gate() {
   const { status, workspaceId, userId, client, locale } = useSession();

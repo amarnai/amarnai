@@ -10,7 +10,7 @@ export type HealthState =
  * Pings the local API's public /health endpoint so a physical device can confirm
  * it actually reaches the dev machine over LAN. No auth required. This is dev
  * connectivity scaffolding for Slice 0; later slices talk to the API through the
- * authenticated @amarnai/api-client transport instead.
+ * authenticated @aziru/api-client transport instead.
  */
 export function useApiHealth(): HealthState {
   const [state, setState] = useState<HealthState>({ status: 'checking' });

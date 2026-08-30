@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient } from "@aziru/api-client";
 import "./settings.css";
 
 export type WorkspaceNameSectionProps = {

@@ -1,2 +1,2 @@
-export { normalizeGmailThread } from "@amarnai/gmail";
-export type { RawGmailThread } from "@amarnai/gmail";
+export { normalizeGmailThread } from "@aziru/gmail";
+export type { RawGmailThread } from "@aziru/gmail";

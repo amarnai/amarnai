@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, space, fontSize } from '@amarnai/tokens';
-import type { ApiClient } from '@amarnai/api-client';
-import { SUPPORTED_LOCALES, LOCALE_DISPLAY_NAMES, type SupportedLocale } from '@amarnai/i18n';
+import { colors, space, fontSize } from '@aziru/tokens';
+import type { ApiClient } from '@aziru/api-client';
+import { SUPPORTED_LOCALES, LOCALE_DISPLAY_NAMES, type SupportedLocale } from '@aziru/i18n';
 import { SheetLayout } from './SheetLayout';
 import { toUserMessage } from '../errors';
 

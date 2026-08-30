@@ -1,6 +1,6 @@
-import { db } from "@amarnai/db";
-import { config } from "@amarnai/config";
-import { createMailProvider } from "@amarnai/mail";
+import { db } from "@aziru/db";
+import { config } from "@aziru/config";
+import { createMailProvider } from "@aziru/mail";
 
 export type RegisterOutlookSubscriptionResult =
   | { ok: true; expiresAt: Date }

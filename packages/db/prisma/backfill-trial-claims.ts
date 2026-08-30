@@ -8,7 +8,7 @@
  * Idempotent (skipDuplicates) — safe to run multiple times.
  *
  * Usage:
- *   pnpm --filter @amarnai/db backfill-trial-claims
+ *   pnpm --filter @aziru/db backfill-trial-claims
  */
 import { db, trialEmailKeyHash } from "../src/index.js";
 

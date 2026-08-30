@@ -4,7 +4,7 @@ import {
   validateTaxonomyTransfer,
   type InboxProfile,
   type TaxonomyTransferFile,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import type { AIProvider } from "../types.js";
 import { generateTaxonomyFromProfile } from "./generate.js";
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
-import type { ApiClient, MailProvider } from "@amarnai/api-client";
+import type { ApiClient, MailProvider } from "@aziru/api-client";
 import { Switch } from "../Switch.js";
 import "./settings.css";
 

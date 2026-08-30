@@ -2,23 +2,23 @@ import { vi, describe, it, expect } from "vitest";
 
 // config.outlook.enabled is computed once at module init, so the "Outlook is not
 // configured" case needs its own file: the credentials must be absent before the
-// app (and @amarnai/config) is imported.
+// app (and @aziru/config) is imported.
 vi.hoisted(() => {
   delete process.env["MS_GRAPH_CLIENT_ID"];
   delete process.env["MS_GRAPH_CLIENT_SECRET"];
 });
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: { user: { findUnique: vi.fn(async () => ({ sessionEpoch: 0 })) } },
   maybeCreateExtensionNudge: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock("@amarnai/outlook", async (importActual) => {
-  const actual = await importActual<typeof import("@amarnai/outlook")>();
+vi.mock("@aziru/outlook", async (importActual) => {
+  const actual = await importActual<typeof import("@aziru/outlook")>();
   return { ...actual, exchangeAuthCode: vi.fn(), fetchOutlookProfile: vi.fn() };
 });
 
-vi.mock("@amarnai/auth", () => ({
+vi.mock("@aziru/auth", () => ({
   provisionMicrosoftUser: vi.fn(),
   provisionGoogleUser: vi.fn(),
   issueAccessToken: vi.fn(async () => "access-tok"),
@@ -48,8 +48,8 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { exchangeAuthCode } from "@amarnai/outlook";
-import { provisionMicrosoftUser } from "@amarnai/auth";
+import { exchangeAuthCode } from "@aziru/outlook";
+import { provisionMicrosoftUser } from "@aziru/auth";
 
 describe("POST /auth/microsoft when Outlook is not configured", () => {
   it("404s without redeeming the code", async () => {

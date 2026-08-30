@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Trans, Plural } from "@lingui/react/macro";
-import { readUserIdFromAccessToken } from "@amarnai/api-client";
-import type { ApiClient, ThreadCommentsMeta } from "@amarnai/api-client";
-import { ThreadCommentsCard, useThreadComments } from "@amarnai/ui/emails";
-import type { MemberItem } from "@amarnai/ui/emails";
+import { readUserIdFromAccessToken } from "@aziru/api-client";
+import type { ApiClient, ThreadCommentsMeta } from "@aziru/api-client";
+import { ThreadCommentsCard, useThreadComments } from "@aziru/ui/emails";
+import type { MemberItem } from "@aziru/ui/emails";
 import type { PanelHost } from "./host.js";
 import type { EmailThreadDetail } from "./types.js";
 

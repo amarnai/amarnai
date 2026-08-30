@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import {
   parseGrantedScopes,
   exchangeAuthCode,
   exchangeServerAuthCode,
   GmailApiError,
-} from "@amarnai/gmail";
-import { storeGmailConnection } from "@amarnai/auth";
+} from "@aziru/gmail";
+import { storeGmailConnection } from "@aziru/auth";
 import type { AppEnv } from "../env.js";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
 import { registerGmailWatch } from "../services/gmail-watch.js";

@@ -1,6 +1,6 @@
-import type { ThreadSnapshot } from "@amarnai/ai";
-// Neutral control-flow errors are canonical in @amarnai/gmail and re-exported by
-// @amarnai/mail as MailAuthError / MailCursorExpiredError. GraphClient throws the
+import type { ThreadSnapshot } from "@aziru/ai";
+// Neutral control-flow errors are canonical in @aziru/gmail and re-exported by
+// @aziru/mail as MailAuthError / MailCursorExpiredError. GraphClient throws the
 // SAME classes so the worker's `instanceof Mail*Error` branches match, without a
 // package cycle (outlook -> gmail only).
 import {
@@ -8,7 +8,7 @@ import {
   GmailAuthError as MailAuthError,
   GmailHistoryCursorExpiredError as MailCursorExpiredError,
   GmailThreadNotFoundError as MailThreadNotFoundError,
-} from "@amarnai/gmail";
+} from "@aziru/gmail";
 import { normalizeGraphThread, type GraphMessage } from "./normalize-graph-thread.js";
 import {
   OUTLOOK_SCOPES,

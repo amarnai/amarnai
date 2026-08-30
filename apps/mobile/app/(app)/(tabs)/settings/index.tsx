@@ -13,9 +13,9 @@ import { Trans } from '@lingui/react/macro';
 import { msg, plural } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { MessageDescriptor } from '@lingui/core';
-import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
-import { getDraftQuotaResetsAt, formatQuotaResetDate } from '@amarnai/shared';
-import type { GmailConnection, GmailSyncSettings, SyncStatus } from '@amarnai/api-client';
+import { colors, space, fontSize, fontWeight, radii } from '@aziru/tokens';
+import { getDraftQuotaResetsAt, formatQuotaResetDate } from '@aziru/shared';
+import type { GmailConnection, GmailSyncSettings, SyncStatus } from '@aziru/api-client';
 import { useSession } from '../../../../src/auth/session';
 import { AppHeader } from '../../../../src/components/AppHeader';
 import { ScreenContainer } from '../../../../src/components/ScreenContainer';
@@ -32,7 +32,7 @@ import { RenameWorkspaceSheet } from '../../../../src/components/RenameWorkspace
 import { WorkspaceLanguageSheet } from '../../../../src/components/WorkspaceLanguageSheet';
 import { CollaboratorsSheet } from '../../../../src/components/CollaboratorsSheet';
 import { toUserMessage } from '../../../../src/errors';
-import { LOCALE_DISPLAY_NAMES, isSupportedLocale } from '@amarnai/i18n';
+import { LOCALE_DISPLAY_NAMES, isSupportedLocale } from '@aziru/i18n';
 
 const PLAN_LABEL: Record<string, MessageDescriptor> = {
   FREE: msg`Free`,

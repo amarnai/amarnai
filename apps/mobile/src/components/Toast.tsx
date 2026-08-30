@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors, radii, space, fontSize, fontWeight, shadows } from '@amarnai/tokens';
-import type { Toast as ToastModel } from '@amarnai/core';
+import { colors, radii, space, fontSize, fontWeight, shadows } from '@aziru/tokens';
+import type { Toast as ToastModel } from '@aziru/core';
 
 interface ToastProps {
   toast: ToastModel | null;

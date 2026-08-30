@@ -1,5 +1,5 @@
-import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
-import type { BackfillStatus, BackfillLimitState } from "@amarnai/api-client";
+import { TAXONOMY_MIN_NON_ROOT_NODES } from "@aziru/shared";
+import type { BackfillStatus, BackfillLimitState } from "@aziru/api-client";
 
 export type WorkspacePlan = "FREE" | "PRO" | "BUSINESS";
 

@@ -6,7 +6,7 @@ import { useLingui } from "@lingui/react";
 import { msg, plural } from "@lingui/core/macro";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem } from "./types.js";
-import { buildThreadUrl, folderColorVars } from "@amarnai/core/emails";
+import { buildThreadUrl, folderColorVars } from "@aziru/core/emails";
 import type { CSSProperties } from "react";
 import { openInProviderLabel } from "./providerLabels.js";
 import { Tooltip } from "../Tooltip.js";

@@ -1,6 +1,6 @@
 import { msg, plural } from '@lingui/core/macro';
 import type { I18n } from '@lingui/core';
-import { interpretNotification, type NotificationItem } from '@amarnai/api-client';
+import { interpretNotification, type NotificationItem } from '@aziru/api-client';
 
 // What tapping a notification does. A discriminated union rather than a bag of
 // nullable fields so each type declares exactly one action, and the screen

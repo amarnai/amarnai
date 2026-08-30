@@ -7,7 +7,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspaceMember: {
       findUnique: vi.fn(),
@@ -33,8 +33,8 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-import { db } from "@amarnai/db";
-import { getCollaboratorLimit } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { getCollaboratorLimit } from "@aziru/shared";
 
 // ─── Helpers replicated from server actions for unit-testable extraction ──────
 

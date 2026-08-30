@@ -1,5 +1,5 @@
 import { requireUser } from "@/lib/session";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { Trans } from "@lingui/react/macro";
 import { initServerI18n } from "@/lib/i18n-server";
 import { AccountForm } from "./AccountForm";

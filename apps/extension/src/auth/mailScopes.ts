@@ -6,7 +6,7 @@ import { isWritebackAvailable } from "./writebackPolicy";
  * drift on the policy or on the strings themselves.
  *
  * Every scope here is a deliberate literal rather than an import from
- * @amarnai/gmail / @amarnai/outlook, so the extension bundle does not pull the
+ * @aziru/gmail / @aziru/outlook, so the extension bundle does not pull the
  * provider clients in. Each set names the server-side constant it mirrors; those
  * are the source of truth and these must be changed in step with them.
  */

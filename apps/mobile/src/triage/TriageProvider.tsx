@@ -8,9 +8,9 @@ import {
   type ActiveSelection,
   type FolderItem,
   type ThreadItem,
-} from '@amarnai/core';
-import type { ApiClient, FilterCounts } from '@amarnai/api-client';
-import { colors } from '@amarnai/tokens';
+} from '@aziru/core';
+import type { ApiClient, FilterCounts } from '@aziru/api-client';
+import { colors } from '@aziru/tokens';
 
 type Triage = ReturnType<typeof useEmailTriage>;
 

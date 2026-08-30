@@ -1,8 +1,8 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { QUEUES, countForActive, type ActiveSelection, type FolderItem, type QueueId, type ThreadItem } from '@amarnai/core';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { QUEUES, countForActive, type ActiveSelection, type FolderItem, type QueueId, type ThreadItem } from '@aziru/core';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 import { QUEUE_NAME_LABELS } from './queueLabels';
 
 interface QueueChipsProps {

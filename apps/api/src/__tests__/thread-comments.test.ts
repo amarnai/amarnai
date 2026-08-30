@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, TEST_USER_ID } from "./helpers.js";
-import { MAX_COMMENT_LENGTH, MAX_MENTIONS_PER_COMMENT } from "@amarnai/shared";
+import { MAX_COMMENT_LENGTH, MAX_MENTIONS_PER_COMMENT } from "@aziru/shared";
 
 // Notification production is a best-effort side effect; mock it so we can
 // assert it fires (or doesn't) without a DB or Redis.
 const createNotification = vi.fn().mockResolvedValue(undefined);
 const deleteCommentMentionNotifications = vi.fn().mockResolvedValue(undefined);
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailThread: {
       findFirst: vi.fn(),
@@ -51,7 +51,7 @@ vi.mock("../services/rate-limit.js", async (importOriginal) => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";

@@ -4,12 +4,12 @@ import {
   MicrosoftApiError,
   exchangeAuthCode,
   fetchOutlookProfile,
-} from "@amarnai/outlook";
-import type { OutlookProfile, OutlookTokens } from "@amarnai/outlook";
+} from "@aziru/outlook";
+import type { OutlookProfile, OutlookTokens } from "@aziru/outlook";
 import { isLabelWritebackEnabled } from "./writeback-flag";
 
-// HTTP helpers (token exchange, profile) live in @amarnai/outlook so
-// the API can share them, mirroring how @/lib/gmail-oauth re-exports @amarnai/gmail.
+// HTTP helpers (token exchange, profile) live in @aziru/outlook so
+// the API can share them, mirroring how @/lib/gmail-oauth re-exports @aziru/gmail.
 // State signing (generateState/verifyState) is provider-neutral and reused from
 // @/lib/gmail-oauth — do not duplicate it here.
 export { MicrosoftApiError, fetchOutlookProfile };
@@ -18,7 +18,7 @@ export type { OutlookProfile, OutlookTokens };
 /**
  * Whether the Outlook provider is configured (a full confidential-client
  * credential pair). Server-only — gates whether the connect UI offers Outlook,
- * mirroring config.outlook.enabled without pulling @amarnai/config into the web
+ * mirroring config.outlook.enabled without pulling @aziru/config into the web
  * build (which would force these env vars to be present at build time).
  */
 export function isOutlookConfigured(): boolean {

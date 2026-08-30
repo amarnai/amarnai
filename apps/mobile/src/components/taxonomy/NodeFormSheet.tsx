@@ -12,14 +12,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
 import { Trans, Plural } from '@lingui/react/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 import type {
   CreateTaxonomyNodeInput,
   TaxonomyEdge,
   TaxonomyNode,
-} from '@amarnai/api-client';
-import { descendantIds } from '@amarnai/core/taxonomy';
-import { minNodeNameLength, minNodeDescriptionLength } from '@amarnai/shared';
+} from '@aziru/api-client';
+import { descendantIds } from '@aziru/core/taxonomy';
+import { minNodeNameLength, minNodeDescriptionLength } from '@aziru/shared';
 import { BottomSheet } from '../BottomSheet';
 import { NodePickerSheet, type NodePickerOption } from './NodePickerSheet';
 import type { ParentChange } from '../../data/taxonomyQueries';

@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 // AES-256-GCM key for stored OAuth refresh tokens. Provider-neutral: Gmail and
 // Outlook refresh tokens are encrypted/decrypted with this one key. The key is

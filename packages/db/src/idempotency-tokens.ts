@@ -9,7 +9,7 @@
 // a typed argument rather than a hand-maintained "_done" suffix.
 //
 // These are pure string builders (no DB access); they live beside the IdempotencyMarker
-// ledger in @amarnai/db because that is the single place the tokens are consumed.
+// ledger in @aziru/db because that is the single place the tokens are consumed.
 
 /** A distinct thread sorted once per inbox per meter window (classify worker + the
  *  synchronous gmail-sort route share this shape). */

@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../config";
-import type { MailScopePolicy } from "@amarnai/shared";
+import type { MailScopePolicy } from "@aziru/shared";
 
 // Type-only import: it emits no runtime bytes, which keeps zod out of the panel
 // bundle for the sake of one boolean. The shape is validated by hand below.

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient } from "@aziru/api-client";
 import { openWebApp } from "./openWebApp";
 
 vi.mock("../config", () => ({

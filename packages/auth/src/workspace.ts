@@ -1,4 +1,4 @@
-import { db, ensureInboxTaxonomy } from "@amarnai/db";
+import { db, ensureInboxTaxonomy } from "@aziru/db";
 
 // Returns the user's primary workspace, creating their first one (with the
 // mandatory Inbox + catch-all taxonomy and an OWNER membership) if they have

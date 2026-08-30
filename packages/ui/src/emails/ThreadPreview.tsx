@@ -5,7 +5,7 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { ThreadItem, ThreadMessage, DraftItem } from "./types.js";
-import { buildThreadUrl } from "@amarnai/core/emails";
+import { buildThreadUrl } from "@aziru/core/emails";
 import { openInProviderLabel } from "./providerLabels.js";
 import { GmailIcon } from "../icons/GmailIcon.js";
 import { OutlookIcon } from "../icons/OutlookIcon.js";

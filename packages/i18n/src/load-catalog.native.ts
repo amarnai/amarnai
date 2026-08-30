@@ -5,7 +5,7 @@ import { type SupportedLocale } from "./locales.js";
 // by the web loader (load-catalog.ts). Mobile bundles every compiled catalog
 // statically and switches them at runtime via registerMobileMessages() and
 // activateLocaleMobile() (see i18n.ts), so these loaders are never called on
-// native. They exist only so the shared @amarnai/i18n barrel resolves on Metro.
+// native. They exist only so the shared @aziru/i18n barrel resolves on Metro.
 
 export async function loadCatalog(_locale: SupportedLocale): Promise<Messages> {
   throw new Error(

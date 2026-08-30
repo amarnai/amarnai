@@ -17,7 +17,7 @@ vi.mock("ioredis", () => ({
   })),
 }));
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: { redis: { url: "redis://localhost:6379" } },
 }));
 

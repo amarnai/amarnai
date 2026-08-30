@@ -1,22 +1,22 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
-import type { InboxProfile } from "@amarnai/shared";
+import type { InboxProfile } from "@aziru/shared";
 import { authed, TEST_USER_ID } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspaceMember: { findUnique: vi.fn() },
     emailConnection: { findUnique: vi.fn() },
     gmailSyncSettings: { findUnique: vi.fn() },
   },
   // buildInboxProfile is exercised for real in packages/db; here we stub it and
-  // let the real matcher (from @amarnai/core) run against the returned profile.
+  // let the real matcher (from @aziru/core) run against the returned profile.
   buildInboxProfile: vi.fn(),
   eligibleThreadWhere: vi.fn(),
   resolveInboxQuota: vi.fn(),
 }));
 
 import app from "../app.js";
-import { db, buildInboxProfile } from "@amarnai/db";
+import { db, buildInboxProfile } from "@aziru/db";
 
 const WS = "ws-1";
 

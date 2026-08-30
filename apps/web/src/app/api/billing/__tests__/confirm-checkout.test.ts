@@ -5,16 +5,16 @@ const mockStripe = vi.hoisted(() => ({
 }));
 
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
-vi.mock("@amarnai/auth", () => ({ verifyAccessToken: vi.fn() }));
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/auth", () => ({ verifyAccessToken: vi.fn() }));
+vi.mock("@aziru/db", () => ({
   db: { user: { findUnique: vi.fn() } },
 }));
 vi.mock("@/lib/stripe", () => ({ getStripe: () => mockStripe }));
 vi.mock("@/lib/billing-provision", () => ({ provisionFromCheckoutSession: vi.fn() }));
 
 import { auth } from "@/auth";
-import { verifyAccessToken } from "@amarnai/auth";
-import { db } from "@amarnai/db";
+import { verifyAccessToken } from "@aziru/auth";
+import { db } from "@aziru/db";
 import { provisionFromCheckoutSession } from "@/lib/billing-provision";
 import { POST } from "@/app/api/billing/confirm-checkout/route";
 

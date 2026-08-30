@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import type { ApiClient, TaxonomyNode, TaxonomyEdge } from "@amarnai/api-client";
-import type { GraphSnapshot } from "@amarnai/core/taxonomy";
+import type { ApiClient, TaxonomyNode, TaxonomyEdge } from "@aziru/api-client";
+import type { GraphSnapshot } from "@aziru/core/taxonomy";
 import { applySnapshotDiff, nodesIdentical } from "./applySnapshotDiff.js";
 
 function node(overrides: Partial<TaxonomyNode> & { id: string }): TaxonomyNode {

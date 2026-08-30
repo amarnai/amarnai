@@ -1,6 +1,6 @@
 import { Redirect } from 'expo-router';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { colors } from '@amarnai/tokens';
+import { colors } from '@aziru/tokens';
 import { useSession } from '../src/auth/session';
 
 export default function Index() {

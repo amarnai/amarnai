@@ -16,7 +16,7 @@
  * gemini-2.5-flash), NOT the flash-lite routing tier, so this harness defaults to
  * the same. Provide Gemini credentials via env (.env.local / Railway):
  *
- *   pnpm --filter @amarnai/ai benchmark:taxonomy-gen
+ *   pnpm --filter @aziru/ai benchmark:taxonomy-gen
  *
  * Env knobs:
  *   TAXONOMY_LLM_MODEL        model to hit (default gemini-2.5-flash)
@@ -24,10 +24,10 @@
  *   BENCHMARK_GEN_REPEATS     runs per fixture (default 2; flash is non-deterministic)
  */
 import OpenAI from "openai";
-import { matchTemplateToProfile } from "@amarnai/core/taxonomy";
+import { matchTemplateToProfile } from "@aziru/core/taxonomy";
 import { generateTaxonomyFromProfile } from "../taxonomy-gen/generate.js";
 import type { AIProvider } from "../types.js";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 import {
   PROFILE_FIXTURES,
   recurringDomainCount,

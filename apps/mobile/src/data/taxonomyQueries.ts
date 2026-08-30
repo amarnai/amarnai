@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   CreateTaxonomyNodeInput,
   UpdateTaxonomyNodeInput,
-} from '@amarnai/api-client';
-import type { TaxonomyTransferFile } from '@amarnai/shared';
+} from '@aziru/api-client';
+import type { TaxonomyTransferFile } from '@aziru/shared';
 import { useSession } from '../auth/session';
 
 // Query keys are shared with TriageProvider so the taxonomy cache is one copy.

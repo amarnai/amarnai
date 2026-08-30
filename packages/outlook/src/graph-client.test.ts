@@ -1,9 +1,9 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 // decrypt is a pass-through in tests; the error classes are real so `instanceof`
-// and `throw` behave. These are the classes @amarnai/mail re-exports as
+// and `throw` behave. These are the classes @aziru/mail re-exports as
 // MailAuthError / MailCursorExpiredError.
-vi.mock("@amarnai/gmail", () => ({
+vi.mock("@aziru/gmail", () => ({
   decrypt: (v: string) => v,
   GmailAuthError: class GmailAuthError extends Error {},
   GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
@@ -15,7 +15,7 @@ import {
   GmailAuthError,
   GmailHistoryCursorExpiredError,
   GmailThreadNotFoundError,
-} from "@amarnai/gmail";
+} from "@aziru/gmail";
 
 // ─── fetch mock plumbing ──────────────────────────────────────────────────────
 

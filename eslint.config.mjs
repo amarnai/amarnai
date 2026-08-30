@@ -26,7 +26,7 @@ export default tseslint.config(...tseslint.configs.recommended, {
     "no-restricted-imports": ["error", {
       patterns: [
         {
-          group: ["@amarnai/db", "@amarnai/db/*"],
+          group: ["@aziru/db", "@aziru/db/*"],
           message: "packages/ai must not import from the database layer. Receive data as typed function arguments instead.",
         },
         {
@@ -37,12 +37,12 @@ export default tseslint.config(...tseslint.configs.recommended, {
     }],
   },
 },
-// Enforce that @amarnai/core stays platform-agnostic. It is the shared
+// Enforce that @aziru/core stays platform-agnostic. It is the shared
 // view-model tier consumed by BOTH the web app (DOM) and the mobile app
 // (React Native). Plain `react` (hooks/context) is reconciler-agnostic and
 // identical on both platforms, so shared hooks may use it. What it must never
 // import is a renderer (react-dom), a framework (next), a platform UI runtime
-// (react-native/expo), or the web-only UI package (@amarnai/ui).
+// (react-native/expo), or the web-only UI package (@aziru/ui).
 {
   files: ["packages/core/**/*.ts"],
   rules: {
@@ -61,8 +61,8 @@ export default tseslint.config(...tseslint.configs.recommended, {
           message: "packages/core must not depend on React Native/Expo. It is shared with the web app.",
         },
         {
-          group: ["@amarnai/ui", "@amarnai/ui/*"],
-          message: "packages/core must not import @amarnai/ui (web-only rendering). Dependency direction is ui -> core, never the reverse.",
+          group: ["@aziru/ui", "@aziru/ui/*"],
+          message: "packages/core must not import @aziru/ui (web-only rendering). Dependency direction is ui -> core, never the reverse.",
         },
       ],
     }],
@@ -70,8 +70,8 @@ export default tseslint.config(...tseslint.configs.recommended, {
 },
 // Enforce that the mobile app never imports the web-only UI package or any
 // server-only package. Mobile is a React Native client: it talks to the API
-// through @amarnai/api-client and reuses @amarnai/core / @amarnai/shared /
-// @amarnai/tokens only. A server-only import (db, ai, queue, gmail, config)
+// through @aziru/api-client and reuses @aziru/core / @aziru/shared /
+// @aziru/tokens only. A server-only import (db, ai, queue, gmail, config)
 // would pull Node-only code into the bundle and leak server concerns onto a
 // shipped device.
 {
@@ -80,19 +80,19 @@ export default tseslint.config(...tseslint.configs.recommended, {
     "no-restricted-imports": ["error", {
       patterns: [
         {
-          group: ["@amarnai/ui", "@amarnai/ui/*"],
-          message: "apps/mobile must not import @amarnai/ui (web/DOM rendering). Build screens from React Native primitives styled with @amarnai/tokens, driven by @amarnai/core.",
+          group: ["@aziru/ui", "@aziru/ui/*"],
+          message: "apps/mobile must not import @aziru/ui (web/DOM rendering). Build screens from React Native primitives styled with @aziru/tokens, driven by @aziru/core.",
         },
         {
           group: [
-            "@amarnai/db", "@amarnai/db/*",
-            "@amarnai/ai", "@amarnai/ai/*",
-            "@amarnai/queue", "@amarnai/queue/*",
-            "@amarnai/gmail", "@amarnai/gmail/*",
-            "@amarnai/config", "@amarnai/config/*",
+            "@aziru/db", "@aziru/db/*",
+            "@aziru/ai", "@aziru/ai/*",
+            "@aziru/queue", "@aziru/queue/*",
+            "@aziru/gmail", "@aziru/gmail/*",
+            "@aziru/config", "@aziru/config/*",
             "@prisma/client", "@prisma/client/*",
           ],
-          message: "apps/mobile must not import server-only packages. Reach the backend through @amarnai/api-client instead.",
+          message: "apps/mobile must not import server-only packages. Reach the backend through @aziru/api-client instead.",
         },
       ],
     }],

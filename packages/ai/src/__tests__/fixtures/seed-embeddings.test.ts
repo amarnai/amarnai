@@ -7,13 +7,13 @@
  * model actually deployed (Gemini) while keeping qwen3 as an offline default.
  *
  * Usage:
- *   pnpm --filter @amarnai/ai seed:embeddings            (default: qwen3 via Ollama)
+ *   pnpm --filter @aziru/ai seed:embeddings            (default: qwen3 via Ollama)
  *
  *   EMBEDDING_PROVIDER=frontier \
  *   FRONTIER_EMBEDDING_PROVIDER=gemini \
  *   FRONTIER_EMBEDDING_MODEL=gemini-embedding-001 \
  *   FRONTIER_EMBEDDING_API_KEY=… \
- *   pnpm --filter @amarnai/ai seed:embeddings            (Gemini)
+ *   pnpm --filter @aziru/ai seed:embeddings            (Gemini)
  *
  * The provider is resolved from the env-driven factory (getEmbeddingProviderConfig
  * + createEmbeddingProvider) exactly like the runtime sorter, so seeded vectors

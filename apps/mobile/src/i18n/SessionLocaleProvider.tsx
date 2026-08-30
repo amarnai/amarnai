@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { isSupportedLocale, type SupportedLocale } from '@amarnai/i18n';
+import { isSupportedLocale, type SupportedLocale } from '@aziru/i18n';
 import { useSession } from '../auth/session';
 import { LinguiProvider } from './LinguiProvider';
 

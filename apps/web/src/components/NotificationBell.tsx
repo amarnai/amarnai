@@ -9,7 +9,7 @@ import { api } from "@/lib/api";
 import {
   NOTIFICATION_POLL_INTERVAL_MS,
   type NotificationItem,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import { describeNotification } from "@/lib/notifications";
 import { runNotificationAction } from "@/lib/notificationAction";
 

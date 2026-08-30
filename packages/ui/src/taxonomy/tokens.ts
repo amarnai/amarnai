@@ -1,4 +1,4 @@
-import { colors } from "@amarnai/tokens";
+import { colors } from "@aziru/tokens";
 
 export const taxonomyTokens = {
   primary:    colors.accent,

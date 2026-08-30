@@ -5,7 +5,7 @@ import {
   ApiHttpError,
   type ApiClient,
   type ThreadCommentItem,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 
 // Poll cadence while the comment section is open. Comments are human-paced;
 // 15s keeps a two-person exchange feeling live without SSE plumbing.

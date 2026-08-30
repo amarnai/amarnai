@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { resetWorkspaceAction } from "@/actions/workspace";
 import { Trans } from "@lingui/react/macro";
-import { getDraftQuotaResetsAt, formatQuotaResetDate } from "@amarnai/shared";
+import { getDraftQuotaResetsAt, formatQuotaResetDate } from "@aziru/shared";
 
 export function ResetWorkspaceSection({ workspaceId }: { workspaceId: string }) {
   const [confirming, setConfirming] = useState(false);

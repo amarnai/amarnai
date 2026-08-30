@@ -1,9 +1,9 @@
 import { Trans, Plural } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { InboxStatus } from "@amarnai/core/emails";
-import type { PlanSetupMode } from "@amarnai/ui/plan-setup";
-import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from "@amarnai/shared";
+import type { InboxStatus } from "@aziru/core/emails";
+import type { PlanSetupMode } from "@aziru/ui/plan-setup";
+import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from "@aziru/shared";
 import { useWebAppLink } from "./openWebApp";
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 
 // The single pinned sorting-status row under the panel header. Which state to
 // show (and with what counts) is decided by the shared resolveInboxStatus in
-// @amarnai/core; this component owns only the 360px presentation. Two visual
+// @aziru/core; this component owns only the 360px presentation. Two visual
 // templates: an action row (inline CTA) and a notice row (dismissible, may wrap).
 // Actions that need the plan editor or billing open the web app in a new tab,
 // already signed in (see useWebAppLink).
@@ -134,7 +134,7 @@ export function StatusSlot({
   }
 
   // Backfill running — the lowest-priority state. Reuses the shared em-backfill
-  // styles (loaded via @amarnai/ui/emails/styles) so there is one source of
+  // styles (loaded via @aziru/ui/emails/styles) so there is one source of
   // truth for the pulse + indeterminate bar; .ax-status neutralizes its margin.
   return (
     <div className="ax-status">

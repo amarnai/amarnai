@@ -1,5 +1,5 @@
-import { db } from "@amarnai/db";
-import { StaleWhileErrorCache } from "@amarnai/auth";
+import { db } from "@aziru/db";
+import { StaleWhileErrorCache } from "@aziru/auth";
 import type { JWT } from "next-auth/jwt";
 
 // Resolves a web JWT against the current account state on EVERY evaluation, not

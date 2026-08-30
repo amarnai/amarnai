@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
-import { matchLocale, isSupportedLocale } from "@amarnai/i18n";
+import { matchLocale, isSupportedLocale } from "@aziru/i18n";
 import { buildContentSecurityPolicy, cspHeaderName, generateCspNonce } from "@/lib/csp";
 import { OUTLOOK_PANEL_PATH } from "@/lib/outlook-addin";
 

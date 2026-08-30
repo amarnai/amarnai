@@ -1,4 +1,4 @@
-import type { PlanId, BillingCycle } from "@amarnai/shared";
+import type { PlanId, BillingCycle } from "@aziru/shared";
 import { extensionTokenStore } from "../auth/tokenStore";
 import { WEB_APP_URL } from "../config";
 

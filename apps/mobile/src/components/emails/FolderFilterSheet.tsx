@@ -2,8 +2,8 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { buildFolderCounts, type ActiveSelection, type FolderItem, type ThreadItem } from '@amarnai/core';
-import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { buildFolderCounts, type ActiveSelection, type FolderItem, type ThreadItem } from '@aziru/core';
+import { colors, space, fontSize, fontWeight } from '@aziru/tokens';
 import { SheetLayout } from '../SheetLayout';
 
 interface FolderFilterSheetProps {

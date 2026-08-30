@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { OptionCards, type OptionCardItem } from "@amarnai/ui";
-import type { PlanId, BillingCycle } from "@amarnai/ui";
+import { OptionCards, type OptionCardItem } from "@aziru/ui";
+import type { PlanId, BillingCycle } from "@aziru/ui";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";

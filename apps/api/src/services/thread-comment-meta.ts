@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 // The comments badge numbers: total, and how many are unread for one member
 // (newer than their ThreadCommentRead marker, authored by others). Shared by

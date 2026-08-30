@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, TEST_USER_ID } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     extensionInstall: { upsert: vi.fn() },
     user: { findUnique: vi.fn() },
@@ -10,8 +10,8 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app from "../app.js";
-import { db, deleteExtensionNudgeNotifications } from "@amarnai/db";
-import { issueAccessToken } from "@amarnai/auth";
+import { db, deleteExtensionNudgeNotifications } from "@aziru/db";
+import { issueAccessToken } from "@aziru/auth";
 
 const VALID_BODY = { browser: "CHROME", version: "0.1.0" };
 

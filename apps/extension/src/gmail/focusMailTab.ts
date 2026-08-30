@@ -1,6 +1,6 @@
 import { ext } from "../platform/ext";
 import { GMAIL_MAIL_HOST, OUTLOOK_MAIL_HOSTS } from "../platform/mailHosts";
-import type { MailProvider } from "@amarnai/api-client";
+import type { MailProvider } from "@aziru/api-client";
 
 /**
  * Brings the user's already-open mailbox tab to the front, without navigating

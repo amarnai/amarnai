@@ -1,12 +1,12 @@
 import { useMemo } from "react";
-import { InjectedThreadPanel } from "@amarnai/panel";
+import { InjectedThreadPanel } from "@aziru/panel";
 import { WEB_APP_URL } from "../config";
 import { createInjectedPanelHost } from "./panelHost";
 
 /**
  * The whole of the injected iframe's UI.
  *
- * Everything of substance is in @amarnai/panel, shared with the Outlook task
+ * Everything of substance is in @aziru/panel, shared with the Outlook task
  * pane. What lives here is the one thing that cannot be shared: the host built
  * on this frame's postMessage link to the mail page that embedded it, whether
  * that is Gmail's sidebar or OWA's drawer.

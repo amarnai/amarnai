@@ -27,10 +27,10 @@ RUN pnpm install --frozen-lockfile
 FROM deps AS builder
 WORKDIR /repo
 COPY . .
-RUN pnpm --filter @amarnai/db generate
+RUN pnpm --filter @aziru/db generate
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_PUBLIC_ENABLE_GMAIL_DEBUG_TOOLS=false
-RUN pnpm --filter @amarnai/web build
+RUN pnpm --filter @aziru/web build
 
 # ── Runtime ───────────────────────────────────────────────────────────────────
 # next build --output standalone produces a self-contained server.js.

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SUPPORTED_LOCALES, SOURCE_LOCALE } from "@amarnai/i18n";
+import { SUPPORTED_LOCALES, SOURCE_LOCALE } from "@aziru/i18n";
 import { localeUrl } from "@/lib/seo";
 
 // Emitted as a static /sitemap.xml by the export build.

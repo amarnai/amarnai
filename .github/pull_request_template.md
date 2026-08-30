@@ -18,7 +18,7 @@ Amarnai's active clients are the web app (`apps/web`) and the browser extension
       the other (Gmail ↔ Outlook), or is provider-agnostic behind `packages/mail`.
 
 > Reminder: logic that is not literally JSX rendering belongs in a shared
-> package (`@amarnai/core`, `@amarnai/shared`, `@amarnai/api-client`), not in a
+> package (`@aziru/core`, `@aziru/shared`, `@aziru/api-client`), not in a
 > single app. A non-blocking CI `parity-check` posts a warning when `apps/web` or
 > `packages/ui` change without a matching `apps/extension` change.
 

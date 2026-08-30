@@ -7,10 +7,10 @@ import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
 import { disconnectGmailAction, type DisconnectOutcome } from "@/actions/gmail";
 import { api, type GmailConnection, type MailProvider, type SyncStatus, type GmailSyncSettings } from "@/lib/api";
-import { GmailSyncSettingsSection, LabelWritebackSection } from "@amarnai/ui/settings";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { GmailSyncSettingsSection, LabelWritebackSection } from "@aziru/ui/settings";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
 import { NativeInjectionSection } from "./NativeInjectionSection";
-import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
+import { GoogleGIcon, OutlookIcon } from "@aziru/ui";
 
 
 type Props = {

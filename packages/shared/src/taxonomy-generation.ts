@@ -3,7 +3,7 @@
 //
 // This file is intentionally free of Prisma / DB imports so it can be unit
 // tested in isolation and imported from web/mobile. The Prisma `where` builder
-// that selects the same "eligible threads" lives in @amarnai/db
+// that selects the same "eligible threads" lives in @aziru/db
 // (eligible-threads.ts) because it needs Prisma types.
 
 // ─── Tunable constants (single source of truth) ────────────────────────────────

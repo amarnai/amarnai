@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 /**
  * Resolve the EmailAccount id for a workspace's connected inbox, following the

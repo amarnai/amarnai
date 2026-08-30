@@ -1,5 +1,5 @@
 export {
   GmailClient,
   GmailHistoryCursorExpiredError,
-} from "@amarnai/gmail";
-export type { GmailProfile, GmailHistoryResult } from "@amarnai/gmail";
+} from "@aziru/gmail";
+export type { GmailProfile, GmailHistoryResult } from "@aziru/gmail";

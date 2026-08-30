@@ -1,7 +1,7 @@
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 
 /** A plain string->string lookup, e.g. Lingui's `i18n._`. Kept generic so
- * @amarnai/core never depends on any i18n library. */
+ * @aziru/core never depends on any i18n library. */
 export type Translate = (source: string) => string;
 
 /**

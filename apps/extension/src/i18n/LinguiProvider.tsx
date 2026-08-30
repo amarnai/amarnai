@@ -6,7 +6,7 @@ import {
   matchLocale,
   isSupportedLocale,
   type SupportedLocale,
-} from "@amarnai/i18n";
+} from "@aziru/i18n";
 
 // Match the browser's languages to a supported locale, for use before the
 // workspace locale is known.
@@ -18,7 +18,7 @@ export function resolveBrowserLocale(): SupportedLocale {
  * Activates the active locale and provides the Lingui context to the panel.
  *
  * Unlike mobile (Metro can't dynamic-import, so it uses a static require map),
- * Vite/Rollup handles the template-literal dynamic import in @amarnai/i18n's
+ * Vite/Rollup handles the template-literal dynamic import in @aziru/i18n's
  * loadCatalog, so we use the shared async `activateLocale`. I18nProvider needs
  * an activated i18n to hand down context, so children are withheld until the
  * first activation resolves. If a catalog fails to load (e.g. not yet compiled)

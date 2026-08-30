@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   // Real implementation, not a stub: the dedup key it produces is asserted below,
   // so a fake would make those assertions meaningless.
   messageSetSignature: (ids: string[]) =>
@@ -37,7 +37,7 @@ vi.mock("@amarnai/db", () => ({
   }),
 }));
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: { billing: { enforceThreadSortQuota: true } },
 }));
 
@@ -46,7 +46,7 @@ const mockListRecentThreadIds = vi.fn();
 const mockListHistory = vi.fn();
 const mockGetThread = vi.fn();
 
-vi.mock("@amarnai/gmail", () => {
+vi.mock("@aziru/gmail", () => {
   // getThreadSnapshot folds the raw fetch (mockGetThread — so error tests still
   // drive rejections) and normalization into one call, matching the real client.
   const normalize = (raw: unknown) => {
@@ -114,11 +114,11 @@ vi.mock("../queues.js", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db, resolveInboxQuota } from "@amarnai/db";
+import { db, resolveInboxQuota } from "@aziru/db";
 import { Worker } from "bullmq";
-import { GmailHistoryCursorExpiredError, GmailThreadNotFoundError } from "@amarnai/gmail";
+import { GmailHistoryCursorExpiredError, GmailThreadNotFoundError } from "@aziru/gmail";
 import { classifyThreadQueue } from "../queues.js";
-import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
+import { DEDUP_CLASSIFY_UNROUTED } from "@aziru/queue";
 import { createSyncInboxWorker } from "../jobs/sync-inbox.js";
 
 /**

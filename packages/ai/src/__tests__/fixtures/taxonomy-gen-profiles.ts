@@ -1,4 +1,4 @@
-import { recurringDomainCount, type InboxProfile, type ProfileTerm, type SenderCluster } from "@amarnai/shared";
+import { recurringDomainCount, type InboxProfile, type ProfileTerm, type SenderCluster } from "@aziru/shared";
 
 export { recurringDomainCount };
 

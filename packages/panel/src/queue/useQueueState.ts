@@ -3,7 +3,7 @@ import {
   InjectionDisabledError,
   readUserIdFromAccessToken,
   type ApiClient,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import type { PanelHost } from "../host.js";
 import { makePanelSseDeps, useWorkspaceEvents } from "../realtime/index.js";
 import type { PanelQueueResult, PanelQueueThread, SyncStatus } from "../types.js";

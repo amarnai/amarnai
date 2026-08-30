@@ -5,11 +5,11 @@ import {
   GmailApiError,
   exchangeAuthCode,
   fetchGmailProfile,
-} from "@amarnai/gmail";
-import type { GmailProfile, GmailTokens } from "@amarnai/gmail";
+} from "@aziru/gmail";
+import type { GmailProfile, GmailTokens } from "@aziru/gmail";
 import { isLabelWritebackEnabled } from "./writeback-flag";
 
-// HTTP helpers (token exchange, profile) now live in @amarnai/gmail
+// HTTP helpers (token exchange, profile) now live in @aziru/gmail
 // so the API can share them. Re-export them here so existing web imports from
 // "@/lib/gmail-oauth" keep working unchanged.
 export { GmailApiError, fetchGmailProfile };

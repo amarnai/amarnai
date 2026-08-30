@@ -1,7 +1,7 @@
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
-import { queueSubscriptionCancellation, subscriptionPeriodEnd } from "@amarnai/billing";
-import { db, ensureInboxTaxonomy, claimTrial, Prisma } from "@amarnai/db";
+import { queueSubscriptionCancellation, subscriptionPeriodEnd } from "@aziru/billing";
+import { db, ensureInboxTaxonomy, claimTrial, Prisma } from "@aziru/db";
 import { BACKFILL_RESCAN_RESET } from "@/lib/backfill-reset";
 
 export interface ProvisionResult {

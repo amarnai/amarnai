@@ -1,4 +1,4 @@
-# @amarnai/mobile
+# @aziru/mobile
 
 Amarnai's Android app (Expo + Expo Router). Readonly triage companion.
 
@@ -16,7 +16,7 @@ Amarnai's Android app (Expo + Expo Router). Readonly triage companion.
 3. Start the app's Metro bundler:
 
    ```bash
-   pnpm --filter @amarnai/mobile start
+   pnpm --filter @aziru/mobile start
    ```
 
 4. Scan the QR code shown in the terminal with Expo Go.

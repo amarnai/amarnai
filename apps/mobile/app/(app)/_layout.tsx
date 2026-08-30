@@ -1,6 +1,6 @@
 import { Redirect, Stack } from 'expo-router';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { colors } from '@amarnai/tokens';
+import { colors } from '@aziru/tokens';
 import { useSession } from '../../src/auth/session';
 import { TriageProvider } from '../../src/triage/TriageProvider';
 

@@ -8,10 +8,10 @@ import {
   inboxKeyFor,
   meterWindowStart,
   MeterKind,
-} from "@amarnai/db";
-import { getBackfillCap, isTaxonomyRoutable } from "@amarnai/shared";
-import { config } from "@amarnai/config";
-import { isStripeConfigured } from "@amarnai/billing";
+} from "@aziru/db";
+import { getBackfillCap, isTaxonomyRoutable } from "@aziru/shared";
+import { config } from "@aziru/config";
+import { isStripeConfigured } from "@aziru/billing";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 

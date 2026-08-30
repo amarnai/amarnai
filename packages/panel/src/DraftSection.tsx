@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
-import type { ApiClient } from "@amarnai/api-client";
-import { SuggestedDraftCard } from "@amarnai/ui/emails";
-import { draftBodyToHtml } from "@amarnai/core/drafts";
-import { formatQuotaResetDate } from "@amarnai/shared";
+import type { ApiClient } from "@aziru/api-client";
+import { SuggestedDraftCard } from "@aziru/ui/emails";
+import { draftBodyToHtml } from "@aziru/core/drafts";
+import { formatQuotaResetDate } from "@aziru/shared";
 import type { Draft, EmailThreadDetail, QuotaInfo } from "./types.js";
 
 // Drafting a reply, from inside the mail client the reply will be sent from.

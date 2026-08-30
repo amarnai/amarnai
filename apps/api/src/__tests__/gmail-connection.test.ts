@@ -6,7 +6,7 @@ const { mockStopWatch, mockRevokeGoogleToken } = vi.hoisted(() => ({
   mockRevokeGoogleToken: vi.fn(),
 }));
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db = {
     workspace: {
       findUnique: vi.fn(),
@@ -58,7 +58,7 @@ vi.mock("@amarnai/db", () => {
   };
   return {
     db,
-    // Erase is extracted into @amarnai/db; keep the mock faithful to the real
+    // Erase is extracted into @aziru/db; keep the mock faithful to the real
     // export and route it through $transaction so the erase assertions hold.
     eraseEmailAccountData: vi.fn(async () => {
       await db.$transaction([]);
@@ -71,9 +71,9 @@ vi.mock("@amarnai/db", () => {
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
-// @amarnai/auth (and its real storeGmailConnection) stays unmocked; we stub its
+// @aziru/auth (and its real storeGmailConnection) stays unmocked; we stub its
 // gmail dependencies here so the real upsert path runs against the db mock.
-vi.mock("@amarnai/gmail", () => ({
+vi.mock("@aziru/gmail", () => ({
   GmailClient: vi.fn().mockImplementation(() => ({
     stopWatch: mockStopWatch,
   })),
@@ -81,7 +81,7 @@ vi.mock("@amarnai/gmail", () => ({
   // Literal, not the GMAIL_SCOPE const — this factory is hoisted above it.
   GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
   GMAIL_MODIFY_SCOPE: "https://www.googleapis.com/auth/gmail.modify",
-  // Reached through @amarnai/mail's providerHasWritebackScope, which the connect
+  // Reached through @aziru/mail's providerHasWritebackScope, which the connect
   // path calls to decide whether the new grant can write labels.
   hasWritebackScope: (scopes: readonly string[]) =>
     scopes.includes("https://www.googleapis.com/auth/gmail.modify"),
@@ -126,7 +126,7 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import {
   revokeGoogleToken,
   GmailClient,
@@ -135,10 +135,10 @@ import {
   exchangeAuthCode,
   GmailApiError,
   encrypt,
-} from "@amarnai/gmail";
+} from "@aziru/gmail";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { provisionLabelsQueue } from "../queues.js";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 const WS_ID = "ws-1";
 const OTHER_WS_ID = "ws-other";

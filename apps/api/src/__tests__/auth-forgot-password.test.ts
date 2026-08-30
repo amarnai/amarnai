@@ -1,9 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({ db: {} }));
+vi.mock("@aziru/db", () => ({ db: {} }));
 
-vi.mock("@amarnai/gmail", () => ({
-  // GmailClient is referenced at module load by @amarnai/mail's createMailProvider
+vi.mock("@aziru/gmail", () => ({
+  // GmailClient is referenced at module load by @aziru/mail's createMailProvider
   // (a MailProvider conformance check), so it must exist on the mock.
   GmailClient: vi.fn(),
   GmailAuthError: class GmailAuthError extends Error {},
@@ -14,7 +14,7 @@ vi.mock("@amarnai/gmail", () => ({
   parseGrantedScopes: vi.fn(),
 }));
 
-vi.mock("@amarnai/auth", () => ({
+vi.mock("@aziru/auth", () => ({
   createPasswordResetToken: vi.fn(),
   registerEmail: vi.fn(),
   rotateVerificationToken: vi.fn(),
@@ -39,7 +39,7 @@ vi.mock("@amarnai/auth", () => ({
   },
 }));
 
-vi.mock("@amarnai/email", () => ({
+vi.mock("@aziru/email", () => ({
   sendVerificationEmail: vi.fn(),
   sendPasswordResetEmail: vi.fn(),
 }));
@@ -50,8 +50,8 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { createPasswordResetToken } from "@amarnai/auth";
-import { sendPasswordResetEmail } from "@amarnai/email";
+import { createPasswordResetToken } from "@aziru/auth";
+import { sendPasswordResetEmail } from "@aziru/email";
 
 async function post(body: unknown): Promise<Response> {
   return app.request("/auth/forgot-password", {

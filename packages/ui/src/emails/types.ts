@@ -1,5 +1,5 @@
 // Re-export shim. The canonical, platform-agnostic email view-model types live
-// in @amarnai/core/emails so both the web app and the mobile app share them.
+// in @aziru/core/emails so both the web app and the mobile app share them.
 export type {
   FolderItem,
   QueueId,
@@ -13,4 +13,4 @@ export type {
   ThreadItem,
   DraftItem,
   SyncInfo,
-} from "@amarnai/core/emails";
+} from "@aziru/core/emails";

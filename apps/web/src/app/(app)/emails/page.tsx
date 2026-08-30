@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
 import { apiFor } from "@/lib/api";
@@ -6,11 +6,11 @@ import { initServerI18n } from "@/lib/i18n-server";
 import { ConnectGmailCta } from "@/components/ConnectGmailCta";
 import { isOutlookConfigured } from "@/lib/outlook-oauth";
 import { EmailsClient } from "./EmailsClient";
-import { mapFolders, mapThreads } from "@amarnai/core/emails";
-import type { ActiveSelection } from "@amarnai/ui/emails";
-import { QUEUES } from "@amarnai/ui/emails";
-import { mapMembers } from "@amarnai/core/emails";
-import { countRoutableNonRootNodes } from "@amarnai/shared";
+import { mapFolders, mapThreads } from "@aziru/core/emails";
+import type { ActiveSelection } from "@aziru/ui/emails";
+import { QUEUES } from "@aziru/ui/emails";
+import { mapMembers } from "@aziru/core/emails";
+import { countRoutableNonRootNodes } from "@aziru/shared";
 
 type PageProps = {
   searchParams: Promise<{ q?: string; f?: string; t?: string }>;

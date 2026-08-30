@@ -14,7 +14,7 @@ import {
   readUserIdFromAccessToken,
   type ApiClient,
   type Workspace,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import { API_BASE_URL } from "../config";
 import { extensionTokenStore, type StoredTokens } from "./tokenStore";
 import { requestGoogleAuth } from "./googleAuth";

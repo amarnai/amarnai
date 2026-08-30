@@ -16,7 +16,7 @@
  *   OLLAMA_EMBEDDING_MODEL       — (if provider=ollama, default: qwen3-embedding)
  *
  * Usage:
- *   pnpm --filter @amarnai/db embeddings:refresh-taxonomy
+ *   pnpm --filter @aziru/db embeddings:refresh-taxonomy
  */
 
 import { PrismaClient } from "@prisma/client";
@@ -26,8 +26,8 @@ import {
   deriveBreadcrumb,
   hashEmbeddingInput,
   getStaleEmbeddableNodes,
-} from "@amarnai/ai";
-import type { EmbeddingProviderConfig, EmbeddableNode } from "@amarnai/ai";
+} from "@aziru/ai";
+import type { EmbeddingProviderConfig, EmbeddableNode } from "@aziru/ai";
 
 const db = new PrismaClient();
 
@@ -38,7 +38,7 @@ function getEmbeddingConfig(): EmbeddingProviderConfig {
   if (!raw || (raw !== "frontier" && raw !== "ollama")) {
     throw new Error(
       "EMBEDDING_PROVIDER must be set to 'frontier' or 'ollama'. " +
-        "Example: EMBEDDING_PROVIDER=ollama pnpm --filter @amarnai/db embeddings:refresh-taxonomy"
+        "Example: EMBEDDING_PROVIDER=ollama pnpm --filter @aziru/db embeddings:refresh-taxonomy"
     );
   }
   const cfg: EmbeddingProviderConfig = { provider: raw };

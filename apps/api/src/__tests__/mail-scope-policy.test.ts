@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import app from "../app.js";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 /**
  * The one endpoint an OAuth client can call before it has a session, so the

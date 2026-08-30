@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { applyThreadFilter } from "../jobs/filter-thread-messages.js";
-import type { ThreadSnapshot, SnapshotMessage } from "@amarnai/ai";
-import type { GmailSyncSettings } from "@amarnai/shared";
+import type { ThreadSnapshot, SnapshotMessage } from "@aziru/ai";
+import type { GmailSyncSettings } from "@aziru/shared";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

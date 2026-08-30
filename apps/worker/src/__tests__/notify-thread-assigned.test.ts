@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailThread: { findFirst: vi.fn() },
     pushDevice: { findMany: vi.fn() },
@@ -10,8 +10,8 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-import { db } from "@amarnai/db";
-import { PUSH_CATEGORY_THREAD_ASSIGNED, PUSH_CHANNEL_TRIAGE } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { PUSH_CATEGORY_THREAD_ASSIGNED, PUSH_CHANNEL_TRIAGE } from "@aziru/shared";
 import { notifyThreadAssigned } from "../notifications/notify-thread-assigned.js";
 import type { PushBudgetStore } from "../notifications/notify-threads.js";
 import type { ExpoPushMessage, ExpoPushTicket } from "../notifications/expo-push.js";

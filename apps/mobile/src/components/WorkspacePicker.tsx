@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { Workspace } from '@amarnai/api-client';
+import { colors, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { Workspace } from '@aziru/api-client';
 import { WorkspaceMark } from './WorkspaceMark';
 import { SheetLayout } from './SheetLayout';
 

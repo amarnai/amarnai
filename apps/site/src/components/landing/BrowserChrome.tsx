@@ -3,8 +3,8 @@
 import { useRef, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { GmailLogoIcon, type MockProvider } from "@amarnai/ui/demo";
-import { OutlookIcon } from "@amarnai/ui";
+import { GmailLogoIcon, type MockProvider } from "@aziru/ui/demo";
+import { OutlookIcon } from "@aziru/ui";
 import { PuzzlePieceIcon } from "./icons";
 
 /**

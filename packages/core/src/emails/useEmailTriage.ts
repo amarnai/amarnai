@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ApiClient, FilterCounts } from "@amarnai/api-client";
+import type { ApiClient, FilterCounts } from "@aziru/api-client";
 import type { ActiveSelection, FolderItem, ThreadItem, MemberItem } from "./types.js";
 import { queueCountsFromServer } from "./selection.js";
 import { mapThreads, mapThreadDetail } from "./mapThreads.js";

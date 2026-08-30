@@ -8,7 +8,7 @@ import {
   matchLocale,
   isSupportedLocale,
   type SupportedLocale,
-} from '@amarnai/i18n';
+} from '@aziru/i18n';
 
 // Metro needs static requires for all catalogs (no dynamic import() support).
 // Paths are relative from this file to packages/i18n/src/locales/.

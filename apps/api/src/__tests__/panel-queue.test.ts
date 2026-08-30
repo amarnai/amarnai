@@ -8,7 +8,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 // plus the kill switch, which this route has to enforce itself because it
 // resolves no provider thread id.
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     redis: { url: "redis://localhost:6379" },
     billing: {},
@@ -17,7 +17,7 @@ vi.mock("@amarnai/config", () => ({
   },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     emailThread: { findMany: vi.fn(), count: vi.fn() },
@@ -26,13 +26,13 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: () => ({ getThreadSnapshot: vi.fn() }),
   providerHasWritebackScope: () => false,
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 

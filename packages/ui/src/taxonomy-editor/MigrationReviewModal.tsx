@@ -4,11 +4,11 @@ import { Fragment, useMemo, useState } from "react";
 import { Trans, Plural } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 import type {
   TaxonomyImportPreviewResult,
   TaxonomyMigrationMapping,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import "./taxonomy-editor.css";
 
 const RESORT = "resort" as const;

@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, resolveInboxQuota } from "@amarnai/db";
-import { getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
-import { config } from "@amarnai/config";
+import { db, resolveInboxQuota } from "@aziru/db";
+import { getDraftQuotaResetsAt, getThreadSortLimit } from "@aziru/shared";
+import { config } from "@aziru/config";
 import { isWorkspaceTaxonomyRoutable } from "../services/taxonomy-routable.js";
 import { classifyThreadQueue } from "../queues.js";
 

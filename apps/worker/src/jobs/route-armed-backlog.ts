@@ -1,5 +1,5 @@
-import { db } from "@amarnai/db";
-import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
+import { db } from "@aziru/db";
+import { DEDUP_CLASSIFY_UNROUTED } from "@aziru/queue";
 import { classifyThreadQueue } from "../queues.js";
 
 /**

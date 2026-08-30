@@ -4,8 +4,8 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
-import { FolderIcon } from "@amarnai/ui/demo";
+import { GoogleGIcon, OutlookIcon } from "@aziru/ui";
+import { FolderIcon } from "@aziru/ui/demo";
 import { ProviderToggle, type Provider } from "./ProviderToggle";
 
 function StepArt2() {

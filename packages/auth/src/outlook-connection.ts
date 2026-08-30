@@ -1,6 +1,6 @@
-import { deleteGmailDisconnectedNotifications } from "@amarnai/db";
-import { encrypt } from "@amarnai/gmail";
-import { fetchOutlookProfile } from "@amarnai/outlook";
+import { deleteGmailDisconnectedNotifications } from "@aziru/db";
+import { encrypt } from "@aziru/gmail";
+import { fetchOutlookProfile } from "@aziru/outlook";
 import { assertNoProviderConflict } from "./connection-guard.js";
 import { upsertEmailConnection } from "./upsert-connection.js";
 

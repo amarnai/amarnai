@@ -4,8 +4,8 @@ import { useRouter } from 'expo-router';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg, plural } from '@lingui/core/macro';
-import { TAXONOMY_MIN_NON_ROOT_NODES } from '@amarnai/shared';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { TAXONOMY_MIN_NON_ROOT_NODES } from '@aziru/shared';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 
 interface UnroutedBannerProps {
   waitingCount: number;

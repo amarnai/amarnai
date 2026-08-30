@@ -1,5 +1,5 @@
-import { GmailClient } from "@amarnai/gmail";
-import { GraphClient } from "@amarnai/outlook";
+import { GmailClient } from "@aziru/gmail";
+import { GraphClient } from "@aziru/outlook";
 import type { MailProvider } from "./types.js";
 
 /**

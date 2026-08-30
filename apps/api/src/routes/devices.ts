@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { db } from "@amarnai/db";
-import { RegisterPushDeviceSchema } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { RegisterPushDeviceSchema } from "@aziru/shared";
 import type { AppEnv } from "../env.js";
 
 const devices = new Hono<AppEnv>();

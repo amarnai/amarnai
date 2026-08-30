@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import type { ActiveSelection, FolderItem } from "@amarnai/ui/emails";
+import type { ActiveSelection, FolderItem } from "@aziru/ui/emails";
 import { ScopeField } from "./ScopeField";
 
 // The scope field is the panel's only always-visible navigation control, so

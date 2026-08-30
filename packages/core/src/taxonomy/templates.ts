@@ -4,7 +4,7 @@ import {
   DEFAULT_CATCH_ALL_DESCRIPTION,
   DEFAULT_CATCH_ALL_POSITION,
   type TaxonomyTransferFile,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 
 export type TaxonomyTemplate = {
   id: string;

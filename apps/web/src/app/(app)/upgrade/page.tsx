@@ -1,8 +1,8 @@
 import { requireUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";
-import { hasConsumedTrial } from "@amarnai/db";
+import { hasConsumedTrial } from "@aziru/db";
 import { UpgradeClient } from "./UpgradeClient";
-import type { PlanId, BillingCycle } from "@amarnai/ui";
+import type { PlanId, BillingCycle } from "@aziru/ui";
 import { Trans } from "@lingui/react/macro";
 import { initServerI18n } from "@/lib/i18n-server";
 

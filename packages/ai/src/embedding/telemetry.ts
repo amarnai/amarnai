@@ -1,4 +1,4 @@
-import type { RoutingTelemetry } from "@amarnai/shared";
+import type { RoutingTelemetry } from "@aziru/shared";
 import type { EmbeddingSortResult } from "./sorter.js";
 
 /**

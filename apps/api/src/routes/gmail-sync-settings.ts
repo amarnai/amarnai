@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
-import { UpdateGmailSyncSettingsSchema, AddBlacklistEmailSchema, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
-import { config } from "@amarnai/config";
+import { db } from "@aziru/db";
+import { UpdateGmailSyncSettingsSchema, AddBlacklistEmailSchema, DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
+import { config } from "@aziru/config";
 import {
   connectionHasWritebackScope,
   enqueueFolderLabelProvisioning,

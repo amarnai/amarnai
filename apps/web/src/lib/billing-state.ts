@@ -1,8 +1,8 @@
-import { db, hasTrialClaim } from "@amarnai/db";
-import { subscriptionPeriodEnd } from "@amarnai/billing";
+import { db, hasTrialClaim } from "@aziru/db";
+import { subscriptionPeriodEnd } from "@aziru/billing";
 import { getStripe } from "@/lib/stripe";
-import { getCollaboratorLimit } from "@amarnai/shared";
-import type { BillingState, BillingPlan, BillingCycleValue } from "@amarnai/shared";
+import { getCollaboratorLimit } from "@aziru/shared";
+import type { BillingState, BillingPlan, BillingCycleValue } from "@aziru/shared";
 import { FREE_PLAN_RESET } from "@/lib/billing-mutations";
 
 const billingSelect = {

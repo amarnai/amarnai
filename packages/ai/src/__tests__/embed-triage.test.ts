@@ -6,7 +6,7 @@ import {
   REQUIRED_ACTION_EXEMPLARS,
 } from "../triage/embed-triage.js";
 import type { EmbeddingProvider } from "../embedding/types.js";
-import type { RequiredAction } from "@amarnai/shared";
+import type { RequiredAction } from "@aziru/shared";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

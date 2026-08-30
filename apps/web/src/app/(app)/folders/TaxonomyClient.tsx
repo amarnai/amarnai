@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { TaxonomyEditor, type TaxonomyEditorMode } from "@amarnai/ui/taxonomy-editor";
+import { TaxonomyEditor, type TaxonomyEditorMode } from "@aziru/ui/taxonomy-editor";
 import { api, type TaxonomyNode, type TaxonomyEdge } from "@/lib/api";
 import { GenerateFromInboxButton, startGmailConnect } from "./GenerateFromInboxButton";
 
@@ -10,7 +10,7 @@ import { GenerateFromInboxButton, startGmailConnect } from "./GenerateFromInboxB
  * Web host for the shared taxonomy editor. Everything here is host-specific: the
  * deep-link params, the Next router, and the generate-from-inbox modal (which is
  * larger and more illustrated than the panel's equivalent). The editor itself
- * lives in @amarnai/ui so the extension renders the identical canvas.
+ * lives in @aziru/ui so the extension renders the identical canvas.
  */
 export function TaxonomyClient({
   workspaceId,

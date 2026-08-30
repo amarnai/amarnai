@@ -14,7 +14,7 @@ import { Link } from 'expo-router';
 import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { colors } from '@amarnai/tokens';
+import { colors } from '@aziru/tokens';
 import { useSession } from '../src/auth/session';
 import { authStyles } from '../src/auth/authStyles';
 

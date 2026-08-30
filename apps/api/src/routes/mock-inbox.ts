@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { mockClassify } from "../services/mock-classifier.js";
 import type { MockClassificationResult } from "../services/mock-classifier.js";
 import {
@@ -10,11 +10,11 @@ import {
   selectCandidateNodes,
   buildCandidateNodePrompt,
   validateNodeSelection,
-} from "@amarnai/ai";
-import type { EmailInput, NodeSelectionContext, EmbeddableNode } from "@amarnai/ai";
+} from "@aziru/ai";
+import type { EmailInput, NodeSelectionContext, EmbeddableNode } from "@aziru/ai";
 
 function getAIProviderConfig() {
-  const cfg: import("@amarnai/ai").AIProviderConfig = {
+  const cfg: import("@aziru/ai").AIProviderConfig = {
     provider: (process.env["AI_PROVIDER"] ?? "mock") as "mock" | "ollama" | "frontier",
   };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
@@ -40,9 +40,9 @@ function getAIProviderConfig() {
   return cfg;
 }
 
-function getEmbeddingProviderConfig(): import("@amarnai/ai").EmbeddingProviderConfig {
+function getEmbeddingProviderConfig(): import("@aziru/ai").EmbeddingProviderConfig {
   const provider = (process.env["EMBEDDING_PROVIDER"] ?? "ollama") as "ollama" | "frontier";
-  const cfg: import("@amarnai/ai").EmbeddingProviderConfig = { provider };
+  const cfg: import("@aziru/ai").EmbeddingProviderConfig = { provider };
   const ollamaBase = process.env["OLLAMA_BASE_URL"];
   const ollamaEmbModel = process.env["OLLAMA_EMBEDDING_MODEL"];
   if (ollamaBase ?? ollamaEmbModel) {
@@ -163,7 +163,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
   };
 
   const rawNodes = workspace.taxonomyNodes as RawNode[];
-  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = rawNodes.map((n) => ({
+  const nodes: import("@aziru/ai").TaxonomyNodeInput[] = rawNodes.map((n) => ({
     id: n.id,
     name: n.name,
     description: n.description,
@@ -177,7 +177,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/mock-inbox-event", async (c) => {
 
   const { classifier } = body.data;
 
-  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
+  const edges: import("@aziru/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
     where: { workspaceId },
     select: { id: true, sourceNodeId: true, targetNodeId: true },
   });
@@ -479,12 +479,12 @@ mockInbox.post("/dev/workspaces/:workspaceId/candidate-paths", async (c) => {
     return c.json({ error: "Workspace not found" }, 404);
   }
 
-  const edges: import("@amarnai/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
+  const edges: import("@aziru/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
     where: { workspaceId },
     select: { id: true, sourceNodeId: true, targetNodeId: true },
   });
 
-  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = (
+  const nodes: import("@aziru/ai").TaxonomyNodeInput[] = (
     workspace.taxonomyNodes as Array<{
       id: string;
       name: string;
@@ -582,12 +582,12 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
     return c.json({ error: "Workspace not found" }, 404);
   }
 
-  const aiEdges: import("@amarnai/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
+  const aiEdges: import("@aziru/ai").TaxonomyEdgeInput[] = await db.taxonomyEdge.findMany({
     where: { workspaceId },
     select: { id: true, sourceNodeId: true, targetNodeId: true },
   });
 
-  const nodes: import("@amarnai/ai").TaxonomyNodeInput[] = (
+  const nodes: import("@aziru/ai").TaxonomyNodeInput[] = (
     workspace.taxonomyNodes as Array<{
       id: string;
       name: string;
@@ -659,7 +659,7 @@ mockInbox.post("/dev/workspaces/:workspaceId/llm-path-selection", async (c) => {
 
   // Build debug info for dev: show how selectedNodeId resolved
   let rawSelectedNodeId: string | null = null;
-  let resolvedCandidate: import("@amarnai/ai").CandidateNode | undefined;
+  let resolvedCandidate: import("@aziru/ai").CandidateNode | undefined;
   try {
     const parsed = JSON.parse(rawLLMOutput.trim()) as Record<string, unknown>;
     if (typeof parsed["selectedNodeId"] === "string") {

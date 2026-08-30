@@ -4,9 +4,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
-import type { ApiClient } from "@amarnai/api-client";
-import { ApiHttpError } from "@amarnai/api-client";
+import type { TaxonomyTransferFile } from "@aziru/shared";
+import type { ApiClient } from "@aziru/api-client";
+import { ApiHttpError } from "@aziru/api-client";
 import { PlanSetupDialog, type PlanSetupDialogProps } from "./PlanSetupDialog.js";
 
 // ReactFlow cannot measure in jsdom, so the canvas is stubbed. What matters

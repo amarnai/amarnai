@@ -4,7 +4,7 @@ import {
   type RenderOptions,
 } from "@testing-library/react";
 import { I18nProvider } from "@lingui/react";
-import { i18n } from "@amarnai/i18n";
+import { i18n } from "@aziru/i18n";
 
 // Components wrapped with Lingui macros call useLingui()/<Trans>, which require
 // an I18nProvider in the React tree. Wrap every render so tests don't each have

@@ -1,4 +1,4 @@
-import type { PanelThreadContext } from "@amarnai/panel";
+import type { PanelThreadContext } from "@aziru/panel";
 import { debugLog } from "../core/debug.js";
 import { detectGmailThread, findAccountEmail } from "./detectThread.js";
 import { hasInboxSdkAppId, loadInboxSDK } from "./inboxSdk.js";

@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import type { AppEnv } from "../env.js";
 
 // In-app notification feed. These routes are USER-scoped, not workspace-scoped,

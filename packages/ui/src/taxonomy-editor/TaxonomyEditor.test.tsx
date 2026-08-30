@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import type { ApiClient, TaxonomyNode, TaxonomyEdge } from "@amarnai/api-client";
+import type { ApiClient, TaxonomyNode, TaxonomyEdge } from "@aziru/api-client";
 import { TaxonomyEditor, type TaxonomyEditorProps } from "./TaxonomyEditor.js";
 import { ThemeProvider } from "../theme/ThemeProvider.js";
 

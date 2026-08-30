@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { colors, radii, shadows } from "@amarnai/tokens";
+import { colors, radii, shadows } from "@aziru/tokens";
 import {
   DEFAULT_PACKAGE,
   DEFAULT_SCHEME,

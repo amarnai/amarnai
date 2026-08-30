@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { getStripe } from "@/lib/stripe";
 import { resolveBillingUser, resolveBillingWorkspaceId } from "@/lib/billing-auth";
 import { getReturnBaseUrl } from "@/lib/request-origin";

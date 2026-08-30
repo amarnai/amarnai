@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, space, fontSize } from '@amarnai/tokens';
+import { colors, space, fontSize } from '@aziru/tokens';
 import { SheetLayout } from '../SheetLayout';
 
 export type NodePickerOption = {

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AppState } from 'react-native';
-import { makeApiClient, readUserIdFromAccessToken, type ApiClient, type Workspace } from '@amarnai/api-client';
+import { makeApiClient, readUserIdFromAccessToken, type ApiClient, type Workspace } from '@aziru/api-client';
 import { API_BASE_URL } from '../config';
 import { secureTokenStore, type StoredTokens } from './tokenStore';
 import { makeMobileTransport } from './transport';

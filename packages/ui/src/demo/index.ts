@@ -2,7 +2,7 @@
  * Shared product demos: the animated sorting feed and the interactive plan
  * canvas, plus the seed data behind them. Rendered by the marketing landing
  * page and by the browser extension's first-run tab, so both surfaces show the
- * same product story. Consumers must also import "@amarnai/ui/demo/styles".
+ * same product story. Consumers must also import "@aziru/ui/demo/styles".
  */
 
 export { HeroFeedCard } from "./HeroFeedCard.js";

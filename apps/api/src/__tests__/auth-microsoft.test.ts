@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // config.outlook.enabled is derived from these at module init, so they must be
-// set before the app (and @amarnai/config) is imported. vi.hoisted runs first.
+// set before the app (and @aziru/config) is imported. vi.hoisted runs first.
 vi.hoisted(() => {
   process.env["MS_GRAPH_CLIENT_ID"] = "ms-client-id";
   process.env["MS_GRAPH_CLIENT_SECRET"] = "ms-client-secret";
 });
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     // issueAccessTokenForUser reads the account's current epoch to stamp the token.
     user: { findUnique: vi.fn(async () => ({ sessionEpoch: 0 })) },
@@ -22,8 +22,8 @@ vi.mock("../queues.js", () => ({
   provisionLabelsQueue: { add: vi.fn().mockResolvedValue({}) },
 }));
 
-vi.mock("@amarnai/outlook", async (importActual) => {
-  const actual = await importActual<typeof import("@amarnai/outlook")>();
+vi.mock("@aziru/outlook", async (importActual) => {
+  const actual = await importActual<typeof import("@aziru/outlook")>();
   return {
     ...actual,
     // Only the network calls are stubbed; parseGrantedScopes stays real so the
@@ -33,7 +33,7 @@ vi.mock("@amarnai/outlook", async (importActual) => {
   };
 });
 
-vi.mock("@amarnai/auth", () => ({
+vi.mock("@aziru/auth", () => ({
   provisionMicrosoftUser: vi.fn(),
   provisionGoogleUser: vi.fn(),
   issueAccessToken: vi.fn(async () => "access-tok"),
@@ -75,11 +75,11 @@ import {
   fetchOutlookProfile,
   MicrosoftApiError,
   OUTLOOK_UPFRONT_CONSENT_SCOPES,
-} from "@amarnai/outlook";
-import { config } from "@amarnai/config";
+} from "@aziru/outlook";
+import { config } from "@aziru/config";
 import { provisionLabelsQueue } from "../queues.js";
-import { provisionMicrosoftUser, issueAccessToken } from "@amarnai/auth";
-import { db, maybeCreateExtensionNudge } from "@amarnai/db";
+import { provisionMicrosoftUser, issueAccessToken } from "@aziru/auth";
+import { db, maybeCreateExtensionNudge } from "@aziru/db";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { registerOutlookSubscription } from "../services/outlook-subscription.js";
 

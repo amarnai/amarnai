@@ -1,6 +1,6 @@
 /**
  * Whether the label/category writeback feature is enabled in this deployment.
- * Mirrors config.mail.labelWritebackEnabled without pulling @amarnai/config into
+ * Mirrors config.mail.labelWritebackEnabled without pulling @aziru/config into
  * the web build (same pattern as isOutlookConfigured). Server-only.
  *
  * When on, the write scope (gmail.modify / Mail.ReadWrite) is requested UPFRONT

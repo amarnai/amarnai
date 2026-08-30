@@ -1,6 +1,6 @@
 import { msg } from "@lingui/core/macro";
 import type { I18n, MessageDescriptor } from "@lingui/core";
-import { PROVIDER_LABEL_NAMESPACE, sanitizeProviderSegment } from "@amarnai/core/taxonomy";
+import { PROVIDER_LABEL_NAMESPACE, sanitizeProviderSegment } from "@aziru/core/taxonomy";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, MemberItem, ThreadAssignment } from "../emails/types.js";
 import { taxonomyTokens } from "../taxonomy/index.js";
@@ -202,7 +202,7 @@ function assignmentFor(threadId: string, i18n: I18n): ThreadAssignment | null {
  * category display name, so both providers render the same string.
  *
  * The real taxonomy is a node+edge DAG and needs the canonical-parent walk in
- * @amarnai/core `buildProviderPaths` to pick one stable path per node. The demo
+ * @aziru/core `buildProviderPaths` to pick one stable path per node. The demo
  * taxonomy is a plain parentId tree, where that walk reduces to following
  * parentId, so only the namespace constant and the segment sanitizer are shared.
  */

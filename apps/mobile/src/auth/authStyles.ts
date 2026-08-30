@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 
 // Shared styling for the unauthenticated entry screens (sign-in, sign-up,
 // verify-email) so the form, inputs, primary button, and cross-links look

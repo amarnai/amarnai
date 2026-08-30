@@ -5,7 +5,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 // anything: which workspace owns the mailbox on screen. User-scoped, so it sits
 // outside the workspace membership guard and has to enforce tenancy itself.
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     redis: { url: "redis://localhost:6379" },
     billing: {},
@@ -14,20 +14,20 @@ vi.mock("@amarnai/config", () => ({
   },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     emailConnection: { findMany: vi.fn() },
   },
 }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: () => ({}),
   providerHasWritebackScope: () => false,
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 beforeEach(() => {
   vi.clearAllMocks();

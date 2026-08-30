@@ -1,6 +1,6 @@
 import type { Context } from "hono";
-import { db, maybeCreateExtensionNudge } from "@amarnai/db";
-import { ProviderMismatchError } from "@amarnai/auth";
+import { db, maybeCreateExtensionNudge } from "@aziru/db";
+import { ProviderMismatchError } from "@aziru/auth";
 import type { AppEnv } from "../env.js";
 import {
   countActiveSiblingConnections,

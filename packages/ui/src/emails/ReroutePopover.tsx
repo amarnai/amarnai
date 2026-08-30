@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { folderInkVar } from "@amarnai/core/emails";
+import { folderInkVar } from "@aziru/core/emails";
 import type { FolderItem } from "../folder-tree/types.js";
 
 export interface ReroutePopoverProps {

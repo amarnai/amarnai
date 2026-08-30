@@ -5,7 +5,7 @@ import { msg } from "@lingui/core/macro";
 import {
   NOTIFICATION_POLL_INTERVAL_MS,
   type NotificationItem,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import { useSession } from "../auth/session";
 import { useWebAppLink } from "./openWebApp";
 import { detectPanelSide, type PanelSide } from "../platform/panelSide";

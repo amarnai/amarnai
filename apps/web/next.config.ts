@@ -6,7 +6,7 @@ const config: NextConfig = {
   // Trace files relative to the monorepo root so workspace packages are included.
   outputFileTracingRoot: path.join(__dirname, "../../"),
   devIndicators: false,
-  transpilePackages: ["@amarnai/core", "@amarnai/db", "@amarnai/email", "@amarnai/i18n", "@amarnai/ui"],
+  transpilePackages: ["@aziru/core", "@aziru/db", "@aziru/email", "@aziru/i18n", "@aziru/ui"],
   serverExternalPackages: ["@prisma/client", "ioredis", "nodemailer", "resend"],
   experimental: {
     swcPlugins: [["@lingui/swc-plugin", {}]],

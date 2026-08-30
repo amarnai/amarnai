@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { exchangeCodeForTokens, fetchGmailProfile } from "@/lib/gmail-oauth";
 import { handleOAuthCallback } from "@/lib/oauth-callback";
-import { parseGrantedScopes } from "@amarnai/gmail";
+import { parseGrantedScopes } from "@aziru/gmail";
 
 export async function GET(req: NextRequest) {
   return handleOAuthCallback(req, {

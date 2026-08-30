@@ -4,7 +4,7 @@ import {
   isSupportedLocale,
   SOURCE_LOCALE,
   type SupportedLocale,
-} from "@amarnai/i18n";
+} from "@aziru/i18n";
 import { initServerI18n } from "@/lib/i18n-server";
 import { SiteProviders } from "../SiteProviders";
 import { SourceLocaleRedirect } from "../SourceLocaleRedirect";

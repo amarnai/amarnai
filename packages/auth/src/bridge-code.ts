@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "crypto";
-import { db, Prisma } from "@amarnai/db";
+import { db, Prisma } from "@aziru/db";
 
 // The code lives only for the moment between a click in the side panel and the
 // redirect it triggers. Anything longer is a replayable credential sitting in a

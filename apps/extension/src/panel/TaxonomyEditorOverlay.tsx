@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { ApiClient, TaxonomyNode, TaxonomyEdge } from "@amarnai/api-client";
-import { TaxonomyEditor } from "@amarnai/ui/taxonomy-editor";
-import type { PlanSetupMode } from "@amarnai/ui/plan-setup";
+import type { ApiClient, TaxonomyNode, TaxonomyEdge } from "@aziru/api-client";
+import { TaxonomyEditor } from "@aziru/ui/taxonomy-editor";
+import type { PlanSetupMode } from "@aziru/ui/plan-setup";
 
 type Props = {
   api: ApiClient;

@@ -1,6 +1,6 @@
-import type { ThreadSnapshot, SnapshotMessage } from "@amarnai/ai";
-import { detectAutomatedThread, isDraftMessage } from "@amarnai/ai";
-import type { GmailSyncSettings } from "@amarnai/shared";
+import type { ThreadSnapshot, SnapshotMessage } from "@aziru/ai";
+import { detectAutomatedThread, isDraftMessage } from "@aziru/ai";
+import type { GmailSyncSettings } from "@aziru/shared";
 
 /** Gmail label IDs that are always excluded, regardless of user settings. */
 const ALWAYS_EXCLUDED_LABELS = ["TRASH"] as const;
@@ -109,8 +109,8 @@ export function computeThreadLabelFlagsFromMeta(messageLabelIds: string[][]): Me
  * replies: folder membership is not a Gmail label, and the identity-based rules
  * below are what cover Outlook.
  *
- * NOTE: `packages/gmail` cannot import this worker module (and @amarnai/mail →
- * @amarnai/gmail would be circular), so gmail-client.ts keeps a private copy of
+ * NOTE: `packages/gmail` cannot import this worker module (and @aziru/mail →
+ * @aziru/gmail would be circular), so gmail-client.ts keeps a private copy of
  * this exact rule in its history classification. Keep the two in sync.
  */
 export function isOutboundLabelSet(labels: readonly string[] | undefined): boolean {

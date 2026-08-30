@@ -27,7 +27,7 @@ const { MockPrismaKnownRequestError } = vi.hoisted(() => {
   return { MockPrismaKnownRequestError };
 });
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspace: { findFirst: vi.fn(), findUnique: vi.fn(), update: vi.fn(), updateMany: vi.fn(), create: vi.fn() },
     workspaceMember: { deleteMany: vi.fn() },
@@ -42,7 +42,7 @@ vi.mock("@amarnai/db", () => ({
   Prisma: { PrismaClientKnownRequestError: MockPrismaKnownRequestError },
 }));
 
-import { db, ensureInboxTaxonomy, claimTrial } from "@amarnai/db";
+import { db, ensureInboxTaxonomy, claimTrial } from "@aziru/db";
 import { POST } from "@/app/api/billing/webhook/route";
 
 const WEBHOOK_SECRET = "test_signing_secret_not_real";

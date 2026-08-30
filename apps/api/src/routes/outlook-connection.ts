@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 import {
   parseGrantedScopes,
   exchangeAuthCode,
   scopeForCodeRedemption,
   MicrosoftApiError,
-} from "@amarnai/outlook";
-import { storeOutlookConnection } from "@amarnai/auth";
+} from "@aziru/outlook";
+import { storeOutlookConnection } from "@aziru/auth";
 import type { AppEnv } from "../env.js";
 import { registerOutlookSubscription } from "../services/outlook-subscription.js";
 import { runProviderConnect } from "../services/provider-connect.js";

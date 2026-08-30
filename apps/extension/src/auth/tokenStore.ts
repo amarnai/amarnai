@@ -1,4 +1,4 @@
-import type { StoredTokens, TokenStore } from "@amarnai/api-client";
+import type { StoredTokens, TokenStore } from "@aziru/api-client";
 import { ext } from "../platform/ext";
 
 export type { StoredTokens, TokenStore };

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { formatQuotaResetDate } from "@amarnai/shared";
+import { formatQuotaResetDate } from "@aziru/shared";
 import type { DraftItem } from "./types.js";
 import { Tooltip } from "../Tooltip.js";
 

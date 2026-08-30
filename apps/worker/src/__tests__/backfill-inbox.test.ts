@@ -8,7 +8,7 @@ const { mockGetInboxBackfillCeiling, mockResolveBackfillBudget, mockRecordMeterU
   mockRecordMeterUsage: vi.fn(),
 }));
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db = {
     workspace: { findUnique: vi.fn() },
     emailConnection: { findUnique: vi.fn() },
@@ -50,7 +50,7 @@ vi.mock("@amarnai/db", () => {
   };
 });
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: { billing: { enforceBackfillQuota: true, enforceBackfillPaymentGate: true } },
 }));
 
@@ -58,10 +58,10 @@ const mockListThreadsPage = vi.fn();
 const mockGetThread = vi.fn();
 const mockListThreadIdsByQuery = vi.fn().mockResolvedValue([]);
 
-vi.mock("@amarnai/gmail", () => {
+vi.mock("@aziru/gmail", () => {
   // getThreadSnapshot folds the raw fetch (mockGetThread — so error tests still
   // drive rejections) and normalization, matching the real client. Parse failures
-  // surface as GmailThreadParseError (re-exported by @amarnai/mail as
+  // surface as GmailThreadParseError (re-exported by @aziru/mail as
   // MailThreadParseError), which backfill treats as a skippable per-thread error.
   class GmailThreadParseError extends Error {
     constructor(cause: unknown) {
@@ -153,11 +153,11 @@ vi.mock("../queues.js", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db } from "@amarnai/db";
-import { GmailAuthError } from "@amarnai/gmail";
+import { db } from "@aziru/db";
+import { GmailAuthError } from "@aziru/gmail";
 import { Worker } from "bullmq";
 import { classifyThreadQueue } from "../queues.js";
-import { DEDUP_CLASSIFY_UNROUTED } from "@amarnai/queue";
+import { DEDUP_CLASSIFY_UNROUTED } from "@aziru/queue";
 import { publishWorkspaceSynced } from "../redis-publisher.js";
 import { createBackfillInboxWorker } from "../jobs/backfill-inbox.js";
 

@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, TEST_USER_ID } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   class FreeWorkspaceLimitError extends Error {
     constructor() {
       super("You already have a free workspace.");
@@ -34,7 +34,7 @@ vi.mock("../services/gmail-disconnect.js", () => ({
 }));
 
 import app from "../app.js";
-import { db, resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "@amarnai/db";
+import { db, resetWorkspaceData, deleteWorkspaceCascade, createFreeWorkspace, FreeWorkspaceLimitError } from "@aziru/db";
 import { disconnectGmail } from "../services/gmail-disconnect.js";
 
 function asMember(role: "OWNER" | "MEMBER") {

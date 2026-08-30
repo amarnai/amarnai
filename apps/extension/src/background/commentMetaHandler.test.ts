@@ -11,8 +11,8 @@ const { mockClient } = vi.hoisted(() => ({
 
 // InjectionDisabledError must be the REAL class, not a stub: the handler tells
 // the workspace kill-switch apart from a generic failure with `instanceof`.
-vi.mock("@amarnai/api-client", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@amarnai/api-client")>();
+vi.mock("@aziru/api-client", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@aziru/api-client")>();
   return {
     InjectionDisabledError: actual.InjectionDisabledError,
     resolveWorkspaceIdForMailbox: actual.resolveWorkspaceIdForMailbox,
@@ -27,7 +27,7 @@ const { mockTokenStore } = vi.hoisted(() => ({
 
 vi.mock("../auth/tokenStore", () => ({ extensionTokenStore: mockTokenStore }));
 
-import { InjectionDisabledError } from "@amarnai/api-client";
+import { InjectionDisabledError } from "@aziru/api-client";
 import { resetSummaryClient } from "./summaryHandler";
 import { handleCommentMetaRequest } from "./commentMetaHandler";
 

@@ -5,11 +5,11 @@ import "@fontsource-variable/geist/wght.css";
 import "@fontsource-variable/geist-mono/wght.css";
 // The carousel renders the same demos as the landing page, so it needs their
 // styles; welcome.css comes last so the page can size them into its layout.
-import "@amarnai/ui/emails/styles";
-import "@amarnai/ui/demo/styles";
+import "@aziru/ui/emails/styles";
+import "@aziru/ui/demo/styles";
 import "./welcome.css";
-import "@amarnai/ui/theme/styles";
-import { applyStoredThemeSync, ThemeProvider } from "@amarnai/ui";
+import "@aziru/ui/theme/styles";
+import { applyStoredThemeSync, ThemeProvider } from "@aziru/ui";
 import { LinguiProvider } from "../i18n/LinguiProvider";
 import { registerWelcomeTab } from "../platform/welcomeTab";
 import { WelcomeApp } from "./WelcomeApp";

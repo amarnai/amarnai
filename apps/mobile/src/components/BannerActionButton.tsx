@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 
 interface Props {
   // The label content; wrap in a Lingui <Trans> so callers stay localized.

@@ -15,7 +15,7 @@ const { PrismaClientKnownRequestError } = vi.hoisted(() => {
   return { PrismaClientKnownRequestError };
 });
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const refreshToken = {
     create: vi.fn(),
     findUnique: vi.fn(),
@@ -38,7 +38,7 @@ vi.mock("@amarnai/db", () => {
   };
 });
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import {
   issueRefreshToken,
   rotateRefreshToken,

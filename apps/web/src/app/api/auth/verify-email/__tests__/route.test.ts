@@ -15,7 +15,7 @@ const { PrismaClientKnownRequestError } = vi.hoisted(() => {
 });
 
 vi.mock("@/auth", () => ({ auth: vi.fn(), unstable_update: vi.fn() }));
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db: Record<string, unknown> = {
     verificationToken: { findUnique: vi.fn(), delete: vi.fn() },
     user: { updateMany: vi.fn(), findUnique: vi.fn() },
@@ -29,7 +29,7 @@ vi.mock("@amarnai/db", () => {
   );
   return { db, Prisma: { PrismaClientKnownRequestError } };
 });
-vi.mock("@amarnai/auth", () => ({
+vi.mock("@aziru/auth", () => ({
   issuePasswordResetToken: vi.fn(async () => "reset-tok"),
 }));
 vi.mock("@/lib/workspace", () => ({
@@ -41,8 +41,8 @@ vi.mock("@/lib/email", () => ({
 }));
 
 import { auth, unstable_update } from "@/auth";
-import { db } from "@amarnai/db";
-import { issuePasswordResetToken } from "@amarnai/auth";
+import { db } from "@aziru/db";
+import { issuePasswordResetToken } from "@aziru/auth";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { GET } from "../route";
 

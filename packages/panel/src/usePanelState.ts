@@ -6,7 +6,7 @@ import {
   resolveMailboxAccount,
   type MailAccount,
   type ProviderRefKind,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import type { PanelHost, PanelThreadContext } from "./host.js";
 import {
   makePanelSseDeps,
@@ -25,7 +25,7 @@ import {
 // "No conversation open" is the exception: it is not a state Amarnai cannot act
 // on, it is the thread list, and there the panel shows the queue. It only
 // degrades to `noThread` when the mailbox itself cannot be settled — see
-// resolveMailboxAccount in @amarnai/api-client, which is where that rule lives for
+// resolveMailboxAccount in @aziru/api-client, which is where that rule lives for
 // every injected surface — because without one there is no workspace and so
 // nothing to show.
 //

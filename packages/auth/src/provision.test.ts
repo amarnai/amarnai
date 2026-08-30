@@ -11,7 +11,7 @@ const { PrismaClientKnownRequestError } = vi.hoisted(() => {
   return { PrismaClientKnownRequestError };
 });
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db: Record<string, unknown> = {
     user: { findUnique: vi.fn(), upsert: vi.fn(), update: vi.fn() },
     userCredential: { deleteMany: vi.fn() },
@@ -29,13 +29,13 @@ vi.mock("@amarnai/db", () => {
   };
 });
 
-vi.mock("@amarnai/gmail", () => ({
+vi.mock("@aziru/gmail", () => ({
   encrypt: vi.fn((v: string) => `enc(${v})`),
   fetchGmailProfile: vi.fn(),
   GMAIL_READONLY_SCOPE: "https://www.googleapis.com/auth/gmail.readonly",
 }));
 
-vi.mock("@amarnai/outlook", () => ({
+vi.mock("@aziru/outlook", () => ({
   fetchOutlookProfile: vi.fn(),
   OUTLOOK_MAIL_READ_SCOPE: "Mail.Read",
 }));
@@ -44,9 +44,9 @@ vi.mock("./workspace.js", () => ({
   getOrCreateDefaultWorkspace: vi.fn(),
 }));
 
-import { db } from "@amarnai/db";
-import { encrypt, fetchGmailProfile } from "@amarnai/gmail";
-import { fetchOutlookProfile } from "@amarnai/outlook";
+import { db } from "@aziru/db";
+import { encrypt, fetchGmailProfile } from "@aziru/gmail";
+import { fetchOutlookProfile } from "@aziru/outlook";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
 import { provisionGoogleUser, provisionMicrosoftUser } from "./provision.js";
 

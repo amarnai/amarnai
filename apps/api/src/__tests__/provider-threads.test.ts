@@ -7,7 +7,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 // "never synced" 404 — not the serializer, which is the same one
 // /email-threads/:threadId has always used.
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     redis: { url: "redis://localhost:6379" },
     billing: {},
@@ -16,7 +16,7 @@ vi.mock("@amarnai/config", () => ({
   },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     emailThread: { findFirst: vi.fn() },
@@ -29,13 +29,13 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: () => ({ getThreadSnapshot: vi.fn() }),
   providerHasWritebackScope: () => false,
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";

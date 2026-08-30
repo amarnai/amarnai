@@ -1,7 +1,7 @@
 import { Worker } from "bullmq";
-import { db, claimIdempotencyToken, releaseIdempotencyToken, lifecycleSendDedupToken } from "@amarnai/db";
-import { appUrl, sendLifecycleReminderEmail, type LifecycleWorkspaceSummary } from "@amarnai/email";
-import { signUnsubscribeToken } from "@amarnai/auth/unsubscribe-token";
+import { db, claimIdempotencyToken, releaseIdempotencyToken, lifecycleSendDedupToken } from "@aziru/db";
+import { appUrl, sendLifecycleReminderEmail, type LifecycleWorkspaceSummary } from "@aziru/email";
+import { signUnsubscribeToken } from "@aziru/auth/unsubscribe-token";
 import {
   lifecycleEmailQueue,
   QUEUE_LIFECYCLE_EMAIL,

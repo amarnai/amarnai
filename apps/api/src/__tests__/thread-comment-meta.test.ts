@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     threadComment: {
       groupBy: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { loadThreadCommentsMetaForThreads } from "../services/thread-comment-meta.js";
 
 const groupBy = db.threadComment.groupBy as ReturnType<typeof vi.fn>;

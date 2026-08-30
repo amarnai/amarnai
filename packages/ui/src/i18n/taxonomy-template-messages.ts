@@ -7,7 +7,7 @@ import type { MessageDescriptor } from "@lingui/core";
 // template string (picker name/description plus every folder name/description,
 // including the shared "Updates / Other" catch-all) as a `msg` so the strings
 // land in the catalog. At runtime the templates are translated by lookup via
-// localizeTemplate/localizeTransferFile (@amarnai/core), keyed by these same
+// localizeTemplate/localizeTransferFile (@aziru/core), keyed by these same
 // English source strings. A drift test asserts every template string appears
 // here. Repeated folder names (Personal, Finance, Admin, Team) are declared
 // once. Never executed for data.

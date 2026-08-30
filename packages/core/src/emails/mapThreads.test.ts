@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { mapThreads, mapThreadDetail } from "./mapThreads.js";
-import type { EmailThreadSummary, EmailThreadDetail } from "@amarnai/api-client";
+import type { EmailThreadSummary, EmailThreadDetail } from "@aziru/api-client";
 
 function makeThread(triageStatus: EmailThreadSummary["triageStatus"]): EmailThreadSummary {
   return {

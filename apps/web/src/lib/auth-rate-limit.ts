@@ -1,12 +1,12 @@
 import { headers } from "next/headers";
-import { checkAndCount, peekCount, incrementCount, clearKey } from "@amarnai/auth/rate-limit-store";
+import { checkAndCount, peekCount, incrementCount, clearKey } from "@aziru/auth/rate-limit-store";
 
 // Per-account/per-IP throttles for the public auth server actions (register,
 // forgot-password, credentials sign-in). These run in the web server and go
 // straight through next-auth, so the API's /auth/* limiter does not cover them;
 // without this they are an unthrottled email-amplification / brute-force surface.
 //
-// Counters live in the SHARED Redis store (@amarnai/auth/rate-limit-store), so the
+// Counters live in the SHARED Redis store (@aziru/auth/rate-limit-store), so the
 // limit holds across web instances and shares the API's fail-open policy — a
 // rate-limit outage never blocks a legitimate sign-in. (This replaced a
 // per-instance in-memory map that diverged across replicas.)
@@ -14,7 +14,7 @@ import { checkAndCount, peekCount, incrementCount, clearKey } from "@amarnai/aut
 const WINDOW_SECONDS = 15 * 60;
 
 // Trusted reverse-proxy count, same knob as the API (TRUST_PROXY). Read from the
-// env here so this module need not depend on @amarnai/config. 0 (default) means no
+// env here so this module need not depend on @aziru/config. 0 (default) means no
 // forwarded header is trusted for IP derivation.
 function trustProxyCount(): number {
   const n = Number.parseInt(process.env["TRUST_PROXY"] ?? "", 10);

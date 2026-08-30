@@ -11,7 +11,7 @@ const { mockResolveInboxQuota, mockRecordMeterUsage, mockGenerateThreadSummary, 
     mockCreateAIProvider: vi.fn(),
   }));
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     redis: { url: "redis://localhost:6379" },
     billing: mockBilling,
@@ -19,7 +19,7 @@ vi.mock("@amarnai/config", () => ({
   },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     emailThread: { findFirst: vi.fn() },
@@ -41,7 +41,7 @@ vi.mock("@amarnai/db", () => ({
 
 const SUMMARY_PROMPT_VERSION = "2";
 
-vi.mock("@amarnai/ai", () => ({
+vi.mock("@aziru/ai", () => ({
   createAIProvider: mockCreateAIProvider,
   generateThreadSummary: mockGenerateThreadSummary,
   getSummaryAIProviderConfig: () => ({ provider: "mock" }),
@@ -50,13 +50,13 @@ vi.mock("@amarnai/ai", () => ({
 
 const { mockGetThreadSnapshot } = vi.hoisted(() => ({ mockGetThreadSnapshot: vi.fn() }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: () => ({ getThreadSnapshot: mockGetThreadSnapshot }),
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
-import { getThreadSummaryLimit } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { getThreadSummaryLimit } from "@aziru/shared";
 
 const FREE_LIMIT = getThreadSummaryLimit("FREE");
 

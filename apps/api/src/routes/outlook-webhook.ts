@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
-import { config } from "@amarnai/config";
+import { db } from "@aziru/db";
+import { config } from "@aziru/config";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { constantTimeEqual } from "../services/constant-time-equal.js";
 

@@ -1,23 +1,23 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailConnection: { upsert: vi.fn(), findUnique: vi.fn() },
   },
   deleteGmailDisconnectedNotifications: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock("@amarnai/gmail", () => ({
+vi.mock("@aziru/gmail", () => ({
   encrypt: vi.fn((v: string) => `enc(${v})`),
 }));
 
-vi.mock("@amarnai/outlook", () => ({
+vi.mock("@aziru/outlook", () => ({
   fetchOutlookProfile: vi.fn(),
 }));
 
-import { db } from "@amarnai/db";
-import { encrypt } from "@amarnai/gmail";
-import { fetchOutlookProfile } from "@amarnai/outlook";
+import { db } from "@aziru/db";
+import { encrypt } from "@aziru/gmail";
+import { fetchOutlookProfile } from "@aziru/outlook";
 import { storeOutlookConnection } from "./outlook-connection.js";
 import { ProviderMismatchError } from "./connection-guard.js";
 

@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 // Precomputed once at module load. Unknown accounts are compared against this so
 // a missing user takes the same time as a wrong password, closing the login

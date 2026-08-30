@@ -5,7 +5,7 @@ import {
   GoogleGIcon,
   MicrosoftIcon,
   ShieldCheckIcon,
-} from "@amarnai/ui";
+} from "@aziru/ui";
 import { ext } from "../platform/ext";
 import { usePinnedState, type PinState } from "./usePinnedState";
 import { WelcomeCarousel } from "./WelcomeCarousel";

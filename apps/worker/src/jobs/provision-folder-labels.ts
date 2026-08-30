@@ -1,10 +1,10 @@
 import { Worker } from "bullmq";
-import { db, markGmailConnectionAuthFailed } from "@amarnai/db";
-import { config } from "@amarnai/config";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
-import { createMailProvider, MailAuthError, providerHasWritebackScope, type MailFolderLabelDef } from "@amarnai/mail";
-import { buildProviderPaths, resolveFolderColorKey } from "@amarnai/core";
-import { DEDUP_WRITEBACK } from "@amarnai/queue";
+import { db, markGmailConnectionAuthFailed } from "@aziru/db";
+import { config } from "@aziru/config";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
+import { createMailProvider, MailAuthError, providerHasWritebackScope, type MailFolderLabelDef } from "@aziru/mail";
+import { buildProviderPaths, resolveFolderColorKey } from "@aziru/core";
+import { DEDUP_WRITEBACK } from "@aziru/queue";
 import {
   QUEUE_PROVISION_LABELS,
   type ProvisionLabelsJobData,

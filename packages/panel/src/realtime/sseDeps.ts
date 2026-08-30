@@ -1,4 +1,4 @@
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient } from "@aziru/api-client";
 import type { PanelHost } from "../host.js";
 import type { WorkspaceEventsDeps } from "./useWorkspaceEvents.js";
 

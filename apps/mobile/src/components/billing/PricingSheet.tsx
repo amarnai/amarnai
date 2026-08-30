@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Trans } from '@lingui/react/macro';
-import { PLANS, type PlanId, type BillingCycle, type BillingPlan, type BillingCycleValue } from '@amarnai/shared';
-import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
+import { PLANS, type PlanId, type BillingCycle, type BillingPlan, type BillingCycleValue } from '@aziru/shared';
+import { colors, fontSize, fontWeight, radii, space } from '@aziru/tokens';
 import { SheetLayout } from '../SheetLayout';
 import { PLAN_TO_BILLING } from '../../billing/selectPlanAction';
 

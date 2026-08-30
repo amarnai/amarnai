@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db, hasTrialClaim } from "@amarnai/db";
+import { db, hasTrialClaim } from "@aziru/db";
 import { getStripe, getPriceId } from "@/lib/stripe";
 import { resolveBillingUser } from "@/lib/billing-auth";
 import { applyPaidPlanChange } from "@/lib/billing-mutations";

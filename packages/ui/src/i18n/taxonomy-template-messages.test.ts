@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { TAXONOMY_TEMPLATES } from "@amarnai/core/taxonomy";
+import { TAXONOMY_TEMPLATES } from "@aziru/core/taxonomy";
 
 // Guards against drift: every user-visible template string must have a `msg`
 // declaration in taxonomy-template-messages.ts, or it will never reach the

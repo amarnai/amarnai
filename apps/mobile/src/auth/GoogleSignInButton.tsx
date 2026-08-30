@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
-import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, space, fontSize, fontWeight } from '@aziru/tokens';
 import { authStyles } from './authStyles';
 
 type Props = {

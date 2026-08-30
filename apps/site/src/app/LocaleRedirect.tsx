@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { matchLocale, SOURCE_LOCALE } from "@amarnai/i18n";
+import { matchLocale, SOURCE_LOCALE } from "@aziru/i18n";
 
 const STORAGE_KEY = "amarnai_locale";
 

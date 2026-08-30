@@ -32,7 +32,7 @@ const {
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db = {
     workspace: { findUnique: vi.fn() },
     emailThread: {
@@ -64,7 +64,7 @@ vi.mock("@amarnai/db", () => {
 });
 
 // Quota enforcement is on by default; individual tests flip it as needed.
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: { billing: { enforceThreadSortQuota: true } },
 }));
 
@@ -76,7 +76,7 @@ vi.mock("../redis-publisher.js", () => ({
   publishWorkspaceSynced: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock("@amarnai/ai", () => ({
+vi.mock("@aziru/ai", () => ({
   createAIProvider: vi.fn().mockReturnValue({ providerName: "mock", modelName: "mock" }),
   createEmbeddingProvider: vi.fn().mockReturnValue({ embed: mockEmbed }),
   sortThreadByEmbedding: mockSortThreadByEmbedding,
@@ -110,9 +110,9 @@ vi.mock("@amarnai/ai", () => ({
   getEmbeddingProviderConfig: vi.fn().mockReturnValue({}),
 }));
 
-vi.mock("@amarnai/gmail", () => ({
+vi.mock("@aziru/gmail", () => ({
   // Real classes so the worker's `err instanceof MailAuthError` catch branches
-  // (MailAuthError etc. are these classes re-exported by @amarnai/mail) evaluate
+  // (MailAuthError etc. are these classes re-exported by @aziru/mail) evaluate
   // instead of throwing on an undefined mock export.
   GmailAuthError: class GmailAuthError extends Error {},
   GmailHistoryCursorExpiredError: class GmailHistoryCursorExpiredError extends Error {},
@@ -171,11 +171,11 @@ vi.mock("../ai-dedup.js", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db } from "@amarnai/db";
-import { config } from "@amarnai/config";
-import { getThreadSortLimit } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { config } from "@aziru/config";
+import { getThreadSortLimit } from "@aziru/shared";
 import { Worker } from "bullmq";
-import { createEmbeddingProvider } from "@amarnai/ai";
+import { createEmbeddingProvider } from "@aziru/ai";
 import { createClassifyThreadWorker } from "../jobs/classify-thread.js";
 
 const FREE_LIMIT = getThreadSortLimit("FREE");

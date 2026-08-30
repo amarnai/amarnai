@@ -22,7 +22,7 @@ const {
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailThread: { findFirst: vi.fn() },
     emailMessage: { findMany: vi.fn() },
@@ -32,7 +32,7 @@ vi.mock("@amarnai/db", () => ({
   markGmailConnectionAuthFailed: vi.fn(),
 }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: vi.fn(() => ({ applyThreadFolderLabels: mockApply })),
   MailAuthError,
   MailThreadNotFoundError,
@@ -55,7 +55,7 @@ vi.mock("../queues.js", () => ({
   pushNotificationQueue: { add: vi.fn().mockResolvedValue(undefined) },
 }));
 
-import { db, markGmailConnectionAuthFailed } from "@amarnai/db";
+import { db, markGmailConnectionAuthFailed } from "@aziru/db";
 import { Worker } from "bullmq";
 import { pushNotificationQueue } from "../queues.js";
 import { createWritebackThreadLabelWorker } from "../jobs/writeback-thread-label.js";

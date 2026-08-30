@@ -6,10 +6,10 @@ export type {
   UpdateGmailSyncSettingsInput,
   GenerationEligibility,
   GenerationEligibilityReason,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 
-import type { GenerationEligibility } from "@amarnai/shared";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { GenerationEligibility } from "@aziru/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 
 export type OkResult = { ok: boolean };
 
@@ -77,7 +77,7 @@ export type CreateTaxonomyEdgeInput = {
 export type UpdateTaxonomyEdgeInput = { newSourceNodeId?: string };
 
 // Partial of CreateTaxonomyNodeInput preserving null on nullable fields
-// (differs from @amarnai/shared's UpdateTaxonomyNodeInput which strips null).
+// (differs from @aziru/shared's UpdateTaxonomyNodeInput which strips null).
 export type UpdateTaxonomyNodeInput = Partial<CreateTaxonomyNodeInput>;
 
 // ── Workspace ─────────────────────────────────────────────────────────────────

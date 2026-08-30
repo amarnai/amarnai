@@ -1,6 +1,6 @@
 import { render, cleanup, screen, fireEvent } from "@/test-utils";
 import { describe, it, expect, afterEach, vi } from "vitest";
-import { ThreadSummaryCard } from "@amarnai/ui/emails";
+import { ThreadSummaryCard } from "@aziru/ui/emails";
 
 // ThreadSummaryCard lives in packages/ui, which has no jsdom harness of its own;
 // shared email components are exercised from here (see backfill-card.test.tsx).

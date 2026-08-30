@@ -9,8 +9,8 @@ failure-mode taxonomy, and an origin-constrained taxonomy).
 
 | Script | What it tunes | LLM | Embeddings |
 |---|---|---|---|
-| `pnpm --filter @amarnai/ai benchmark:constants` | The six sorter threshold constants (4,096-combo grid) | stubbed (always escalates) | pre-computed fixture |
-| `pnpm --filter @amarnai/ai benchmark:reasoning` | LLM reasoning-effort + prompt behaviour | live Gemini | live (prod-faithful) or fixture |
+| `pnpm --filter @aziru/ai benchmark:constants` | The six sorter threshold constants (4,096-combo grid) | stubbed (always escalates) | pre-computed fixture |
+| `pnpm --filter @aziru/ai benchmark:reasoning` | LLM reasoning-effort + prompt behaviour | live Gemini | live (prod-faithful) or fixture |
 
 The grid stubs the LLM so its score reflects the embedding phase only. The
 reasoning benchmark calls the live model, so it is the home for prompt-level
@@ -25,7 +25,7 @@ Seed (env-driven, same factory as the runtime sorter):
 
 ```bash
 # Default: qwen3 via Ollama (offline, keyless) — the CI smoke table
-pnpm --filter @amarnai/ai seed:embeddings
+pnpm --filter @aziru/ai seed:embeddings
 
 # Gemini (production model). Provide credentials via env (.env.local / Railway):
 EMBEDDING_PROVIDER=frontier \
@@ -33,14 +33,14 @@ FRONTIER_EMBEDDING_PROVIDER=gemini \
 FRONTIER_EMBEDDING_MODEL=gemini-embedding-001 \
 FRONTIER_EMBEDDING_DIMENSIONS=768 \
 FRONTIER_EMBEDDING_API_KEY=… \
-pnpm --filter @amarnai/ai seed:embeddings
+pnpm --filter @aziru/ai seed:embeddings
 ```
 
 Run the grid against a specific model's fixture:
 
 ```bash
-pnpm --filter @amarnai/ai benchmark:constants                                   # qwen3 (default)
-BENCHMARK_EMBEDDING_MODEL='gemini-embedding-001@768' pnpm --filter @amarnai/ai benchmark:constants
+pnpm --filter @aziru/ai benchmark:constants                                   # qwen3 (default)
+BENCHMARK_EMBEDDING_MODEL='gemini-embedding-001@768' pnpm --filter @aziru/ai benchmark:constants
 ```
 
 The grid prints, for the current shipped constants: per-dataset accuracy,

@@ -58,7 +58,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 
 - Minimize the number of clicks required to complete any action. Prefer inline controls, smart defaults, and progressive disclosure over multi-step flows.
 - Both the marketing site and the web app must be fully responsive. All layouts, components, and interactions must work correctly on mobile, tablet, and desktop screen sizes.
-- Every control with a single yes/no choice (settings, feature on/off) renders as a switch toggle — use the shared `Switch` from `@amarnai/ui` (styles via `@amarnai/ui/switch/styles`), never a bare checkbox. Checkboxes are reserved for multi-select lists and explicit consent confirmations.
+- Every control with a single yes/no choice (settings, feature on/off) renders as a switch toggle — use the shared `Switch` from `@aziru/ui` (styles via `@aziru/ui/switch/styles`), never a bare checkbox. Checkboxes are reserved for multi-select lists and explicit consent confirmations.
 
 ## Cross-Platform Parity
 

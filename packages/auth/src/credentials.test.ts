@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import bcrypt from "bcryptjs";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     user: { findUnique: vi.fn() },
   },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { verifyCredentials } from "./credentials.js";
 
 const PASSWORD = "correct-horse";

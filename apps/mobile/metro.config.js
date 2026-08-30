@@ -16,7 +16,7 @@ config.resolver.nodeModulesPaths = [
 // Required to resolve package.json `exports` fields from workspace packages.
 config.resolver.unstable_enablePackageExports = true;
 
-// The workspace TS packages (@amarnai/tokens, /shared, /api-client) ship their
+// The workspace TS packages (@aziru/tokens, /shared, /api-client) ship their
 // source with NodeNext-style ".js" import specifiers (e.g. `from "./colors.js"`),
 // which Node/Next resolve to the ".ts" source but Metro does not. Map a failing
 // relative ".js" import to its ".ts"/".tsx" sibling. Real ".js" files still

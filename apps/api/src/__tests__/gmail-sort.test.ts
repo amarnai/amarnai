@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { authed } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db = {
     workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
@@ -28,11 +28,11 @@ vi.mock("@amarnai/db", () => {
   };
 });
 
-// Mock @amarnai/gmail so tests never make real HTTP calls. The sort route builds
-// its client via createMailProvider(connection) (@amarnai/mail, unmocked), which
+// Mock @aziru/gmail so tests never make real HTTP calls. The sort route builds
+// its client via createMailProvider(connection) (@aziru/mail, unmocked), which
 // constructs this GmailClient; the recent-threads dev endpoint uses it directly
-// through ../services/gmail-client.js (a re-export of @amarnai/gmail).
-vi.mock("@amarnai/gmail", () => ({
+// through ../services/gmail-client.js (a re-export of @aziru/gmail).
+vi.mock("@aziru/gmail", () => ({
   GmailClient: vi.fn().mockImplementation(() => ({
     getThreadSnapshot: vi.fn(),
     listRecentThreads: vi.fn(),
@@ -55,7 +55,7 @@ vi.mock("@amarnai/gmail", () => ({
 }));
 
 const mockSortThreadByEmbedding = vi.fn();
-vi.mock("@amarnai/ai", () => ({
+vi.mock("@aziru/ai", () => ({
   getAIProviderConfig: vi.fn().mockReturnValue({}),
   getEmbeddingProviderConfig: vi.fn().mockReturnValue({}),
   createAIProvider: vi.fn().mockReturnValue({
@@ -81,9 +81,9 @@ vi.mock("../queues.js", () => ({
 }));
 
 import app from "../app.js";
-import { db, resolveInboxQuota, recordMeterUsage } from "@amarnai/db";
-import { getThreadSortLimit } from "@amarnai/shared";
-import { GmailClient, GmailThreadNotFoundError } from "@amarnai/gmail";
+import { db, resolveInboxQuota, recordMeterUsage } from "@aziru/db";
+import { getThreadSortLimit } from "@aziru/shared";
+import { GmailClient, GmailThreadNotFoundError } from "@aziru/gmail";
 
 const FREE_LIMIT = getThreadSortLimit("FREE");
 

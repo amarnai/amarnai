@@ -7,7 +7,7 @@ const mockStripe = vi.hoisted(() => ({
 
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     user: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
@@ -23,7 +23,7 @@ vi.mock("@/lib/stripe", () => ({
 }));
 
 import { auth } from "@/auth";
-import { db, hasTrialClaim } from "@amarnai/db";
+import { db, hasTrialClaim } from "@aziru/db";
 import { getStripe, getPriceId } from "@/lib/stripe";
 import { POST } from "@/app/api/billing/create-checkout-session/route";
 

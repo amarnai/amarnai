@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { Sidebar } from "@/components/Sidebar";
 import { getSessionUser } from "@/lib/session";
 import { getSelectedWorkspace } from "@/lib/workspace";

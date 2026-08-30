@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, type ViewStyle } from 'react-native';
-import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
+import { colors, fontSize, fontWeight, radii, space } from '@aziru/tokens';
 
 interface Props {
   label: string;

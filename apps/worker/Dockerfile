@@ -27,10 +27,10 @@ RUN pnpm install --frozen-lockfile
 FROM installer AS runner
 WORKDIR /repo
 COPY . .
-RUN pnpm --filter @amarnai/db generate
+RUN pnpm --filter @aziru/db generate
 # Compile Lingui catalogs (.po -> .mjs). The .mjs are gitignored and loaded at
 # runtime by loadCatalog() (e.g. generate-taxonomy localizing per workspace locale).
-RUN pnpm --filter @amarnai/i18n compile
+RUN pnpm --filter @aziru/i18n compile
 ENV NODE_ENV=production
 WORKDIR /repo/apps/worker
 CMD ["pnpm", "run", "start"]

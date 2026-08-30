@@ -14,7 +14,7 @@ export {
   toRFEdges,
   TAXONOMY_MIN_ZOOM,
 } from "./rfGraph.js";
-export { computeIgnoredReasons, type IgnoredReason } from "@amarnai/core/taxonomy";
+export { computeIgnoredReasons, type IgnoredReason } from "@aziru/core/taxonomy";
 export {
   taxonomyTokens,
   readEdgeColors,

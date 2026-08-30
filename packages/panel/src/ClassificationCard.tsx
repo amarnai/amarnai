@@ -4,9 +4,9 @@ import { useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { folderInkVar } from "@amarnai/core/emails";
-import type { FolderItem } from "@amarnai/ui/emails";
-import { ReroutePopover, TriageBar, AssigneePicker } from "@amarnai/ui/emails";
+import { folderInkVar } from "@aziru/core/emails";
+import type { FolderItem } from "@aziru/ui/emails";
+import { ReroutePopover, TriageBar, AssigneePicker } from "@aziru/ui/emails";
 import type { EmailThreadDetail, MemberItem } from "./types.js";
 
 // Where Amarnai put this thread, and every way the reader can disagree with it.

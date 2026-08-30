@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { ApiClient } from "@amarnai/api-client";
-import { ThreadSummaryCard, type ThreadSummaryCardState } from "@amarnai/ui/emails";
+import type { ApiClient } from "@aziru/api-client";
+import { ThreadSummaryCard, type ThreadSummaryCardState } from "@aziru/ui/emails";
 import type { EmailThreadDetail } from "./types.js";
 
 // The thread's TL;DR, generated on open and cached server-side.

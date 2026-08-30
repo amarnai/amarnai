@@ -1,4 +1,4 @@
-import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "@amarnai/ai";
+import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "@aziru/ai";
 
 // ─── Gmail API response types ──────────────────────────────────────────────────
 

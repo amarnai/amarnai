@@ -1,6 +1,6 @@
 import { type NextRequest } from "next/server";
 import { Redis } from "ioredis";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { requireUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";

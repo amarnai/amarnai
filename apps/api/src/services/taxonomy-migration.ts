@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import {
   createEmbeddingProvider,
   getEmbeddingProviderConfig,
@@ -7,8 +7,8 @@ import {
   deriveBreadcrumb,
   hashEmbeddingInput,
   type MigrationSuggestion,
-} from "@amarnai/ai";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+} from "@aziru/ai";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 
 /** One old folder's migration suggestion, enriched with display data for the UI. */
 export type MigrationPreviewRow = MigrationSuggestion & {

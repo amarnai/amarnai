@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 /**
  * A Prisma client or interactive-transaction client — anything exposing

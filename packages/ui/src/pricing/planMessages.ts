@@ -3,7 +3,7 @@ import type { I18n, MessageDescriptor } from "@lingui/core";
 
 // Render-edge localization for the pricing table.
 //
-// The plan DATA (prices, limits, ids, structure) lives in @amarnai/shared/plans,
+// The plan DATA (prices, limits, ids, structure) lives in @aziru/shared/plans,
 // which is OUTSIDE the i18n extractor's scan scope. Here in packages/ui (which IS
 // scanned) we re-declare every user-visible string from that data as a Lingui
 // message, keyed by its English source text. `PricingPlans` resolves each string

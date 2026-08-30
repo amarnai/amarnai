@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { CHROME_EXTENSION_STORE_URL } from "@amarnai/ui";
+import { CHROME_EXTENSION_STORE_URL } from "@aziru/ui";
 import {
   DISMISS_KEY,
   isDesktopExtensionBrowser,

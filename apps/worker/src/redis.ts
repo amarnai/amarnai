@@ -1,4 +1,4 @@
-import { config } from "@amarnai/config";
-import { parseRedisUrl } from "@amarnai/queue";
+import { config } from "@aziru/config";
+import { parseRedisUrl } from "@aziru/queue";
 
 export const redisConnection = parseRedisUrl(config.redis.url);

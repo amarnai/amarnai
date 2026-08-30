@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
-import { PASSWORD_MIN_LENGTH } from "@amarnai/shared";
+import { PASSWORD_MIN_LENGTH } from "@aziru/shared";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";

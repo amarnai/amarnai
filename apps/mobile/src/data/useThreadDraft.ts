@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Draft, QuotaInfo } from '@amarnai/api-client';
-import type { ThreadItem } from '@amarnai/core';
+import type { Draft, QuotaInfo } from '@aziru/api-client';
+import type { ThreadItem } from '@aziru/core';
 import { useSession } from '../auth/session';
 import { useTriageActions } from '../triage/TriageProvider';
 

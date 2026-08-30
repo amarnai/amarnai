@@ -4,9 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
-import type { Draft, QuotaInfo } from '@amarnai/api-client';
-import { formatQuotaResetDate } from '@amarnai/shared';
+import { colors, fontSize, fontWeight, radii, space } from '@aziru/tokens';
+import type { Draft, QuotaInfo } from '@aziru/api-client';
+import { formatQuotaResetDate } from '@aziru/shared';
 import { SheetLayout } from './SheetLayout';
 
 interface DraftSheetProps {

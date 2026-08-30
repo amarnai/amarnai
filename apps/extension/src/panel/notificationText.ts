@@ -1,6 +1,6 @@
 import { msg } from "@lingui/core/macro";
 import type { I18n } from "@lingui/core";
-import { interpretNotification, type NotificationItem } from "@amarnai/api-client";
+import { interpretNotification, type NotificationItem } from "@aziru/api-client";
 
 // Maps a notification's type + params to a localized one-line title. The type +
 // param plumbing lives in the shared `interpretNotification`; this only maps the

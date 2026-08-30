@@ -4,7 +4,7 @@ const mockStripe = vi.hoisted(() => ({
   subscriptions: { retrieve: vi.fn() },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspace: { findUnique: vi.fn(), update: vi.fn() },
     workspaceMember: { findMany: vi.fn(), deleteMany: vi.fn() },
@@ -16,7 +16,7 @@ vi.mock("@amarnai/db", () => ({
 
 vi.mock("@/lib/stripe", () => ({ getStripe: () => mockStripe }));
 
-import { db, hasTrialClaim } from "@amarnai/db";
+import { db, hasTrialClaim } from "@aziru/db";
 import { assembleBillingState } from "@/lib/billing-state";
 
 const USER_ID = "user-1";

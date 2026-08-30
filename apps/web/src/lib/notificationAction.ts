@@ -1,4 +1,4 @@
-import type { NotificationItem } from "@amarnai/api-client";
+import type { NotificationItem } from "@aziru/api-client";
 import { switchWorkspaceAction } from "@/actions/workspace";
 import type { NotificationAction } from "@/lib/notifications";
 

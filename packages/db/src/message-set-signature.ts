@@ -16,7 +16,7 @@ import { createHash } from "node:crypto";
  * Order-independent (ids are sorted) and truncated because the value only needs to
  * be collision-resistant, not reversible.
  *
- * Lives in @amarnai/db rather than @amarnai/shared because it needs node:crypto and
+ * Lives in @aziru/db rather than @aziru/shared because it needs node:crypto and
  * shared is bundled into browser surfaces; both consumers are server-side and
  * already depend on this package.
  */

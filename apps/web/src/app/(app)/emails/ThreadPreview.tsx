@@ -6,11 +6,11 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
 import type { Draft } from "@/lib/api";
-import type { ThreadItem, MemberItem, ThreadSummaryCardState } from "@amarnai/ui/emails";
-import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, ThreadCommentsSection, TriageBar, buildThreadUrl, openInProviderLabel } from "@amarnai/ui/emails";
-import { chronologicalMessages } from "@amarnai/core/emails";
-import { Tooltip, GmailIcon, OutlookIcon } from "@amarnai/ui";
-import { formatQuotaResetDate } from "@amarnai/shared";
+import type { ThreadItem, MemberItem, ThreadSummaryCardState } from "@aziru/ui/emails";
+import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, ThreadCommentsSection, TriageBar, buildThreadUrl, openInProviderLabel } from "@aziru/ui/emails";
+import { chronologicalMessages } from "@aziru/core/emails";
+import { Tooltip, GmailIcon, OutlookIcon } from "@aziru/ui";
+import { formatQuotaResetDate } from "@aziru/shared";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
 

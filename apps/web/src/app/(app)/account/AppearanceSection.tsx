@@ -1,7 +1,7 @@
 "use client";
 
 import { Trans } from "@lingui/react/macro";
-import { ThemeToggle } from "@amarnai/ui";
+import { ThemeToggle } from "@aziru/ui";
 
 /**
  * Compact appearance control: a label and the sun/moon toggle on one row. The

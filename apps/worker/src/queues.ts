@@ -9,12 +9,12 @@ import {
   QUEUE_CAPTURE_REFERENCE,
   QUEUE_PROVISION_LABELS,
   QUEUE_WRITEBACK_THREAD_LABEL,
-} from "@amarnai/queue";
+} from "@aziru/queue";
 import { redisConnection } from "./redis.js";
 
 // Re-export so job files can import names and types from one place.
-export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_PUSH_NOTIFICATION, QUEUE_CAPTURE_REFERENCE, QUEUE_PROVISION_LABELS, QUEUE_WRITEBACK_THREAD_LABEL } from "@amarnai/queue";
-export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, PushNotificationJobData, CaptureReferenceJobData, ProvisionLabelsJobData, WritebackThreadLabelJobData } from "@amarnai/queue";
+export { QUEUE_SYNC_INBOX, QUEUE_CLASSIFY_THREAD, QUEUE_BACKFILL_INBOX, QUEUE_LIFECYCLE_EMAIL, QUEUE_GENERATE_TAXONOMY, QUEUE_PUSH_NOTIFICATION, QUEUE_CAPTURE_REFERENCE, QUEUE_PROVISION_LABELS, QUEUE_WRITEBACK_THREAD_LABEL } from "@aziru/queue";
+export type { SyncInboxJobData, ClassifyThreadJobData, ClassifyThreadSource, BackfillInboxJobData, LifecycleEmailJobData, GenerateTaxonomyJobData, PushNotificationJobData, CaptureReferenceJobData, ProvisionLabelsJobData, WritebackThreadLabelJobData } from "@aziru/queue";
 
 // ─── Queue instances ──────────────────────────────────────────────────────────
 

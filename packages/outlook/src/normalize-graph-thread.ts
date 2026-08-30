@@ -1,4 +1,4 @@
-import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "@amarnai/ai";
+import type { ThreadSnapshot, SnapshotMessage, AttachmentMeta, InlineImageMeta } from "@aziru/ai";
 
 // ─── Microsoft Graph message shapes (the fields we $select) ────────────────────
 

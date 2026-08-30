@@ -22,11 +22,11 @@
  * --apply writes nothing.
  *
  * Usage:
- *   pnpm --filter @amarnai/worker backfill-outlook-account-type           # dry run
- *   pnpm --filter @amarnai/worker backfill-outlook-account-type --apply   # write
+ *   pnpm --filter @aziru/worker backfill-outlook-account-type           # dry run
+ *   pnpm --filter @aziru/worker backfill-outlook-account-type --apply   # write
  */
-import { db } from "@amarnai/db";
-import { outlookAccountTypeFromWebLink, type OutlookAccountType } from "@amarnai/core/emails";
+import { db } from "@aziru/db";
+import { outlookAccountTypeFromWebLink, type OutlookAccountType } from "@aziru/core/emails";
 
 const APPLY = process.argv.includes("--apply");
 

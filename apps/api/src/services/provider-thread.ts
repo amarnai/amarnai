@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 // Shared by every route the native Gmail/Outlook injection calls. Those routes
 // are addressed by the provider's own thread id (the only id a mail page knows),

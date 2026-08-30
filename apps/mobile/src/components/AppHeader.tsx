@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, space, fontSize, fontWeight } from '@aziru/tokens';
 import { useSession } from '../auth/session';
 import { useNotifications } from '../data/useNotifications';
 import { WorkspaceMark } from './WorkspaceMark';

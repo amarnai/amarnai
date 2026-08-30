@@ -12,10 +12,10 @@
  *   BENCHMARK_EMBEDDING_MODEL=gemini-embedding-001@768 pnpm … benchmark:constants
  *
  * Run:
- *   pnpm --filter @amarnai/ai benchmark:constants
+ *   pnpm --filter @aziru/ai benchmark:constants
  *
  * Requires the matching per-model fixture to be current:
- *   pnpm --filter @amarnai/ai seed:embeddings            (qwen3, default)
+ *   pnpm --filter @aziru/ai seed:embeddings            (qwen3, default)
  *   EMBEDDING_PROVIDER=frontier FRONTIER_EMBEDDING_PROVIDER=gemini … seed:embeddings
  */
 import { sortThreadByEmbedding } from "../embedding/sorter.js";

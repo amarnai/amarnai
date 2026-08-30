@@ -9,9 +9,9 @@ import {
   markGmailConnectionAuthFailed,
   maybeCreateQuotaBlockedNotifications,
   threadSortDedupToken,
-} from "@amarnai/db";
-import { config } from "@amarnai/config";
-import { getThreadSortLimit, MAX_REFERENCES_PER_NODE } from "@amarnai/shared";
+} from "@aziru/db";
+import { config } from "@aziru/config";
+import { getThreadSortLimit, MAX_REFERENCES_PER_NODE } from "@aziru/shared";
 import {
   createAIProvider,
   createEmbeddingProvider,
@@ -26,16 +26,16 @@ import {
   EmbeddingModelNotFoundError,
   LLMAuthenticationError,
   LLMRequestError,
-} from "@amarnai/ai";
-import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult, LlmCallMemoizer } from "@amarnai/ai";
-import { createMailProvider, MailAuthError, MailThreadNotFoundError } from "@amarnai/mail";
+} from "@aziru/ai";
+import type { EmbeddableNode, TriageMetadata, EmbeddingTriageResult, LlmCallMemoizer } from "@aziru/ai";
+import { createMailProvider, MailAuthError, MailThreadNotFoundError } from "@aziru/mail";
 import {
   QUEUE_CLASSIFY_THREAD,
   type ClassifyThreadJobData,
   pushNotificationQueue,
   writebackThreadLabelQueue,
 } from "../queues.js";
-import { DEDUP_WRITEBACK } from "@amarnai/queue";
+import { DEDUP_WRITEBACK } from "@aziru/queue";
 import { redisConnection } from "../redis.js";
 import {
   buildDedupKey,
@@ -44,8 +44,8 @@ import {
   parseVector,
   THREAD_EMBEDDING_TTL_SECONDS,
 } from "../ai-dedup.js";
-import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@amarnai/ai";
-import { isTaxonomyRoutable } from "@amarnai/shared";
+import { getRoutingAIProviderConfig, getEmbeddingProviderConfig } from "@aziru/ai";
+import { isTaxonomyRoutable } from "@aziru/shared";
 import { notifyThreadNeedsAttention } from "../notifications/notify-threads.js";
 import { publishThreadEvent } from "../redis-publisher.js";
 

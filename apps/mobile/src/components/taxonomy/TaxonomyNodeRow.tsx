@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 import { NavIcon } from '../NavIcon';
 import type { TaxonomyTreeRow } from '../../taxonomy/buildTree';
 

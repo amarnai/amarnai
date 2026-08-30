@@ -1,7 +1,7 @@
-import { db } from "@amarnai/db";
-import { subscriptionPeriodEnd } from "@amarnai/billing";
+import { db } from "@aziru/db";
+import { subscriptionPeriodEnd } from "@aziru/billing";
 import { getStripe, getPriceId } from "@/lib/stripe";
-import type { PlanId, BillingCycle } from "@amarnai/shared";
+import type { PlanId, BillingCycle } from "@aziru/shared";
 
 // Workspace fields that revert a workspace to the free plan, clearing all Stripe
 // state. Shared by cancel-subscription (immediate trial cancel) and the

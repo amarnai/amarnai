@@ -9,17 +9,17 @@ import {
   inboxKeyFor,
   meterWindowStart,
   createNotificationsForWorkspaceMembers,
-} from "@amarnai/db";
-import { config } from "@amarnai/config";
+} from "@aziru/db";
+import { config } from "@aziru/config";
 import {
   createMailProvider,
   MailAuthError,
   MailThreadNotFoundError,
   MailThreadParseError,
   type MailThreadMeta,
-} from "@amarnai/mail";
-import type { GmailSyncSettings } from "@amarnai/shared";
-import { isTaxonomyRoutable, getBackfillCap, BACKFILL_RUNNING_STALE_MS } from "@amarnai/shared";
+} from "@aziru/mail";
+import type { GmailSyncSettings } from "@aziru/shared";
+import { isTaxonomyRoutable, getBackfillCap, BACKFILL_RUNNING_STALE_MS } from "@aziru/shared";
 import {
   backfillInboxQueue,
   QUEUE_BACKFILL_INBOX,
@@ -242,7 +242,7 @@ export function createBackfillInboxWorker(): Worker {
         // ── 5. Resolve the plan cap and resume cursor ──────────────────────────
         //
         // Thread count + look-back window come from the workspace plan + billing
-        // cycle (single source of truth in @amarnai/shared). No plan sets a time
+        // cycle (single source of truth in @aziru/shared). No plan sets a time
         // window (windowDays === null → afterMs 0 → full history); each is bounded
         // only by its thread cap (Free 500). Large caps are processed across
         // multiple runs, resuming from the persisted pageToken / processed count.

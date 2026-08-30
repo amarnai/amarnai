@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
+import { colors, space, fontSize, fontWeight, radii } from '@aziru/tokens';
 import { useSession } from '../../src/auth/session';
 import { UserAvatar } from '../../src/components/UserAvatar';
 import { ScreenContainer } from '../../src/components/ScreenContainer';

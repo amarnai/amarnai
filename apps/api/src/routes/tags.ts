@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const workspaceParam = z.object({ workspaceId: z.string().min(1) });
 

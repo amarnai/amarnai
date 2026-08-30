@@ -39,7 +39,7 @@
   --avatar-grad: linear-gradient(135deg, oklch(82% 0.08 50), oklch(72% 0.10 30)); /* user avatar fill */
 
   /* ── Folder colors — per-folder swatches (palette keys resolved in
-       @amarnai/core folderColor). Keys come from the Gmail-label ∩
+       @aziru/core folderColor). Keys come from the Gmail-label ∩
        Outlook-category intersection so a choice can round-trip to a provider
        color later. Each swatch is defined ONCE: a per-key hue plus the
        ink/soft/line lightness+chroma role constants below. Themes override only
@@ -117,7 +117,7 @@
   --shadow-2: 0 1px 2px oklch(20% 0.01 80 / 0.06), 0 8px 24px oklch(20% 0.01 80 / 0.08);
   --shadow-3: 0 2px 4px oklch(20% 0.01 80 / 0.06), 0 18px 48px oklch(20% 0.01 80 / 0.12);
 
-  /* ── Spacing scale (shared with @amarnai/tokens `space`; locked by tokens.test) ── */
+  /* ── Spacing scale (shared with @aziru/tokens `space`; locked by tokens.test) ── */
   --space-xxs: 2px;
   --space-xs:  4px;
   --space-sm:  6px;
@@ -126,7 +126,7 @@
   --space-xl:  16px;
   --space-xxl: 24px;
 
-  /* ── Type scale (shared with @amarnai/tokens `fontSize`; locked by tokens.test) ── */
+  /* ── Type scale (shared with @aziru/tokens `fontSize`; locked by tokens.test) ── */
   --fs-xs:   11px;
   --fs-sm:   12px;
   --fs-base: 13px;
@@ -1336,7 +1336,7 @@ a {
   margin: 0 0 16px;
 }
 
-/* The workspace name and language sections come from @amarnai/ui, which sizes
+/* The workspace name and language sections come from @aziru/ui, which sizes
    them for the extension panel's full-width column. On the web settings page
    they sit among .settings-section cards, so match that width and rhythm. */
 .main .st-section {
@@ -1408,7 +1408,7 @@ a {
 
 /* Real checkboxes only (multi-select lists, consent confirmations).
    Must not touch .ui-switch, whose track/thumb sizing lives in
-   @amarnai/ui switch.css. */
+   @aziru/ui switch.css. */
 .settings-toggle input[type="checkbox"]:not(.ui-switch),
 .checkbox-label input[type="checkbox"]:not(.ui-switch) {
   width: 15px;
@@ -4895,7 +4895,7 @@ form:has(> .btn-google) + form:has(> .btn-microsoft) {
   }
 
   /* ── Emails page shell overrides ──────────────────────────────────────── */
-  /* Shared panel-switching CSS comes from @amarnai/ui/emails/styles.        */
+  /* Shared panel-switching CSS comes from @aziru/ui/emails/styles.        */
   /* These rules add app-specific behaviour: locked full-screen layout and   */
   /* clearance for the fixed hamburger button.                               */
 

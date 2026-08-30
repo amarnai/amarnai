@@ -20,7 +20,7 @@ export default defineConfig({
     environment: "jsdom",
     server: {
       deps: {
-        inline: [/^@amarnai\//],
+        inline: [/^@aziru\//],
       },
     },
   },

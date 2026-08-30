@@ -1,5 +1,5 @@
-// Minimal structural edge shape so this works for both the @amarnai/shared and
-// @amarnai/api-client taxonomy edge types without coupling to either.
+// Minimal structural edge shape so this works for both the @aziru/shared and
+// @aziru/api-client taxonomy edge types without coupling to either.
 type DescendantEdge = { sourceNodeId: string; targetNodeId: string };
 
 /**

@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 // The single definition of "a thread, in full" as the API hands it out. Two
 // routes serve it: /email-threads/:threadId (addressed by our id) and

@@ -1,6 +1,6 @@
 import { Trans } from "@lingui/react/macro";
-import { ShieldCheckIcon } from "@amarnai/ui";
-import { HeroFeedCard } from "@amarnai/ui/demo";
+import { ShieldCheckIcon } from "@aziru/ui";
+import { HeroFeedCard } from "@aziru/ui/demo";
 import { CtaButtons } from "./CtaButtons";
 
 export function HeroSection() {

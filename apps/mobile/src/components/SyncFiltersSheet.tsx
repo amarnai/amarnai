@@ -12,8 +12,8 @@ import {
 import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
-import type { ApiClient, GmailSyncSettings } from '@amarnai/api-client';
+import { colors, space, fontSize, fontWeight, radii } from '@aziru/tokens';
+import type { ApiClient, GmailSyncSettings } from '@aziru/api-client';
 import { SheetLayout } from './SheetLayout';
 
 type Props = {

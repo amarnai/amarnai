@@ -3,7 +3,7 @@
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { microsoftSignInAction } from "@/actions/auth";
-import { MicrosoftIcon } from "@amarnai/ui";
+import { MicrosoftIcon } from "@aziru/ui";
 
 export function MicrosoftButton({ label }: { label?: string }) {
   const { _ } = useLingui();

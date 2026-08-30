@@ -10,7 +10,7 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
-import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
+import { GoogleGIcon, OutlookIcon } from "@aziru/ui";
 import {
   DemoTaxonomyCanvas,
   HeroFeedCard,
@@ -19,8 +19,8 @@ import {
   getDemoFolders,
   getDemoThreads,
   type MockProvider,
-} from "@amarnai/ui/demo";
-import type { ThreadItem } from "@amarnai/ui/emails";
+} from "@aziru/ui/demo";
+import type { ThreadItem } from "@aziru/ui/emails";
 
 /** How long a slide stays up before the carousel advances on its own. */
 const SLIDE_MS = 9000;

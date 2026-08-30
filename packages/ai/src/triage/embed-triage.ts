@@ -18,7 +18,7 @@ import type {
   Sensitivity,
   RequiredAction,
   SuggestedNextStep,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 
 export type EmbeddingTriageResult = {
   sensitivity: Sensitivity;

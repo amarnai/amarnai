@@ -1,5 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 // Stateless one-click unsubscribe tokens for lifecycle emails.
 //

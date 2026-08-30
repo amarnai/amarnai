@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import type { NavIconName } from '@amarnai/tokens';
+import type { NavIconName } from '@aziru/tokens';
 
 type IoniconsName = ComponentProps<typeof Ionicons>['name'];
 

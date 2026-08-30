@@ -401,7 +401,7 @@ Starts the core runtime apps in parallel:
 
 The marketing site (`apps/site`, port 3002), docs site (`apps/docs`, port 3003),
 and browser extension are not part of `pnpm dev`. Run them on demand with
-`pnpm --filter @amarnai/site dev`, `pnpm --filter @amarnai/docs dev`, and the
+`pnpm --filter @aziru/site dev`, `pnpm --filter @aziru/docs dev`, and the
 `pnpm extension:*` scripts respectively.
 
 ## Browser extension
@@ -490,7 +490,7 @@ new test emails to `sorting-fixtures.ts`, or switch the embedding model.
 # Requires Ollama running locally with qwen3-embedding
 ollama pull qwen3-embedding
 
-pnpm --filter @amarnai/ai seed:embeddings
+pnpm --filter @aziru/ai seed:embeddings
 ```
 
 This calls Ollama once, embeds all taxonomy nodes and test email threads, and
@@ -501,7 +501,7 @@ To use a different Ollama base URL or model:
 
 ```bash
 OLLAMA_BASE_URL=http://my-host:11434 OLLAMA_EMBEDDING_MODEL=qwen3-embedding:0.6b \
-  pnpm --filter @amarnai/ai seed:embeddings
+  pnpm --filter @aziru/ai seed:embeddings
 ```
 
 ### Fine-tuning sorter constants
@@ -510,7 +510,7 @@ The sorter uses several numeric thresholds (`THETA_MIN`, `CROSS_BRANCH_MARGIN`, 
 
 ```bash
 # Requires embedding-vectors.json to be current (run seed:embeddings first)
-pnpm --filter @amarnai/ai benchmark:constants
+pnpm --filter @aziru/ai benchmark:constants
 ```
 
 The output shows the top-ranked configurations with a per-email breakdown and a recommendation. If a configuration beats the current defaults, update the constants at the top of `packages/ai/src/embedding/sorter.ts`. Re-run `pnpm test` afterwards to confirm no regressions.

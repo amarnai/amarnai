@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, TouchableOpacity, View, type ViewStyle } from 'react-native';
-import { colors, space } from '@amarnai/tokens';
+import { colors, space } from '@aziru/tokens';
 
 interface GroupProps {
   children: ReactNode;

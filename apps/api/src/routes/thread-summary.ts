@@ -6,7 +6,7 @@ import {
   recordMeterUsage,
   messageSetSignature,
   type InboxQuota,
-} from "@amarnai/db";
+} from "@aziru/db";
 import { isInjectionEnabled, resolveProviderRef } from "../services/provider-thread.js";
 import {
   createAIProvider,
@@ -15,11 +15,11 @@ import {
   SUMMARY_PROMPT_VERSION,
   type SummaryFormat,
   type ThreadMessage,
-} from "@amarnai/ai";
-import { getThreadSummaryLimit, getSummaryQuotaResetsAt } from "@amarnai/shared";
-import { matchLocale, LOCALE_ENGLISH_LANGUAGE_NAMES } from "@amarnai/i18n";
-import { config } from "@amarnai/config";
-import { createMailProvider } from "@amarnai/mail";
+} from "@aziru/ai";
+import { getThreadSummaryLimit, getSummaryQuotaResetsAt } from "@aziru/shared";
+import { matchLocale, LOCALE_ENGLISH_LANGUAGE_NAMES } from "@aziru/i18n";
+import { config } from "@aziru/config";
+import { createMailProvider } from "@aziru/mail";
 
 // ─── Lazy thread summaries ─────────────────────────────────────────────────────
 //

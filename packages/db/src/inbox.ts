@@ -2,7 +2,7 @@ import {
   DEFAULT_CATCH_ALL_NAME,
   DEFAULT_CATCH_ALL_DESCRIPTION,
   DEFAULT_CATCH_ALL_SEED_POSITION,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import { db } from "./client.js";
 
 // Ensure a workspace has its two mandatory taxonomy nodes: the root ("Inbox")

@@ -5,7 +5,7 @@ const { mockProviderHasWritebackScope } = vi.hoisted(() => ({
   mockProviderHasWritebackScope: vi.fn(),
 }));
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db = {
     workspace: { findUnique: vi.fn() },
     workspaceMember: { findUnique: vi.fn() },
@@ -15,7 +15,7 @@ vi.mock("@amarnai/db", () => {
   return { db };
 });
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   providerHasWritebackScope: mockProviderHasWritebackScope,
 }));
 
@@ -24,8 +24,8 @@ vi.mock("../queues.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
-import { config } from "@amarnai/config";
+import { db } from "@aziru/db";
+import { config } from "@aziru/config";
 
 const WS = "ws-1";
 

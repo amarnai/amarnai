@@ -4,9 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { InjectedThreadPanel } from "@amarnai/panel";
-import "@amarnai/ui/emails/styles";
-import "@amarnai/panel/styles";
+import { InjectedThreadPanel } from "@aziru/panel";
+import "@aziru/ui/emails/styles";
+import "@aziru/panel/styles";
 import { paneTokenStore } from "@/lib/outlook/paneTokenStore";
 import { whenOfficeReady, type OfficeLike } from "@/lib/outlook/officeHost";
 import { createOutlookPanelHost } from "@/lib/outlook/panelHost";
@@ -26,7 +26,7 @@ type Stage =
 /**
  * The Amarnai task pane.
  *
- * Everything of substance is @amarnai/panel, the same component Gmail's sidebar
+ * Everything of substance is @aziru/panel, the same component Gmail's sidebar
  * renders — so an Outlook user and a Gmail user see the same panel, with the
  * same states, and neither provider can quietly fall behind the other. What is
  * Outlook-specific and lives here: waiting for Office.js, the pane's own

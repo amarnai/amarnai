@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 /**
  * Whether a user may edit a workspace's taxonomy. OWNERs always may; MEMBERs may

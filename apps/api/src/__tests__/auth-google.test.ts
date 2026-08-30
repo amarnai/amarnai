@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     // issueAccessTokenForUser reads the account's current epoch to stamp the token.
     user: { findUnique: vi.fn(async () => ({ sessionEpoch: 0 })) },
@@ -15,7 +15,7 @@ vi.mock("../queues.js", () => ({
   provisionLabelsQueue: { add: vi.fn().mockResolvedValue({}) },
 }));
 
-vi.mock("@amarnai/gmail", () => {
+vi.mock("@aziru/gmail", () => {
   class GmailApiError extends Error {
     status: number;
     constructor(message: string, status = 400) {
@@ -54,7 +54,7 @@ vi.mock("@amarnai/gmail", () => {
   };
 });
 
-vi.mock("@amarnai/auth", () => ({
+vi.mock("@aziru/auth", () => ({
   provisionGoogleUser: vi.fn(),
   issueAccessToken: vi.fn(async () => "access-tok"),
   issueRefreshToken: vi.fn(async () => ({
@@ -92,12 +92,12 @@ import {
   exchangeServerAuthCode,
   exchangeAuthCode,
   GmailApiError,
-} from "@amarnai/gmail";
-import { provisionGoogleUser, issueAccessToken, rotateRefreshToken } from "@amarnai/auth";
-import { db } from "@amarnai/db";
+} from "@aziru/gmail";
+import { provisionGoogleUser, issueAccessToken, rotateRefreshToken } from "@aziru/auth";
+import { db } from "@aziru/db";
 import { syncInboxQueue } from "../services/queue-client.js";
 import { provisionLabelsQueue } from "../queues.js";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 const GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 

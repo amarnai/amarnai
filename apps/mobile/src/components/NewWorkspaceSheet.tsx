@@ -14,7 +14,7 @@ import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { MessageDescriptor } from '@lingui/core';
-import { colors, fontWeight, fontSize, radii, space } from '@amarnai/tokens';
+import { colors, fontWeight, fontSize, radii, space } from '@aziru/tokens';
 import { useSession } from '../auth/session';
 import { startCheckout } from '../billing/api';
 import { setPendingCheckout } from '../billing/pendingCheckout';

@@ -3,7 +3,7 @@ import {
   validateTaxonomyTransfer,
   type InboxProfile,
   type TaxonomyTransferFile,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import type { AIProvider } from "../types.js";
 import { extractJSON } from "../json-util.js";
 import { buildTaxonomyGenerationMessages, buildRepairMessage } from "./prompt.js";

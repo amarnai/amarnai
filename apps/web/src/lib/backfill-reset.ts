@@ -1,4 +1,4 @@
-import { Prisma } from "@amarnai/db";
+import { Prisma } from "@aziru/db";
 
 // Reset a workspace's backfill so the worker's sync scheduler re-enqueues a fresh
 // scan up to the current (possibly higher) plan cap. Shared by the plan-upgrade

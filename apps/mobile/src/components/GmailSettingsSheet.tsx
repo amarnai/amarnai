@@ -12,8 +12,8 @@ import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { I18n, MessageDescriptor } from '@lingui/core';
-import { colors, space, fontSize, fontWeight, radii } from '@amarnai/tokens';
-import type { ApiClient, GmailConnection, SyncStatus } from '@amarnai/api-client';
+import { colors, space, fontSize, fontWeight, radii } from '@aziru/tokens';
+import type { ApiClient, GmailConnection, SyncStatus } from '@aziru/api-client';
 import { SheetLayout } from './SheetLayout';
 import { useConnectGmail } from '../auth/useConnectGmail';
 

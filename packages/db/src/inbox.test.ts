@@ -19,7 +19,7 @@ import { ensureInboxTaxonomy } from "./inbox";
 import {
   DEFAULT_CATCH_ALL_NAME,
   DEFAULT_CATCH_ALL_DESCRIPTION,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 
 const WS_ID = "ws-test-1";
 

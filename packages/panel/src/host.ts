@@ -1,4 +1,4 @@
-import type { ProviderRefKind, TokenStore } from "@amarnai/api-client";
+import type { ProviderRefKind, TokenStore } from "@aziru/api-client";
 
 // The seam between the panel and the mail client it is rendered inside.
 //

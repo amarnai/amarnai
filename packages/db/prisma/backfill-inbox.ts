@@ -3,7 +3,7 @@
  * does not already have one. Safe to run multiple times (idempotent).
  *
  * Usage:
- *   pnpm --filter @amarnai/db backfill-inbox
+ *   pnpm --filter @aziru/db backfill-inbox
  */
 import { PrismaClient } from "@prisma/client";
 

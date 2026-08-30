@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { SignJWT } from "jose";
 import { issueAccessToken, verifyAccessToken } from "./jwt.js";
 
-// Mirrors the dev fallback in @amarnai/config (no AUTH_JWT_SECRET in tests).
+// Mirrors the dev fallback in @aziru/config (no AUTH_JWT_SECRET in tests).
 const SECRET = new TextEncoder().encode("dev-auth-jwt-secret");
 
 describe("access tokens", () => {

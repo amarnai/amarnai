@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
-import { space } from '@amarnai/tokens';
+import { space } from '@aziru/tokens';
 
 interface Props {
   children: ReactNode;

@@ -6,7 +6,7 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { api } from "@/lib/api";
-import type { NotificationItem } from "@amarnai/api-client";
+import type { NotificationItem } from "@aziru/api-client";
 import { describeNotification, type NotificationAction } from "@/lib/notifications";
 import { runNotificationAction } from "@/lib/notificationAction";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Trans } from "@lingui/react/macro";
-import { folderInkVar } from "@amarnai/core/emails";
+import { folderInkVar } from "@aziru/core/emails";
 import { Glyph, FOLDER_GLYPH, MUTE_GLYPH } from "../icons/glyphs.js";
 import type { FolderItem } from "./types.js";
 import "./folder-tree.css";

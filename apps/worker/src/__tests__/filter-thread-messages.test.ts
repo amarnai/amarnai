@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import type { SnapshotMessage } from "@amarnai/ai";
-import type { ThreadSnapshot } from "@amarnai/ai";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import type { SnapshotMessage } from "@aziru/ai";
+import type { ThreadSnapshot } from "@aziru/ai";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
 import {
   applyThreadFilter,
   computeThreadLabelFlags,

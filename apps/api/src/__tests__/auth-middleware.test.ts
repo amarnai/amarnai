@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, INTERNAL_TOKEN } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspace: { findMany: vi.fn() },
     user: { findUnique: vi.fn() },
@@ -9,8 +9,8 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app, { sessionEpochCache } from "../app.js";
-import { db } from "@amarnai/db";
-import { issueAccessToken } from "@amarnai/auth";
+import { db } from "@aziru/db";
+import { issueAccessToken } from "@aziru/auth";
 
 const USER_ID = "user-1";
 

@@ -4,7 +4,7 @@ import {
   resolveWorkspaceIdForMailbox,
   InjectionDisabledError,
   type ApiClient,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import { ext } from "../platform/ext.js";
 import { extensionTokenStore } from "../auth/tokenStore.js";
 import { API_BASE_URL } from "../config.js";

@@ -22,7 +22,7 @@ export default defineConfig({
     // `// @vitest-environment jsdom` docblock.
     server: {
       deps: {
-        inline: [/^@amarnai\//],
+        inline: [/^@aziru\//],
       },
     },
   },

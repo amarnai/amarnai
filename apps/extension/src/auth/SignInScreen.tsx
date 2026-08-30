@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { GoogleGIcon, MicrosoftIcon } from "@amarnai/ui";
+import { GoogleGIcon, MicrosoftIcon } from "@aziru/ui";
 import { useSession } from "./session";
 import { GoogleAuthCancelledError } from "./googleAuth";
 import { MicrosoftAuthCancelledError } from "./microsoftAuth";

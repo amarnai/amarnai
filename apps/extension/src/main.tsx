@@ -7,15 +7,15 @@ import { createRoot } from "react-dom/client";
 import "@fontsource-variable/geist/wght.css";
 import "@fontsource-variable/geist-mono/wght.css";
 import "./styles/globals.css";
-import "@amarnai/ui/theme/styles";
-import "@amarnai/ui/tooltip/styles";
-import "@amarnai/ui/switch/styles";
-import "@amarnai/ui/emails/styles";
-import "@amarnai/ui/plan-setup/styles";
-import "@amarnai/ui/upgrade/styles";
-import "@amarnai/ui/settings/styles";
-import "@amarnai/ui/taxonomy-editor/styles";
-import { applyStoredThemeSync } from "@amarnai/ui";
+import "@aziru/ui/theme/styles";
+import "@aziru/ui/tooltip/styles";
+import "@aziru/ui/switch/styles";
+import "@aziru/ui/emails/styles";
+import "@aziru/ui/plan-setup/styles";
+import "@aziru/ui/upgrade/styles";
+import "@aziru/ui/settings/styles";
+import "@aziru/ui/taxonomy-editor/styles";
+import { applyStoredThemeSync } from "@aziru/ui";
 import { App } from "./App";
 
 // Set data-theme from stored preference (or the OS) before React mounts, so the

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Trans } from "@lingui/react/macro";
-import { Switch } from "@amarnai/ui";
+import { Switch } from "@aziru/ui";
 import { api } from "@/lib/api";
 
 type Props = {

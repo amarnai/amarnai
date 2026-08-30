@@ -3,15 +3,15 @@ import Google from "next-auth/providers/google";
 import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 import Credentials from "next-auth/providers/credentials";
 import type { Provider } from "next-auth/providers";
-import { verifyCredentials, provisionGoogleUser, provisionMicrosoftUser } from "@amarnai/auth";
-import { GMAIL_READONLY_SCOPE, GMAIL_MODIFY_SCOPE, parseGrantedScopes } from "@amarnai/gmail";
+import { verifyCredentials, provisionGoogleUser, provisionMicrosoftUser } from "@aziru/auth";
+import { GMAIL_READONLY_SCOPE, GMAIL_MODIFY_SCOPE, parseGrantedScopes } from "@aziru/gmail";
 import {
   OUTLOOK_SCOPES,
   OUTLOOK_UPFRONT_SCOPES,
   accountTypeFromIdToken,
   parseGrantedScopes as parseOutlookScopes,
-} from "@amarnai/outlook";
-import { db } from "@amarnai/db";
+} from "@aziru/outlook";
+import { db } from "@aziru/db";
 import { triggerPostConnectHooks } from "@/lib/post-connect-hooks";
 import { resolveSessionToken } from "@/lib/session-jwt";
 import { redeemBridgeCode } from "@/lib/bridge-code";
@@ -84,7 +84,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        // Shared credential check (bcrypt + DB) — see @amarnai/auth.
+        // Shared credential check (bcrypt + DB) — see @aziru/auth.
         const userId = await verifyCredentials(email, password);
         if (!userId) return null;
 

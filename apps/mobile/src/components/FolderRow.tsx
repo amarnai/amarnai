@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { FolderItem } from '@amarnai/core';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { FolderItem } from '@aziru/core';
 
 interface FolderRowProps {
   folder: FolderItem;

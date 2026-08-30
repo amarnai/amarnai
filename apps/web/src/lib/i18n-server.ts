@@ -7,7 +7,7 @@ import {
   isSupportedLocale,
   SOURCE_LOCALE,
   type SupportedLocale,
-} from "@amarnai/i18n";
+} from "@aziru/i18n";
 
 // Resolves the request locale from the `x-locale` header set by proxy.ts.
 export async function getRequestLocale(): Promise<SupportedLocale> {

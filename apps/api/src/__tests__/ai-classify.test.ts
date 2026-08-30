@@ -4,7 +4,7 @@ import { authed } from "./helpers.js";
 const mockBilling = vi.hoisted(() => ({ enforceThreadSortQuota: true }));
 const { mockResolveInboxQuota } = vi.hoisted(() => ({ mockResolveInboxQuota: vi.fn() }));
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     redis: { url: "redis://localhost:6379" },
     billing: mockBilling,
@@ -12,7 +12,7 @@ vi.mock("@amarnai/config", () => ({
   },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     emailThread: { findFirst: vi.fn(), update: vi.fn() },
@@ -32,8 +32,8 @@ vi.mock("../queues.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
-import { getThreadSortLimit } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { getThreadSortLimit } from "@aziru/shared";
 import { classifyThreadQueue } from "../queues.js";
 
 const FREE_LIMIT = getThreadSortLimit("FREE");

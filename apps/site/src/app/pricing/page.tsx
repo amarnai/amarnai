@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SOURCE_LOCALE } from "@amarnai/i18n";
+import { SOURCE_LOCALE } from "@aziru/i18n";
 import { initServerI18n } from "@/lib/i18n-server";
 import { buildPricingMetadata } from "@/lib/seo";
 import { PricingContent } from "@/components/pricing/PricingContent";

@@ -1,7 +1,7 @@
 // Outlook Office Add-in configuration.
 //
 // Mirrors the LABEL_WRITEBACK_ENABLED pattern in writeback-flag.ts: apps/web
-// re-reads the raw env rather than importing @amarnai/config, so the web build
+// re-reads the raw env rather than importing @aziru/config, so the web build
 // does not pull the server config package in.
 
 /** The path Outlook loads as the task pane, and the only path framed by Outlook. */

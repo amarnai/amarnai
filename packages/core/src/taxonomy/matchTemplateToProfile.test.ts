@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { InboxProfile } from "@amarnai/shared";
+import type { InboxProfile } from "@aziru/shared";
 import { matchTemplateToProfile } from "./matchTemplateToProfile.js";
 import { TAXONOMY_TEMPLATES } from "./templates.js";
 

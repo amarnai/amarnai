@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db } from "@amarnai/db";
-import { getCollaboratorLimit } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { getCollaboratorLimit } from "@aziru/shared";
 import { resolveBillingUser, resolveBillingWorkspaceId } from "@/lib/billing-auth";
 import { applyPaidPlanChange } from "@/lib/billing-mutations";
 

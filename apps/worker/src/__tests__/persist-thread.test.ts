@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailThread: { upsert: vi.fn() },
     emailMessage: { upsert: vi.fn() },
@@ -11,7 +11,7 @@ vi.mock("@amarnai/db", () => ({
 
 // ─── Import after mocks ───────────────────────────────────────────────────────
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { upsertEmailThread, upsertEmailMessages } from "../jobs/persist-thread.js";
 import type { ThreadLabelFlags } from "../jobs/filter-thread-messages.js";
 

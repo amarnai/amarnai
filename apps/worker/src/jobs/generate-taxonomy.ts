@@ -1,15 +1,15 @@
 import { Worker } from "bullmq";
-import { db, buildInboxProfile, resolveInboxQuota, recordMeterUsage, taxonomyGenDedupToken, Prisma } from "@amarnai/db";
+import { db, buildInboxProfile, resolveInboxQuota, recordMeterUsage, taxonomyGenDedupToken, Prisma } from "@aziru/db";
 import {
   createAIProvider,
   getTaxonomyAIProviderConfig,
   generateTaxonomyFromProfile,
-} from "@amarnai/ai";
-import { config } from "@amarnai/config";
-import { matchTemplateToProfile, layoutTaxonomyTransfer, localizeTransferFile } from "@amarnai/core/taxonomy";
+} from "@aziru/ai";
+import { config } from "@aziru/config";
+import { matchTemplateToProfile, layoutTaxonomyTransfer, localizeTransferFile } from "@aziru/core/taxonomy";
 import { setupI18n } from "@lingui/core";
-import { loadCatalog, matchLocale, translateSource, LOCALE_ENGLISH_LANGUAGE_NAMES } from "@amarnai/i18n";
-import { computeGenerationEligibility } from "@amarnai/shared";
+import { loadCatalog, matchLocale, translateSource, LOCALE_ENGLISH_LANGUAGE_NAMES } from "@aziru/i18n";
+import { computeGenerationEligibility } from "@aziru/shared";
 import {
   generateTaxonomyQueue,
   QUEUE_GENERATE_TAXONOMY,

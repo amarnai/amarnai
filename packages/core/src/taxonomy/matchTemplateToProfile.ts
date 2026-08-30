@@ -1,4 +1,4 @@
-import type { InboxProfile } from "@amarnai/shared";
+import type { InboxProfile } from "@aziru/shared";
 import { TAXONOMY_TEMPLATES, type TaxonomyTemplate } from "./templates.js";
 
 // Deterministic template matcher for taxonomy generation. Given an InboxProfile,

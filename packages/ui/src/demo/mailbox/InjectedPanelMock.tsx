@@ -4,7 +4,7 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { CSSProperties } from "react";
-import { folderColorVars } from "@amarnai/core/emails";
+import { folderColorVars } from "@aziru/core/emails";
 import { AmarnaiMark } from "../../icons/AmarnaiMark.js";
 import type { ThreadItem } from "../../emails/types.js";
 import type { MockProvider } from "./types.js";

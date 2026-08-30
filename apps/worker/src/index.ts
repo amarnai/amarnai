@@ -1,9 +1,9 @@
-import { db, pruneIdempotencyMarkers, deleteStaleUnverifiedUsers, decayStaleReviews } from "@amarnai/db";
-import { config } from "@amarnai/config";
-import { createMailProvider, MailAuthError } from "@amarnai/mail";
-import { deleteExpiredRefreshTokens } from "@amarnai/auth";
-import { deleteExpiredBridgeCodes } from "@amarnai/auth/bridge-code";
-import { processPendingSubscriptionCancellations } from "@amarnai/billing";
+import { db, pruneIdempotencyMarkers, deleteStaleUnverifiedUsers, decayStaleReviews } from "@aziru/db";
+import { config } from "@aziru/config";
+import { createMailProvider, MailAuthError } from "@aziru/mail";
+import { deleteExpiredRefreshTokens } from "@aziru/auth";
+import { deleteExpiredBridgeCodes } from "@aziru/auth/bridge-code";
+import { processPendingSubscriptionCancellations } from "@aziru/billing";
 import {
   createEmbeddingProvider,
   getEmbeddingProviderConfig,
@@ -11,7 +11,7 @@ import {
   createAIProvider,
   getRoutingAIProviderConfig,
   LLMAuthenticationError,
-} from "@amarnai/ai";
+} from "@aziru/ai";
 import { createSyncInboxWorker } from "./jobs/sync-inbox.js";
 import { createClassifyThreadWorker } from "./jobs/classify-thread.js";
 import { createBackfillInboxWorker } from "./jobs/backfill-inbox.js";

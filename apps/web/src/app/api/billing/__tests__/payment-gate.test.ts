@@ -13,7 +13,7 @@ const { testStripe } = vi.hoisted(() => {
 
 vi.mock("@/lib/stripe", () => ({ getStripe: () => testStripe, getPriceId: vi.fn() }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspace: { findFirst: vi.fn(), update: vi.fn(), updateMany: vi.fn() },
     providerSyncState: { updateMany: vi.fn() },
@@ -25,7 +25,7 @@ vi.mock("@amarnai/db", () => ({
   Prisma: { PrismaClientKnownRequestError: class extends Error {} },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { POST } from "@/app/api/billing/webhook/route";
 
 const WEBHOOK_SECRET = "test_signing_secret_not_real";

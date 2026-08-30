@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { isPredominantlyCJK } from "@amarnai/shared";
+import { isPredominantlyCJK } from "@aziru/shared";
 import type { TaxonomyEdgeInput } from "../types.js";
 import type { EmbeddableNode } from "./types.js";
 

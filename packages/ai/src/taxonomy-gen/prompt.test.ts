@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { InboxProfile, TaxonomyTransferFile } from "@amarnai/shared";
+import type { InboxProfile, TaxonomyTransferFile } from "@aziru/shared";
 import { buildTaxonomyGenerationMessages, buildRepairMessage } from "./prompt.js";
 
 const SEED: TaxonomyTransferFile = {

@@ -9,7 +9,7 @@ const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 const dir = dirname(fileURLToPath(import.meta.url));
 const cssPath = resolve(dir, "../../../apps/web/src/app/globals.css");
 
-describe("@amarnai/tokens", () => {
+describe("@aziru/tokens", () => {
   describe("colors", () => {
     it("every color value is a 6-digit hex string", () => {
       for (const [key, value] of Object.entries(colors)) {

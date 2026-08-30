@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, resolveInboxQuota, recordMeterUsage, inboxKeyFor, meterWindowStart, threadSortDedupToken } from "@amarnai/db";
-import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig, isDraftMessage } from "@amarnai/ai";
-import type { EmbeddableNode } from "@amarnai/ai";
-import { getThreadSortLimit, getDraftQuotaResetsAt } from "@amarnai/shared";
-import { config } from "@amarnai/config";
-import { createMailProvider, MailThreadNotFoundError } from "@amarnai/mail";
-import { DEDUP_WRITEBACK } from "@amarnai/queue";
+import { db, resolveInboxQuota, recordMeterUsage, inboxKeyFor, meterWindowStart, threadSortDedupToken } from "@aziru/db";
+import { createAIProvider, createEmbeddingProvider, sortThreadByEmbedding, snapshotToThreadMessages, getAIProviderConfig, getEmbeddingProviderConfig, isDraftMessage } from "@aziru/ai";
+import type { EmbeddableNode } from "@aziru/ai";
+import { getThreadSortLimit, getDraftQuotaResetsAt } from "@aziru/shared";
+import { config } from "@aziru/config";
+import { createMailProvider, MailThreadNotFoundError } from "@aziru/mail";
+import { DEDUP_WRITEBACK } from "@aziru/queue";
 import { writebackThreadLabelQueue } from "../queues.js";
 // GmailClient is retained only for the Gmail-specific dev endpoint below
 // (listRecentThreads is a debug convenience, not part of the neutral seam).

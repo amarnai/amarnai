@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { config } from "@amarnai/config";
-import { db } from "@amarnai/db";
-import { verifyAccessToken, StaleWhileErrorCache } from "@amarnai/auth";
+import { config } from "@aziru/config";
+import { db } from "@aziru/db";
+import { verifyAccessToken, StaleWhileErrorCache } from "@aziru/auth";
 import type { MiddlewareHandler } from "hono";
 import type { AppEnv } from "./env.js";
 import { rateLimit } from "./services/rate-limit.js";

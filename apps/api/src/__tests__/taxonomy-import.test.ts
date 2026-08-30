@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspaceMember: {
       findUnique: vi.fn(),
@@ -50,10 +50,10 @@ vi.mock("../services/taxonomy-migration.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { classifyThreadQueue } from "../queues.js";
 import { latestClassificationsByThread } from "../services/taxonomy-migration.js";
-import { DEDUP_CLASSIFY_MIGRATION } from "@amarnai/queue";
+import { DEDUP_CLASSIFY_MIGRATION } from "@aziru/queue";
 
 const WS_ID = "ws-1";
 const ROOT_ID = "existing-root-id";

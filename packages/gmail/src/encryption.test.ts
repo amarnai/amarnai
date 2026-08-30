@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 // path (storeOutlookConnection) call the SAME encrypt(), so exercising these
 // functions directly covers token encryption for both providers.
 const state = vi.hoisted(() => ({ keyHex: "a3f1c0de".repeat(8) }));
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     get tokenEncryptionKey() {
       return state.keyHex;

@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspace: {
       findUnique: vi.fn(),
@@ -26,7 +26,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 const EDGE_ID = "edge-1";

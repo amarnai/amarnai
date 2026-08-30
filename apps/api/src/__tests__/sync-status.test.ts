@@ -5,7 +5,7 @@ const { mockIsStripeConfigured } = vi.hoisted(() => ({
   mockIsStripeConfigured: vi.fn(() => true),
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     workspaceMember: { findUnique: vi.fn() },
     workspace: { findUnique: vi.fn() },
@@ -24,10 +24,10 @@ vi.mock("@amarnai/db", () => ({
   MeterKind: { BACKFILL: "BACKFILL" },
 }));
 
-vi.mock("@amarnai/billing", () => ({ isStripeConfigured: mockIsStripeConfigured }));
+vi.mock("@aziru/billing", () => ({ isStripeConfigured: mockIsStripeConfigured }));
 
 import app from "../app.js";
-import { db, getInboxBackfillCeiling, getMeterUsed, getBackfillGraceUsed } from "@amarnai/db";
+import { db, getInboxBackfillCeiling, getMeterUsed, getBackfillGraceUsed } from "@aziru/db";
 
 const WS = "ws-1";
 

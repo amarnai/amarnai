@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { colors } from '@amarnai/tokens';
+import { colors } from '@aziru/tokens';
 import { NavIcon } from '../../../src/components/NavIcon';
 
 export default function TabsLayout() {

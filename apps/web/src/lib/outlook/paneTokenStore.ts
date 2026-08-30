@@ -1,4 +1,4 @@
-import type { StoredTokens, TokenStore } from "@amarnai/api-client";
+import type { StoredTokens, TokenStore } from "@aziru/api-client";
 
 // Bearer tokens for the Outlook task pane.
 //

@@ -15,9 +15,9 @@ import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import type { MessageDescriptor } from '@lingui/core';
-import type { BillingState, PlanId, BillingCycle } from '@amarnai/shared';
-import type { QuotaInfo } from '@amarnai/api-client';
-import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
+import type { BillingState, PlanId, BillingCycle } from '@aziru/shared';
+import type { QuotaInfo } from '@aziru/api-client';
+import { colors, fontSize, fontWeight, radii, space } from '@aziru/tokens';
 import { useSession } from '../../src/auth/session';
 import {
   cancelSubscription,

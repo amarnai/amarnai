@@ -4,7 +4,7 @@
 // because the polling scheduler covers sync and the worker's daily renewal
 // covers the watch — but they must still be *visible* in logs when they break.
 
-import { maybeCreateExtensionNudge } from "@amarnai/db";
+import { maybeCreateExtensionNudge } from "@aziru/db";
 
 /**
  * Describe a fetch failure for logging. A rejected `fetch` is a bare

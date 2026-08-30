@@ -1,4 +1,4 @@
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
 
 // Which threads a workspace is allowed to see at all, before any queue, folder
 // or search filter narrows it further.

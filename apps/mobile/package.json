@@ -1,11 +1,11 @@
 {
-  "name": "@amarnai/mobile",
+  "name": "@aziru/mobile",
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start --dev-client",
-    "eas-build-post-install": "pnpm --filter @amarnai/i18n compile",
+    "eas-build-post-install": "pnpm --filter @aziru/i18n compile",
     "android": "expo run:android",
     "build": "eas build --platform android --profile production --local",
     "build:cloud": "eas build --platform android --profile production --no-wait",
@@ -15,11 +15,11 @@
     "ios": "expo run:ios"
   },
   "dependencies": {
-    "@amarnai/api-client": "workspace:*",
-    "@amarnai/core": "workspace:*",
-    "@amarnai/i18n": "workspace:*",
-    "@amarnai/shared": "workspace:*",
-    "@amarnai/tokens": "workspace:*",
+    "@aziru/api-client": "workspace:*",
+    "@aziru/core": "workspace:*",
+    "@aziru/i18n": "workspace:*",
+    "@aziru/shared": "workspace:*",
+    "@aziru/tokens": "workspace:*",
     "@expo/metro-runtime": "~6.1.2",
     "@formatjs/intl-getcanonicallocales": "^3.2.10",
     "@formatjs/intl-locale": "^5.3.9",

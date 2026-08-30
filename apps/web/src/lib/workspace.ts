@@ -1,9 +1,9 @@
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { db } from "@amarnai/db";
-import { getOrCreateDefaultWorkspace } from "@amarnai/auth";
+import { db } from "@aziru/db";
+import { getOrCreateDefaultWorkspace } from "@aziru/auth";
 
-// Provisioning of the default workspace is shared with the API (see @amarnai/auth).
+// Provisioning of the default workspace is shared with the API (see @aziru/auth).
 // Re-exported so existing web imports from "@/lib/workspace" keep working.
 export { getOrCreateDefaultWorkspace };
 

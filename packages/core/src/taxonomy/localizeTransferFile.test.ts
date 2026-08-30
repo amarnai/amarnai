@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 import { localizeTransferFile } from "./localizeTransferFile.js";
 import { localizeTemplate } from "./localizeTemplate.js";
 import { TAXONOMY_TEMPLATES } from "./templates.js";

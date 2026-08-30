@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 import { layoutTaxonomyTransfer } from "./layoutTransfer.js";
 
 function node(ref: string, isRoot = false) {

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { GoogleGIcon, OutlookIcon } from "@amarnai/ui";
+import { GoogleGIcon, OutlookIcon } from "@aziru/ui";
 import type { MailProvider } from "@/lib/api";
 import { AziruIntroDialog } from "./AziruIntroDialog";
 

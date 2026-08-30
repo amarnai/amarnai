@@ -5,7 +5,7 @@ const config: NextConfig = {
   images: {
     unoptimized: true,
   },
-  transpilePackages: ["@amarnai/i18n", "@amarnai/ui"],
+  transpilePackages: ["@aziru/i18n", "@aziru/ui"],
   experimental: {
     swcPlugins: [["@lingui/swc-plugin", {}]],
   },

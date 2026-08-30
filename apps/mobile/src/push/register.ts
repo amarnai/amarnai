@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import type { ApiClient } from '@amarnai/api-client';
+import type { ApiClient } from '@aziru/api-client';
 import { registerNotificationCategories } from './categories';
 
 // Show triage pushes while the app is foregrounded (otherwise Expo silently

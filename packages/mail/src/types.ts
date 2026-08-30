@@ -1,4 +1,4 @@
-import type { ThreadSnapshot } from "@amarnai/ai";
+import type { ThreadSnapshot } from "@aziru/ai";
 
 /**
  * Provider-neutral mail contract. This is the seam every mailbox provider sits

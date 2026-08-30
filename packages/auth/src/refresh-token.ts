@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "crypto";
-import { db, Prisma } from "@amarnai/db";
+import { db, Prisma } from "@aziru/db";
 
 const REFRESH_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
@@ -12,7 +12,7 @@ const REUSE_GRACE_MS = 60 * 1000; // 60 seconds
 
 // Accepts either the base client or an interactive-transaction client so a
 // rotation can issue its child inside the same transaction. Mirrors the DbClient
-// seam in @amarnai/db (usage-meter.ts).
+// seam in @aziru/db (usage-meter.ts).
 type DbClient = typeof db | Prisma.TransactionClient;
 
 // The raw token is shown to the device once; only this hash is persisted, so a

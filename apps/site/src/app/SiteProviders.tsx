@@ -1,6 +1,6 @@
 import type { Messages } from "@lingui/core";
-import { AppDownloadBanner, ThemeProvider } from "@amarnai/ui";
-import { type SupportedLocale } from "@amarnai/i18n";
+import { AppDownloadBanner, ThemeProvider } from "@aziru/ui";
+import { type SupportedLocale } from "@aziru/i18n";
 import { LinguiSiteProvider } from "./LinguiSiteProvider";
 
 // Shared provider stack for the marketing site: theme context, the client-side

@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { Prisma } from "@prisma/client";
-import { normalizeInboxKey } from "@amarnai/shared";
+import { normalizeInboxKey } from "@aziru/shared";
 import { db } from "./client.js";
 
 // The single free trial is tracked by a reset-immune TrialClaim keyed on the

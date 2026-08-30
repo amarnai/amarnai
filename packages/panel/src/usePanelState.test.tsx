@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
-import { InjectionDisabledError, type ApiClient } from "@amarnai/api-client";
+import { InjectionDisabledError, type ApiClient } from "@aziru/api-client";
 import { usePanelState } from "./usePanelState.js";
 import type { PanelHost, PanelThreadContext } from "./host.js";
 

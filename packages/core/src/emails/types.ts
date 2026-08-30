@@ -5,7 +5,7 @@ export type FolderItem = {
   parentId: string | null;
   ignored: boolean;
   // Optional per-folder color override (a palette key). null/absent = use the
-  // deterministic default. Resolved to a swatch via @amarnai/core folderColor.
+  // deterministic default. Resolved to a swatch via @aziru/core folderColor.
   colorKey?: string | null;
 };
 

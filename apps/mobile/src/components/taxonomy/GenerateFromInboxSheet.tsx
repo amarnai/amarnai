@@ -3,14 +3,14 @@ import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
 import { useCallback } from 'react';
-import { translateSource } from '@amarnai/i18n';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { TaxonomyTransferFile } from '@amarnai/shared';
-import type { TaxonomyGenerationStatusResult } from '@amarnai/api-client';
+import { translateSource } from '@aziru/i18n';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { TaxonomyTransferFile } from '@aziru/shared';
+import type { TaxonomyGenerationStatusResult } from '@aziru/api-client';
 import {
   generationReasonText as reasonText,
   generationPreviewRows as previewRows,
-} from '@amarnai/core/taxonomy';
+} from '@aziru/core/taxonomy';
 import { SheetLayout } from '../SheetLayout';
 
 interface Props {

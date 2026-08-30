@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SOURCE_LOCALE } from "@amarnai/i18n";
+import { SOURCE_LOCALE } from "@aziru/i18n";
 
 // The source locale is served at the bare path (`/`, `/pricing`, ...), not under
 // `/{locale}`. But `output: export` requires every `[locale]` param to be

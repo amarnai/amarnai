@@ -1,4 +1,4 @@
-import type { ApiTransport, TransportInit } from '@amarnai/api-client';
+import type { ApiTransport, TransportInit } from '@aziru/api-client';
 import type { StoredTokens, TokenStore } from './tokenStore';
 
 export interface MobileTransportDeps {

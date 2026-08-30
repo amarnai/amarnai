@@ -2,8 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import type { ApiClient, Workspace } from "@amarnai/api-client";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import type { ApiClient, Workspace } from "@aziru/api-client";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
 
 // Ownership has two representations in the schema: Workspace.ownerUserId and
 // WorkspaceMember.role. Every server check behind these controls reads the role,

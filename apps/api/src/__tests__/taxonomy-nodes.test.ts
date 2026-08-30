@@ -1,8 +1,8 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
-import { MAX_TAXONOMY_NON_ROOT_NODES } from "@amarnai/shared";
+import { MAX_TAXONOMY_NON_ROOT_NODES } from "@aziru/shared";
 import { authed } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     $queryRaw: vi.fn(),
     workspace: {
@@ -44,7 +44,7 @@ vi.mock("../queues.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 const NODE_ID = "node-1";

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { ApiClient, GmailConnection } from '@amarnai/api-client';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { ApiClient, GmailConnection } from '@aziru/api-client';
 import { useConnectGmail } from '../../auth/useConnectGmail';
 
 interface DisconnectedBannerProps {

@@ -1,4 +1,4 @@
-import type { ThreadSnapshot } from "@amarnai/ai";
+import type { ThreadSnapshot } from "@aziru/ai";
 import { decrypt } from "./encryption.js";
 import { normalizeGmailThread, getHeader, parseFrom, extractEmails } from "./gmail-thread-adapter.js";
 

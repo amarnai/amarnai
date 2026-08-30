@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { WorkspaceNameSection, WorkspaceLanguageSection } from "@amarnai/ui/settings";
+import { WorkspaceNameSection, WorkspaceLanguageSection } from "@aziru/ui/settings";
 import { api } from "@/lib/api";
 
 /**

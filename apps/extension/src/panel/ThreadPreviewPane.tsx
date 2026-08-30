@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import type { ApiClient, Draft } from "@amarnai/api-client";
-import type { MemberItem, ThreadItem, ThreadSummaryCardState } from "@amarnai/ui/emails";
-import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, ThreadCommentsSection, TriageBar } from "@amarnai/ui/emails";
-import { chronologicalMessages } from "@amarnai/core/emails";
-import { GmailIcon, OutlookIcon } from "@amarnai/ui";
-import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
+import type { ApiClient, Draft } from "@aziru/api-client";
+import type { MemberItem, ThreadItem, ThreadSummaryCardState } from "@aziru/ui/emails";
+import { MessageCard, SuggestedDraftCard, ThreadSummaryCard, ThreadCommentsSection, TriageBar } from "@aziru/ui/emails";
+import { chronologicalMessages } from "@aziru/core/emails";
+import { GmailIcon, OutlookIcon } from "@aziru/ui";
+import { formatQuotaResetDate, TAXONOMY_MIN_NON_ROOT_NODES } from "@aziru/shared";
 import { openThreadInMail } from "../gmail/openInGmail";
-import type { OutlookAccountType } from "@amarnai/core/emails";
+import type { OutlookAccountType } from "@aziru/core/emails";
 
 type DraftState = "idle" | "loading" | "ready" | "error";
 

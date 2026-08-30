@@ -21,7 +21,7 @@ const { mockRecordMeterUsage, mockResolveInboxQuota, mockGenerateDraft, mockCrea
     mockCreateAIProvider: vi.fn(),
   }));
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     redis: { url: "redis://localhost:6379" },
     billing: { enforceDraftQuota: true },
@@ -29,7 +29,7 @@ vi.mock("@amarnai/config", () => ({
   },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     emailThread: { findFirst: vi.fn() },
@@ -46,18 +46,18 @@ vi.mock("@amarnai/db", () => ({
   recordMeterUsage: mockRecordMeterUsage,
 }));
 
-vi.mock("@amarnai/ai", () => ({
+vi.mock("@aziru/ai", () => ({
   createAIProvider: mockCreateAIProvider,
   generateDraft: mockGenerateDraft,
   getDraftAIProviderConfig: () => ({ provider: "mock" }),
 }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: () => ({ getThreadSnapshot: vi.fn() }),
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";

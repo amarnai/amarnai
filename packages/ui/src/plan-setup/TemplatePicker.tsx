@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
-import type { ApiClient } from "@amarnai/api-client";
-import { TAXONOMY_TEMPLATES, localizeTemplate } from "@amarnai/core/taxonomy";
-import { translateSource } from "@amarnai/i18n";
+import type { TaxonomyTransferFile } from "@aziru/shared";
+import type { ApiClient } from "@aziru/api-client";
+import { TAXONOMY_TEMPLATES, localizeTemplate } from "@aziru/core/taxonomy";
+import { translateSource } from "@aziru/i18n";
 
 type Props = {
   api: ApiClient;

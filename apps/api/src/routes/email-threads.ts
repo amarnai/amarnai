@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
-import { createMailProvider } from "@amarnai/mail";
+import { db } from "@aziru/db";
+import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
+import { createMailProvider } from "@aziru/mail";
 import { sniffImageContentType } from "../services/image-sniff.js";
 import {
   deriveIsClassifying,

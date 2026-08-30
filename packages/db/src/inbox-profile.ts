@@ -1,10 +1,10 @@
-import { senderIsNoReply } from "@amarnai/ai";
+import { senderIsNoReply } from "@aziru/ai";
 import {
   emailDomain,
   type InboxProfile,
   type ProfileTerm,
   type SenderCluster,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import { db } from "./client.js";
 import { eligibleThreadWhere } from "./eligible-threads.js";
 

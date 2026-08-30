@@ -1,5 +1,5 @@
 /**
- * Core type definitions for the @amarnai/ai package.
+ * Core type definitions for the @aziru/ai package.
  *
  * The classification pipeline:
  *   embedding-sorter.ts → candidate-selector.ts →

@@ -1,5 +1,5 @@
-import type { ApiClient, TaxonomyNode } from "@amarnai/api-client";
-import { snapshotsEqual, type GraphSnapshot } from "@amarnai/core/taxonomy";
+import type { ApiClient, TaxonomyNode } from "@aziru/api-client";
+import { snapshotsEqual, type GraphSnapshot } from "@aziru/core/taxonomy";
 
 /**
  * Every field the replay below writes. A field compared here but absent from the

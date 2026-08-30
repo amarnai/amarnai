@@ -1,6 +1,6 @@
-import { db, Prisma } from "@amarnai/db";
-import { GMAIL_READONLY_SCOPE } from "@amarnai/gmail";
-import { OUTLOOK_MAIL_READ_SCOPE } from "@amarnai/outlook";
+import { db, Prisma } from "@aziru/db";
+import { GMAIL_READONLY_SCOPE } from "@aziru/gmail";
+import { OUTLOOK_MAIL_READ_SCOPE } from "@aziru/outlook";
 import { getOrCreateDefaultWorkspace } from "./workspace.js";
 import { storeGmailConnection, ProviderMismatchError } from "./gmail-connection.js";
 import { storeOutlookConnection } from "./outlook-connection.js";

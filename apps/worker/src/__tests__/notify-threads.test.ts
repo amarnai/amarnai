@@ -2,15 +2,15 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     pushDevice: { findMany: vi.fn() },
     auditLog: { create: vi.fn().mockResolvedValue({}) },
   },
 }));
 
-import { db } from "@amarnai/db";
-import { PUSH_CATEGORY_THREAD_NEEDS_ATTENTION, PUSH_CHANNEL_TRIAGE } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { PUSH_CATEGORY_THREAD_NEEDS_ATTENTION, PUSH_CHANNEL_TRIAGE } from "@aziru/shared";
 import {
   checkPushBudget,
   notifyThreadNeedsAttention,

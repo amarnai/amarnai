@@ -4,9 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from '@amarnai/shared';
-import type { SyncStatus } from '@amarnai/api-client';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from '@aziru/shared';
+import type { SyncStatus } from '@aziru/api-client';
 import { BannerActionButton } from '../BannerActionButton';
 
 interface PlanCapBannerProps {

@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed } from "./helpers.js";
 
-vi.mock("@amarnai/config", () => ({
+vi.mock("@aziru/config", () => ({
   config: {
     redis: { url: "redis://localhost:6379" },
     billing: { enforceThreadSortQuota: false },
@@ -9,7 +9,7 @@ vi.mock("@amarnai/config", () => ({
   },
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   Prisma: {},
   db: {
     workspace: { findUnique: vi.fn() },
@@ -33,14 +33,14 @@ vi.mock("../services/queue-client.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { classifyThreadQueue } from "../queues.js";
-import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
+import { TAXONOMY_MIN_NON_ROOT_NODES } from "@aziru/shared";
 import {
   DEDUP_CLASSIFY_UNROUTED,
   DEDUP_CLASSIFY_UNCLASSIFIED,
   DEDUP_CLASSIFY_NEEDS_REVIEW,
-} from "@amarnai/queue";
+} from "@aziru/queue";
 
 const WS_ID = "ws-1";
 const ROOT_NODE_ID = "root-id";

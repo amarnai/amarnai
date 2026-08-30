@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
-import type { QuotaInfo } from '@amarnai/api-client';
-import { colors, fontSize, radii, space } from '@amarnai/tokens';
+import type { QuotaInfo } from '@aziru/api-client';
+import { colors, fontSize, radii, space } from '@aziru/tokens';
 
 export function UsageRow({ label, quota }: { label: string; quota: QuotaInfo | null }) {
   if (!quota) {

@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
-// Uses the REAL @amarnai/core path builder + folder-color resolver, mocking only
+// Uses the REAL @aziru/core path builder + folder-color resolver, mocking only
 // the DB and the mail adapter, so the node→path→label wiring is exercised end to end.
 
 const { mockEnsure } = vi.hoisted(() => ({ mockEnsure: vi.fn() }));
 
-vi.mock("@amarnai/config", () => ({ config: { mail: { labelWritebackEnabled: true } } }));
+vi.mock("@aziru/config", () => ({ config: { mail: { labelWritebackEnabled: true } } }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     gmailSyncSettings: { findUnique: vi.fn() },
     emailConnection: { findUnique: vi.fn() },
@@ -19,7 +19,7 @@ vi.mock("@amarnai/db", () => ({
   markGmailConnectionAuthFailed: vi.fn(),
 }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: vi.fn(() => ({ ensureFolderLabels: mockEnsure })),
   MailAuthError: class MailAuthError extends Error {},
   providerHasWritebackScope: vi.fn(() => true),
@@ -35,7 +35,7 @@ vi.mock("../queues.js", () => ({
   writebackThreadLabelQueue: { addBulk: vi.fn().mockResolvedValue([]) },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { Worker } from "bullmq";
 import { writebackThreadLabelQueue } from "../queues.js";
 import {

@@ -17,7 +17,7 @@
  * Idempotent: re-running recomputes and upserts the same rows. Forward-only.
  *
  * Usage:
- *   pnpm --filter @amarnai/db tsx prisma/seed-inbox-usage-meters.ts
+ *   pnpm --filter @aziru/db tsx prisma/seed-inbox-usage-meters.ts
  */
 import { db, inboxKeyFor, meterWindowStart, MeterKind } from "../src/index.js";
 

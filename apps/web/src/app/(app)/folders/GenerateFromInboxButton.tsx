@@ -1,19 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 import type {
   TaxonomyGenerationStatusResult,
   GenerationEligibilityReason,
-} from "@amarnai/api-client";
-import { generationReasonText, transferToDisplayGraph } from "@amarnai/core/taxonomy";
-import { Tooltip } from "@amarnai/ui";
-import { ReadOnlyTaxonomyCanvas } from "@amarnai/ui/taxonomy";
+} from "@aziru/api-client";
+import { generationReasonText, transferToDisplayGraph } from "@aziru/core/taxonomy";
+import { Tooltip } from "@aziru/ui";
+import { ReadOnlyTaxonomyCanvas } from "@aziru/ui/taxonomy";
 import { api } from "@/lib/api";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { translateSource } from "@amarnai/i18n";
+import { translateSource } from "@aziru/i18n";
 
 type Phase = "idle" | "running" | "ready" | "insufficient" | "failed" | "error";
 

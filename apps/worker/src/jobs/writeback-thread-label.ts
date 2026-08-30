@@ -1,11 +1,11 @@
 import { Worker, UnrecoverableError } from "bullmq";
-import { db, markGmailConnectionAuthFailed } from "@amarnai/db";
+import { db, markGmailConnectionAuthFailed } from "@aziru/db";
 import {
   createMailProvider,
   MailAuthError,
   MailThreadNotFoundError,
   MailInvalidLabelError,
-} from "@amarnai/mail";
+} from "@aziru/mail";
 import {
   QUEUE_WRITEBACK_THREAD_LABEL,
   type WritebackThreadLabelJobData,

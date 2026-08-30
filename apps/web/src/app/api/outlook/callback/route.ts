@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { exchangeCodeForTokens, fetchOutlookProfile } from "@/lib/outlook-oauth";
 import { handleOAuthCallback } from "@/lib/oauth-callback";
-import { parseGrantedScopes } from "@amarnai/outlook";
+import { parseGrantedScopes } from "@aziru/outlook";
 
 export async function GET(req: NextRequest) {
   return handleOAuthCallback(req, {

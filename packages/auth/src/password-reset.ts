@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { db, Prisma } from "@amarnai/db";
+import { db, Prisma } from "@aziru/db";
 
 // Password-reset tokens are valid for 1 hour.
 const RESET_TTL_MS = 60 * 60 * 1000;
@@ -90,7 +90,7 @@ export async function applyPasswordReset(
 // Issues a password-reset token for the account with this email, or returns null
 // when no token should be sent. Shared by the web forgot-password action and the
 // API /auth/forgot-password endpoint so the policy lives in exactly one place.
-// Does not send the email (kept out of this package so @amarnai/auth carries no
+// Does not send the email (kept out of this package so @aziru/auth carries no
 // mail dependency) — the caller emails the link.
 //
 // Returns null (and the caller stays silent — never revealing whether an account

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { MouseEvent } from "react";
-import type { ApiClient } from "@amarnai/api-client";
+import type { ApiClient } from "@aziru/api-client";
 import { useSession } from "../auth/session";
 import { ext } from "../platform/ext";
 import { WEB_APP_URL } from "../config";

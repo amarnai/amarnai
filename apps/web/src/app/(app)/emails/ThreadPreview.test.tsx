@@ -1,7 +1,7 @@
 import { render, screen, cleanup, waitFor } from "@/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { ThreadItem } from "@amarnai/ui/emails";
-import type { EmailThreadDetail } from "@amarnai/api-client";
+import type { ThreadItem } from "@aziru/ui/emails";
+import type { EmailThreadDetail } from "@aziru/api-client";
 import { ThreadPreview } from "./ThreadPreview";
 
 vi.mock("@/lib/api", () => ({

@@ -1,11 +1,11 @@
 import { useCallback, useReducer } from "react";
-import { historyReducer, type GraphSnapshot } from "@amarnai/core/taxonomy";
+import { historyReducer, type GraphSnapshot } from "@aziru/core/taxonomy";
 
-// The pure undo/redo reducer + snapshot diffing live in @amarnai/core/taxonomy.
+// The pure undo/redo reducer + snapshot diffing live in @aziru/core/taxonomy.
 // This thin React wrapper binds the reducer to useReducer/useCallback and is
 // shared by every surface that hosts the editor.
-export type { GraphSnapshot, HistoryState } from "@amarnai/core/taxonomy";
-export { snapshotsEqual, historyReducer } from "@amarnai/core/taxonomy";
+export type { GraphSnapshot, HistoryState } from "@aziru/core/taxonomy";
+export { snapshotsEqual, historyReducer } from "@aziru/core/taxonomy";
 
 export function useTaxonomyHistory(initial: GraphSnapshot) {
   const [state, dispatch] = useReducer(historyReducer, {

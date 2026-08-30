@@ -27,12 +27,12 @@ import type {
   UpdateTaxonomyEdgeInput,
   TaxonomyImportPreviewResult,
   TaxonomyMigrationMapping,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";
 import {
   TAXONOMY_TEMPLATES,
   matchesTemplate,
   localizeTemplate,
-} from "@amarnai/core/taxonomy";
+} from "@aziru/core/taxonomy";
 import {
   TAXONOMY_MIN_NON_ROOT_NODES,
   MAX_TAXONOMY_NON_ROOT_NODES,
@@ -42,8 +42,8 @@ import {
   TaxonomyTransferFileSchema,
   validateTaxonomyTransfer,
   type TaxonomyTransferFile,
-} from "@amarnai/shared";
-import { translateSource } from "@amarnai/i18n";
+} from "@aziru/shared";
+import { translateSource } from "@aziru/i18n";
 import { Tooltip } from "../Tooltip.js";
 import { useTheme } from "../theme/useTheme.js";
 import {

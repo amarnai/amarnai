@@ -1,7 +1,7 @@
 import { Job } from "bullmq";
-import { db, deleteGmailDisconnectedNotifications, eraseEmailAccountData } from "@amarnai/db";
-import { revokeGoogleToken } from "@amarnai/gmail";
-import { createMailProvider } from "@amarnai/mail";
+import { db, deleteGmailDisconnectedNotifications, eraseEmailAccountData } from "@aziru/db";
+import { revokeGoogleToken } from "@aziru/gmail";
+import { createMailProvider } from "@aziru/mail";
 import { classifyThreadQueue } from "../queues.js";
 import { syncInboxQueue, backfillInboxQueue } from "./queue-client.js";
 import { recordAudit } from "./audit.js";

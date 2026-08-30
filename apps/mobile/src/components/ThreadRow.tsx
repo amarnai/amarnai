@@ -4,8 +4,8 @@ import { Trans, Plural } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
 import type { MessageDescriptor } from '@lingui/core';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { ThreadItem } from '@amarnai/core';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { ThreadItem } from '@aziru/core';
 
 interface ThreadRowProps {
   thread: ThreadItem;

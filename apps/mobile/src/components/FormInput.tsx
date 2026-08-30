@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { StyleSheet, TextInput, type TextInputProps } from 'react-native';
-import { colors, fontSize, radii, space } from '@amarnai/tokens';
+import { colors, fontSize, radii, space } from '@aziru/tokens';
 
 export const FormInput = forwardRef<TextInput, TextInputProps>(function FormInput(
   { style, ...props },

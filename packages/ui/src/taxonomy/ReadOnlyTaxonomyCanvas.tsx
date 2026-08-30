@@ -2,7 +2,7 @@
 
 import { ReactFlow, ReactFlowProvider, Background, Controls } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/shared";
+import type { TaxonomyNode, TaxonomyEdge } from "@aziru/shared";
 import {
   taxonomyNodeTypes as nodeTypes,
   taxonomyEdgeTypes as edgeTypes,

@@ -1,5 +1,5 @@
-import { makeApiClient } from "@amarnai/api-client";
-import type { ApiTransport } from "@amarnai/api-client";
+import { makeApiClient } from "@aziru/api-client";
+import type { ApiTransport } from "@aziru/api-client";
 
 // ─── Web transport ─────────────────────────────────────────────────────────────
 // Browser calls go through /api/internal (Next.js proxy injects auth).
@@ -96,4 +96,4 @@ export type {
   TaxonomyMigrationMapping,
   MigrationPreviewRow,
   MigrationCandidate,
-} from "@amarnai/api-client";
+} from "@aziru/api-client";

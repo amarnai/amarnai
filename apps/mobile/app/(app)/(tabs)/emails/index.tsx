@@ -11,8 +11,8 @@ import {
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import type { QueueId } from '@amarnai/core';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import type { QueueId } from '@aziru/core';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 import { useTriage } from '../../../../src/triage/TriageProvider';
 import { AppHeader } from '../../../../src/components/AppHeader';
 import { ScreenContainer } from '../../../../src/components/ScreenContainer';

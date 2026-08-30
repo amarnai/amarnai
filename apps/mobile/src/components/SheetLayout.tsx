@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, fontSize, fontWeight, radii, space } from '@amarnai/tokens';
+import { colors, fontSize, fontWeight, radii, space } from '@aziru/tokens';
 import { BottomSheet } from './BottomSheet';
 
 interface Props {

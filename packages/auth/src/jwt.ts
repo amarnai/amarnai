@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 
 // Short-lived access tokens. Native clients refresh silently via a rotating
 // refresh token (see refresh-token.ts) so this can stay tight.

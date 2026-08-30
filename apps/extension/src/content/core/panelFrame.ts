@@ -1,4 +1,4 @@
-import type { PanelThreadContext } from "@amarnai/panel";
+import type { PanelThreadContext } from "@aziru/panel";
 import { debugLog } from "./debug.js";
 import {
   PANEL_PROTOCOL_VERSION,

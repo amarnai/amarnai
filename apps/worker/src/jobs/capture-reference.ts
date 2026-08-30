@@ -1,12 +1,12 @@
 import { Worker } from "bullmq";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import {
   createEmbeddingProvider,
   getEmbeddingProviderConfig,
   buildThreadEmbeddingText,
   hashEmbeddingInput,
-} from "@amarnai/ai";
-import { MAX_REFERENCES_PER_NODE } from "@amarnai/shared";
+} from "@aziru/ai";
+import { MAX_REFERENCES_PER_NODE } from "@aziru/shared";
 import {
   QUEUE_CAPTURE_REFERENCE,
   type CaptureReferenceJobData,

@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { authed, TEST_USER_ID } from "./helpers.js";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailThread: {
       findFirst: vi.fn(),
@@ -18,13 +18,13 @@ vi.mock("@amarnai/db", () => ({
   },
 }));
 
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: vi.fn(),
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
-import { createMailProvider } from "@amarnai/mail";
+import { db } from "@aziru/db";
+import { createMailProvider } from "@aziru/mail";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";

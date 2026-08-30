@@ -1,4 +1,4 @@
-import { InjectionDisabledError } from "@amarnai/api-client";
+import { InjectionDisabledError } from "@aziru/api-client";
 import { ext } from "../platform/ext.js";
 import { extensionTokenStore } from "../auth/tokenStore.js";
 import {

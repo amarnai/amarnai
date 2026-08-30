@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@amarnai/db";
-import { subscriptionPeriodEnd } from "@amarnai/billing";
+import { db } from "@aziru/db";
+import { subscriptionPeriodEnd } from "@aziru/billing";
 import { getStripe } from "@/lib/stripe";
 import { resolveBillingUser, resolveBillingWorkspaceId } from "@/lib/billing-auth";
 import { FREE_PLAN_RESET } from "@/lib/billing-mutations";

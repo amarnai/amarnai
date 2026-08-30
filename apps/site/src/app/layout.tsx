@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { THEME_INIT_SCRIPT } from "@amarnai/ui";
-import "@amarnai/ui/emails/styles";
-import "@amarnai/ui/demo/styles";
+import { THEME_INIT_SCRIPT } from "@aziru/ui";
+import "@aziru/ui/emails/styles";
+import "@aziru/ui/demo/styles";
 import "./globals.css";
-import "@amarnai/ui/theme/styles";
-import "@amarnai/ui/tooltip/styles";
-import "@amarnai/ui/switch/styles";
+import "@aziru/ui/theme/styles";
+import "@aziru/ui/tooltip/styles";
+import "@aziru/ui/switch/styles";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });

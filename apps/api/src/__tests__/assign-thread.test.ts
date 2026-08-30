@@ -6,7 +6,7 @@ import { authed, TEST_USER_ID } from "./helpers.js";
 const createNotification = vi.fn().mockResolvedValue(undefined);
 const deleteThreadAssignedNotifications = vi.fn().mockResolvedValue(undefined);
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailThread: {
       findFirst: vi.fn(),
@@ -33,7 +33,7 @@ vi.mock("../queues.js", () => ({
 }));
 
 import app from "../app.js";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 
 const WS_ID = "ws-1";
 const THREAD_ID = "thread-1";

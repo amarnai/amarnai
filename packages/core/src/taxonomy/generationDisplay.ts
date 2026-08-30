@@ -1,4 +1,4 @@
-import type { TaxonomyTransferFile, GenerationEligibilityReason } from "@amarnai/shared";
+import type { TaxonomyTransferFile, GenerationEligibilityReason } from "@aziru/shared";
 
 // Shared display helpers for the "Generate from inbox" UI, used by both web and
 // mobile so the copy and preview rendering stay identical across platforms.

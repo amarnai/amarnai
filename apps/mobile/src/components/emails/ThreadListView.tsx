@@ -3,8 +3,8 @@ import { ActivityIndicator, RefreshControl, SectionList, StyleSheet, Text, Touch
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { groupThreadsByDate, type ThreadItem } from '@amarnai/core';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
+import { groupThreadsByDate, type ThreadItem } from '@aziru/core';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
 import { ThreadRow } from '../ThreadRow';
 import { DATE_SECTION_LABELS } from './queueLabels';
 

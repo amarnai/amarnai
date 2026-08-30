@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { ThemeToggle } from "@amarnai/ui";
+import { ThemeToggle } from "@aziru/ui";
 
 function scrollTo(id: string) {
   return (e: React.MouseEvent<HTMLAnchorElement>) => {

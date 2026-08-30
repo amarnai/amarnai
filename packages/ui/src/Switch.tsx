@@ -17,7 +17,7 @@ type SwitchProps = {
  *
  * Semantically an <input type="checkbox" role="switch"> so it keeps native
  * label/click/keyboard/form behavior; switch.css restyles it as a track+thumb
- * (import "@amarnai/ui/switch/styles" once per app). Works inside a wrapping
+ * (import "@aziru/ui/switch/styles" once per app). Works inside a wrapping
  * <label> (the .settings-toggle pattern) or standalone with `ariaLabel`.
  */
 export function Switch({ checked, onChange, disabled, ariaLabel }: SwitchProps) {

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { subscriptionPeriodEnd } from "@amarnai/billing";
+import { subscriptionPeriodEnd } from "@aziru/billing";
 import { getStripe } from "@/lib/stripe";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { provisionFromCheckoutSession } from "@/lib/billing-provision";
 import { BACKFILL_RESCAN_RESET } from "@/lib/backfill-reset";
 

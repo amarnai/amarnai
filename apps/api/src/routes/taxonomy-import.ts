@@ -1,14 +1,14 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, Prisma } from "@amarnai/db";
+import { db, Prisma } from "@aziru/db";
 import {
   TaxonomyTransferFileSchema,
   TaxonomyImportRequestSchema,
   validateTaxonomyTransfer,
   normalizeTaxonomyImportRequest,
   MIGRATION_RESORT,
-} from "@amarnai/shared";
-import { DEDUP_CLASSIFY_MIGRATION } from "@amarnai/queue";
+} from "@aziru/shared";
+import { DEDUP_CLASSIFY_MIGRATION } from "@aziru/queue";
 import { classifyThreadQueue } from "../queues.js";
 import { enqueueFolderLabelProvisioning } from "../services/label-writeback.js";
 import { computeMigrationPreview, latestClassificationsByThread } from "../services/taxonomy-migration.js";

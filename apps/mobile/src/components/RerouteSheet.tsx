@@ -2,8 +2,8 @@ import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Trans } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { colors, space, fontSize } from '@amarnai/tokens';
-import type { FolderItem } from '@amarnai/core';
+import { colors, space, fontSize } from '@aziru/tokens';
+import type { FolderItem } from '@aziru/core';
 import { SheetLayout } from './SheetLayout';
 
 interface RerouteSheetProps {

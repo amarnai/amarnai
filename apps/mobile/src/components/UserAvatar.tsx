@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { userInitials } from '@amarnai/core';
-import { colors, radii, fontWeight } from '@amarnai/tokens';
+import { userInitials } from '@aziru/core';
+import { colors, radii, fontWeight } from '@aziru/tokens';
 
 // Circular avatar with the user's initials, mirroring the web sidebar's
 // `.sidebar-avatar`. Solid accent fill rather than the web gradient to avoid a

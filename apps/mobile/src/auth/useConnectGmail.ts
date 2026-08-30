@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
-import type { ApiClient } from '@amarnai/api-client';
+import type { ApiClient } from '@aziru/api-client';
 import { requestGoogleAuth } from './googleAuth';
 import { toUserMessage } from '../errors';
 

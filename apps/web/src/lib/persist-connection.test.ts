@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: { emailConnection: { upsert: vi.fn() } },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { persistEmailConnection } from "./persist-connection";
 
 beforeEach(() => {

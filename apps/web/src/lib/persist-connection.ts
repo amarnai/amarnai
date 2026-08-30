@@ -1,4 +1,4 @@
-import { upsertEmailConnection } from "@amarnai/auth";
+import { upsertEmailConnection } from "@aziru/auth";
 import type { MailProvider } from "@/lib/api";
 
 type PersistConnectionInput = {

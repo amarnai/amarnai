@@ -1,4 +1,4 @@
-import type { PanelCapabilities, PanelHost, PanelThreadContext } from "@amarnai/panel";
+import type { PanelCapabilities, PanelHost, PanelThreadContext } from "@aziru/panel";
 import { extensionTokenStore } from "../auth/tokenStore";
 import { API_BASE_URL } from "../config";
 import { ext } from "../platform/ext";

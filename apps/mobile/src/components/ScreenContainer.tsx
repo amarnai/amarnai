@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
-import { colors } from '@amarnai/tokens';
+import { colors } from '@aziru/tokens';
 
 interface Props {
   children: ReactNode;

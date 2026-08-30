@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { db, deleteExtensionNudgeNotifications } from "@amarnai/db";
-import { RegisterExtensionSchema } from "@amarnai/shared";
+import { db, deleteExtensionNudgeNotifications } from "@aziru/db";
+import { RegisterExtensionSchema } from "@aziru/shared";
 import type { AppEnv } from "../env.js";
 
 const extension = new Hono<AppEnv>();

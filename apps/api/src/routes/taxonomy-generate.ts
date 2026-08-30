@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db, eligibleThreadWhere, resolveInboxQuota, buildInboxProfile } from "@amarnai/db";
+import { db, eligibleThreadWhere, resolveInboxQuota, buildInboxProfile } from "@aziru/db";
 import {
   computeGenerationEligibility,
   emailDomain,
@@ -8,9 +8,9 @@ import {
   GENERATION_MIN_ELIGIBLE_THREADS,
   GENERATION_MIN_SENDER_DOMAINS,
   type GenerationEligibility,
-} from "@amarnai/shared";
-import { matchTemplateToProfile } from "@amarnai/core/taxonomy";
-import { config } from "@amarnai/config";
+} from "@aziru/shared";
+import { matchTemplateToProfile } from "@aziru/core/taxonomy";
+import { config } from "@aziru/config";
 import type { AppEnv } from "../env.js";
 import { generateTaxonomyQueue } from "../services/queue-client.js";
 

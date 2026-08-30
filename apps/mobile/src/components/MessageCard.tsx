@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { ThreadMessage } from '@amarnai/core';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { ThreadMessage } from '@aziru/core';
 
 interface MessageCardProps {
   message: ThreadMessage;

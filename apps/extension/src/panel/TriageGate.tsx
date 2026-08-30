@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Trans } from "@lingui/react/macro";
-import { mapFolders, mapThreads, type FolderItem, type ThreadItem } from "@amarnai/core";
-import type { OutlookAccountType } from "@amarnai/core/emails";
-import type { ApiClient, FilterCounts, SyncStatus, MailProvider } from "@amarnai/api-client";
+import { mapFolders, mapThreads, type FolderItem, type ThreadItem } from "@aziru/core";
+import type { OutlookAccountType } from "@aziru/core/emails";
+import type { ApiClient, FilterCounts, SyncStatus, MailProvider } from "@aziru/api-client";
 import { EmailsPanel } from "./EmailsPanel";
 import { ConnectMailCta } from "./ConnectMailCta";
 import { revealMailbox } from "../gmail/revealMailbox";

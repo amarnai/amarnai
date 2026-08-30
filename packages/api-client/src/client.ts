@@ -1,4 +1,4 @@
-import type { TaxonomyTransferFile } from "@amarnai/shared";
+import type { TaxonomyTransferFile } from "@aziru/shared";
 import type { ApiTransport, TransportInit } from "./transport.js";
 import type {
   Workspace,

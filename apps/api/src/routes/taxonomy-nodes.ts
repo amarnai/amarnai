@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
-import { findDescendants } from "@amarnai/ai";
-import { MAX_TAXONOMY_NON_ROOT_NODES, DEFAULT_GMAIL_SYNC_SETTINGS } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { findDescendants } from "@aziru/ai";
+import { MAX_TAXONOMY_NON_ROOT_NODES, DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
 import { bumpTaxonomyChangedAt } from "../services/taxonomy-changed.js";
 import { enqueueFolderLabelProvisioning } from "../services/label-writeback.js";
 

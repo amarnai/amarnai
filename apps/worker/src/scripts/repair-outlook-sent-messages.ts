@@ -27,13 +27,13 @@
  * exactly as the sync loop skips them.
  *
  * Usage:
- *   pnpm --filter @amarnai/worker repair-outlook-sent           # dry run
- *   pnpm --filter @amarnai/worker repair-outlook-sent --apply   # write
- *   pnpm --filter @amarnai/worker repair-outlook-sent --workspace=<id> --apply
+ *   pnpm --filter @aziru/worker repair-outlook-sent           # dry run
+ *   pnpm --filter @aziru/worker repair-outlook-sent --apply   # write
+ *   pnpm --filter @aziru/worker repair-outlook-sent --workspace=<id> --apply
  */
-import { db } from "@amarnai/db";
-import { createMailProvider, MailAuthError, MailThreadNotFoundError } from "@amarnai/mail";
-import type { GmailSyncSettings } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { createMailProvider, MailAuthError, MailThreadNotFoundError } from "@aziru/mail";
+import type { GmailSyncSettings } from "@aziru/shared";
 import { applyThreadFilter } from "../jobs/filter-thread-messages.js";
 import { upsertEmailMessages } from "../jobs/persist-thread.js";
 

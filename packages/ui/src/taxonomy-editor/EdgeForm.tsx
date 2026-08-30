@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Trans } from "@lingui/react/macro";
-import type { TaxonomyNode, TaxonomyEdge, UpdateTaxonomyEdgeInput } from "@amarnai/api-client";
+import type { TaxonomyNode, TaxonomyEdge, UpdateTaxonomyEdgeInput } from "@aziru/api-client";
 import "./taxonomy-editor.css";
 
 export type EdgeFormProps = {

@@ -1,5 +1,5 @@
-import type { TaxonomyNode, TaxonomyEdge } from '@amarnai/api-client';
-import { computeIgnoredReasons } from '@amarnai/core/taxonomy';
+import type { TaxonomyNode, TaxonomyEdge } from '@aziru/api-client';
+import { computeIgnoredReasons } from '@aziru/core/taxonomy';
 
 // One row in the rendered taxonomy tree. `depth` drives indentation; `ignored`
 // marks non-root nodes unreachable from the root (they never receive threads).

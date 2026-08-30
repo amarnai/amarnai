@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { folderColorVars } from "@amarnai/core/emails";
+import { folderColorVars } from "@aziru/core/emails";
 import type { MockProvider } from "./types.js";
 
 /**

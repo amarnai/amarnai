@@ -1,4 +1,4 @@
-import type { PlanId, BillingCycle, BillingPlan, BillingCycleValue } from '@amarnai/shared';
+import type { PlanId, BillingCycle, BillingPlan, BillingCycleValue } from '@aziru/shared';
 
 // Routes a plan selection to the right billing operation:
 //  - upgrade  -> create-checkout-session (browser, or paid->paid direct)

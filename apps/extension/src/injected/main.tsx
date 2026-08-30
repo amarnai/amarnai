@@ -6,10 +6,10 @@ import { createRoot } from "react-dom/client";
 import "@fontsource-variable/geist/wght.css";
 import "@fontsource-variable/geist-mono/wght.css";
 import "../styles/tokens.css";
-import "@amarnai/ui/emails/styles";
-import "@amarnai/panel/styles";
-import "@amarnai/ui/theme/styles";
-import { applyStoredThemeSync, ThemeProvider } from "@amarnai/ui";
+import "@aziru/ui/emails/styles";
+import "@aziru/panel/styles";
+import "@aziru/ui/theme/styles";
+import { applyStoredThemeSync, ThemeProvider } from "@aziru/ui";
 import { LinguiProvider } from "../i18n/LinguiProvider";
 import { InjectedApp } from "./InjectedApp";
 

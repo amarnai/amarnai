@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { I18nProvider } from "@lingui/react";
 import { setupI18n, type Messages } from "@lingui/core";
-import { type SupportedLocale } from "@amarnai/i18n";
+import { type SupportedLocale } from "@aziru/i18n";
 
 // Client-side Lingui provider for the marketing site. The compiled catalog is
 // loaded on the server and passed in as `messages`, so the instance is activated

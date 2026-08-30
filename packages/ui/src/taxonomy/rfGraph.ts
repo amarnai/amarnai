@@ -1,6 +1,6 @@
 import { MarkerType, type Edge } from "@xyflow/react";
-import type { TaxonomyNode, TaxonomyEdge } from "@amarnai/shared";
-import { computeIgnoredReasons, type IgnoredReason } from "@amarnai/core/taxonomy";
+import type { TaxonomyNode, TaxonomyEdge } from "@aziru/shared";
+import { computeIgnoredReasons, type IgnoredReason } from "@aziru/core/taxonomy";
 import { TaxonomyNodeCard, type TaxonomyRFNode } from "./TaxonomyNodeCard.js";
 import { TaxonomyEdgeRenderer } from "./TaxonomyEdge.js";
 import { readEdgeColors } from "./tokens.js";

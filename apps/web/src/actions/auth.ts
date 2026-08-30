@@ -3,16 +3,16 @@
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { signIn, signOut, unstable_update } from "@/auth";
-import { db, deleteUserCascade } from "@amarnai/db";
-import { cancelSubscriptionsForAccountDeletion } from "@amarnai/billing";
+import { db, deleteUserCascade } from "@aziru/db";
+import { cancelSubscriptionsForAccountDeletion } from "@aziru/billing";
 import {
   registerEmail,
   rotateVerificationToken,
   createPasswordResetToken,
   applyPasswordReset,
   checkUserPassword,
-} from "@amarnai/auth";
-import { RegisterEmailSchema, PasswordSchema } from "@amarnai/shared";
+} from "@aziru/auth";
+import { RegisterEmailSchema, PasswordSchema } from "@aziru/shared";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/session";

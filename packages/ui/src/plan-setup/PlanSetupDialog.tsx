@@ -7,20 +7,20 @@ import { msg } from "@lingui/core/macro";
 import type {
   TaxonomyTransferFile,
   GenerationEligibilityReason,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import type {
   ApiClient,
   TaxonomyGenerationStatusResult,
   TaxonomyImportPreviewResult,
   TaxonomyMigrationMapping,
-} from "@amarnai/api-client";
-import { ApiHttpError } from "@amarnai/api-client";
+} from "@aziru/api-client";
+import { ApiHttpError } from "@aziru/api-client";
 import {
   generationReasonText,
   layoutTaxonomyTransfer,
   transferToDisplayGraph,
-} from "@amarnai/core/taxonomy";
-import { translateSource } from "@amarnai/i18n";
+} from "@aziru/core/taxonomy";
+import { translateSource } from "@aziru/i18n";
 import { ReadOnlyTaxonomyCanvas } from "../taxonomy/ReadOnlyTaxonomyCanvas.js";
 import { TemplatePicker } from "./TemplatePicker.js";
 import { MigrationReviewModal } from "../taxonomy-editor/MigrationReviewModal.js";
@@ -55,7 +55,7 @@ type Proposal = { file: TaxonomyTransferFile; source: "generated" | "template" }
 
 const POLL_MS = 2500;
 
-// Non-ok responses arrive as ApiHttpError (see @amarnai/api-client); anything
+// Non-ok responses arrive as ApiHttpError (see @aziru/api-client); anything
 // else is a transport failure with no status to branch on.
 function statusOf(err: unknown): number | null {
   return err instanceof ApiHttpError ? err.status : null;

@@ -7,8 +7,8 @@ import {
   makeBearerTransport,
   readUserIdFromAccessToken,
   type ApiClient,
-} from "@amarnai/api-client";
-import { mapFolders, mapMembers } from "@amarnai/core/emails";
+} from "@aziru/api-client";
+import { mapFolders, mapMembers } from "@aziru/core/emails";
 import type { PanelHost } from "./host.js";
 import { usePanelState } from "./usePanelState.js";
 import { ClassificationCard } from "./ClassificationCard.js";

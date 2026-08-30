@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { Trans } from '@lingui/react/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { SyncStatus } from '@amarnai/api-client';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { SyncStatus } from '@aziru/api-client';
 
 interface BackfillBannerProps {
   syncStatus: SyncStatus | null | undefined;

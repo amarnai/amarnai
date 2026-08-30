@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 
 const mockDisconnectGmail = vi.hoisted(() => vi.fn());
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailConnection: { findMany: vi.fn() },
   },
@@ -12,7 +12,7 @@ vi.mock("@/lib/api", () => ({
   apiFor: vi.fn(() => ({ disconnectGmail: mockDisconnectGmail })),
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { apiFor } from "@/lib/api";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 

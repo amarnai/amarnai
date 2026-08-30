@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Trans, Plural } from "@lingui/react/macro";
 import { api } from "@/lib/api";
-import { TAXONOMY_MIN_NON_ROOT_NODES } from "@amarnai/shared";
+import { TAXONOMY_MIN_NON_ROOT_NODES } from "@aziru/shared";
 
 type Props = {
   workspaceId: string;

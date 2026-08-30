@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { isSupportedLocale, SOURCE_LOCALE, type SupportedLocale } from "@amarnai/i18n";
+import { isSupportedLocale, SOURCE_LOCALE, type SupportedLocale } from "@aziru/i18n";
 import { initServerI18n } from "@/lib/i18n-server";
 import { buildHomeMetadata } from "@/lib/seo";
 import { LandingContent } from "@/components/landing/LandingContent";

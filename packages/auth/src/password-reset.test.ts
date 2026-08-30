@@ -11,7 +11,7 @@ const { PrismaClientKnownRequestError } = vi.hoisted(() => {
   return { PrismaClientKnownRequestError };
 });
 
-vi.mock("@amarnai/db", () => {
+vi.mock("@aziru/db", () => {
   const db: Record<string, unknown> = {
     user: { findUnique: vi.fn(), update: vi.fn() },
     userCredential: { upsert: vi.fn() },
@@ -24,7 +24,7 @@ vi.mock("@amarnai/db", () => {
   return { db, Prisma: { PrismaClientKnownRequestError } };
 });
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { createPasswordResetToken, applyPasswordReset } from "./password-reset.js";
 
 // A credentialed user with no outstanding reset token.

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { workspaceInitials, workspaceHue } from '@amarnai/core';
-import { radii, fontWeight } from '@amarnai/tokens';
+import { workspaceInitials, workspaceHue } from '@aziru/core';
+import { radii, fontWeight } from '@aziru/tokens';
 
 // Colored rounded square with the workspace's initials, mirroring the web
 // sidebar's `.ws-mark`. The hue is derived deterministically from the name so a

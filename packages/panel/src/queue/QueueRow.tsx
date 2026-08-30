@@ -2,7 +2,7 @@
 
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { buildThreadUrl } from "@amarnai/core/emails";
+import { buildThreadUrl } from "@aziru/core/emails";
 import type { PanelHost } from "../host.js";
 import type { PanelQueueThread } from "../types.js";
 

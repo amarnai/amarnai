@@ -1,19 +1,19 @@
 import { getConnInfo } from "@hono/node-server/conninfo";
-import { config } from "@amarnai/config";
+import { config } from "@aziru/config";
 import type { Context, MiddlewareHandler } from "hono";
 import {
   RATE_LIMIT_DISABLED,
   getRateLimitClient,
   checkRateLimit,
-} from "@amarnai/auth/rate-limit-store";
+} from "@aziru/auth/rate-limit-store";
 
-// The counter store and its primitives now live in @amarnai/auth so the web
+// The counter store and its primitives now live in @aziru/auth so the web
 // server-action throttles share the exact same Redis-backed, fail-open limiter
 // (previously the web used a per-instance in-memory map, which diverged across
 // replicas). This module keeps only the Hono-specific pieces: client-IP
 // derivation and the middleware wrapper.
-export { checkRateLimit, throttleOnce } from "@amarnai/auth/rate-limit-store";
-export type { RateLimitStore, RateLimitDecision } from "@amarnai/auth/rate-limit-store";
+export { checkRateLimit, throttleOnce } from "@aziru/auth/rate-limit-store";
+export type { RateLimitStore, RateLimitDecision } from "@aziru/auth/rate-limit-store";
 
 function socketIp(c: Context): string {
   try {
@@ -28,7 +28,7 @@ function socketIp(c: Context): string {
 // a load balancer the socket address is the proxy, so every user shares one
 // bucket. We do NOT change behavior off the header (it is attacker-controlled, so
 // trusting it would let a direct caller dodge the limit) — the operator must set
-// TRUST_PROXY. The startup gate in @amarnai/config already forces a value in
+// TRUST_PROXY. The startup gate in @aziru/config already forces a value in
 // production; this catches a deployment that set it to 0 behind a real proxy.
 let warnedAboutProxy = false;
 function warnIfProxyHeaderIgnored(c: Context): void {

@@ -9,9 +9,9 @@ import {
 import { Trans, Plural } from '@lingui/react/macro';
 import { useLingui } from '@lingui/react';
 import { msg } from '@lingui/core/macro';
-import { colors, radii, space, fontSize, fontWeight } from '@amarnai/tokens';
-import type { TaxonomyTemplate } from '@amarnai/core/taxonomy';
-import type { TaxonomyTransferFile } from '@amarnai/shared';
+import { colors, radii, space, fontSize, fontWeight } from '@aziru/tokens';
+import type { TaxonomyTemplate } from '@aziru/core/taxonomy';
+import type { TaxonomyTransferFile } from '@aziru/shared';
 import { SheetLayout } from '../SheetLayout';
 
 interface TemplatePickerSheetProps {

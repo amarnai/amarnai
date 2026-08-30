@@ -1,5 +1,5 @@
 // FolderIcon, SparkleIcon and GmailLogoIcon are rendered by the shared demos
-// and live with them in @amarnai/ui/demo.
+// and live with them in @aziru/ui/demo.
 
 // Browser-extension puzzle piece, used on the "Add to Chrome/Firefox" CTA.
 // Matches Chrome's extensions toolbar glyph (Material "extension" icon).

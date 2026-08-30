@@ -8,7 +8,7 @@ import {
   db,
   deleteGmailDisconnectedNotifications,
   eraseStaleEmailAccounts,
-} from "@amarnai/db";
+} from "@aziru/db";
 import { apiFor, type MailProvider } from "@/lib/api";
 
 type CallbackTokens = {

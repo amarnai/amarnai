@@ -1,1 +1,1 @@
-export { encrypt, decrypt } from "@amarnai/gmail";
+export { encrypt, decrypt } from "@aziru/gmail";

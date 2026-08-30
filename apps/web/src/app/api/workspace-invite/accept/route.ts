@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { INVITE_COOKIE } from "@/lib/invite-redirect";
 
 // Long enough to sign in, or sign up and verify an email, before resuming.

@@ -1,7 +1,7 @@
 import { msg, plural } from "@lingui/core/macro";
 import type { I18n } from "@lingui/core";
-import { interpretNotification, type NotificationItem } from "@amarnai/api-client";
-import { CHROME_EXTENSION_STORE_URL } from "@amarnai/ui";
+import { interpretNotification, type NotificationItem } from "@aziru/api-client";
+import { CHROME_EXTENSION_STORE_URL } from "@aziru/ui";
 
 // What clicking a notification does. A discriminated union rather than a bag of
 // nullable fields so each type declares exactly one action, and the surface

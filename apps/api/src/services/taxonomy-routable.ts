@@ -1,5 +1,5 @@
-import { db } from "@amarnai/db";
-import { isTaxonomyRoutable } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { isTaxonomyRoutable } from "@aziru/shared";
 
 /**
  * Whether the workspace taxonomy has enough non-root nodes reachable from the

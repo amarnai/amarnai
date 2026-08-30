@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // Unit tests for registerOutlookSubscription's environment guards. The service
-// reads config.outlook.notificationUrl, which @amarnai/config derives from
+// reads config.outlook.notificationUrl, which @aziru/config derives from
 // MS_GRAPH_NOTIFICATION_URL at import time, so each case resets modules and
 // re-imports the service with the desired env.
 
@@ -10,7 +10,7 @@ const update = vi.fn();
 const registerWatch = vi.fn();
 const stopWatch = vi.fn();
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     emailConnection: {
       findUnique: (...args: unknown[]) => findUnique(...args),
@@ -20,7 +20,7 @@ vi.mock("@amarnai/db", () => ({
 }));
 
 const createMailProvider = vi.fn((..._args: unknown[]) => ({ registerWatch, stopWatch }));
-vi.mock("@amarnai/mail", () => ({
+vi.mock("@aziru/mail", () => ({
   createMailProvider: (...args: unknown[]) => createMailProvider(...args),
 }));
 

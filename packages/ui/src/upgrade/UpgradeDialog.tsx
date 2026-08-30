@@ -9,7 +9,7 @@ import {
   type BillingCycle,
   type BillingPlan,
   type PlanId,
-} from "@amarnai/shared";
+} from "@aziru/shared";
 import { trPlan } from "../pricing/planMessages.js";
 import { Switch } from "../Switch.js";
 import { UpgradeSuccess } from "./UpgradeSuccess.js";

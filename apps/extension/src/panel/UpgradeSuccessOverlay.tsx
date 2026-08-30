@@ -1,6 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
-import { UpgradeSuccess, billingPlanLabel } from "@amarnai/ui/upgrade";
+import { UpgradeSuccess, billingPlanLabel } from "@aziru/ui/upgrade";
 import { MASCOT_SRC } from "./assets";
 
 type Props = {

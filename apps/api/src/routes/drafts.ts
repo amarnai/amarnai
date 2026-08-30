@@ -6,11 +6,11 @@ import {
   resolveInboxQuota,
   meterWindowStart,
   recordMeterUsage,
-} from "@amarnai/db";
-import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadMessage } from "@amarnai/ai";
-import { getDraftLimit, getDraftQuotaResetsAt, getThreadSortLimit } from "@amarnai/shared";
-import { config } from "@amarnai/config";
-import { createMailProvider } from "@amarnai/mail";
+} from "@aziru/db";
+import { createAIProvider, generateDraft, getDraftAIProviderConfig, type ThreadMessage } from "@aziru/ai";
+import { getDraftLimit, getDraftQuotaResetsAt, getThreadSortLimit } from "@aziru/shared";
+import { config } from "@aziru/config";
+import { createMailProvider } from "@aziru/mail";
 import { isInjectionEnabled, resolveProviderRef } from "../services/provider-thread.js";
 
 const params = z.object({

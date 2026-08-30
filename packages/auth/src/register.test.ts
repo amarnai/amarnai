@@ -11,7 +11,7 @@ const { PrismaClientKnownRequestError } = vi.hoisted(() => {
   return { PrismaClientKnownRequestError };
 });
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     user: { findUnique: vi.fn(), create: vi.fn() },
     verificationToken: { deleteMany: vi.fn(), create: vi.fn(), upsert: vi.fn() },
@@ -19,7 +19,7 @@ vi.mock("@amarnai/db", () => ({
   Prisma: { PrismaClientKnownRequestError },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { registerEmail, rotateVerificationToken } from "./register.js";
 
 beforeEach(() => {

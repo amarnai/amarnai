@@ -5,7 +5,7 @@ import {
   SUPPORTED_LOCALES,
   SOURCE_LOCALE,
   type SupportedLocale,
-} from "@amarnai/i18n";
+} from "@aziru/i18n";
 
 export const BASE_URL = "https://amarnai.com";
 

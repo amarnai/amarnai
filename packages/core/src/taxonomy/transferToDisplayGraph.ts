@@ -1,4 +1,4 @@
-import type { TaxonomyTransferFile, TaxonomyNode, TaxonomyEdge } from "@amarnai/shared";
+import type { TaxonomyTransferFile, TaxonomyNode, TaxonomyEdge } from "@aziru/shared";
 
 // workspaceId and timestamps are unused by the canvas renderer; stub them so
 // the adapter doesn't need a live workspace context.

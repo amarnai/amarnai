@@ -4,7 +4,7 @@ import { useSession } from '../auth/session';
 import {
   NOTIFICATION_POLL_INTERVAL_MS,
   type NotificationItem,
-} from '@amarnai/api-client';
+} from '@aziru/api-client';
 
 interface UseNotifications {
   unread: number;

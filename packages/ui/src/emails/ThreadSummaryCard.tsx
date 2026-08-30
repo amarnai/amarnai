@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { Trans } from "@lingui/react/macro";
-import { formatQuotaResetDate } from "@amarnai/shared";
+import { formatQuotaResetDate } from "@aziru/shared";
 import { AmarnaiMark } from "../icons/AmarnaiMark.js";
 
 /**

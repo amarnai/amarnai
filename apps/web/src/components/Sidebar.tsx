@@ -8,8 +8,8 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
-import { NavGlyph } from "@amarnai/ui";
-import { userInitials, workspaceInitials, workspaceHue } from "@amarnai/core";
+import { NavGlyph } from "@aziru/ui";
+import { userInitials, workspaceInitials, workspaceHue } from "@aziru/core";
 
 function HamburgerIcon() {
   return (

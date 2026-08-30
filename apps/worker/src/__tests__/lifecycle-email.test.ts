@@ -7,7 +7,7 @@ const { mockClaimIdempotencyToken, mockReleaseIdempotencyToken } = vi.hoisted(()
   mockReleaseIdempotencyToken: vi.fn(),
 }));
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: {
     user: { findUnique: vi.fn(), update: vi.fn().mockResolvedValue({}) },
     workspaceMember: { findMany: vi.fn() },
@@ -18,15 +18,15 @@ vi.mock("@amarnai/db", () => ({
   lifecycleSendDedupToken: (k: string) => `LIFECYCLE_${k}`,
 }));
 
-vi.mock("@amarnai/email", () => ({
+vi.mock("@aziru/email", () => ({
   sendLifecycleReminderEmail: vi.fn(async () => {}),
   appUrl: () => "https://app.test",
 }));
 
-vi.mock("@amarnai/auth/unsubscribe-token", () => ({ signUnsubscribeToken: () => "sig" }));
+vi.mock("@aziru/auth/unsubscribe-token", () => ({ signUnsubscribeToken: () => "sig" }));
 
-import { db } from "@amarnai/db";
-import { sendLifecycleReminderEmail } from "@amarnai/email";
+import { db } from "@aziru/db";
+import { sendLifecycleReminderEmail } from "@aziru/email";
 import { runLifecycleEmailJob, summarizeReportable } from "../jobs/lifecycle-email.js";
 
 const mockedSend = vi.mocked(sendLifecycleReminderEmail);

@@ -1,11 +1,11 @@
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import type { JWT } from "next-auth/jwt";
 
-vi.mock("@amarnai/db", () => ({
+vi.mock("@aziru/db", () => ({
   db: { user: { findUnique: vi.fn() } },
 }));
 
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import { resolveSessionToken, sessionAccountCache } from "../session-jwt";
 
 const account = (over: Partial<{ sessionEpoch: number; emailVerified: Date | null }> = {}) => ({

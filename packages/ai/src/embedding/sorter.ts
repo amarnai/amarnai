@@ -54,7 +54,7 @@ import {
 import { selectNodeFromCandidates } from "../selection/select-path.js";
 import type { EmbeddingProvider, EmbeddableNode, UpdatedNodeEmbedding } from "./types.js";
 import type { AIProvider, TaxonomyEdgeInput, ThreadMessage, LlmCallMemoizer } from "../types.js";
-import type { ClassificationPathStep } from "@amarnai/shared";
+import type { ClassificationPathStep } from "@aziru/shared";
 import type { CandidateNode } from "../selection/candidate-selector.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -168,7 +168,7 @@ export const REFERENCE_SIM_WEIGHT = 0.85;
 // defaults above. Grid-searched on the labeled fixtures:
 //   BENCHMARK_EMBEDDING_MODEL=gemini-embedding-001@768 \
 //   BENCHMARK_SCALE_INVARIANT=1 BENCHMARK_MEAN_CENTER=1 \
-//   pnpm --filter @amarnai/ai benchmark:constants
+//   pnpm --filter @aziru/ai benchmark:constants
 // Only thetaMin and thetaSpread differ from the raw defaults; the rest are listed
 // explicitly so the production config is self-contained and stable if the
 // raw-path defaults are ever changed. Self-hosted deployments on other embedding

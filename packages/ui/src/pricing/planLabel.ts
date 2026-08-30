@@ -1,5 +1,5 @@
 import type { I18n } from "@lingui/core";
-import { PLANS, PLAN_TO_BILLING, type BillingPlan } from "@amarnai/shared";
+import { PLANS, PLAN_TO_BILLING, type BillingPlan } from "@aziru/shared";
 import { trPlan } from "./planMessages.js";
 
 /**

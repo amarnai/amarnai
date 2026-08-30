@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { db, Prisma } from "@amarnai/db";
+import { db, Prisma } from "@aziru/db";
 import type { FederatedProvider } from "./provision.js";
 
 // Email-verification tokens are valid for 24 hours.
@@ -17,7 +17,7 @@ function generateToken(): string {
 
 // Replaces any outstanding email-verification token for the user with a fresh
 // one and returns the raw token. The caller is responsible for emailing the
-// link (kept out of this package so @amarnai/auth carries no mail dependency).
+// link (kept out of this package so @aziru/auth carries no mail dependency).
 //
 // A single upsert on the (userId, type) unique key, so concurrent issuance can
 // never leave two live tokens (and never 500s on a create/create race). createdAt

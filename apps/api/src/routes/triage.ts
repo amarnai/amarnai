@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import type { AppEnv } from "../env.js";
 import { recordAudit } from "../services/audit.js";
 import { captureReferenceQueue, writebackThreadLabelQueue } from "../queues.js";
-import { DEDUP_WRITEBACK } from "@amarnai/queue";
+import { DEDUP_WRITEBACK } from "@aziru/queue";
 
 const params = z.object({
   workspaceId: z.string().min(1),

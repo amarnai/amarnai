@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from "@amarnai/shared";
+import { TOP_PLAN, getDraftQuotaResetsAt, formatQuotaResetDate } from "@aziru/shared";
 import type { SyncStatus } from "@/lib/api";
 
 type Props = {

@@ -1,6 +1,6 @@
-import { db } from "@amarnai/db";
-import { config } from "@amarnai/config";
-import { PUSH_CATEGORY_THREAD_ASSIGNED, PUSH_CHANNEL_TRIAGE } from "@amarnai/shared";
+import { db } from "@aziru/db";
+import { config } from "@aziru/config";
+import { PUSH_CATEGORY_THREAD_ASSIGNED, PUSH_CHANNEL_TRIAGE } from "@aziru/shared";
 import { createRedisSingleton, type RedisSingleton } from "../redis-singleton.js";
 import { sendExpoPushMessages, type ExpoPushMessage } from "./expo-push.js";
 import { checkPushBudget, type PushBudgetStore } from "./notify-threads.js";

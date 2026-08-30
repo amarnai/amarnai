@@ -1,4 +1,4 @@
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import type { ConnectionProvider } from "./connection-guard.js";
 
 export type UpsertEmailConnectionInput = {

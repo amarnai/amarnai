@@ -10,7 +10,7 @@ import {
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
-import { Switch } from "@amarnai/ui";
+import { Switch } from "@aziru/ui";
 import { AppearanceSection } from "./AppearanceSection";
 
 export function AccountForm({

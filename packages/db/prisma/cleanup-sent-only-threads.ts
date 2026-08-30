@@ -20,8 +20,8 @@
  * explicitly, children first.
  *
  * Usage:
- *   pnpm --filter @amarnai/db cleanup-sent-only-threads          # dry run
- *   pnpm --filter @amarnai/db cleanup-sent-only-threads --apply  # delete
+ *   pnpm --filter @aziru/db cleanup-sent-only-threads          # dry run
+ *   pnpm --filter @aziru/db cleanup-sent-only-threads --apply  # delete
  */
 import { db } from "../src/index.js";
 

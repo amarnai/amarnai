@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { InjectionDisabledError, type ApiClient } from "@amarnai/api-client";
+import { InjectionDisabledError, type ApiClient } from "@aziru/api-client";
 import { QueuePanel } from "./QueuePanel.js";
 import { clearQueueCache, invalidateQueue } from "./useQueueState.js";
 import type { PanelHost } from "../host.js";

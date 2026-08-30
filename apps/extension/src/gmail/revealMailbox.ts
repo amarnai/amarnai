@@ -1,5 +1,5 @@
-import { buildMailboxUrl, type OutlookAccountType } from "@amarnai/core/emails";
-import type { MailProvider } from "@amarnai/api-client";
+import { buildMailboxUrl, type OutlookAccountType } from "@aziru/core/emails";
+import type { MailProvider } from "@aziru/api-client";
 import { ext } from "../platform/ext";
 import { takeWelcomeTabId } from "../platform/welcomeTab";
 import { findMailTab } from "./focusMailTab";

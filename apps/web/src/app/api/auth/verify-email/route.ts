@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db, Prisma } from "@amarnai/db";
-import { issuePasswordResetToken } from "@amarnai/auth";
+import { db, Prisma } from "@aziru/db";
+import { issuePasswordResetToken } from "@aziru/auth";
 import { auth, unstable_update } from "@/auth";
 import { getOrCreateDefaultWorkspace } from "@/lib/workspace";
 import { sendWelcomeEmail, sendPasswordResetEmail } from "@/lib/email";

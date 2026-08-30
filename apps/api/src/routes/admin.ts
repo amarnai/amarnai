@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { db } from "@amarnai/db";
+import { db } from "@aziru/db";
 import type { AppEnv } from "../env.js";
 
 const admin = new Hono<AppEnv>();
