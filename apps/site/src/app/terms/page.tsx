@@ -45,7 +45,7 @@ export default function TermsPage() {
         You must provide accurate information when creating an account. You are
         responsible for maintaining the security of your credentials and for all
         activity that occurs under your account. Notify us immediately at{" "}
-        <a href="mailto:hello@amarnai.com">hello@amarnai.com</a> if you suspect
+        <a href="mailto:hello@aziru.email">hello@aziru.email</a> if you suspect
         unauthorized access.
       </p>
 
@@ -167,7 +167,7 @@ export default function TermsPage() {
       <h2>Contact</h2>
       <p>
         Questions about these Terms:{" "}
-        <a href="mailto:hello@amarnai.com">hello@amarnai.com</a>
+        <a href="mailto:hello@aziru.email">hello@aziru.email</a>
       </p>
     </ProseLayout>
   );

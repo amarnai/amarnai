@@ -323,7 +323,7 @@ export default function PrivacyPage() {
       </p>
       <p>
         If you discover a security vulnerability in Amarnai, please report it to{" "}
-        <a href="mailto:hello@amarnai.com">hello@amarnai.com</a>. We will acknowledge
+        <a href="mailto:hello@aziru.email">hello@aziru.email</a>. We will acknowledge
         your report within 2 business days and ask that you do not publicly disclose
         the issue until we have had a reasonable opportunity to address it.
       </p>

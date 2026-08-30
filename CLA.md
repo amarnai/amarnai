@@ -133,7 +133,7 @@ additions and changes:
   who are authorized to submit Contributions on its behalf.
 
 To sign on behalf of a Corporation, contact the Owner at
-[hello@amarnai.com](mailto:hello@amarnai.com) with the Corporation's name and
+[hello@aziru.email](mailto:hello@aziru.email) with the Corporation's name and
 the list of authorized employees before those employees open pull requests.
 
 ---

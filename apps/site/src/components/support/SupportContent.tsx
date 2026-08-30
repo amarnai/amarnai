@@ -53,12 +53,12 @@ export function SupportContent() {
             </div>
 
             <div className="ld-faq ld-support-card ld-reveal">
-              <a className="ld-support-row" href="mailto:hello@amarnai.com">
+              <a className="ld-support-row" href="mailto:hello@aziru.email">
                 <span className="ld-support-row-main">
                   <span className="ld-support-row-label">
                     <Trans>Email us</Trans>
                   </span>
-                  <span className="ld-support-row-value">hello@amarnai.com</span>
+                  <span className="ld-support-row-value">hello@aziru.email</span>
                 </span>
                 <RowArrow />
               </a>
