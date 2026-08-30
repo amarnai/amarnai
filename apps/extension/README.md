@@ -88,7 +88,7 @@ for them as part of sign-in.
 For the stores: run the matching `:prod` build, then zip the output dir:
 
 ```sh
-pnpm extension:package          # Chrome → amarnai-extension.zip
+pnpm extension:package          # Chrome → aziru-extension.zip
 pnpm extension:package:firefox  # Firefox → amarnai-extension-firefox.zip
 ```
 

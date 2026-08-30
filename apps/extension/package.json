@@ -8,7 +8,7 @@
     "build": "vite build --mode development && vite build -c vite.sw.config.ts --mode development && vite build -c vite.content.config.ts --mode development && CONTENT_TARGET=outlook vite build -c vite.content.config.ts --mode development",
     "prebuild:prod": "pnpm --filter @aziru/i18n compile",
     "build:prod": "vite build --mode production && vite build -c vite.sw.config.ts --mode production && vite build -c vite.content.config.ts --mode production && CONTENT_TARGET=outlook vite build -c vite.content.config.ts --mode production",
-    "package": "pnpm build:prod && rm -f amarnai-extension.zip && cd dist && zip -r ../amarnai-extension.zip .",
+    "package": "pnpm build:prod && rm -f aziru-extension.zip && cd dist && zip -r ../aziru-extension.zip .",
     "prebuild:firefox": "pnpm --filter @aziru/i18n compile",
     "build:firefox": "EXT_BROWSER=firefox vite build --mode development && EXT_BROWSER=firefox vite build -c vite.sw.config.ts --mode development && EXT_BROWSER=firefox vite build -c vite.content.config.ts --mode development && EXT_BROWSER=firefox CONTENT_TARGET=outlook vite build -c vite.content.config.ts --mode development",
     "prebuild:prod:firefox": "pnpm --filter @aziru/i18n compile",
