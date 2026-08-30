@@ -87,8 +87,8 @@ export function ConnectGmailCta({
           <p className="connect-gmail-cta-description">
             {reconnect ? (
               <Trans>
-                Amarnai is no longer syncing this inbox. Reconnect your{" "}
-                {providerName} account to resume sorting your email threads. Amarnai{" "}
+                Aziru is no longer syncing this inbox. Reconnect your{" "}
+                {providerName} account to resume sorting your email threads. Aziru{" "}
                 <strong>never sends, deletes, or moves your mail</strong>, and your
                 inbox stays yours.
               </Trans>
@@ -102,7 +102,7 @@ export function ConnectGmailCta({
                   King Aziru
                 </button>{" "}
                 is ready to sort your email threads. Connect your {providerName}{" "}
-                account to get started. Amarnai{" "}
+                account to get started. Aziru{" "}
                 <strong>never sends, deletes, or moves your mail</strong>, and the
                 only thing it writes is its own sorting labels, which you can switch
                 off. Your inbox stays yours.

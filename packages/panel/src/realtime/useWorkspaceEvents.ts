@@ -32,7 +32,7 @@ export type WorkspaceEventHandlers = {
 /**
  * Subscribe to a workspace's Server-Sent Events stream.
  *
- * Shared by every long-lived Amarnai surface outside the web app: the extension
+ * Shared by every long-lived Aziru surface outside the web app: the extension
  * side panel and the panel injected into Gmail/Outlook. The stream is consumed
  * with fetch + ReadableStream + an Authorization header (EventSource cannot send
  * one) rather than EventSource, which is why the framing (SSEParser) and the

@@ -93,7 +93,7 @@ function JunkIcon() {
  * rail (Inbox / Junk / Drafts / Sent / Deleted / Archive), the Focused/Other
  * pivot, and stacked message rows with colored initials avatars.
  *
- * It renders the same demo threads the Amarnai workspace beside it sorts, so the
+ * It renders the same demo threads the Aziru workspace beside it sorts, so the
  * two panes show one inbox, and it is where the mirrored folders show up as
  * Outlook categories: a colored pill under the preview line, carrying the same
  * writeback name Gmail nests as a label.

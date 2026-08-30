@@ -4,8 +4,8 @@ import { buildLegalMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildLegalMetadata(
   "privacy",
-  "Privacy Policy | Amarnai",
-  "How Amarnai collects, uses, and protects your data."
+  "Privacy Policy | Aziru",
+  "How Aziru collects, uses, and protects your data."
 );
 
 const LAST_UPDATED = "July 30, 2026";
@@ -17,14 +17,14 @@ export default function PrivacyPage() {
       <p className="prose-meta">Last updated: {LAST_UPDATED}</p>
 
       <p>
-        This Privacy Policy describes how Amarnai (&ldquo;we&rdquo;, &ldquo;our&rdquo;,
+        This Privacy Policy describes how Aziru (&ldquo;we&rdquo;, &ldquo;our&rdquo;,
         &ldquo;us&rdquo;) collects, uses, and protects information when you use our AI
-        email triage service at amarnai.com (&ldquo;the Service&rdquo;).
+        email triage service at aziru.email (&ldquo;the Service&rdquo;).
       </p>
 
       <h2>Google API Data</h2>
       <p>
-        Amarnai&rsquo;s use of information received from Google APIs will adhere to the{" "}
+        Aziru&rsquo;s use of information received from Google APIs will adhere to the{" "}
         <a
           href="https://developers.google.com/terms/api-services-user-data-policy"
           target="_blank"
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
       <p>
         Specifically, Gmail data accessed through the Google API, and Outlook data
         accessed through the Microsoft Graph API, is used solely to provide the email
-        triage and sorting features visible in the Amarnai interface.
+        triage and sorting features visible in the Aziru interface.
         It is not used for advertising, transferred to third parties for purposes
         unrelated to providing the Service, or used to train generalized AI or machine
         learning models.
@@ -58,10 +58,10 @@ export default function PrivacyPage() {
           plus <code>Mail.ReadWrite</code> and <code>MailboxSettings.ReadWrite</code> when
           category writeback is enabled) to classify and sort your threads. What the write
           permission is used for is described in{" "}
-          <a href="#mailbox-writes">What Amarnai writes to your mailbox</a> below.
+          <a href="#mailbox-writes">What Aziru writes to your mailbox</a> below.
         </li>
         <li>
-          <strong>OAuth tokens:</strong> encrypted refresh tokens that allow Amarnai to
+          <strong>OAuth tokens:</strong> encrypted refresh tokens that allow Aziru to
           access Gmail or Outlook on your behalf. These are stored encrypted at rest and
           never logged.
         </li>
@@ -72,17 +72,17 @@ export default function PrivacyPage() {
       </ul>
       <p>
         We do not store full email bodies beyond what is required to display a thread
-        in your Amarnai inbox.
+        in your Aziru inbox.
       </p>
 
       <h2>How We Use Your Data</h2>
       <p>Gmail, Outlook, and account data is used exclusively to:</p>
       <ul>
         <li>Classify and sort your email threads using AI.</li>
-        <li>Display threads and their assigned categories in the Amarnai UI.</li>
+        <li>Display threads and their assigned categories in the Aziru UI.</li>
         <li>Notify you of new high-priority messages.</li>
         <li>
-          Mirror your Amarnai folders into your mailbox as labels or categories, when you
+          Mirror your Aziru folders into your mailbox as labels or categories, when you
           have enabled label writeback.
         </li>
         <li>
@@ -95,31 +95,31 @@ export default function PrivacyPage() {
         use it to train models that are not specific to your account.
       </p>
 
-      <h2 id="mailbox-writes">What Amarnai Writes to Your Mailbox</h2>
+      <h2 id="mailbox-writes">What Aziru Writes to Your Mailbox</h2>
       <p>
-        Amarnai <strong>never sends email, and never deletes email</strong>. It has no
-        feature that does either, and no Amarnai screen can send a message on your behalf.
+        Aziru <strong>never sends email, and never deletes email</strong>. It has no
+        feature that does either, and no Aziru screen can send a message on your behalf.
       </p>
       <p>
-        The only change Amarnai makes to your mailbox is labelling. When label writeback is
-        enabled, Amarnai mirrors your folder structure into your mailbox and keeps it in
+        The only change Aziru makes to your mailbox is labelling. When label writeback is
+        enabled, Aziru mirrors your folder structure into your mailbox and keeps it in
         sync as threads are sorted:
       </p>
       <ul>
         <li>
-          In Gmail, it creates nested labels under an <code>Amarnai/</code> prefix and
+          In Gmail, it creates nested labels under an <code>Aziru/</code> prefix and
           applies the matching label to each sorted thread.
         </li>
         <li>
           In Outlook, it creates categories in the mailbox&rsquo;s category list under an{" "}
-          <code>Amarnai</code> prefix and applies the matching category to each sorted
+          <code>Aziru</code> prefix and applies the matching category to each sorted
           thread.
         </li>
       </ul>
       <p>
-        Amarnai only ever adds, updates, or removes labels and categories that it created
+        Aziru only ever adds, updates, or removes labels and categories that it created
         itself. Labels and categories you created are never touched, and nothing else about
-        a message changes: Amarnai does not move threads out of your inbox, does not
+        a message changes: Aziru does not move threads out of your inbox, does not
         archive, does not mark as read, does not modify message content, and does not
         create drafts in your mailbox.
       </p>
@@ -162,12 +162,12 @@ export default function PrivacyPage() {
         <li>
           <strong>Google (Gmail API, OAuth 2.0):</strong> to authenticate you, read
           your Gmail data with your permission, and, when label writeback is enabled,
-          create and apply Amarnai&rsquo;s own labels.
+          create and apply Aziru&rsquo;s own labels.
         </li>
         <li>
           <strong>Microsoft (Microsoft Graph API, OAuth 2.0):</strong> to authenticate
           you, read your Outlook data with your permission, and, when category writeback
-          is enabled, create and apply Amarnai&rsquo;s own categories.
+          is enabled, create and apply Aziru&rsquo;s own categories.
         </li>
         <li>
           <strong>Google (Gemini API):</strong> to classify email threads, suggest
@@ -177,10 +177,10 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Stripe:</strong> to process subscription payments. Stripe handles
-          payment card data; Amarnai does not store card numbers.
+          payment card data; Aziru does not store card numbers.
         </li>
         <li>
-          <strong>Resend:</strong> to deliver transactional email from Amarnai to you,
+          <strong>Resend:</strong> to deliver transactional email from Aziru to you,
           such as verification, password reset, invitation, and account lifecycle
           messages. Resend processes the recipient address and the content of each
           message it delivers on our behalf.
@@ -193,7 +193,7 @@ export default function PrivacyPage() {
 
       <h2>Analytics</h2>
       <p>
-        On our website (amarnai.com) we use a privacy-focused, cookieless analytics
+        On our website (aziru.email) we use a privacy-focused, cookieless analytics
         service to understand how visitors find and use the site. It sets no cookies and
         stores no information on your device, and it does not track you across other
         websites. It collects only aggregated, anonymous statistics, such as pages
@@ -229,7 +229,7 @@ export default function PrivacyPage() {
 
       <h2>International Data Transfers</h2>
       <p>
-        Amarnai is operated from the United States, and the third-party providers
+        Aziru is operated from the United States, and the third-party providers
         listed above (Google, Stripe, and Resend) are United States companies. Where
         personal data of users in the European Economic Area, the United Kingdom, or
         Switzerland is transferred to the United States, we rely on providers that are
@@ -237,14 +237,14 @@ export default function PrivacyPage() {
         extensions) or that are bound by Standard Contractual Clauses, together with
         the data processing agreements we hold with each provider. You can request a
         summary of the safeguards that apply to a specific provider by emailing{" "}
-        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>.
+        <a href="mailto:privacy@aziru.email">privacy@aziru.email</a>.
       </p>
 
       <h2>Your Rights and Data Deletion</h2>
       <p>You can manage and delete your data at any time:</p>
       <ul>
         <li>
-          <strong>Disconnect your inbox:</strong> go to Settings in the Amarnai app and
+          <strong>Disconnect your inbox:</strong> go to Settings in the Aziru app and
           click &ldquo;Disconnect Gmail&rdquo; or &ldquo;Disconnect Outlook&rdquo;. This
           immediately revokes our access and deletes your stored OAuth token.
         </li>
@@ -263,7 +263,7 @@ export default function PrivacyPage() {
           >
             myaccount.google.com/permissions
           </a>{" "}
-          and remove Amarnai from the list of connected apps.
+          and remove Aziru from the list of connected apps.
         </li>
         <li>
           <strong>Revoke Microsoft access directly:</strong> for a personal
@@ -283,7 +283,7 @@ export default function PrivacyPage() {
           >
             myapps.microsoft.com
           </a>
-          . Then remove Amarnai from the list of connected apps.
+          . Then remove Aziru from the list of connected apps.
         </li>
       </ul>
       <p>
@@ -295,7 +295,7 @@ export default function PrivacyPage() {
         consent. You also have the right to lodge a complaint with your local data
         protection supervisory authority. To exercise any of these rights, or to ask
         questions about deletion, email{" "}
-        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>. We respond to
+        <a href="mailto:privacy@aziru.email">privacy@aziru.email</a>. We respond to
         requests within one month.
       </p>
 
@@ -310,7 +310,7 @@ export default function PrivacyPage() {
       <p>
         All data is transmitted over TLS. Access to production systems is restricted
         to authorized personnel and protected by multi-factor authentication. Because
-        Amarnai accesses Gmail data, we undergo an annual third-party security
+        Aziru accesses Gmail data, we undergo an annual third-party security
         assessment (CASA) conducted by a lab accredited by the{" "}
         <a
           href="https://appdefensealliance.dev"
@@ -322,7 +322,7 @@ export default function PrivacyPage() {
         , as required by Google for restricted-scope OAuth apps.
       </p>
       <p>
-        If you discover a security vulnerability in Amarnai, please report it to{" "}
+        If you discover a security vulnerability in Aziru, please report it to{" "}
         <a href="mailto:hello@aziru.email">hello@aziru.email</a>. We will acknowledge
         your report within 2 business days and ask that you do not publicly disclose
         the issue until we have had a reasonable opportunity to address it.
@@ -344,7 +344,7 @@ export default function PrivacyPage() {
       <h2>Contact</h2>
       <p>
         Questions about this policy or your data can be sent to{" "}
-        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a>.
+        <a href="mailto:privacy@aziru.email">privacy@aziru.email</a>.
       </p>
     </ProseLayout>
   );

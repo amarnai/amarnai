@@ -91,7 +91,7 @@ export function BlacklistSheet({ visible, onClose, workspaceId, client, emails, 
         keyboardShouldPersistTaps="handled"
       >
         <Text style={styles.hint}>
-          <Trans>Threads from these senders will never be imported or sorted by Amarnai.</Trans>
+          <Trans>Threads from these senders will never be imported or sorted by Aziru.</Trans>
         </Text>
 
         <View style={styles.inputRow}>

@@ -44,7 +44,7 @@ export async function startReplyButton(deps: {
   const unregister = sdk.Compose.registerComposeViewHandler((composeView) => {
     const view = composeView as unknown as ComposeViewLike;
     const threadId = tryRead(() => view.getThreadID());
-    // An armed compose was opened BY an "Amarnai Reply" entry point or by the
+    // An armed compose was opened BY an "Aziru Reply" entry point or by the
     // injected panel: the user already asked for a draft, so it lands without a
     // second click — inserted directly when the opener brought one along.
     const armed = consumeArmedReply(threadId === "threw" ? null : threadId || null);
@@ -65,7 +65,7 @@ export async function startReplyButton(deps: {
         openPanel: () => {
           // Sign-in happens in the extension's own panel: an OAuth flow started
           // from inside a third-party page is neither reliable nor trustworthy.
-          void chrome.runtime.sendMessage({ type: "amarnai:openPanel" });
+          void chrome.runtime.sendMessage({ type: "aziru:openPanel" });
         },
         onDisabled: () => disableReplyEntryPoints(),
         iconUrl,

@@ -10,13 +10,13 @@ import type { ThreadItem } from "../../emails/types.js";
 import type { MockProvider } from "./types.js";
 
 /**
- * The Amarnai panel inside the mail page: Gmail's InboxSDK sidebar and OWA's
+ * The Aziru panel inside the mail page: Gmail's InboxSDK sidebar and OWA's
  * drawer. It starts collapsed to its icon in the mailbox's right rail, which is
  * how the real one starts, so the mailbox is never buried under two panels at
  * once and expanding it stays the visitor's choice.
  *
  * It shows what only the panel shows — where the thread was filed, how sure
- * Amarnai was, and the reply waiting on it. The TL;DR is deliberately not
+ * Aziru was, and the reply waiting on it. The TL;DR is deliberately not
  * repeated here: the injected summary card already sits in the message body a
  * few inches to the left, and the same paragraph twice reads as a bug.
  */
@@ -45,7 +45,7 @@ export function InjectedPanelMock({
           type="button"
           className="ld-mb-rail-btn"
           aria-expanded={open}
-          aria-label={_(msg`Open the Amarnai panel`)}
+          aria-label={_(msg`Open the Aziru panel`)}
           onClick={onToggle}
         >
           <AziruMark size={16} />
@@ -57,13 +57,13 @@ export function InjectedPanelMock({
           <header className="ld-mb-panel-head">
             <span className="ld-mb-panel-brand">
               <AziruMark size={13} />
-              Amarnai
+              Aziru
             </span>
             <button
               type="button"
               className="ld-mb-panel-x"
               onClick={onToggle}
-              aria-label={_(msg`Close the Amarnai panel`)}
+              aria-label={_(msg`Close the Aziru panel`)}
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
                 <path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />

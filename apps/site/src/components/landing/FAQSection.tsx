@@ -8,63 +8,63 @@ import type { MessageDescriptor } from "@lingui/core";
 
 const FAQ_ITEMS: { q: MessageDescriptor; a: MessageDescriptor }[] = [
   {
-    q: msg`Is connecting my inbox to Amarnai safe?`,
-    a: msg`Yes. Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes back is its own labels in Gmail or categories in Outlook, kept under an Amarnai namespace so sorted mail is easy to find in your inbox, and you can switch that off. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest.`,
+    q: msg`Is connecting my inbox to Aziru safe?`,
+    a: msg`Yes. Aziru reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes back is its own labels in Gmail or categories in Outlook, kept under an Aziru namespace so sorted mail is easy to find in your inbox, and you can switch that off. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest.`,
   },
   {
     q: msg`How do I know it's safe?`,
-    a: msg`Five things keep your inbox safe. First, Amarnai's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Amarnai has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Amarnai at any time. Fourth, no email bodies are stored: Amarnai keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email.`,
+    a: msg`Five things keep your inbox safe. First, Aziru's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Aziru has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Aziru at any time. Fourth, no email bodies are stored: Aziru keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email.`,
   },
   {
-    q: msg`How does Amarnai save me time?`,
-    a: msg`Instead of scanning a crowded inbox, you open Amarnai and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes.`,
+    q: msg`How does Aziru save me time?`,
+    a: msg`Instead of scanning a crowded inbox, you open Aziru and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes.`,
   },
   {
-    q: msg`How do Amarnai's folders work?`,
-    a: msg`Your folders form a tree (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Amarnai walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Amarnai generate it for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required.`,
+    q: msg`How do Aziru's folders work?`,
+    a: msg`Your folders form a tree (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Aziru walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Aziru generate it for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required.`,
   },
   {
     q: msg`Do I have to build the folder structure myself?`,
-    a: msg`Not necessarily. Amarnai can generate a complete set of folders for you from your inbox, with one click. You can also start from a ready-made template. Most people generate their folders, rename two or three of them, and they're done.`,
+    a: msg`Not necessarily. Aziru can generate a complete set of folders for you from your inbox, with one click. You can also start from a ready-made template. Most people generate their folders, rename two or three of them, and they're done.`,
   },
   {
     q: msg`Do I need the browser extension?`,
-    a: msg`It is the best way to use Amarnai, and it is where most people spend their time: the extension puts Amarnai in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.amarnai.com, and both work on the same account, so you can install the extension whenever you like.`,
+    a: msg`It is the best way to use Aziru, and it is where most people spend their time: the extension puts Aziru in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.aziru.email, and both work on the same account, so you can install the extension whenever you like.`,
   },
   {
-    q: msg`How is Amarnai different from Gmail and Outlook filters?`,
-    a: msg`Filters match rules you write by hand: this sender, that subject keyword. Amarnai reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement. Your folders are mirrored back into your inbox as labels or categories, so the sorting shows up there too, but the calm workspace is what you work from. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Amarnai is unsure about is flagged for your review.`,
+    q: msg`How is Aziru different from Gmail and Outlook filters?`,
+    a: msg`Filters match rules you write by hand: this sender, that subject keyword. Aziru reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement. Your folders are mirrored back into your inbox as labels or categories, so the sorting shows up there too, but the calm workspace is what you work from. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Aziru is unsure about is flagged for your review.`,
   },
   {
-    q: msg`Does Amarnai work with Outlook?`,
-    a: msg`Yes. Amarnai works with both Gmail and Outlook, each connected the same way: Amarnai reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes is its own labels in Gmail or categories in Outlook, and you can switch that off.`,
+    q: msg`Does Aziru work with Outlook?`,
+    a: msg`Yes. Aziru works with both Gmail and Outlook, each connected the same way: Aziru reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes is its own labels in Gmail or categories in Outlook, and you can switch that off.`,
   },
   {
-    q: msg`Can Amarnai sort my existing inbox, not just new mail?`,
-    a: msg`Yes. Amarnai can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same folders, up to your plan's limits, so old and new mail end up organized the same way.`,
+    q: msg`Can Aziru sort my existing inbox, not just new mail?`,
+    a: msg`Yes. Aziru can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same folders, up to your plan's limits, so old and new mail end up organized the same way.`,
   },
   {
-    q: msg`What happens to threads Amarnai is unsure about?`,
+    q: msg`What happens to threads Aziru is unsure about?`,
     a: msg`Any thread the model is unsure about is flagged for review instead of being filed automatically. Open it to see the suggested folder, the confidence score, and the reasoning, then approve the routing or send it to a different folder.`,
   },
   {
-    q: msg`Can Amarnai draft replies?`,
-    a: msg`Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Amarnai for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance.`,
+    q: msg`Can Aziru draft replies?`,
+    a: msg`Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Aziru for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance.`,
   },
   {
-    q: msg`How is Amarnai's pricing structured?`,
+    q: msg`How is Aziru's pricing structured?`,
     a: msg`Pricing is per workspace, billed monthly or annually. Every account starts with a free workspace, no card required. The paid Scribe and Pharaoh plans add higher limits and include a 14-day trial. See the pricing page for current details.`,
   },
   {
-    q: msg`Can I self-host Amarnai?`,
-    a: msg`Yes. Amarnai is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub.`,
+    q: msg`Can I self-host Aziru?`,
+    a: msg`Yes. Aziru is open source under the AGPL-3.0 license. You can clone the repository and run it yourself with Docker. Self-hosting is free and unsupported, with community support available on GitHub.`,
   },
   {
-    q: msg`Why is it called Amarnai?`,
-    a: msg`Amarnai is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Amarnai spares you from that fate.`,
+    q: msg`Why is it called Aziru?`,
+    a: msg`Aziru is named after Aziru of Amurru, one of the correspondents in the Amarna letters: a cache of clay tablets from around 1350 BC holding the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Aziru spares you from that fate.`,
   },
   {
-    q: msg`What model does Amarnai use?`,
+    q: msg`What model does Aziru use?`,
     a: msg`Hosted subscriptions run on a leading AI model. Self-hosted deployments can point at any OpenAI-compatible provider, such as OpenAI or Google Gemini, or a local Ollama model for fully offline operation.`,
   },
 ];

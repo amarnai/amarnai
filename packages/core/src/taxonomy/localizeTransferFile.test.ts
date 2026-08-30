@@ -24,7 +24,7 @@ function file(): TaxonomyTransferFile {
     positionY: 2,
   });
   return {
-    amarnaiTaxonomyVersion: 1,
+    aziruTaxonomyVersion: 1,
     exportedAt: "2026-01-01T00:00:00.000Z",
     nodes: [
       node("root", "Inbox", null, true),

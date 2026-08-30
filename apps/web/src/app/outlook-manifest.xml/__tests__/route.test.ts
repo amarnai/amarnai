@@ -3,7 +3,7 @@ import { GET } from "../route";
 
 // The manifest is the contract with Outlook: a wrong URL or a changed Id breaks
 // every installed add-in, and the permission level is a promise to the user
-// about what Amarnai can do to their mailbox. All of that is asserted here.
+// about what Aziru can do to their mailbox. All of that is asserted here.
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -63,8 +63,8 @@ describe("GET /outlook-manifest.xml", () => {
     enable();
     const xml = await body();
     expect(xml).toContain('xsi:type="MessageReadCommandSurface"');
-    expect(xml).toContain('<Control xsi:type="Button" id="amarnaiPanelButton">');
-    expect(xml).toContain('<bt:String id="panelLabel" DefaultValue="Amarnai" />');
+    expect(xml).toContain('<Control xsi:type="Button" id="aziruPanelButton">');
+    expect(xml).toContain('<bt:String id="panelLabel" DefaultValue="Aziru" />');
   });
 
   it("opens the task pane rather than running a headless function", async () => {
@@ -83,7 +83,7 @@ describe("GET /outlook-manifest.xml", () => {
     enable();
     const xml = await body();
     expect(xml).toContain("<Permissions>ReadItem</Permissions>");
-    // ReadWriteMailbox would let the add-in send; Amarnai must never be able to.
+    // ReadWriteMailbox would let the add-in send; Aziru must never be able to.
     expect(xml).not.toContain("ReadWriteMailbox");
     expect(xml).not.toContain("ReadWriteItem");
   });

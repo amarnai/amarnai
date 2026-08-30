@@ -540,7 +540,7 @@ function TaxonomyEditorInner({
     const date = new Date().toISOString().slice(0, 10);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `amarnai-taxonomy-${workspaceId}-${date}.json`;
+    a.download = `aziru-taxonomy-${workspaceId}-${date}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }

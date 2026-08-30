@@ -17,7 +17,7 @@ function node(ref: string, isRoot = false) {
 }
 
 const file: TaxonomyTransferFile = {
-  amarnaiTaxonomyVersion: 1,
+  aziruTaxonomyVersion: 1,
   exportedAt: "2026-06-24T00:00:00.000Z",
   nodes: [node("root", true), node("a"), node("b")],
   edges: [

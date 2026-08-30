@@ -18,7 +18,7 @@ function node(ref: string, isRoot = false) {
 
 // root → a (leaf), root → b → b1, b2 (leaves)
 const file: TaxonomyTransferFile = {
-  amarnaiTaxonomyVersion: 1,
+  aziruTaxonomyVersion: 1,
   exportedAt: "2026-06-24T00:00:00.000Z",
   nodes: [node("root", true), node("a"), node("b"), node("b1"), node("b2")],
   edges: [

@@ -87,7 +87,7 @@ export function threadIdFromHash(hash: string): string | null {
 
 /**
  * The mailbox currently shown in the UI. Under multi-login (/u/0, /u/1, …) the
- * signed-in Amarnai account may not be the one on screen, and summarizing the
+ * signed-in Aziru account may not be the one on screen, and summarizing the
  * wrong mailbox would be worse than summarizing nothing — so no address means
  * no widget.
  *

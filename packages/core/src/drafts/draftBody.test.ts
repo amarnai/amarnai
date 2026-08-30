@@ -13,7 +13,7 @@ describe("draftBodyToHtml", () => {
   });
 
   it("keeps single newlines inside a block as line breaks", () => {
-    expect(draftBodyToHtml("Ben Azlay\nAmarnai")).toBe("<p>Ben Azlay<br>Amarnai</p>");
+    expect(draftBodyToHtml("Ben Azlay\nAziru")).toBe("<p>Ben Azlay<br>Aziru</p>");
   });
 
   it("collapses runs of more than two newlines into one paragraph split", () => {

@@ -15,7 +15,7 @@ Columns: DPA in place? / Transfer mechanism (DPF or SCCs) / Verified date / Evid
 | Vendor | Role | DPA in place? | Transfer mechanism | Verified | Evidence | Owner |
 |---|---|---|---|---|---|---|
 | Google: Gemini API | Processor (AI classification, embeddings, drafts) | TODO: accept/verify the Google Cloud Data Processing Addendum covering the Gemini API paid tier | TODO: check Google LLC's EU-US DPF certification (dataprivacyframework.gov) incl. UK and Swiss extensions | | | |
-| Google: Gmail API / OAuth | Independent controller of the source mailbox; Amarnai accesses under user consent | N/A (controller-to-controller via user consent; Limited Use policy applies) | N/A for Amarnai's access; user-directed | | CASA Tier 2 cleared July 2026 | |
+| Google: Gmail API / OAuth | Independent controller of the source mailbox; Aziru accesses under user consent | N/A (controller-to-controller via user consent; Limited Use policy applies) | N/A for Aziru's access; user-directed | | CASA Tier 2 cleared July 2026 | |
 | Microsoft: Graph API (Outlook) | Independent controller of the source mailbox | N/A (same model as Gmail) | N/A; user-directed | | | |
 | Stripe | Processor (billing) | TODO: confirm the Stripe DPA is incorporated in the Stripe Services Agreement (it is by default; capture evidence) | TODO: verify Stripe, Inc. DPF certification status | | | |
 | Resend | Processor (transactional email) | TODO: sign or verify Resend's DPA | TODO: verify Resend DPF status; if not certified, execute SCCs (module 2) | | | |

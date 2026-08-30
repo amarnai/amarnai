@@ -258,7 +258,7 @@ describe("applyThreadFilter — drafts", () => {
     providerMessageId: "m-inbound",
     receivedAt: new Date("2026-01-02T00:00:00Z"),
   });
-  // Gmail's threads.get returns unsent drafts as thread members; an Amarnai Reply
+  // Gmail's threads.get returns unsent drafts as thread members; an Aziru Reply
   // draft is the newest "message" in the thread until it is sent.
   const DRAFT = msg({
     providerMessageId: "m-draft",

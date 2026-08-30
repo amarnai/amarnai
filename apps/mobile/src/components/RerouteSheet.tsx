@@ -16,7 +16,7 @@ interface RerouteSheetProps {
 
 // Bottom sheet for picking a target folder. Reuses triage.folders; selecting a
 // folder calls back into triage.commitReroute via onSelect. Readonly: this only
-// changes Amarnai's routing, never Gmail.
+// changes Aziru's routing, never Gmail.
 export function RerouteSheet({
   visible,
   folders,

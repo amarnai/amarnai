@@ -26,7 +26,7 @@ import type { QueueSectionKey } from "./sectionCollapse.js";
 //   Assigned to you   yours to handle, and not yet done. Present even in a
 //                     workspace of one: assigning a thread to yourself is how
 //                     you park it for later.
-//   Needs review      Amarnai was not confident enough to file it.
+//   Needs review      Aziru was not confident enough to file it.
 //   Drafts            a reply is written and waiting for approval. Invisible
 //                     anywhere else until you reopen the thread.
 //

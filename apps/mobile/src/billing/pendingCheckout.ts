@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 // upgrade lands immediately, without depending on the Stripe webhook. Persisted
 // so it survives the app being backgrounded/killed during the browser detour.
 
-const KEY = 'amarnai.billing.pendingCheckout';
+const KEY = 'aziru.billing.pendingCheckout';
 // Drop stale entries so an abandoned checkout doesn't get retried forever.
 const MAX_AGE_MS = 60 * 60 * 1000;
 

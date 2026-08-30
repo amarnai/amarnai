@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         title: (
           <>
             <Image src="/logo.png" alt="" width={20} height={20} aria-hidden />
-            Amarnai
+            Aziru
           </>
         ),
       }}

@@ -18,7 +18,7 @@ export function HeroSection() {
 
             <p className="ld-hero-sub">
               <Trans>
-                Save hours of email sorting every week. Let Amarnai sort your
+                Save hours of email sorting every week. Let Aziru sort your
                 inbox, filing old and new mail where it belongs.
               </Trans>
             </p>

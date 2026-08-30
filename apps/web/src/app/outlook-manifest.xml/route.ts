@@ -10,7 +10,7 @@ import {
 //
 // Classic XML with VersionOverrides rather than the newer unified JSON manifest:
 // XML is what outlook.live.com (consumer accounts) and Outlook for Mac support
-// today, and this add-in has to work everywhere Amarnai supports Outlook.
+// today, and this add-in has to work everywhere Aziru supports Outlook.
 //
 // Served from a route rather than a static file because Outlook resolves every
 // resource by absolute URL, so the host origin must be baked in at request time.
@@ -22,15 +22,15 @@ import {
 //   - The ribbon Action is ShowTaskpane, not ExecuteFunction. Signing in, quota
 //     exhaustion and "not sorted yet" all need somewhere to be said, and a
 //     headless function file has no UI to say them in. Doubly true now that the
-//     pane is the full Amarnai panel rather than a one-shot draft action.
+//     pane is the full Aziru panel rather than a one-shot draft action.
 //   - RequestedHeight is sized for that panel (classification, summary, draft),
 //     not for the two lines the draft-only pane needed. SupportsPinning stays on:
 //     a pinned pane follows the reader from conversation to conversation, which
 //     the pane handles via Office.EventType.ItemChanged (see officeHost.ts).
-//   - Permissions stay at ReadItem. Amarnai reads the open conversation's id and
+//   - Permissions stay at ReadItem. Aziru reads the open conversation's id and
 //     opens a reply form for the user to send themselves; it must never hold a
 //     permission that would let it send or modify mail. The panel does not widen
-//     this: everything it shows comes from Amarnai's own API, keyed by that id.
+//     this: everything it shows comes from Aziru's own API, keyed by that id.
 //
 // The Id is per-DEPLOYMENT, not a constant, and must never change once that
 // deployment has published: Outlook keys installed add-ins by it, so a new Id
@@ -66,10 +66,10 @@ function buildManifest(base: string, addinId: string): string {
   xsi:type="MailApp">
   <Id>${addinId}</Id>
   <Version>1.1.0.0</Version>
-  <ProviderName>Amarnai</ProviderName>
+  <ProviderName>Aziru</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Amarnai" />
-  <Description DefaultValue="See how Amarnai sorted the conversation you are reading, move it, and draft a reply — without leaving Outlook. Amarnai never sends email: you review and send." />
+  <DisplayName DefaultValue="Aziru" />
+  <Description DefaultValue="See how Aziru sorted the conversation you are reading, move it, and draft a reply — without leaving Outlook. Aziru never sends email: you review and send." />
   <IconUrl DefaultValue="${b}/outlook/icon-64.png" />
   <HighResolutionIconUrl DefaultValue="${b}/outlook/icon-128.png" />
   <SupportUrl DefaultValue="${b}/settings" />
@@ -109,9 +109,9 @@ function buildManifest(base: string, addinId: string): string {
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
             <OfficeTab id="TabDefault">
-              <Group id="amarnaiGroup">
+              <Group id="aziruGroup">
                 <Label resid="groupLabel" />
-                <Control xsi:type="Button" id="amarnaiPanelButton">
+                <Control xsi:type="Button" id="aziruPanelButton">
                   <Label resid="panelLabel" />
                   <Supertip>
                     <Title resid="panelLabel" />
@@ -127,7 +127,7 @@ function buildManifest(base: string, addinId: string): string {
                     <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
-                <Control xsi:type="Button" id="amarnaiCommentsButton">
+                <Control xsi:type="Button" id="aziruCommentsButton">
                   <Label resid="commentsLabel" />
                   <Supertip>
                     <Title resid="commentsLabel" />
@@ -161,13 +161,13 @@ function buildManifest(base: string, addinId: string): string {
         <bt:Url id="commentsUrl" DefaultValue="${commentsUrl}" />
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Amarnai" />
-        <bt:String id="panelLabel" DefaultValue="Amarnai" />
+        <bt:String id="groupLabel" DefaultValue="Aziru" />
+        <bt:String id="panelLabel" DefaultValue="Aziru" />
         <bt:String id="commentsLabel" DefaultValue="Comments" />
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="panelTip" DefaultValue="Open the Amarnai panel for this conversation: where it was filed, what it says, and a draft reply you review and send yourself." />
-        <bt:String id="commentsTip" DefaultValue="Discuss this conversation with your team in Amarnai. Comments stay in Amarnai and are never sent by email." />
+        <bt:String id="panelTip" DefaultValue="Open the Aziru panel for this conversation: where it was filed, what it says, and a draft reply you review and send yourself." />
+        <bt:String id="commentsTip" DefaultValue="Discuss this conversation with your team in Aziru. Comments stay in Aziru and are never sent by email." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

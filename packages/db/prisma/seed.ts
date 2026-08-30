@@ -23,11 +23,11 @@ async function main() {
 
   // ── 1. User ───────────────────────────────────────────────────────────────
   const user = await db.user.upsert({
-    where: { email: "dev@amarnai.local" },
+    where: { email: "dev@aziru.local" },
     update: {},
     create: {
-      email: "dev@amarnai.local",
-      name: "Amarnai Dev User",
+      email: "dev@aziru.local",
+      name: "Aziru Dev User",
       emailVerified: new Date(),
     },
   });
@@ -48,7 +48,7 @@ async function main() {
       update: {},
       create: { userId: user.id, passwordHash: bcrypt.hashSync(DEV_PASSWORD, 10) },
     });
-    console.log(`  Dev login: dev@amarnai.local / ${DEV_PASSWORD}`);
+    console.log(`  Dev login: dev@aziru.local / ${DEV_PASSWORD}`);
   }
 
   // ── 2. Workspace ──────────────────────────────────────────────────────────
@@ -82,7 +82,7 @@ async function main() {
       workspaceId,
       userId: user.id,
       provider: Provider.GMAIL,
-      primaryEmailAddress: "dev@amarnai.local",
+      primaryEmailAddress: "dev@aziru.local",
       providerAccountId: "gmail-demo-account-001",
       accessTokenEncrypted: "enc:seed-fake-access-token-aes256",
       refreshTokenEncrypted: "enc:seed-fake-refresh-token-aes256",
@@ -93,19 +93,19 @@ async function main() {
   // ── 5. EmailAddressIdentities ─────────────────────────────────────────────
   const identityDefs = [
     {
-      emailAddress: "dev@amarnai.local",
-      displayName: "Amarnai Dev User",
+      emailAddress: "dev@aziru.local",
+      displayName: "Aziru Dev User",
       kind: EmailAddressIdentityKind.PRIMARY,
       isPrimary: true,
     },
     {
-      emailAddress: "billing@amarnai.local",
+      emailAddress: "billing@aziru.local",
       displayName: "Demo Billing",
       kind: EmailAddressIdentityKind.ALIAS,
       isPrimary: false,
     },
     {
-      emailAddress: "clients@amarnai.local",
+      emailAddress: "clients@aziru.local",
       displayName: "Demo Clients",
       kind: EmailAddressIdentityKind.ALIAS,
       isPrimary: false,
@@ -389,7 +389,7 @@ async function main() {
         "Jordan Mills",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T10:30:00Z"),
-      toEmails: ["demo@amarnai.local"],
+      toEmails: ["demo@aziru.local"],
     });
 
   // 2. Customer support issue → Customer support
@@ -414,7 +414,7 @@ async function main() {
         "David Chen",
       ].join("\n"),
       receivedAt: new Date("2026-05-16T08:00:00Z"),
-      toEmails: ["demo@amarnai.local"],
+      toEmails: ["demo@aziru.local"],
     });
 
   // 3. Partnership proposal → Partnerships / vendors
@@ -439,7 +439,7 @@ async function main() {
         "Sarah Bennett",
       ].join("\n"),
       receivedAt: new Date("2026-05-15T14:20:00Z"),
-      toEmails: ["demo@amarnai.local"],
+      toEmails: ["demo@aziru.local"],
     });
 
   // 4. Billing dispute → Billing / invoices
@@ -464,7 +464,7 @@ async function main() {
         "Peter Simmons",
       ].join("\n"),
       receivedAt: new Date("2026-05-14T09:45:00Z"),
-      toEmails: ["demo@amarnai.local"],
+      toEmails: ["demo@aziru.local"],
     });
 
   // 5. Press interview request → Press / media
@@ -489,7 +489,7 @@ async function main() {
         "Amelia Rivera",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T16:00:00Z"),
-      toEmails: ["demo@amarnai.local"],
+      toEmails: ["demo@aziru.local"],
     });
 
   // 6. Vague follow-up → Other / needs review (low confidence)
@@ -512,7 +512,7 @@ async function main() {
         "M. Marsh",
       ].join("\n"),
       receivedAt: new Date("2026-05-17T07:30:00Z"),
-      toEmails: ["demo@amarnai.local"],
+      toEmails: ["demo@aziru.local"],
     });
 
   // ── 10. EmailClassifications ──────────────────────────────────────────────

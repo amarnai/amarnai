@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aziru.email"),
-  applicationName: "Amarnai",
+  applicationName: "Aziru",
 };
 
 export default function RootLayout({

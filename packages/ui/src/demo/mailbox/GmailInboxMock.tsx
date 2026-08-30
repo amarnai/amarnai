@@ -9,7 +9,7 @@ import { ProviderLabelChip } from "./ProviderLabelChip.js";
 import type { AziruDemoData } from "./types.js";
 
 /**
- * Gmail's inbox list. It renders the same demo threads the Amarnai workspace
+ * Gmail's inbox list. It renders the same demo threads the Aziru workspace
  * sorts, so the mailbox and the panel beside it visibly show one inbox, and it
  * is where the mirrored folders show up as Gmail labels: one chip per row,
  * carrying the writeback name and the folder's own color.
@@ -20,7 +20,7 @@ import type { AziruDemoData } from "./types.js";
  *
  * Gmail's Primary/Promotions/Social category tabs are deliberately not drawn.
  * They are a second filing system sitting an inch from ours, which is the most
- * confusing thing that could share this frame, and Amarnai excludes promotions
+ * confusing thing that could share this frame, and Aziru excludes promotions
  * from triage by default anyway (`includePromotions` defaults false), so those
  * categories are not part of what this section is describing. An inbox with the
  * category tabs turned off is an ordinary Gmail configuration, so nothing here

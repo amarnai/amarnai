@@ -1,8 +1,8 @@
 # @aziru/extension
 
-The Amarnai extension for Chrome and Firefox (MV3). **Its primary surface is
-Amarnai inside Gmail and Outlook on the web**: content scripts inject a thread
-summary card into the open conversation and an *Amarnai Reply* button beside the
+The Aziru extension for Chrome and Firefox (MV3). **Its primary surface is
+Aziru inside Gmail and Outlook on the web**: content scripts inject a thread
+summary card into the open conversation and an *Aziru Reply* button beside the
 provider's own reply controls, so the product runs where people already read
 their mail. A side panel (Chrome) / sidebar (Firefox) carries the triage surface
 alongside it: a live sorted-thread view with triage actions (mark done, reroute,
@@ -89,7 +89,7 @@ For the stores: run the matching `:prod` build, then zip the output dir:
 
 ```sh
 pnpm extension:package          # Chrome → aziru-extension.zip
-pnpm extension:package:firefox  # Firefox → amarnai-extension-firefox.zip
+pnpm extension:package:firefox  # Firefox → aziru-extension-firefox.zip
 ```
 
 Upload the Chrome zip to the Chrome Web Store and the Firefox zip to
@@ -155,7 +155,7 @@ for Firefox):
 ### Firefox
 
 Firefox has no `EXTENSION_KEY` equivalent: the ID is fixed in the manifest as
-`browser_specific_settings.gecko.id` (`amarnai@amarnai.com` — an identifier, not a
+`browser_specific_settings.gecko.id` (`aziru@aziru.com` — an identifier, not a
 real mailbox; the domain just needs to be one you control). That id is permanent
 and determines the redirect hash, so the redirect URI is stable for dev and store
 builds alike.

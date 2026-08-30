@@ -9,11 +9,11 @@ import { MailThreadMock } from "./MailThreadMock.js";
 import type { AziruDemoData, MockProvider } from "./types.js";
 
 /**
- * One mailbox, with or without Amarnai in it.
+ * One mailbox, with or without Aziru in it.
  *
  * This is the whole in-your-inbox demo: a Gmail or Outlook window showing the
  * demo threads, plus everything the extension injects into it (folder labels,
- * the summary card, the Amarnai Reply entry point, the panel in the right
+ * the summary card, the Aziru Reply entry point, the panel in the right
  * rail). Pass `aziru: null` and the same threads render as the untouched
  * mailbox, which is the comparison the landing page's switch drives.
  *

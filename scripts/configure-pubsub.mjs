@@ -9,7 +9,7 @@
  *   API_URL                    — base URL of the deployed API, e.g. https://api.yourdomain.com
  *   GMAIL_PUBSUB_TOPIC         — "projects/<project-id>/topics/<topic-name>"
  *   GMAIL_PUBSUB_WEBHOOK_SECRET — secret embedded in the push endpoint URL
- *   GMAIL_PUBSUB_SUBSCRIPTION  — subscription to update (default: amarnai-gmail-sub)
+ *   GMAIL_PUBSUB_SUBSCRIPTION  — subscription to update (default: aziru-gmail-sub)
  *
  * Requirements: gcloud CLI — https://cloud.google.com/sdk/docs/install
  */
@@ -37,7 +37,7 @@ function loadEnv(key) {
 const apiUrl         = loadEnv("API_URL");
 const webhookSecret  = loadEnv("GMAIL_PUBSUB_WEBHOOK_SECRET");
 const pubsubTopic    = loadEnv("GMAIL_PUBSUB_TOPIC");
-const subscription   = loadEnv("GMAIL_PUBSUB_SUBSCRIPTION") ?? "amarnai-gmail-sub";
+const subscription   = loadEnv("GMAIL_PUBSUB_SUBSCRIPTION") ?? "aziru-gmail-sub";
 
 const missing = [
   !apiUrl           && "API_URL",

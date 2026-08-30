@@ -166,7 +166,7 @@ describe("GET /workspaces/:workspaceId/provider-threads/:providerThreadId", () =
     });
   });
 
-  // Not an error: the mail client is showing a thread Amarnai has not synced.
+  // Not an error: the mail client is showing a thread Aziru has not synced.
   // The panel renders "not synced yet" for this, so it must stay distinguishable
   // from a failure.
   it("404s a thread that was never synced", async () => {

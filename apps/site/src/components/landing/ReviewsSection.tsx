@@ -79,24 +79,25 @@ export function ReviewsSection() {
             source={<Trans>Translated from hieroglyphics</Trans>}
           >
             <Trans>
-              Before Amarnai, my scribes and I sorted letters from sunrise to
+              Before Aziru, my scribes and I sorted letters from sunrise to
               sunset. Now I finally have the bandwidth to help my vassals,
               promote the cult of Aten, and plan the city of Amarna.
             </Trans>
           </ReviewCard>
 
           <ReviewCard
-            portrait="/aziru-review.png"
-            name={<Trans>Aziru</Trans>}
-            title={<Trans>King of Amurru</Trans>}
+            portrait="/burna-buriash-review.png"
+            name={<Trans>Burna-Buriash</Trans>}
+            title={<Trans>King of Babylon</Trans>}
             source={<Trans>Translated from cuneiform</Trans>}
           >
             <Trans>
-              Letters reached me from Pharaoh in the south and the Hittites in
-              the north, and I could answer only one lord at a time. Amarnai
-              puts the mail that cannot wait at the top of my pile and drafts
-              my reply, ready for my seal. Nothing important
-              goes unanswered now.
+              Tablets arrive from Egypt, from Hatti, and from every merchant
+              robbed on the road to Canaan, and all of them land in the same
+              basket. Aziru sorts them before I break the seal: gold shipments
+              here, caravan complaints there, marriage terms in their own
+              folder. I still write to Pharaoh about the gold, but now it is
+              the first letter of my day instead of the last.
             </Trans>
           </ReviewCard>
         </div>

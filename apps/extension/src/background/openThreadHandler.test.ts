@@ -47,7 +47,7 @@ describe("openThreadHandler", () => {
   it("ignores messages that are not its own", () => {
     const listener = register();
 
-    expect(send(listener, { type: "amarnai:somethingElse" })).toBe(false);
+    expect(send(listener, { type: "aziru:somethingElse" })).toBe(false);
     expect(chrome.tabs.update).not.toHaveBeenCalled();
   });
 

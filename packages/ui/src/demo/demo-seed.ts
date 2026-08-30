@@ -168,7 +168,7 @@ export function getDemoMembers(i18n: I18n): MemberItem[] {
  * Who each thread is assigned to, by thread id.
  *
  * Half the list, with every member represented once: shared triage is a reason
- * to choose Amarnai over a personal-inbox tool, so the demo has to look like an
+ * to choose Aziru over a personal-inbox tool, so the demo has to look like an
  * inbox several people are actually working, not like a solo inbox with an
  * assignment feature bolted on. One of them is the owner's own, so assigning
  * yourself reads as ordinary; the other three stay unassigned so the assign
@@ -197,7 +197,7 @@ function assignmentFor(threadId: string, i18n: I18n): ThreadAssignment | null {
 
 /**
  * The provider-side name each folder mirrors to, keyed by folder id, exactly as
- * the real writeback builds it: the "Amarnai" namespace followed by the folder's
+ * the real writeback builds it: the "Aziru" namespace followed by the folder's
  * ancestry. Gmail nests the segments on "/" and Outlook joins them into one flat
  * category display name, so both providers render the same string.
  *
@@ -229,9 +229,9 @@ const DRAFT_BODIES: Record<string, MessageDescriptor> = {
 I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.
 
 In friendship,`,
-  t2: msg`Aziru,
+  t2: msg`Suppiluliuma,
 
-Your words of friendship reach us well. We are open to hearing more of what the house of Amurru proposes. Send your terms by the next courier.
+Your words of friendship reach us well. We are open to hearing more of what the house of Hatti proposes. Send your terms by the next courier.
 
 With regards,`,
   t3: msg`To the Bureau of Royal Appointments,
@@ -271,7 +271,7 @@ export function getDemoDraftBodies(i18n: I18n): Record<string, string> {
 
 const THREAD_SUMMARIES: Record<string, MessageDescriptor> = {
   t1: msg`Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay.`,
-  t2: msg`Aziru proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier.`,
+  t2: msg`Suppiluliuma proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier.`,
   t4: msg`Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times.`,
   t6: msg`The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier.`,
 };
@@ -373,9 +373,9 @@ Burna-Buriash II, King of Babylon`,
   },
   {
     id: "t2",
-    subject: msg`Alliance proposal: house of Amurru`,
+    subject: msg`Alliance proposal: house of Hatti`,
     providerThreadId: "p2",
-    participants: "aziru@amurru.co",
+    participants: "suppiluliuma@hatti.gov",
     latestAt: d("2026-05-29T16:45:00Z"),
     messageCount: 2,
     snippet: msg`For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples.`,
@@ -383,13 +383,13 @@ Burna-Buriash II, King of Babylon`,
     folderId: "investors",
     status: "review",
     confidence: 0.71,
-    reasoning: msg`Flagged as alliance/investor intro based on language ("mutual benefit", "long-standing friendship"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts.`,
+    reasoning: msg`Flagged as alliance/investor intro based on language ("mutual benefit", "long-standing friendship"). Confidence is moderate; Suppiluliuma has been known to send similar overtures to multiple courts.`,
     alternativeFolder: { folderId: "other", weight: 0.21 },
     messages: [
       {
         id: "m2a",
-        fromName: msg`Aziru of Amurru`,
-        fromEmail: "aziru@amurru.co",
+        fromName: msg`Suppiluliuma of Hatti`,
+        fromEmail: "suppiluliuma@hatti.gov",
         time: d("2026-05-29T16:45:00Z"),
         snippet: msg`I write to propose that we formalise our friendship.`,
         bodyText: msg`To the Great King,
@@ -398,12 +398,12 @@ For many years our houses have been as brothers. I write now to propose that we 
 
 I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.
 
-Aziru, servant of the Great King, lord of Amurru`,
+Suppiluliuma, Great King, king of Hatti`,
       },
     ],
     hasDraft: true,
     isDrafting: false,
-    lastSenderEmail: "aziru@amurru.co",
+    lastSenderEmail: "suppiluliuma@hatti.gov",
     doneMark: null,
     assignment: null,
     isImportant: false,

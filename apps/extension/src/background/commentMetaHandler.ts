@@ -32,7 +32,7 @@ export async function handleCommentMetaRequest(
 
   try {
     const meta = await api.providerThreadCommentsMeta(workspaceId, request.providerThreadId);
-    // Null = the thread was never synced into Amarnai; no bubble.
+    // Null = the thread was never synced into Aziru; no bubble.
     if (!meta) return { ok: false, reason: "noThread" };
     return { ok: true, meta: { total: meta.total, unread: meta.unread } };
   } catch (e) {

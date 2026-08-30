@@ -3,14 +3,14 @@
 import { Trans, Plural } from "@lingui/react/macro";
 import type { SyncStatus } from "../types.js";
 
-// Whether Amarnai is busy, above the queue.
+// Whether Aziru is busy, above the queue.
 //
 // Only shown while something is actually happening, because the ordinary state
 // of a sorted inbox is that nothing is, and a permanent bar reporting "all
 // done" is furniture. Two things can be happening, and they are reported
 // differently:
 //
-//   Sorting    threads already in Amarnai are being routed. There is a count,
+//   Sorting    threads already in Aziru are being routed. There is a count,
 //              and it falls, which is the progress signal.
 //   Backfill   past threads are still being pulled out of the mailbox. No
 //              count is possible — the provider exposes no total for the

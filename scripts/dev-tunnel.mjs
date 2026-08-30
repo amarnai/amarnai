@@ -90,7 +90,7 @@ const gmailConfigured = Boolean(webhookSecret && pubsubTopic);
 
 // Default to the dev-only subscription so this script never overwrites the
 // production endpoint. Set GMAIL_PUBSUB_SUBSCRIPTION in .env.local to override.
-const SUBSCRIPTION = loadEnv("GMAIL_PUBSUB_SUBSCRIPTION") ?? "amarnai-gmail-sub-dev";
+const SUBSCRIPTION = loadEnv("GMAIL_PUBSUB_SUBSCRIPTION") ?? "aziru-gmail-sub-dev";
 
 const gcpProject = pubsubTopic?.match(/projects\/([^/]+)/)?.[1] ?? null;
 if (pubsubTopic && !gcpProject) {

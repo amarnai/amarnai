@@ -12,11 +12,11 @@ export const QUEUE_LABELS: Record<string, { name: MessageDescriptor; desc: Messa
   },
   sorted: {
     name: msg`Sorted`,
-    desc: msg`Threads Amarnai has successfully routed to a folder.`,
+    desc: msg`Threads Aziru has successfully routed to a folder.`,
   },
   review: {
     name: msg`Needs review`,
-    desc: msg`Threads flagged for review. Amarnai wasn't confident enough to sort automatically.`,
+    desc: msg`Threads flagged for review. Aziru wasn't confident enough to sort automatically.`,
   },
   pending: {
     name: msg`Pending`,

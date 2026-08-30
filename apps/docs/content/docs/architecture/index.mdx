@@ -1,9 +1,9 @@
 ---
 title: Architecture
-description: High-level overview of how Amarnai is built.
+description: High-level overview of how Aziru is built.
 ---
 
-Amarnai is a TypeScript monorepo managed with [pnpm workspaces](https://pnpm.io/workspaces) and [Turborepo](https://turbo.build/). It is composed of several applications and a set of shared packages. The runtime services are `web`, `api`, and `worker`; the remaining apps are supporting surfaces (marketing site, browser extension, docs) and a shelved mobile app.
+Aziru is a TypeScript monorepo managed with [pnpm workspaces](https://pnpm.io/workspaces) and [Turborepo](https://turbo.build/). It is composed of several applications and a set of shared packages. The runtime services are `web`, `api`, and `worker`; the remaining apps are supporting surfaces (marketing site, browser extension, docs) and a shelved mobile app.
 
 The stack is Node 24, Next.js 16, React 19, Prisma 6 on PostgreSQL, and BullMQ on Redis. The Next.js apps (`web` and `site`) build with `--webpack`; Turbopack is not used because it lacks the workspace `.js` extension alias these packages rely on.
 
@@ -42,7 +42,7 @@ The stack is Node 24, Next.js 16, React 19, Prisma 6 on PostgreSQL, and BullMQ o
 
 ## Key design decisions
 
-**Threads, not messages.** Amarnai triages email threads as a unit. A new message in an existing thread triggers re-triage of the whole thread, so the sort order always reflects the full conversation.
+**Threads, not messages.** Aziru triages email threads as a unit. A new message in an existing thread triggers re-triage of the whole thread, so the sort order always reflects the full conversation.
 
 **One provider seam, read-only.** Gmail and Outlook are reached through a single `MailProvider` interface in `packages/mail`. The concrete adapter is chosen per `EmailConnection`, not by a global env switch, so both providers stay at feature parity. Neither adapter can send or mutate mail beyond what read-only access allows.
 

@@ -15,7 +15,7 @@ import { WelcomeCarousel } from "./WelcomeCarousel";
  *
  * The left half previews the product with the same three demos the landing
  * page runs; the right half answers the three things a user who arrived
- * straight from the store does not know yet: what Amarnai does, where it
+ * straight from the store does not know yet: what Aziru does, where it
  * lives, and how to start. The only action is opening the panel, where sign-in
  * and everything after it happens.
  */
@@ -66,7 +66,7 @@ export function WelcomeApp() {
                 opaque plate, which renders as a white tile on the dark theme and
                 is soft above 48px. */}
             <AziruMark size={36} className="wc-brand-mark" />
-            <span className="wc-brand-name">Amarnai</span>
+            <span className="wc-brand-name">Aziru</span>
           </div>
 
           <div className="wc-headline">
@@ -75,7 +75,7 @@ export function WelcomeApp() {
             </h1>
             <p className="wc-lede">
               <Trans>
-                Amarnai files every Gmail and Outlook thread into folders you design,
+                Aziru files every Gmail and Outlook thread into folders you design,
                 and keeps them sorted right inside your inbox.
               </Trans>
             </p>
@@ -95,7 +95,7 @@ export function WelcomeApp() {
                 <p className="wc-step-text">
                   <Trans>
                     One sign-in creates your account and connects Gmail or Outlook.
-                    Amarnai never sends or deletes mail.
+                    Aziru never sends or deletes mail.
                   </Trans>
                 </p>
               </div>
@@ -110,7 +110,7 @@ export function WelcomeApp() {
                 </h2>
                 <p className="wc-step-text">
                   <Trans>
-                    Let Amarnai generate a set that fits your own inbox, or start from a
+                    Let Aziru generate a set that fits your own inbox, or start from a
                     template. One click either way, and you can change them any time.
                   </Trans>
                 </p>
@@ -137,10 +137,10 @@ export function WelcomeApp() {
           <div className="wc-cta-block">
             <button type="button" className="wc-cta" onClick={openPanel}>
               <AziruMark size={20} />
-              <Trans>Open Amarnai</Trans>
+              <Trans>Open Aziru</Trans>
             </button>
 
-            {/* Both mail providers reviewed Amarnai before it could ask for a
+            {/* Both mail providers reviewed Aziru before it could ask for a
                 mailbox; saying so under the button is the last thing a
                 first-run user wants to know before signing in. */}
             <ul className="wc-assurances">
@@ -178,7 +178,7 @@ function ToolbarNote({ pinned, fallback }: { pinned: PinState; fallback: boolean
   if (fallback && pinned !== "unpinned") {
     return (
       <Note mark={<PinGlyph />}>
-        <Trans>Click the Amarnai icon in your toolbar to open the panel.</Trans>
+        <Trans>Click the Aziru icon in your toolbar to open the panel.</Trans>
       </Note>
     );
   }
@@ -191,11 +191,11 @@ function ToolbarNote({ pinned, fallback }: { pinned: PinState; fallback: boolean
       <Note
         accent
         mark={<PinGlyph />}
-        title={<Trans>Pin Amarnai to your toolbar</Trans>}
+        title={<Trans>Pin Aziru to your toolbar</Trans>}
       >
         <Trans>
           Click the puzzle-piece icon at the top right of your browser, then click the
-          pin next to Amarnai. This box updates on its own once you do.
+          pin next to Aziru. This box updates on its own once you do.
         </Trans>
       </Note>
     );
@@ -210,14 +210,14 @@ function ToolbarNote({ pinned, fallback }: { pinned: PinState; fallback: boolean
           </span>
         }
       >
-        <Trans>Amarnai is pinned. Its icon opens the panel from any tab.</Trans>
+        <Trans>Aziru is pinned. Its icon opens the panel from any tab.</Trans>
       </Note>
     );
   }
 
   return (
     <Note mark={<PinGlyph />}>
-      <Trans>Tip: pin the Amarnai icon in your toolbar to keep it one click away.</Trans>
+      <Trans>Tip: pin the Aziru icon in your toolbar to keep it one click away.</Trans>
     </Note>
   );
 }

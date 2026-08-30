@@ -2,7 +2,7 @@ import { db } from "@aziru/db";
 
 // Shared by every route the native Gmail/Outlook injection calls. Those routes
 // are addressed by the provider's own thread id (the only id a mail page knows),
-// while everything inside Amarnai is keyed by our internal thread id. Both the
+// while everything inside Aziru is keyed by our internal thread id. Both the
 // alphabet fix and the account fan-out live here so the two never drift apart:
 // a thread that resolves for the summary must resolve for the reply draft.
 
@@ -46,7 +46,7 @@ export async function resolveProviderThreadId(
  * What kind of provider id an injected surface is holding.
  *
  * "thread" is the ordinary case and every surface's default: a mail page names
- * the conversation it is showing, and that is what Amarnai keys threads by.
+ * the conversation it is showing, and that is what Aziru keys threads by.
  *
  * "message" exists for one layout that cannot name a conversation at all. OWA's
  * standalone deeplink read view (`/mail/deeplink/read/<id>?ItemID=<id>`) is an
@@ -125,7 +125,7 @@ export async function resolveProviderRef(
  * Enforced server-side rather than in the content script because the extension
  * is the half we do not control: an old build, or one a user never updates, must
  * stop injecting the moment the workspace turns the setting off. Only the
- * provider-id routes are gated — Amarnai's own surfaces address threads by our
+ * provider-id routes are gated — Aziru's own surfaces address threads by our
  * id and are never gated.
  */
 export async function isInjectionEnabled(

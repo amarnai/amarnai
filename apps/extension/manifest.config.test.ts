@@ -45,7 +45,7 @@ describe("buildManifest — firefox", () => {
   it("declares a stable gecko id, min version, and data-collection", () => {
     expect(m["browser_specific_settings"]).toEqual({
       gecko: {
-        id: "amarnai@amarnai.com",
+        id: "aziru@aziru.com",
         strict_min_version: "128.0",
         data_collection_permissions: { required: ["authenticationInfo"] },
       },
@@ -82,12 +82,12 @@ describe("buildManifest — host permissions", () => {
 
   it("does not duplicate the grant when a self-host serves both from one origin", () => {
     const m = buildManifest({
-      apiUrl: "https://amarnai.example.test/api",
-      webAppUrl: "https://amarnai.example.test",
+      apiUrl: "https://aziru.example.test/api",
+      webAppUrl: "https://aziru.example.test",
     }) as Record<string, unknown>;
 
     expect(m["host_permissions"]).toEqual([
-      "https://amarnai.example.test/*",
+      "https://aziru.example.test/*",
       "https://mail.google.com/*",
       "https://outlook.office.com/*",
       "https://outlook.office365.com/*",

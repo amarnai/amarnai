@@ -353,7 +353,7 @@ export function HowItWorksSection() {
       body: (
         <Trans>
           Add the browser extension, then sign in with Google or Microsoft.
-          Amarnai syncs your threads and labels. It never sends or deletes on
+          Aziru syncs your threads and labels. It never sends or deletes on
           your behalf.
         </Trans>
       ),
@@ -394,7 +394,7 @@ export function HowItWorksSection() {
           </h2>
           <p className="ld-section-lede">
             <Trans>
-              Connect once, generate your folders once, and let Amarnai handle
+              Connect once, generate your folders once, and let Aziru handle
               new mail and the thousands of threads already sitting in your
               inbox.
             </Trans>

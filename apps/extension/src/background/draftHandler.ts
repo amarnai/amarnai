@@ -8,7 +8,7 @@ import {
 } from "../content/core/messaging.js";
 import { getInjectionClient, resolveWorkspaceForAccount } from "./summaryHandler.js";
 
-// Background half of the "Amarnai Reply" button. Sibling of summaryHandler: same
+// Background half of the "Aziru Reply" button. Sibling of summaryHandler: same
 // transport, same account→workspace resolution, same never-throws contract.
 //
 // One deliberate difference. The summary widget never polls — a mail page is not
@@ -54,8 +54,8 @@ export async function handleGenerateDraftRequest(
       if (e instanceof InjectionDisabledError) {
         return { ok: false, reason: "injectionDisabled" };
       }
-      // A 404 (thread never synced into Amarnai) lands here alongside real
-      // failures. They differ to the user — "not in Amarnai yet" vs "try again" —
+      // A 404 (thread never synced into Aziru) lands here alongside real
+      // failures. They differ to the user — "not in Aziru yet" vs "try again" —
       // so the 404 keeps its own reason and everything else is an error.
       const message = e instanceof Error ? e.message : "";
       return { ok: false, reason: /not found/i.test(message) ? "noThread" : "error" };

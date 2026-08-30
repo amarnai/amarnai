@@ -12,7 +12,7 @@ import { prefetchWritebackPolicy } from "./writebackPolicy";
 
 // Firefox treats host permissions as user-grantable and may not have them yet;
 // Chrome grants them at install, so this resolves true without a prompt there.
-const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and your inbox to work. Please allow access and try again.`;
+const NEEDS_PERMISSIONS = msg`Aziru needs access to its server and your inbox to work. Please allow access and try again.`;
 
 // Which sign-in flow is in flight, so all controls disable together while only
 // the clicked one owns the outcome. Mirrors ConnectMailCta's `pending`.
@@ -106,7 +106,7 @@ export function SignInScreen() {
     <div className="ax-auth">
       <div className="ax-auth-brand">
         <img src="/icons/icon48.png" width={32} height={32} alt="" />
-        <span className="ax-auth-title">Amarnai</span>
+        <span className="ax-auth-title">Aziru</span>
       </div>
       <p className="ax-auth-tagline">
         <Trans>See how your inbox is sorted, right next to your email.</Trans>
@@ -166,7 +166,7 @@ export function SignInScreen() {
 
       <p className="ax-auth-footer">
         <Trans>
-          New to Amarnai?{" "}
+          New to Aziru?{" "}
           <a href={`${WEB_APP_URL}/sign-up`} target="_blank" rel="noopener noreferrer">
             Create an account
           </a>

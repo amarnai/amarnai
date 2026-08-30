@@ -3,7 +3,7 @@ import type { InboxProfile, TaxonomyTransferFile } from "@aziru/shared";
 import { buildTaxonomyGenerationMessages, buildRepairMessage } from "./prompt.js";
 
 const SEED: TaxonomyTransferFile = {
-  amarnaiTaxonomyVersion: 1,
+  aziruTaxonomyVersion: 1,
   exportedAt: "2026-01-01T00:00:00.000Z",
   nodes: [
     {

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { matchLocale, SOURCE_LOCALE } from "@aziru/i18n";
 
-const STORAGE_KEY = "amarnai_locale";
+const STORAGE_KEY = "aziru_locale";
 
 // Bare paths (`/`, `/pricing`) serve the source-locale (English) content
 // directly, so they are real, crawlable content pages rather than redirect

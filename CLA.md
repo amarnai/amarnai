@@ -1,6 +1,6 @@
-# Amarnai Contributor License Agreement (CLA)
+# Aziru Contributor License Agreement (CLA)
 
-Thank you for your interest in contributing to Amarnai (the "Project"),
+Thank you for your interest in contributing to Aziru (the "Project"),
 owned by **Azgard LLC** (the "Owner").
 
 This document contains two agreements:

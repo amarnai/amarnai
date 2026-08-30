@@ -5,10 +5,10 @@
 | **Controller** | TODO(business): legal entity name, registered address (Wyoming, USA), registration number |
 | **EU representative (Art. 27)** | TODO(business): not yet appointed; see action item in `dpa-transfer-checklist.md` |
 | **UK representative** | TODO(business): assess and appoint if UK users are served |
-| **Privacy contact** | privacy@amarnai.com |
+| **Privacy contact** | privacy@aziru.email |
 | **DPO** | None appointed (TODO(counsel): confirm not required) |
 | **Version / date** | 0.1 / 2026-07-16, draft pending counsel review |
-| **Scope** | Hosted SaaS (app.amarnai.com) only; self-hosted deployments are their own controllers |
+| **Scope** | Hosted SaaS (app.aziru.email) only; self-hosted deployments are their own controllers |
 
 General security measures applying to all activities (Art. 30(1)(g)): OAuth refresh tokens and API keys encrypted at rest with AES-256-GCM, encryption keys stored separately; access tokens held in memory only; passwords stored as hashes; no email bodies in logs; audit logging of important actions; account deletion requires password step-up; CASA Tier 2 assessment cleared July 2026; TODO(business): hosting provider security measures (disk encryption, network isolation, backups) once provider is documented.
 
@@ -40,14 +40,14 @@ General security measures applying to all activities (Art. 30(1)(g)): OAuth refr
 
 | Field | Detail |
 |---|---|
-| Purpose | Mirror the user's Amarnai folders into their mailbox as Gmail labels / Outlook categories under an `Amarnai` namespace, and keep them in sync as threads are sorted |
+| Purpose | Mirror the user's Aziru folders into their mailbox as Gmail labels / Outlook categories under an `Aziru` namespace, and keep them in sync as threads are sorted |
 | Lawful basis | Performance of contract (Art. 6(1)(b)); the user enables it per workspace and grants the write scope explicitly |
 | Data subjects | Users |
 | Data categories | Folder names the user chose, and the mapping from thread to folder. No message content and no correspondent data is transmitted on this path |
 | Recipients | Google (Gmail API), Microsoft (Graph API) as the destination mailbox |
 | Transfers | USA; safeguards per checklist |
-| Retention | Labels persist in the user's own mailbox until Amarnai removes them on re-sort, or the user deletes them. Amarnai reconciles only labels it created; the user's own labels are never modified |
-| Notes | Off when the deployment flag is off, when the user switches it off, or when the write scope was declined. Amarnai never sends, deletes, moves, archives, or marks mail read |
+| Retention | Labels persist in the user's own mailbox until Aziru removes them on re-sort, or the user deletes them. Aziru reconciles only labels it created; the user's own labels are never modified |
+| Notes | Off when the deployment flag is off, when the user switches it off, or when the write scope was declined. Aziru never sends, deletes, moves, archives, or marks mail read |
 
 ### 3. AI classification, embeddings, and drafting
 
@@ -69,7 +69,7 @@ General security measures applying to all activities (Art. 30(1)(g)): OAuth refr
 | Data categories | Recipient address, message content (counts/summaries of the user's own queue; no third-party email bodies) |
 | Recipients | Resend |
 | Transfers | USA; safeguards per checklist |
-| Retention | Not retained by Amarnai beyond send logs without bodies; invitation records until acted on or account deletion |
+| Retention | Not retained by Aziru beyond send logs without bodies; invitation records until acted on or account deletion |
 
 ### 5. Billing and subscriptions
 
@@ -77,7 +77,7 @@ General security measures applying to all activities (Art. 30(1)(g)): OAuth refr
 |---|---|
 | Purpose | Paid plans, free-trial administration, invoicing, tax |
 | Data subjects | Users (workspace owners) |
-| Data categories | Stripe customer/subscription/price identifiers; plan state; billing address and tax ID collected and held within Stripe; opaque card fingerprint token (no card numbers stored by Amarnai) |
+| Data categories | Stripe customer/subscription/price identifiers; plan state; billing address and tax ID collected and held within Stripe; opaque card fingerprint token (no card numbers stored by Aziru) |
 | Recipients | Stripe |
 | Transfers | USA; safeguards per checklist |
 | Retention | Life of workspace; on deletion, subscriptions are canceled with a durable retry record until confirmed |
@@ -118,4 +118,4 @@ General security measures applying to all activities (Art. 30(1)(g)): OAuth refr
 
 ## Processors summary
 
-Cross-reference: `dpa-transfer-checklist.md` for DPA and transfer-mechanism status per processor: Google (Gemini API), Stripe, Resend, hosting/database provider, privacy mailbox provider. Google (Gmail API) and Microsoft (Graph) act as independent controllers of the source mailboxes; Amarnai accesses them under user OAuth consent.
+Cross-reference: `dpa-transfer-checklist.md` for DPA and transfer-mechanism status per processor: Google (Gemini API), Stripe, Resend, hosting/database provider, privacy mailbox provider. Google (Gmail API) and Microsoft (Graph) act as independent controllers of the source mailboxes; Aziru accesses them under user OAuth consent.

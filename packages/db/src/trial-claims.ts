@@ -8,7 +8,7 @@ import { db } from "./client.js";
 // that reads/writes eligibility, so the "one trial per identity" rule lives in one
 // spot. See the TrialClaim model comment for why it survives account deletion.
 //
-// NOTE: claims are keyed on the email at provisioning time. Amarnai has no
+// NOTE: claims are keyed on the email at provisioning time. Aziru has no
 // change-email feature today; if one is ever added, this keying must be revisited
 // (a user could otherwise consume a second trial by changing their address).
 

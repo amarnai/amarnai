@@ -53,7 +53,7 @@ function Gate() {
 
 // Firefox treats host permissions as user-grantable and may not have them yet;
 // Chrome grants them at install, so this resolves true without a prompt there.
-const NEEDS_PERMISSIONS = msg`Amarnai needs access to its server and your inbox to work. Please allow access and try again.`;
+const NEEDS_PERMISSIONS = msg`Aziru needs access to its server and your inbox to work. Please allow access and try again.`;
 
 // Signed in but no workspace yet: the user has an account but hasn't connected an
 // inbox. Run the provider's OAuth grant in-panel (same flow as the sign-in
@@ -139,7 +139,7 @@ function SessionError() {
   const { retry } = useSession();
   return (
     <div className="ax-center ax-muted">
-      <p><Trans>Couldn't reach Amarnai. Check your connection and try again.</Trans></p>
+      <p><Trans>Couldn't reach Aziru. Check your connection and try again.</Trans></p>
       <button type="button" className="ax-btn ax-btn-primary" onClick={() => void retry()}>
         <Trans>Retry</Trans>
       </button>

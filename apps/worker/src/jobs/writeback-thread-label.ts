@@ -16,7 +16,7 @@ import { loadWritebackConnection, provisionFolderLabels } from "./provision-fold
 
 /**
  * writeback-thread-label worker: after a classification write, reconcile the
- * Amarnai-managed label/category on one thread to its current folder.
+ * Aziru-managed label/category on one thread to its current folder.
  *
  * Declarative and idempotent: the job carries no node id — it re-reads the
  * thread's LATEST EmailClassification (append-only table) so retries and

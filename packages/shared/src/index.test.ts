@@ -3,6 +3,6 @@ import { APP_NAME } from "./index.js";
 
 describe("shared", () => {
   it("exports APP_NAME", () => {
-    expect(APP_NAME).toBe("Amarnai");
+    expect(APP_NAME).toBe("Aziru");
   });
 });

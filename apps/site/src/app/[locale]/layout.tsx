@@ -37,7 +37,7 @@ export async function generateMetadata({
     metadataBase: new URL(BASE_URL),
     openGraph: {
       type: "website",
-      siteName: "Amarnai",
+      siteName: "Aziru",
       locale: validLocale,
     },
   };

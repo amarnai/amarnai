@@ -29,15 +29,15 @@ async function applyUnsubscribe(
 function confirmationPage(ok: boolean): NextResponse {
   const heading = ok ? "You're unsubscribed" : "Link invalid";
   const message = ok
-    ? "You will no longer receive Amarnai inbox reminder emails. You can re-enable them anytime in your account settings."
+    ? "You will no longer receive Aziru inbox reminder emails. You can re-enable them anytime in your account settings."
     : "This unsubscribe link is invalid or has expired. You can manage email reminders in your account settings.";
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${heading} | Amarnai</title></head>
+<title>${heading} | Aziru</title></head>
 <body style="margin:0;background:${colors.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:480px;margin:48px auto;padding:0 16px;">
     <div style="background:${colors.surface};border:1px solid ${colors.line};border-radius:12px;padding:28px;">
-      <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:${colors.accent};">Amarnai</p>
+      <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:${colors.accent};">Aziru</p>
       <h1 style="margin:0 0 12px;font-size:20px;color:${colors.ink};">${heading}</h1>
       <p style="margin:0;color:${colors.ink2};font-size:15px;line-height:1.55;">${message}</p>
     </div>

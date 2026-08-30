@@ -36,14 +36,14 @@ export function buildHomeMetadata(
 ): Metadata {
   // Visible browser-tab / search-result headline uses the human-facing brand
   // tagline. Machine-facing OG/Twitter titles keep the keyword-rich SEO phrasing.
-  const title = i18n._(msg`Amarnai: AI Email Sorter for Gmail™ & Outlook`);
-  const seoTitle = i18n._(msg`Amarnai: Sort emails your way`);
+  const title = i18n._(msg`Aziru: AI Email Sorter for Gmail™ & Outlook`);
+  const seoTitle = i18n._(msg`Aziru: Sort emails your way`);
   const url = localeUrl(locale);
 
   return {
     title,
     description: i18n._(
-      msg`Amarnai sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster.`
+      msg`Aziru sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster.`
     ),
     keywords: [
       i18n._(msg`ai email sorter`),
@@ -61,10 +61,10 @@ export function buildHomeMetadata(
     openGraph: {
       title: seoTitle,
       description: i18n._(
-        msg`Amarnai reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork.`
+        msg`Aziru reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork.`
       ),
       url,
-      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Amarnai" }],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Aziru" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -98,7 +98,7 @@ export function buildPricingMetadata(
   i18n: I18n,
   locale: SupportedLocale
 ): Metadata {
-  const title = i18n._(msg`Pricing | Amarnai`);
+  const title = i18n._(msg`Pricing | Aziru`);
   const url = localeUrl(locale, "pricing");
 
   return {
@@ -109,16 +109,16 @@ export function buildPricingMetadata(
     // The plan tiers are branded Scribe / Pharaoh, but many people search the
     // conventional "pro"/"business" terms — keep them as keywords so intent lands.
     keywords: [
-      i18n._(msg`amarnai pricing`),
-      i18n._(msg`amarnai pro plan`),
-      i18n._(msg`amarnai business plan`),
+      i18n._(msg`aziru pricing`),
+      i18n._(msg`aziru pro plan`),
+      i18n._(msg`aziru business plan`),
       i18n._(msg`email sorter pricing`),
     ],
     alternates: {
       canonical: url,
       languages: languageAlternates("pricing"),
     },
-    openGraph: { title, url, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Amarnai" }] },
+    openGraph: { title, url, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Aziru" }] },
     twitter: { card: "summary_large_image", title, images: ["/og-image.png"] },
     robots: { index: true, follow: true },
   };
@@ -132,19 +132,19 @@ export function buildSupportMetadata(
   i18n: I18n,
   locale: SupportedLocale
 ): Metadata {
-  const title = i18n._(msg`Support | Amarnai`);
+  const title = i18n._(msg`Support | Aziru`);
   const url = localeUrl(locale, "support");
 
   return {
     title,
     description: i18n._(
-      msg`Get help with Amarnai: contact support, browse the documentation, report a bug, or manage your account and data.`
+      msg`Get help with Aziru: contact support, browse the documentation, report a bug, or manage your account and data.`
     ),
     alternates: {
       canonical: url,
       languages: languageAlternates("support"),
     },
-    openGraph: { title, url, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Amarnai" }] },
+    openGraph: { title, url, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Aziru" }] },
     twitter: { card: "summary_large_image", title, images: ["/og-image.png"] },
     robots: { index: true, follow: true },
   };

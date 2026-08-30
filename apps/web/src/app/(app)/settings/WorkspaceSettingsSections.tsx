@@ -36,7 +36,7 @@ export function WorkspaceSettingsSections({
         onChanged={(locale) => {
           // The cookie is what the proxy reads to resolve the locale for every
           // subsequent request, including server-rendered strings.
-          document.cookie = `amarnai_locale=${locale};path=/;max-age=31536000;samesite=lax`;
+          document.cookie = `aziru_locale=${locale};path=/;max-age=31536000;samesite=lax`;
           router.refresh();
         }}
       />

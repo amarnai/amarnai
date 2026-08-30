@@ -14,7 +14,7 @@ import type { MessageDescriptor } from "@lingui/core";
  * component code changes when the set of themes grows.
  */
 
-export const STORAGE_KEY = "amarnai-theme";
+export const STORAGE_KEY = "aziru-theme";
 
 export type ThemeId = string;
 /** What the user picked: "system" (follow the OS) or a concrete theme id. */

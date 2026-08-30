@@ -28,7 +28,7 @@ const panelStart: Promise<InjectedPanelHandle> = startInjectedPanel({
   onCommentsChanged: () => content?.refreshComments(),
 })
   .catch((e: unknown) => {
-    console.warn("[aziru] Amarnai panel failed to start:", e);
+    console.warn("[aziru] Aziru panel failed to start:", e);
     return inertPanelHandle;
   })
   .then((handle) => {
@@ -64,7 +64,7 @@ try {
 // sail straight past a synchronous catch block and vanish.
 startReplyButton({ getAccountEmail: () => findAccountEmail() }).catch(
   (e: unknown) => {
-    console.warn("[aziru] Amarnai Reply button failed to start:", e);
+    console.warn("[aziru] Aziru Reply button failed to start:", e);
   },
 );
 

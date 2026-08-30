@@ -11,7 +11,7 @@ export type BrowserTarget = "chrome" | "firefox";
 // identifier, never a real mailbox. It is fixed forever because it (a) pins the
 // AMO listing and (b) determines the OAuth redirect hash
 // (https://<hash-of-id>.extensions.allizom.org/) registered on the Google client.
-const FIREFOX_GECKO_ID = "amarnai@amarnai.com";
+const FIREFOX_GECKO_ID = "aziru@aziru.com";
 // ESR baseline. Covers MV3, module event pages, and install-time host-permission
 // prompting. Firefox <140 ignores data_collection_permissions (warning at most).
 const FIREFOX_MIN_VERSION = "128.0";
@@ -52,7 +52,7 @@ const CONTENT_SCRIPTS = [
  *   - pageWorld.js: InboxSDK's page-world half, which it injects into Gmail.
  *   - the button icon, which InboxSDK's compose button loads by URL.
  *   - the panel icon (the full logomark), which InboxSDK's sidebar loads by URL.
- *   - injected.html and its assets: the Amarnai panel, which Gmail's sidebar
+ *   - injected.html and its assets: the Aziru panel, which Gmail's sidebar
  *     embeds as an extension-origin iframe. The document has to be reachable
  *     from mail.google.com for the iframe to load at all, and `assets/*` with
  *     it because the built page links its own hashed JS and CSS from there.
@@ -157,14 +157,14 @@ export function buildManifest({
     // ID comes from gecko.id).
     return {
       manifest_version: 3,
-      name: "Amarnai: Sort emails your way",
+      name: "Aziru: Sort emails your way",
       description:
-        "Amarnai sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
+        "Aziru sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
       version,
-      action: { default_title: "Amarnai" },
+      action: { default_title: "Aziru" },
       sidebar_action: {
         default_panel: "index.html",
-        default_title: "Amarnai",
+        default_title: "Aziru",
         default_icon: icons,
       },
       background: { scripts: ["service-worker.js"], type: "module" },
@@ -198,13 +198,13 @@ export function buildManifest({
   // Chrome — byte-identical to the original single-target manifest.
   return {
     manifest_version: 3,
-    name: "Amarnai: Sort emails your way",
+    name: "Aziru: Sort emails your way",
     description:
-      "Amarnai sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
+      "Aziru sorts your inbox, drafts replies for your approval, and takes you to any thread without leaving the tab.",
     ...(key ? { key } : {}),
     version,
     minimum_chrome_version: "116",
-    action: { default_title: "Amarnai" },
+    action: { default_title: "Aziru" },
     side_panel: { default_path: "index.html" },
     background: { service_worker: "service-worker.js", type: "module" },
     permissions: [

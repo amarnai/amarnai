@@ -1,4 +1,4 @@
-// The full Amarnai logomark (three wedges), as an inline SVG node.
+// The full Aziru logomark (three wedges), as an inline SVG node.
 //
 // Traced from apps/site/public/logo.png (no vector source exists for it) so it
 // can be drawn with document.createElementNS the same way replyIcon.ts draws

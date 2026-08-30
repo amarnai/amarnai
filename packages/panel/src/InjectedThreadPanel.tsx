@@ -30,10 +30,10 @@ import {
   SignedOutState,
 } from "./states/PanelStates.js";
 
-// Amarnai, rendered inside Gmail and Outlook themselves.
+// Aziru, rendered inside Gmail and Outlook themselves.
 //
 // Two screens, decided by what the mail client is showing. On a conversation:
-// that thread and nothing else — where Amarnai filed it, why that might be
+// that thread and nothing else — where Aziru filed it, why that might be
 // wrong, what it says in two lines, and a reply the user can put straight into
 // the client's own compose. On the thread list: the queue, meaning the few
 // threads actually waiting on this user, each one click from being opened or
@@ -62,7 +62,7 @@ export type InjectedThreadPanelProps = {
   /**
    * Start drafting as soon as a thread loads, without waiting for a click.
    *
-   * For entry points that already ARE the request: Outlook's "Amarnai Reply"
+   * For entry points that already ARE the request: Outlook's "Aziru Reply"
    * ribbon button deep-links into the pane, and making the user press a second
    * button inside it would be asking twice. Only ever set from such an entry
    * point — it spends a draft from the monthly allowance.
@@ -448,7 +448,7 @@ function ThreadView({
           className="apn-link"
           onClick={() => host.openExternal(`${webAppUrl}/emails?thread=${thread.id}`)}
         >
-          <Trans>Open in Amarnai</Trans>
+          <Trans>Open in Aziru</Trans>
         </button>
       )}
     </>

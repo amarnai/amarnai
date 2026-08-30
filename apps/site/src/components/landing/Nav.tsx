@@ -39,9 +39,9 @@ export function Nav({ anchorBase = "" }: { anchorBase?: string }) {
   return (
     <header className={`ld-nav${scrolled ? " scrolled" : ""}`} id="nav">
       <div className="ld-nav-inner">
-        <a className="ld-brand" {...anchorProps("top")} aria-label={_(msg`Amarnai home`)}>
+        <a className="ld-brand" {...anchorProps("top")} aria-label={_(msg`Aziru home`)}>
           <img src="/logo.png" alt="" aria-hidden="true" className="ld-brand-mark" />
-          Amarnai
+          Aziru
         </a>
 
         <nav className="ld-nav-links">

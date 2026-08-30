@@ -21,8 +21,8 @@ const IPHONE_SAFARI =
 const ANDROID_FIREFOX =
   "Mozilla/5.0 (Android 14; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0";
 
-const CHROME_URL = "https://chromewebstore.google.com/detail/amarnai/abc";
-const FIREFOX_URL = "https://addons.mozilla.org/firefox/addon/amarnai/";
+const CHROME_URL = "https://chromewebstore.google.com/detail/aziru/abc";
+const FIREFOX_URL = "https://addons.mozilla.org/firefox/addon/aziru/";
 
 describe("GetExtensionBanner helpers", () => {
   describe("isMobileUserAgent", () => {

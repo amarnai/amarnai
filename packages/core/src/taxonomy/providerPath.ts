@@ -1,5 +1,5 @@
 // Builds the provider-side names for folder→label writeback: Gmail nests labels
-// on "/", so a node's path becomes "Amarnai/Parent/Child"; Outlook categories are
+// on "/", so a node's path becomes "Aziru/Parent/Child"; Outlook categories are
 // flat and use the same joined string as a literal display name. The taxonomy is
 // a node+edge DAG (no parentId), so a canonical-parent rule is needed to derive a
 // single stable path per node.
@@ -9,7 +9,7 @@
 // Changing that would churn every embedding; this module owns writeback naming.
 
 /** Root namespace segment every provider label/category lives under. */
-export const PROVIDER_LABEL_NAMESPACE = "Amarnai";
+export const PROVIDER_LABEL_NAMESPACE = "Aziru";
 
 // Length caps: a single segment is bounded so no one folder name dominates, and
 // the full joined name stays under the tighter of Gmail's (~225) / Outlook's
@@ -49,7 +49,7 @@ export function sanitizeProviderSegment(name: string): string {
  * among a node's incoming edges, the one minimal by (createdAt, id) — the oldest
  * edge, id as a deterministic tiebreak — so the path is stable as edges are
  * added elsewhere in the graph. Cycle-guarded. Stops at (and excludes) an isRoot
- * ancestor. Returns [] for a root node (root = "no Amarnai label").
+ * ancestor. Returns [] for a root node (root = "no Aziru label").
  */
 export function deriveCanonicalPathSegments(
   nodeId: string,

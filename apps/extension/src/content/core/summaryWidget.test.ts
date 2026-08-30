@@ -136,7 +136,7 @@ describe("host-theme adaptation", () => {
 });
 
 describe("brand chrome", () => {
-  it("renders the Amarnai eyebrow and a terracotta accent rail", () => {
+  it("renders the Aziru eyebrow and a terracotta accent rail", () => {
     const widget = mountSummaryWidget(anchorInPage(), { kind: "summary", text: "hi" })!;
     const shadow = widget.host.shadowRoot!;
     expect(shadow.querySelector(".eyebrow")!.textContent).toBe(STRINGS.eyebrow);
@@ -233,7 +233,7 @@ describe("card structure and accessibility", () => {
     expect(card.getAttribute("role")).toBe("note");
     expect(card.getAttribute("aria-live")).toBe("polite");
     // Attribution for screen readers even though the visible eyebrow is generic.
-    expect(card.getAttribute("aria-label")).toMatch(/amarnai/i);
+    expect(card.getAttribute("aria-label")).toMatch(/aziru/i);
   });
 
   it("keeps the note semantics across every state", () => {
@@ -324,7 +324,7 @@ describe("comment bubble", () => {
     )!;
     const card = widget.host.shadowRoot!.querySelector(".card")!;
     expect(card.classList.contains("row")).toBe(true);
-    expect(card.getAttribute("aria-label")).toBe("Amarnai team comments");
+    expect(card.getAttribute("aria-label")).toBe("Aziru team comments");
     expect(shadowText(widget.host)).toContain(STRINGS.commentsEyebrow);
     expect(bubbleOf(widget.host)!.textContent).toContain("2");
   });

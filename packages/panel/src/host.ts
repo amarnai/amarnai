@@ -72,7 +72,7 @@ export type PanelCapabilities = {
 export type PanelHost = {
   capabilities: PanelCapabilities;
 
-  /** Base URL of the Amarnai API this host reaches. */
+  /** Base URL of the Aziru API this host reaches. */
   apiBaseUrl: string;
 
   /**
@@ -123,7 +123,7 @@ export type PanelHost = {
 
   /**
    * Hand an HTML draft to the mail client's own compose window. Resolves true
-   * when the client accepted it. Never sends: composing is where Amarnai's
+   * when the client accepted it. Never sends: composing is where Aziru's
    * involvement ends, in both hosts, structurally.
    */
   insertDraft(html: string): Promise<boolean>;

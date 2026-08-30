@@ -5,15 +5,15 @@ export function FinalCTASection() {
   return (
     <section className="ld-final" id="cta">
       <div className="ld-final-inner ld-reveal">
-        <h2><Trans>Hand the sorting to Amarnai.</Trans></h2>
+        <h2><Trans>Hand the sorting to Aziru.</Trans></h2>
         <p>
           <Trans>
-            Connect your inbox and Amarnai starts sorting within minutes. Pricing is
+            Connect your inbox and Aziru starts sorting within minutes. Pricing is
             per workspace. Sorts new mail as it arrives, and works through years
             of backlog.
           </Trans>
         </p>
-        <CtaButtons rowClassName="ld-final-cta-row" signUpLabel={<Trans>Try Amarnai</Trans>} />
+        <CtaButtons rowClassName="ld-final-cta-row" signUpLabel={<Trans>Try Aziru</Trans>} />
         <p className="ld-final-soon">
           <Trans>Works with Gmail™ and Outlook.</Trans>
         </p>

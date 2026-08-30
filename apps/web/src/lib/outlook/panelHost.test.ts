@@ -40,7 +40,7 @@ function makeHost(office: OfficeLike, onRequestSignIn = vi.fn()) {
 }
 
 describe("createOutlookPanelHost", () => {
-  // Outlook calls it a conversationId, Amarnai calls it a providerThreadId, and
+  // Outlook calls it a conversationId, Aziru calls it a providerThreadId, and
   // they are the same value. Renaming happens once, in the host.
   it("reports the conversation id as a providerThreadId", () => {
     const { office } = makeOffice();

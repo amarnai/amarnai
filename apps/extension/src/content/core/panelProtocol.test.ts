@@ -67,7 +67,7 @@ describe("panel protocol guards", () => {
     ]) {
       expect(guard(null)).toBe(false);
       expect(guard(undefined)).toBe(false);
-      expect(guard("amarnai:panel:ready")).toBe(false);
+      expect(guard("aziru:panel:ready")).toBe(false);
       expect(guard(42)).toBe(false);
     }
   });

@@ -1,6 +1,6 @@
 ---
 title: Configuration
-description: Full environment variable reference for self-hosting Amarnai.
+description: Full environment variable reference for self-hosting Aziru.
 ---
 
 All configuration is done through environment variables in a single `.env` file at the monorepo root. For self-hosting, copy `.env.selfhost.example` as a starting point (`.env.example` is the local-development template and defaults to mock AI).
@@ -9,10 +9,10 @@ All configuration is done through environment variables in a single `.env` file 
 
 | Variable            | Default                                              | Description                    |
 |---------------------|------------------------------------------------------|--------------------------------|
-| `DATABASE_URL`      | `postgresql://amarnai:amarnai@localhost:5432/amarnai` | Full Postgres connection string |
-| `POSTGRES_USER`     | `amarnai`                                            | Postgres username              |
-| `POSTGRES_PASSWORD` | `amarnai`                                            | Postgres password              |
-| `POSTGRES_DB`       | `amarnai`                                            | Postgres database name         |
+| `DATABASE_URL`      | `postgresql://aziru:aziru@localhost:5432/aziru` | Full Postgres connection string |
+| `POSTGRES_USER`     | `aziru`                                            | Postgres username              |
+| `POSTGRES_PASSWORD` | `aziru`                                            | Postgres password              |
+| `POSTGRES_DB`       | `aziru`                                            | Postgres database name         |
 
 ## Redis
 
@@ -55,7 +55,7 @@ Enables real-time inbox sync via Google Cloud Pub/Sub instead of polling. Leave 
 |-------------------------------|----------|------------------------------------------------------------------------------------------------------|
 | `GMAIL_PUBSUB_TOPIC`          | No       | Pub/Sub topic, format `projects/<project-id>/topics/<topic-name>`. When set, Gmail pushes on new mail |
 | `GMAIL_PUBSUB_WEBHOOK_SECRET` | If topic set | Secret included as `?token=` on the push endpoint and verified on each request. `openssl rand -hex 32` |
-| `GMAIL_PUBSUB_SUBSCRIPTION`   | No       | Subscription name that receives push notifications. Default `amarnai-gmail-sub`                       |
+| `GMAIL_PUBSUB_SUBSCRIPTION`   | No       | Subscription name that receives push notifications. Default `aziru-gmail-sub`                       |
 
 ## Mail providers
 
@@ -117,7 +117,7 @@ OpenAI (or any OpenAI-compatible endpoint) is a supported alternative: set `FRON
 
 ## Email
 
-Amarnai sends verification and password-reset emails via Resend (recommended) or SMTP. If `RESEND_API_KEY` is set, the SMTP variables are ignored.
+Aziru sends verification and password-reset emails via Resend (recommended) or SMTP. If `RESEND_API_KEY` is set, the SMTP variables are ignored.
 
 | Variable         | Default       | Description                                                        |
 |------------------|---------------|--------------------------------------------------------------------|

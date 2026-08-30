@@ -11,7 +11,7 @@
  * to know which kind of account it is for.
  *
  * Deep links built from Microsoft's own `webLink` are already host-correct and
- * need none of this; it is only the URLs Amarnai invents (the mailbox itself)
+ * need none of this; it is only the URLs Aziru invents (the mailbox itself)
  * that must choose.
  */
 

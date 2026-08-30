@@ -46,7 +46,7 @@ export const TaxonomyTransferEdgeSchema = z.object({
 export type TaxonomyTransferEdge = z.infer<typeof TaxonomyTransferEdgeSchema>;
 
 export const TaxonomyTransferFileSchema = z.object({
-  amarnaiTaxonomyVersion: z.literal(TAXONOMY_TRANSFER_VERSION),
+  aziruTaxonomyVersion: z.literal(TAXONOMY_TRANSFER_VERSION),
   exportedAt: z.string().datetime(),
   nodes: z.array(TaxonomyTransferNodeSchema).min(1).max(MAX_TAXONOMY_TRANSFER_NODES),
   edges: z.array(TaxonomyTransferEdgeSchema).max(MAX_TAXONOMY_TRANSFER_EDGES),
@@ -258,7 +258,7 @@ export function serializeTaxonomy(
   edges: TaxonomyEdge[]
 ): TaxonomyTransferFile {
   return {
-    amarnaiTaxonomyVersion: TAXONOMY_TRANSFER_VERSION,
+    aziruTaxonomyVersion: TAXONOMY_TRANSFER_VERSION,
     exportedAt: new Date().toISOString(),
     nodes: nodes.map((n) => ({
       ref: n.id,

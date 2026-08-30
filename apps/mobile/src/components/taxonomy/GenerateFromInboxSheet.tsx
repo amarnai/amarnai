@@ -102,7 +102,7 @@ export function GenerateFromInboxSheet({
           <View style={styles.gap}>
             <Text style={styles.muted}>
               <Trans>
-                Amarnai will analyze your senders, labels, and subject keywords (never message
+                Aziru will analyze your senders, labels, and subject keywords (never message
                 bodies) to suggest a personalized set of folders. Review and edit before anything
                 is applied.
               </Trans>

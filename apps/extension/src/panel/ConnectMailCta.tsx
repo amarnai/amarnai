@@ -80,22 +80,22 @@ export function ConnectMailCta({
         {isReconnect ? (
           isOutlook ? (
             <Trans>
-              Amarnai is no longer syncing this inbox. Reconnect your Outlook account
-              to resume sorting your email threads. Amarnai{" "}
+              Aziru is no longer syncing this inbox. Reconnect your Outlook account
+              to resume sorting your email threads. Aziru{" "}
               <strong>never sends, deletes, or moves your mail</strong>, and your inbox
               stays yours.
             </Trans>
           ) : (
             <Trans>
-              Amarnai is no longer syncing this inbox. Reconnect your Gmail account to
-              resume sorting your email threads. Amarnai{" "}
+              Aziru is no longer syncing this inbox. Reconnect your Gmail account to
+              resume sorting your email threads. Aziru{" "}
               <strong>never sends, deletes, or moves your mail</strong>, and your inbox
               stays yours.
             </Trans>
           )
         ) : (
           <Trans>
-            Connect your account to get started. Amarnai{" "}
+            Connect your account to get started. Aziru{" "}
             <strong>never sends, deletes, or moves your mail</strong>, and the only
             thing it writes is its own sorting labels, which you can switch off. Your
             inbox stays yours.

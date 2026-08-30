@@ -628,12 +628,12 @@ describe("GraphClient.ensureFolderLabels", () => {
     });
 
     const map = await client().ensureFolderLabels([
-      { nodeId: "n1", pathSegments: ["Amarnai", "Clients", "Acme"], colorKey: "blue" },
+      { nodeId: "n1", pathSegments: ["Aziru", "Clients", "Acme"], colorKey: "blue" },
     ]);
 
     // Identifier is the literal joined display name (categories are flat).
-    expect(map.get("n1")).toBe("Amarnai/Clients/Acme");
-    expect(created).toEqual([{ displayName: "Amarnai/Clients/Acme", color: "preset7" }]);
+    expect(map.get("n1")).toBe("Aziru/Clients/Acme");
+    expect(created).toEqual([{ displayName: "Aziru/Clients/Acme", color: "preset7" }]);
   });
 
   it("reuses an existing category (case-insensitive) without recreating it", async () => {
@@ -644,16 +644,16 @@ describe("GraphClient.ensureFolderLabels", () => {
         return jsonResponse({});
       }
       if (url.includes("/masterCategories")) {
-        return jsonResponse({ value: [{ displayName: "amarnai/clients" }] });
+        return jsonResponse({ value: [{ displayName: "aziru/clients" }] });
       }
       return jsonResponse({}, { status: 404 });
     });
 
     const map = await client().ensureFolderLabels([
-      { nodeId: "n1", pathSegments: ["Amarnai", "Clients"], colorKey: "red" },
+      { nodeId: "n1", pathSegments: ["Aziru", "Clients"], colorKey: "red" },
     ]);
 
-    expect(map.get("n1")).toBe("amarnai/clients"); // canonical existing name
+    expect(map.get("n1")).toBe("aziru/clients"); // canonical existing name
     expect(posts).toBe(0);
   });
 });
@@ -671,18 +671,18 @@ describe("GraphClient.applyThreadFolderLabels", () => {
         return jsonResponse({});
       }
       // GET categories
-      return jsonResponse({ categories: ["Work", "Amarnai/Old"] });
+      return jsonResponse({ categories: ["Work", "Aziru/Old"] });
     });
 
     await client().applyThreadFolderLabels({
       threadId: "conv-1",
       messageIds: ["m-1"],
-      desiredLabelIds: ["Amarnai/New"],
-      managedLabelIds: ["Amarnai/Old", "Amarnai/New"],
+      desiredLabelIds: ["Aziru/New"],
+      managedLabelIds: ["Aziru/Old", "Aziru/New"],
     });
 
-    // "Work" (foreign) kept, "Amarnai/Old" (managed, undesired) dropped, "Amarnai/New" added.
-    expect(patched["m-1"]).toEqual(["Work", "Amarnai/New"]);
+    // "Work" (foreign) kept, "Aziru/Old" (managed, undesired) dropped, "Aziru/New" added.
+    expect(patched["m-1"]).toEqual(["Work", "Aziru/New"]);
   });
 
   it("makes no PATCH when the message already matches", async () => {
@@ -692,14 +692,14 @@ describe("GraphClient.applyThreadFolderLabels", () => {
         patches++;
         return jsonResponse({});
       }
-      return jsonResponse({ categories: ["Amarnai/New"] });
+      return jsonResponse({ categories: ["Aziru/New"] });
     });
 
     await client().applyThreadFolderLabels({
       threadId: "conv-1",
       messageIds: ["m-1"],
-      desiredLabelIds: ["Amarnai/New"],
-      managedLabelIds: ["Amarnai/New"],
+      desiredLabelIds: ["Aziru/New"],
+      managedLabelIds: ["Aziru/New"],
     });
 
     expect(patches).toBe(0);
@@ -720,8 +720,8 @@ describe("GraphClient.applyThreadFolderLabels", () => {
     await client().applyThreadFolderLabels({
       threadId: "conv-1",
       messageIds: ["m-gone", "m-ok"],
-      desiredLabelIds: ["Amarnai/New"],
-      managedLabelIds: ["Amarnai/New"],
+      desiredLabelIds: ["Aziru/New"],
+      managedLabelIds: ["Aziru/New"],
     });
 
     // Only the reachable message was patched.

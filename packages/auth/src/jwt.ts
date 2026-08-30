@@ -7,8 +7,8 @@ const ACCESS_TOKEN_TTL = "15m";
 
 // Bind tokens to this issuer/audience so a token minted for a different service
 // (or a future second consumer) cannot be replayed against this API.
-const ISSUER = "amarnai";
-const AUDIENCE = "amarnai-api";
+const ISSUER = "aziru";
+const AUDIENCE = "aziru-api";
 
 const key = new TextEncoder().encode(config.authJwtSecret);
 

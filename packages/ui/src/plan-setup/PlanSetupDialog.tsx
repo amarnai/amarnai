@@ -33,7 +33,7 @@ export type PlanSetupDialogProps = {
   /** Open straight into one branch, skipping the choice screen. */
   initialMode?: PlanSetupMode;
   /**
-   * Open a path in the Amarnai web app. The only escape hatch out of this
+   * Open a path in the Aziru web app. The only escape hatch out of this
    * dialog, so the component stays free of any host knowledge: the extension
    * opens a tab, the injected panel uses its own external-open capability.
    */
@@ -340,7 +340,7 @@ export function PlanSetupDialog({
             <>
               <p className="ps-lead">
                 <Trans>
-                  Amarnai files your mail into folders you choose. Build them from your own
+                  Aziru files your mail into folders you choose. Build them from your own
                   inbox, or start from a ready-made set.
                 </Trans>
               </p>

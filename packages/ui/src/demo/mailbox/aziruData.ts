@@ -8,7 +8,7 @@ import {
 import type { AziruDemoData } from "./types.js";
 
 /**
- * Everything the Amarnai layer draws over a mailbox, in one call. Both surfaces
+ * Everything the Aziru layer draws over a mailbox, in one call. Both surfaces
  * that render the mailbox demo need the same four maps in the same locale, and
  * assembling them separately in each was four imports and four useMemos apiece.
  */

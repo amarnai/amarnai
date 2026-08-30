@@ -452,7 +452,7 @@ describe("POST /dev/workspaces/:workspaceId/gmail-sort-thread", () => {
   });
 
   it("drops an unsent draft from the thread before persisting or sorting", async () => {
-    // Gmail returns drafts as thread members. An Amarnai Reply draft would
+    // Gmail returns drafts as thread members. An Aziru Reply draft would
     // otherwise be stored as a message and become the newest content the sorter
     // and every later summary/draft prompt sees.
     const withDraft = makeSnapshot();

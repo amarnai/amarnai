@@ -73,7 +73,7 @@ export class GmailThreadNotFoundError extends Error {
 
 /**
  * Thrown by {@link GmailClient.applyThreadFolderLabels} when Gmail rejects a
- * label id (HTTP 400 on threads.modify) — the user deleted an Amarnai-managed
+ * label id (HTTP 400 on threads.modify) — the user deleted an Aziru-managed
  * label in Gmail, so the stored link is stale. Callers re-provision (which
  * recreates the label and refreshes the stored id) and retry; retrying with the
  * same id can never succeed.
@@ -664,7 +664,7 @@ export class GmailClient {
   /**
    * Idempotently ensure a Gmail label exists for each folder def and return
    * nodeId → leaf label id. Gmail nests labels by slash-delimited name, so every
-   * ancestor prefix ("Amarnai", "Amarnai/Clients", …) is created before the leaf.
+   * ancestor prefix ("Aziru", "Aziru/Clients", …) is created before the leaf.
    * Existing labels (including a concurrent create that 409s) are reused, and a
    * label the user deleted in Gmail is simply recreated (the fresh labels.list
    * won't contain it) — this is the self-heal path after external deletions.
@@ -699,7 +699,7 @@ export class GmailClient {
   }
 
   /**
-   * Reconcile the Amarnai-managed labels on a thread to exactly `desiredLabelIds`
+   * Reconcile the Aziru-managed labels on a thread to exactly `desiredLabelIds`
    * (of the `managedLabelIds` set), leaving the user's own labels untouched.
    * Idempotent: computes the add/remove delta against the thread's current labels
    * and makes NO modify call when already converged (this no-op is what stops our

@@ -10,7 +10,7 @@
 
 ## 1. The processing, precisely
 
-When a user deletes their Amarnai account, `deleteUserCascade` (`packages/db/src/workspace-ops.ts`) permanently deletes all account data. By design, the following records have no foreign key to `User` or `Workspace` and survive deletion (`packages/db/prisma/schema.prisma`):
+When a user deletes their Aziru account, `deleteUserCascade` (`packages/db/src/workspace-ops.ts`) permanently deletes all account data. By design, the following records have no foreign key to `User` or `Workspace` and survive deletion (`packages/db/prisma/schema.prisma`):
 
 1. **`TrialClaim`**: records that an email identity (and optionally a payment card) has consumed the single 14-day free trial. Fields: `emailKeyHash` (SHA-256 of the normalized email address; the raw email is never stored), `cardFingerprint` (an opaque, nullable-unique token issued by Stripe; not a card number), `stripeSubscriptionId` (nullable), `userId` (attribution-only plain string), `createdAt`. Deletion actively **writes** a claim before removing the user, so that re-registering the same email cannot mint a fresh trial.
 2. **`InboxUsageMeter`**: pooled per-inbox AI-cost counters. Fields: `inboxKey` (the normalized inbox address, stored in plaintext), meter kind, monthly window start, a monotonic `used` counter, and backfill grace flags. Exists so that a workspace reset or delete-and-recreate cannot refund already-spent LLM cost.
@@ -43,7 +43,7 @@ This is a legitimate, real, and present interest of the controller (protection a
 - **Nature of the data**: low sensitivity. An email hash and a card fingerprint token are pseudonymous; the plaintext inbox key is an email address but is stored without any linked content, name, or activity beyond aggregate counters.
 - **Reasonable expectations**: a person who deletes an account expects their content and profile gone (which happens). Anti-fraud residue is a widely established industry practice and is now expressly disclosed in the privacy policy (Data Retention section, July 16, 2026 revision), which strengthens the expectation argument.
 - **Impact on the data subject**: negligible. The records trigger no communications, no decisions about the person other than trial/quota eligibility on a future signup, and are inaccessible to other users.
-- **Objection handling (Article 21)**: objections via privacy@amarnai.com are assessed individually; the compelling-grounds override (fraud prevention) is expected to apply in the typical case, but each objection must be genuinely reviewed. TODO(business): add this to the support runbook.
+- **Objection handling (Article 21)**: objections via privacy@aziru.email are assessed individually; the compelling-grounds override (fraud prevention) is expected to apply in the typical case, but each objection must be genuinely reviewed. TODO(business): add this to the support runbook.
 - **Outcome**: the controller's interest prevails; the residual privacy impact is minimal and disclosed.
 
 ## 5. Retention of the surviving records themselves

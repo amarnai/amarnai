@@ -7,7 +7,7 @@ import {
 } from "../core/replyState.js";
 import type { GenerateDraftResponse } from "../core/messaging.js";
 
-// The "Amarnai Reply" button inside Gmail's own reply compose.
+// The "Aziru Reply" button inside Gmail's own reply compose.
 //
 // Deliberately written against the narrowest slice of InboxSDK's ComposeView it
 // needs, so the whole state machine is testable with a plain fake. Nothing here
@@ -55,7 +55,7 @@ export type ReplyButtonOptions = {
   /**
    * Generate immediately instead of waiting for a click — used when the compose
    * was opened by one of the injected entry points, where the user's click on
-   * "Amarnai Reply" already WAS the request.
+   * "Aziru Reply" already WAS the request.
    */
   autoStart?: boolean;
   /**

@@ -1,6 +1,6 @@
 ---
 title: Prerequisites
-description: What you need before self-hosting Amarnai.
+description: What you need before self-hosting Aziru.
 ---
 
 ## System requirements
@@ -10,7 +10,7 @@ description: What you need before self-hosting Amarnai.
 
 ## Google Cloud project
 
-Amarnai uses Google OAuth for both user authentication and Gmail inbox access. You need a single OAuth 2.0 client ID that covers both flows.
+Aziru uses Google OAuth for both user authentication and Gmail inbox access. You need a single OAuth 2.0 client ID that covers both flows.
 
 ### Create credentials
 
@@ -28,7 +28,7 @@ In **APIs & Services → Library**, enable:
 
 - **Gmail API** (`gmail.googleapis.com`)
 
-For real-time Gmail sync (optional), also enable the **Pub/Sub API** and set the `GMAIL_PUBSUB_*` variables in [Configuration](/docs/self-hosting/configuration). Without them, Amarnai polls on `INBOX_SYNC_INTERVAL_MS`.
+For real-time Gmail sync (optional), also enable the **Pub/Sub API** and set the `GMAIL_PUBSUB_*` variables in [Configuration](/docs/self-hosting/configuration). Without them, Aziru polls on `INBOX_SYNC_INTERVAL_MS`.
 
 ### Generate secrets
 
@@ -46,14 +46,14 @@ Outlook is supported read-only via Microsoft Graph. Skip this section if you onl
 1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), register a **confidential Web app**.
 2. For **Supported account types**, choose "Accounts in any organizational directory (multitenant) and personal Microsoft accounts". The tenant/authority is then the literal string `common`.
 3. Add the redirect URI `https://mail.yourdomain.com/api/outlook/callback`.
-4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read`, `openid` (none require admin consent). `openid` returns the sign-in token whose tenant claim tells Amarnai whether a mailbox is a personal Microsoft account, which decides the Outlook on the web host it links to.
+4. Add delegated **API permissions**: `Mail.Read`, `offline_access`, `User.Read`, `openid` (none require admin consent). `openid` returns the sign-in token whose tenant claim tells Aziru whether a mailbox is a personal Microsoft account, which decides the Outlook on the web host it links to.
 5. Create a client secret, then set `MS_GRAPH_CLIENT_ID`, `MS_GRAPH_CLIENT_SECRET`, `MS_GRAPH_TENANT=common`, and `OUTLOOK_OAUTH_CALLBACK_URL`, and add `outlook` to `MAIL_PROVIDERS` (e.g. `MAIL_PROVIDERS=gmail,outlook`).
 
 For real-time Outlook sync, also set `MS_GRAPH_NOTIFICATION_URL` (a public HTTPS webhook) and `MS_GRAPH_SUBSCRIPTION_SECRET`. When unset, Outlook runs polling-only.
 
 ## AI providers
 
-Amarnai needs two AI capabilities: an LLM for sorting decisions and an embedding model for semantic similarity. The recommended production setup is Gemini for both (cheap, and free within Google's quota). Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
+Aziru needs two AI capabilities: an LLM for sorting decisions and an embedding model for semantic similarity. The recommended production setup is Gemini for both (cheap, and free within Google's quota). Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 
 ### LLM
 
@@ -98,7 +98,7 @@ Use the same embedding model and dimensions everywhere you embed. Changing eithe
 
 ## Email
 
-Amarnai sends email for account verification and password resets, via Resend (recommended) or SMTP. Set one of the two.
+Aziru sends email for account verification and password resets, via Resend (recommended) or SMTP. Set one of the two.
 
 Resend (recommended, avoids SMTP port blocking on most cloud hosts):
 

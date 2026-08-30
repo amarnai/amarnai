@@ -212,7 +212,7 @@ describe("usePanelState", () => {
   });
 
   // The page's kind belongs to the page's own id. A row picked from the queue is
-  // named by Amarnai's stored conversation id, so carrying "message" over to it
+  // named by Aziru's stored conversation id, so carrying "message" over to it
   // would resolve a conversation id as a message id and 404 every queue row on
   // that layout.
   it("resolves a picked queue row as a thread even on a message-ref page", async () => {

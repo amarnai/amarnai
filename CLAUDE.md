@@ -1,21 +1,21 @@
 # Project Context
 
-When working on Amarnai, prioritize readability, safety, and a focused feature set. Avoid clever abstractions and do not add out-of-scope features without explicit approval.
+When working on Aziru, prioritize readability, safety, and a focused feature set. Avoid clever abstractions and do not add out-of-scope features without explicit approval.
 
 ## About
 
-Amarnai is an open-source, self-hostable AI email triage assistant. It is Gmail-first, but not a full email client.
+Aziru is an open-source, self-hostable AI email triage assistant. It is Gmail-first, but not a full email client.
 
-**Provider support (product decision):** Amarnai implements Outlook support to mirror Gmail. Outlook must offer the same feature set as Gmail, with parity across triage, sorting, drafts (approval-only), and all downstream functionality. Mail-mutation policy: when the label-writeback feature flag is enabled, the write scope (gmail.modify / Mail.ReadWrite) is requested **upfront in bulk** at Google sign-in and inbox connect — writeback is **on by default** per workspace (users can switch it off), and upcoming in-provider features (thread summaries and draft replies surfaced inside the Gmail/Outlook UI) share that same grant, so authorization is gathered once rather than via per-feature incremental prompts. Amarnai mirrors sorted folders into the mailbox as Gmail labels / Outlook categories under the `Amarnai` namespace and keeps them in sync as threads are sorted. If the user declines the write permission (or the flag is off), the connection proceeds read-only and writeback is inert. Amarnai still **never sends or deletes mail**, and applies no mailbox writes beyond that label/category writeback. New provider work should reuse the existing provider abstraction rather than forking Gmail-specific logic.
+**Provider support (product decision):** Aziru implements Outlook support to mirror Gmail. Outlook must offer the same feature set as Gmail, with parity across triage, sorting, drafts (approval-only), and all downstream functionality. Mail-mutation policy: when the label-writeback feature flag is enabled, the write scope (gmail.modify / Mail.ReadWrite) is requested **upfront in bulk** at Google sign-in and inbox connect — writeback is **on by default** per workspace (users can switch it off), and upcoming in-provider features (thread summaries and draft replies surfaced inside the Gmail/Outlook UI) share that same grant, so authorization is gathered once rather than via per-feature incremental prompts. Aziru mirrors sorted folders into the mailbox as Gmail labels / Outlook categories under the `Aziru` namespace and keeps them in sync as threads are sorted. If the user declines the write permission (or the flag is off), the connection proceeds read-only and writeback is inert. Aziru still **never sends or deletes mail**, and applies no mailbox writes beyond that label/category writeback. New provider work should reuse the existing provider abstraction rather than forking Gmail-specific logic.
 
-Amarnai will also be offered as a hosted SaaS product. The codebase must support both deployment models equally. Design, architecture, storage layout, and API cost structure must never assume a single-tenant or fully self-managed environment. Specifically:
+Aziru will also be offered as a hosted SaaS product. The codebase must support both deployment models equally. Design, architecture, storage layout, and API cost structure must never assume a single-tenant or fully self-managed environment. Specifically:
 
 - Multi-tenancy must be a first-class concern: data isolation, per-user resource accounting, and tenant-scoped configuration should be built in, not retrofitted.
 - AI and third-party API costs must be attributable per user so the hosted offering can track and control spend.
 - Infrastructure choices (database, queues, storage) should have clear self-host-friendly defaults (e.g. Postgres, Redis, local file storage) while remaining swappable for managed cloud equivalents in production.
 - Features that would be prohibitively expensive or operationally complex to run at scale in the hosted offering should be flagged before implementation.
 
-Amarnai sorts email threads, not individual messages. New messages in existing threads trigger re-sorting of the full thread.
+Aziru sorts email threads, not individual messages. New messages in existing threads trigger re-sorting of the full thread.
 
 A key use case is bulk triage of an existing inbox: users may want to sort and classify thousands of emails already accumulated, not just handle incoming ones. Features and jobs should be designed to handle both ongoing (real-time) and historical (backfill) triage at scale.
 
@@ -43,7 +43,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 ## Safety & Privacy
 
 - Never auto-send email.
-- Never send from Amarnai GUI.
+- Never send from Aziru GUI.
 - Drafts require user approval.
 - Store minimal email data.
 - Never log full email bodies.
@@ -68,7 +68,7 @@ A key use case is bulk triage of an existing inbox: users may want to sort and c
 
 ## Localization
 
-Amarnai uses Lingui v5 for i18n across `apps/web`, `apps/site`, and `apps/mobile`. The source locale is English; all other languages are filled automatically by AI.
+Aziru uses Lingui v5 for i18n across `apps/web`, `apps/site`, and `apps/mobile`. The source locale is English; all other languages are filled automatically by AI.
 
 **Rules:**
 - Never hardcode user-visible strings as plain text. Wrap every string in a Lingui macro.
@@ -86,7 +86,7 @@ Amarnai uses Lingui v5 for i18n across `apps/web`, `apps/site`, and `apps/mobile
 - Small files with explicit domain names.
 - Idempotent, retry-safe background jobs.
 - Test policy logic, AI output parsing, provider adapters, graph validity, and job behavior.
-- Use centralized Amarnai design tokens; do not hardcode brand hex values in components.
+- Use centralized Aziru design tokens; do not hardcode brand hex values in components.
 - Do not duplicate logic or styles. Before adding new code or styles, check whether the behavior or style already exists and reuse or extend it instead.
 
 ## Non-Goals

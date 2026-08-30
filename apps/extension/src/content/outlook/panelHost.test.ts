@@ -277,7 +277,7 @@ describe("startOutlookInjectedPanel — what the panel is told", () => {
     });
   });
 
-  // The reported bug: Amarnai's own queue links land here (Microsoft's webLink,
+  // The reported bug: Aziru's own queue links land here (Microsoft's webLink,
   // and ispopout=0 does not prevent it on consumer OWA), and the panel had nothing
   // to say. This layout names no conversation anywhere in its DOM, so the id comes
   // from the route and travels as a message ref for the server to resolve.

@@ -17,12 +17,12 @@ import {
 // The whole of "what is this panel showing right now", in one place.
 //
 // The panel lives inside someone else's UI and has to survive every way that UI
-// can be in a state Amarnai cannot act on: nobody signed in, a mailbox that
+// can be in a state Aziru cannot act on: nobody signed in, a mailbox that
 // belongs to no workspace, a conversation we never synced, a workspace that has
 // switched the panel off. Each of those is a named stage with its own screen,
 // rather than an error, because none of them is one.
 //
-// "No conversation open" is the exception: it is not a state Amarnai cannot act
+// "No conversation open" is the exception: it is not a state Aziru cannot act
 // on, it is the thread list, and there the panel shows the queue. It only
 // degrades to `noThread` when the mailbox itself cannot be settled — see
 // resolveMailboxAccount in @aziru/api-client, which is where that rule lives for
@@ -45,7 +45,7 @@ import {
 export type PanelStage =
   /** Still working out which of the below we are in. */
   | { kind: "loading" }
-  /** No Amarnai session in this host's token store. */
+  /** No Aziru session in this host's token store. */
   | { kind: "signedOut" }
   /** Signed in, but no workspace of this user has any mailbox connected. */
   | { kind: "notConnected" }
@@ -62,7 +62,7 @@ export type PanelStage =
   | { kind: "queue"; workspaceId: string; accountEmail: string; overConversation: boolean }
   /** Resolving the open conversation. */
   | { kind: "resolving" }
-  /** The conversation exists in the mailbox but has never synced into Amarnai. */
+  /** The conversation exists in the mailbox but has never synced into Aziru. */
   | { kind: "unknownThread" }
   /** The workspace has switched the in-mail panel off. Terminal for the session. */
   | { kind: "injectionDisabled" }
@@ -186,7 +186,7 @@ export function usePanelState({ api, host, visible }: Deps): PanelState {
   const pageThreadId = context?.providerThreadId ?? null;
   const providerThreadId = pickedThreadId ?? pageThreadId;
   // Which kind of id we are about to resolve. The page's kind applies only to the
-  // page's own id: a thread picked from the queue is named by Amarnai's stored
+  // page's own id: a thread picked from the queue is named by Aziru's stored
   // conversation id, so carrying the page's "message" over to it would resolve
   // the picked thread as a message id and 404 every row on that layout.
   const refKind: ProviderRefKind = pickedThreadId ? "thread" : context?.refKind ?? "thread";

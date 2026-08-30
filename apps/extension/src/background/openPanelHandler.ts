@@ -1,7 +1,7 @@
 import { ext } from "../platform/ext.js";
 import { OPEN_PANEL_MESSAGE, isOpenPanelRequest } from "../content/core/messaging.js";
 
-// Opens Amarnai's own panel on request from a mail page.
+// Opens Aziru's own panel on request from a mail page.
 //
 // Sign-in never happens inside the injected UI: an OAuth flow started from
 // within a third-party page is neither reliable nor something a user should be

@@ -88,7 +88,7 @@ export function GmailSettingsSheet({
   function confirmDisconnect() {
     Alert.alert(
       i18n._(msg`Disconnect Gmail?`),
-      i18n._(msg`Stops syncing and revokes Amarnai's access to this mailbox.`),
+      i18n._(msg`Stops syncing and revokes Aziru's access to this mailbox.`),
       [
         { text: i18n._(msg`Cancel`), style: 'cancel' },
         { text: i18n._(msg`Disconnect`), onPress: () => void doDisconnect(false) },

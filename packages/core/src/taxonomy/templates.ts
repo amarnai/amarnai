@@ -33,7 +33,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For independent consultants and freelancers managing clients, projects, and finances.",
     // Leaves (top→bottom): Projects, Contracts, Invoices, Expenses, Admin, Leads, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -176,7 +176,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For employees managing work, team communication, and personal email in one inbox.",
     // Leaves (top→bottom): Team, Management, Partners, Recruiting, Finance, Admin, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -306,7 +306,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For founders juggling investors, customers, hiring, legal, and press in one view.",
     // Leaves (top→bottom): Investors, Customers, Hiring, Operations, Legal, Press, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -436,7 +436,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For students balancing university, internship applications, and everyday life.",
     // Leaves (top→bottom): Courses, Campus Admin, Jobs, Finance, Social, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -553,7 +553,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For individuals managing finances, health, home, family, and personal subscriptions.",
     // Leaves (top→bottom): Taxes, Bills & Receipts, Health, Home, Family, Travel, Subscriptions
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -683,7 +683,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For engineers and open-source maintainers tracking code, deployments, and releases.",
     // Leaves (top→bottom): Pull Requests, Bug Reports, Deployments, Incidents, Releases, Communities, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -826,7 +826,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For online sellers tracking orders, shipping, suppliers, and marketplace payouts.",
     // Leaves (top→bottom): Shipping, Returns, Suppliers, Marketplaces, Buyer Questions, Payouts & Fees, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -956,7 +956,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For creators handling brand deals, platforms, audience, and monetization.",
     // Leaves (top→bottom): Sponsorships, Affiliate Programs, Platforms, Collaborations, Audience, Monetization, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -1086,7 +1086,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For K-12 educators managing classroom, parents, and school administration.",
     // Leaves (top→bottom): Homework & Grading, Lesson Planning, Parents & Guardians, School Administration, Events & Field Trips, Professional Development, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -1216,7 +1216,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For researchers managing publications, conferences, funding, and lab work.",
     // Leaves (top→bottom): Manuscripts & Peer Review, Journals, Conferences, Funding & Fellowships, Lab & Collaborators, Supervision, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -1346,7 +1346,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For agents managing listings, showings, transactions, and closings.",
     // Leaves (top→bottom): Listings, Buyers & Showings, Sellers, Escrow & Closing, Inspections & Appraisals, Lenders & Mortgage, New Inquiries, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {
@@ -1489,7 +1489,7 @@ const BASE_TEMPLATES: TaxonomyTemplate[] = [
       "For nonprofit directors managing fundraising, volunteers, programs, and board.",
     // Leaves (top→bottom): Donors, Grants & Foundations, Volunteers, Programs, Board & Governance, Events & Campaigns, Personal
     file: {
-      amarnaiTaxonomyVersion: 1,
+      aziruTaxonomyVersion: 1,
       exportedAt: DATE,
       nodes: [
         {

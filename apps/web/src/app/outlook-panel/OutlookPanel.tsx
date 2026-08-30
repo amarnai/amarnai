@@ -24,7 +24,7 @@ type Stage =
   | { kind: "ready"; office: OfficeLike };
 
 /**
- * The Amarnai task pane.
+ * The Aziru task pane.
  *
  * Everything of substance is @aziru/panel, the same component Gmail's sidebar
  * renders — so an Outlook user and a Gmail user see the same panel, with the
@@ -99,7 +99,7 @@ export function OutlookPanel({
     return (
       <main className="outlook-pane">
         <p className="outlook-pane-status">
-          <Trans>Open this from the Amarnai button in Outlook.</Trans>
+          <Trans>Open this from the Aziru button in Outlook.</Trans>
         </p>
       </main>
     );
@@ -126,7 +126,7 @@ export function OutlookPanel({
         focusComments={focusComments}
       />
       <p className="outlook-pane-footnote">
-        <Trans>Amarnai never sends email. You review and send from Outlook.</Trans>
+        <Trans>Aziru never sends email. You review and send from Outlook.</Trans>
       </p>
     </main>
   );
@@ -165,7 +165,7 @@ function SignInForm({ onSignedIn }: { onSignedIn: () => void }) {
       await paneTokenStore.set(await res.json());
       onSignedIn();
     } catch {
-      setError(_(msg`Could not reach Amarnai. Check your connection.`));
+      setError(_(msg`Could not reach Aziru. Check your connection.`));
     } finally {
       setPending(false);
     }
@@ -174,7 +174,7 @@ function SignInForm({ onSignedIn }: { onSignedIn: () => void }) {
   return (
     <form className="outlook-pane-form" onSubmit={(e) => void submit(e)}>
       <p className="outlook-pane-status">
-        <Trans>Sign in to your Amarnai account.</Trans>
+        <Trans>Sign in to your Aziru account.</Trans>
       </p>
       <label className="outlook-pane-label">
         <Trans>Email</Trans>

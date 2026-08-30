@@ -22,7 +22,7 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
   Pharaoh: msg`Pharaoh`,
 
   // ── Plan taglines ──
-  "For trying Amarnai on your own inbox.": msg`For trying Amarnai on your own inbox.`,
+  "For trying Aziru on your own inbox.": msg`For trying Aziru on your own inbox.`,
   "For your busy inbox as a freelancer, consultant, property manager, or business owner.": msg`For your busy inbox as a freelancer, consultant, property manager, or business owner.`,
   "For your high-volume or shared inbox as a recruiter, agency, or small team on one mailbox.": msg`For your high-volume or shared inbox as a recruiter, agency, or small team on one mailbox.`,
 
@@ -110,7 +110,7 @@ const PLAN_MESSAGES: Record<string, MessageDescriptor> = {
 
   // ── Self-host note ──
   "Prefer to self-host?": msg`Prefer to self-host?`,
-  "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.": msg`Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.`,
+  "Aziru is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.": msg`Aziru is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.`,
   "Self-host guide": msg`Self-host guide`,
 };
 

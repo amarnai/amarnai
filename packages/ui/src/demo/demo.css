@@ -333,7 +333,7 @@
 
 /* ─── Mailbox mocks ───────────────────────────────────────────────────────────
    The simulated Gmail and Outlook windows, their conversation views, and the
-   Amarnai layer the extension injects into them. Rendered by the landing page
+   Aziru layer the extension injects into them. Rendered by the landing page
    inside browser chrome and by the extension's first-run tab bare, so like the
    rest of this file they ship with the components rather than with either app.
    ─────────────────────────────────────────────────────────────────────────── */
@@ -649,7 +649,7 @@ button.ld-gmail-row:hover { background: var(--bg-soft); }
 }
 
 /* The extension's own entry point in the header row: same footprint as the
-   mailbox's icon buttons, in Amarnai's accent so it is identifiably ours. */
+   mailbox's icon buttons, in Aziru's accent so it is identifiably ours. */
 .ld-mb-head-btn {
   display: inline-flex;
   align-items: center;
@@ -726,7 +726,7 @@ button.ld-gmail-row:hover { background: var(--bg-soft); }
 }
 
 /* Gmail's reply row at the foot of a thread: its own pill (dead, decorative)
-   and the Amarnai one beside it, which is where the extension mounts it. */
+   and the Aziru one beside it, which is where the extension mounts it. */
 .ld-mailthread-reply {
   display: flex;
   align-items: center;
@@ -758,7 +758,7 @@ button.ld-gmail-row:hover { background: var(--bg-soft); }
    a blue app bar, a folder rail, the Focused/Other pivot, and stacked message
    rows with colored initials avatars. The Outlook-blue accents come from a
    scoped variable — a third-party brand color used only to make the mock
-   recognizable, not an Amarnai design token (same basis as the provider logos). */
+   recognizable, not an Aziru design token (same basis as the provider logos). */
 .ld-ol,
 .ld-mailthread--outlook {
   --ld-ol-blue: #0f6cbd;
@@ -1070,7 +1070,7 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
 .ld-ol-skel .ld-skel-line--short { width: 55%; }
 
 /* Outlook contact-avatar tints (assigned by outlook-helpers.ts). Decorative
-   brand-style colors for the mock — white initials on each — not Amarnai
+   brand-style colors for the mock — white initials on each — not Aziru
    tokens. Defined after .ld-mailthread-avatar so they win in the reading pane. */
 .ld-ol-av--0 { background: #0f6cbd; color: #fff; }
 .ld-ol-av--1 { background: #0a7b74; color: #fff; }
@@ -1100,13 +1100,13 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
   color: var(--ld-ol-blue-strong);
 }
 
-/* ─── The Amarnai layer ───────────────────────────────────────────────────────
+/* ─── The Aziru layer ───────────────────────────────────────────────────────
    What the extension injects into a mail page: the mirrored folder label, the
-   summary card, the Amarnai Reply entry point and the compose it opens, and the
+   summary card, the Aziru Reply entry point and the compose it opens, and the
    panel in the mailbox's right rail. Everything here is gated on the demo's
    `aziru` prop, so the same markup renders as a bare mailbox with it off.
 
-   These are drawn in Amarnai's palette on purpose. Injected UI that mimics the
+   These are drawn in Aziru's palette on purpose. Injected UI that mimics the
    host page perfectly is UI a reader cannot tell apart from Gmail's own, and
    the whole point of the section is that they CAN.
    ─────────────────────────────────────────────────────────────────────────── */
@@ -1118,7 +1118,7 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
 
 /* Staggered so the layer reads as arriving rather than as having always been
    there. It replays every time the switch is turned back on, which is the beat
-   that makes "this is what Amarnai adds" legible without any callout chrome. */
+   that makes "this is what Aziru adds" legible without any callout chrome. */
 .ld-mb-label,
 .ld-mb-summary,
 .ld-mb-reply-pill,
@@ -1231,7 +1231,7 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
   .ld-mb-summary { margin-left: 0; }
 }
 
-/* ── Amarnai Reply ── */
+/* ── Aziru Reply ── */
 
 .ld-mb-reply-pill {
   display: inline-flex;
@@ -1368,7 +1368,7 @@ button.ld-ol-row:hover { background: var(--bg-soft); }
   border-top: 1px solid var(--line);
 }
 
-/* Drawn, never wired: Send is the mailbox's button and Amarnai never presses
+/* Drawn, never wired: Send is the mailbox's button and Aziru never presses
    it. The draft waits here for edits. */
 .ld-mb-send {
   padding: 7px 20px;

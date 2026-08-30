@@ -4,8 +4,8 @@ import { buildLegalMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildLegalMetadata(
   "terms",
-  "Terms of Service | Amarnai",
-  "Terms governing your use of Amarnai."
+  "Terms of Service | Aziru",
+  "Terms governing your use of Aziru."
 );
 
 const LAST_UPDATED = "July 30, 2026";
@@ -17,23 +17,23 @@ export default function TermsPage() {
       <p className="prose-meta">Last updated: {LAST_UPDATED}</p>
 
       <p>
-        These Terms of Service (&ldquo;Terms&rdquo;) govern your use of Amarnai
-        (&ldquo;the Service&rdquo;), operated by Amarnai (&ldquo;we&rdquo;,
+        These Terms of Service (&ldquo;Terms&rdquo;) govern your use of Aziru
+        (&ldquo;the Service&rdquo;), operated by Aziru (&ldquo;we&rdquo;,
         &ldquo;our&rdquo;, &ldquo;us&rdquo;). By using the Service you agree to these
         Terms.
       </p>
 
       <h2>The Service</h2>
       <p>
-        Amarnai is an AI-assisted email triage tool. It connects to your Gmail or Outlook
+        Aziru is an AI-assisted email triage tool. It connects to your Gmail or Outlook
         account with your permission and sorts, classifies, and displays your threads.
-        Amarnai never sends and never deletes email. Reply drafts are suggestions only:
+        Aziru never sends and never deletes email. Reply drafts are suggestions only:
         they require your explicit approval and are sent by you, from your own mail client.
       </p>
       <p>
-        The one change Amarnai makes to your mailbox is labelling. When label writeback is
-        enabled, Amarnai mirrors your folders into your mailbox as Gmail labels or Outlook
-        categories, under an <code>Amarnai</code> namespace, and keeps them in sync
+        The one change Aziru makes to your mailbox is labelling. When label writeback is
+        enabled, Aziru mirrors your folders into your mailbox as Gmail labels or Outlook
+        categories, under an <code>Aziru</code> namespace, and keeps them in sync
         automatically as threads are sorted, without a confirmation for each thread. It
         only ever adds, updates, or removes labels it created; labels and categories you
         created are left alone. You can switch writeback off at any time from Settings, and
@@ -51,9 +51,9 @@ export default function TermsPage() {
 
       <h2>Mailbox Access</h2>
       <p>
-        You grant Amarnai permission to access your Gmail account through Google&rsquo;s
+        You grant Aziru permission to access your Gmail account through Google&rsquo;s
         OAuth 2.0 API, or your Outlook account through Microsoft&rsquo;s Graph API. You
-        can revoke this permission at any time from the Amarnai Settings page, from{" "}
+        can revoke this permission at any time from the Aziru Settings page, from{" "}
         <a
           href="https://myaccount.google.com/permissions"
           target="_blank"
@@ -81,7 +81,7 @@ export default function TermsPage() {
         but does not delete your account.
       </p>
       <p>
-        Amarnai&rsquo;s use of Gmail and Outlook data is governed by our{" "}
+        Aziru&rsquo;s use of Gmail and Outlook data is governed by our{" "}
         <a href="/privacy">Privacy Policy</a> and the{" "}
         <a
           href="https://developers.google.com/terms/api-services-user-data-policy"
@@ -97,7 +97,7 @@ export default function TermsPage() {
       <p>You agree not to:</p>
       <ul>
         <li>Use the Service for any unlawful purpose.</li>
-        <li>Attempt to gain unauthorized access to Amarnai systems or other users&rsquo; accounts.</li>
+        <li>Attempt to gain unauthorized access to Aziru systems or other users&rsquo; accounts.</li>
         <li>Reverse engineer, decompile, or tamper with the Service.</li>
         <li>Use the Service to send unsolicited messages or spam.</li>
         <li>
@@ -119,23 +119,23 @@ export default function TermsPage() {
 
       <h2>Open Source</h2>
       <p>
-        Amarnai&rsquo;s source code is available under the AGPL-3.0 license. The
+        Aziru&rsquo;s source code is available under the AGPL-3.0 license. The
         license terms govern your right to use, modify, and distribute the code. These
-        Terms govern your use of the hosted Service at amarnai.com and do not restrict
+        Terms govern your use of the hosted Service at aziru.email and do not restrict
         your rights under the open-source license.
       </p>
 
       <h2>Disclaimer of Warranties</h2>
       <p>
         The Service is provided &ldquo;as is&rdquo; without warranty of any kind.
-        Amarnai makes no guarantees that the Service will be uninterrupted, error-free,
+        Aziru makes no guarantees that the Service will be uninterrupted, error-free,
         or that AI classifications will be accurate. You are responsible for reviewing
         any actions before confirming them.
       </p>
 
       <h2>Limitation of Liability</h2>
       <p>
-        To the maximum extent permitted by law, Amarnai is not liable for any indirect,
+        To the maximum extent permitted by law, Aziru is not liable for any indirect,
         incidental, or consequential damages arising from your use of the Service,
         including loss of data or unintended email actions. Our total liability to you
         for any claim arising from these Terms or the Service is limited to the amount

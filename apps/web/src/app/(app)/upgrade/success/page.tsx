@@ -9,7 +9,7 @@ import { WorkspaceSetupWaiting } from "./WorkspaceSetupWaiting";
 import { Trans } from "@lingui/react/macro";
 import { initServerI18n } from "@/lib/i18n-server";
 
-export const metadata = { title: "Upgrade Successful | Amarnai" };
+export const metadata = { title: "Upgrade Successful | Aziru" };
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -145,7 +145,7 @@ export default async function UpgradeSuccessPage({
                 )}
               </a>
               <p className="upgrade-success-note">
-                <Trans>Your new plan is already active in the Amarnai panel.</Trans>
+                <Trans>Your new plan is already active in the Aziru panel.</Trans>
               </p>
             </>
           ) : (

@@ -83,7 +83,7 @@ export function findAccountEmail(doc: Document = document): string | null {
  * nothing (DOM mapped on a live mailbox, 2026-07-30): no `[role='main']`, no
  * `#ConversationReadingPaneContainer`, no account header, no folder tree, and no
  * `data-convid` anywhere — because it is an ITEM view, showing one message rather
- * than a conversation. It is where Microsoft's own `webLink` lands, so Amarnai
+ * than a conversation. It is where Microsoft's own `webLink` lands, so Aziru
  * sends users here itself from the queue; `ispopout=0` does not prevent it on
  * consumer OWA.
  *
@@ -167,7 +167,7 @@ export function detectOutlookThread(doc: Document = document): ThreadContext | n
  * reply form that is not on the page.
  *
  * `#ConversationReadingPaneContainer` is OWA's own id for the pane that renders
- * a conversation, and it is the same anchor the Amarnai Reply pill already
+ * a conversation, and it is the same anchor the Aziru Reply pill already
  * depends on across all three OWA hosts — so this adds no new DOM bet, it reuses
  * the one already shipping. If some build renders a conversation without it the
  * panel falls back to the queue, which is the failure direction to want: showing

@@ -10,7 +10,7 @@
 // sends only identifiers — an account address and a provider thread id. No page
 // content ever leaves the page.
 
-export const THREAD_SUMMARY_MESSAGE = "amarnai:threadSummary" as const;
+export const THREAD_SUMMARY_MESSAGE = "aziru:threadSummary" as const;
 
 export type ThreadSummaryRequest = {
   type: typeof THREAD_SUMMARY_MESSAGE;
@@ -23,7 +23,7 @@ export type ThreadSummaryRequest = {
 
 /**
  * Why the background could not answer. The content script renders nothing for
- * every one of these — a mail page must never sprout an Amarnai error.
+ * every one of these — a mail page must never sprout an Aziru error.
  *
  * "injectionDisabled" is the only one that is a settled answer rather than a
  * transient miss: the workspace has turned the card off, so the content script
@@ -48,11 +48,11 @@ export type ThreadSummaryResponse =
 
 // ─── Reply draft ──────────────────────────────────────────────────────────────
 //
-// The "Amarnai Reply" button in the provider's native compose. Unlike the
+// The "Aziru Reply" button in the provider's native compose. Unlike the
 // summary, which fires on every thread open, this only ever runs on an explicit
 // click — so it may take its time and report real outcomes to the user.
 
-export const GENERATE_DRAFT_MESSAGE = "amarnai:generateDraft" as const;
+export const GENERATE_DRAFT_MESSAGE = "aziru:generateDraft" as const;
 
 export type GenerateDraftRequest = {
   type: typeof GENERATE_DRAFT_MESSAGE;
@@ -112,11 +112,11 @@ export function isThreadSummaryRequest(msg: unknown): msg is ThreadSummaryReques
 // The badge for the comment bubble on the injected summary card. Fired by the
 // same runner as the summary, in parallel with it, and held to the same
 // contract: only identifiers leave the page, and every failure renders nothing
-// (a mail page must never sprout an Amarnai error). Only the two count
+// (a mail page must never sprout an Aziru error). Only the two count
 // integers ever come back — comment content stays in the extension-origin
 // panel.
 
-export const COMMENT_META_MESSAGE = "amarnai:commentMeta" as const;
+export const COMMENT_META_MESSAGE = "aziru:commentMeta" as const;
 
 export type CommentMetaRequest = {
   type: typeof COMMENT_META_MESSAGE;
@@ -143,10 +143,10 @@ export function isCommentMetaRequest(msg: unknown): msg is CommentMetaRequest {
 // ─── Open the panel ───────────────────────────────────────────────────────────
 //
 // Sent when the user clicks an injected control that needs an account: signing
-// in happens in Amarnai's own panel, never inside the mail page. Fire-and-forget
+// in happens in Aziru's own panel, never inside the mail page. Fire-and-forget
 // — the content script has nothing to do with the answer.
 
-export const OPEN_PANEL_MESSAGE = "amarnai:openPanel" as const;
+export const OPEN_PANEL_MESSAGE = "aziru:openPanel" as const;
 
 export type OpenPanelRequest = { type: typeof OPEN_PANEL_MESSAGE };
 
@@ -163,7 +163,7 @@ export function isOpenPanelRequest(msg: unknown): msg is OpenPanelRequest {
 // Sent by the injected panel when the user picks a thread from its queue. The
 // panel is an extension document embedded in the mail page, so it asks the
 // background to navigate the tab it sits in — the same chrome.tabs.update path
-// Amarnai's own side panel has always used to open a thread.
+// Aziru's own side panel has always used to open a thread.
 //
 // It does NOT go through the mail page: a content script can only assign
 // `location`, which is a write into a third-party SPA with no way to tell
@@ -173,7 +173,7 @@ export function isOpenPanelRequest(msg: unknown): msg is OpenPanelRequest {
 // Fire-and-forget: the panel has already switched to the thread's screen by the
 // time this is sent, and the page catches up on its own.
 
-export const OPEN_MAIL_THREAD_MESSAGE = "amarnai:openMailThread" as const;
+export const OPEN_MAIL_THREAD_MESSAGE = "aziru:openMailThread" as const;
 
 export type OpenMailThreadRequest = {
   type: typeof OPEN_MAIL_THREAD_MESSAGE;

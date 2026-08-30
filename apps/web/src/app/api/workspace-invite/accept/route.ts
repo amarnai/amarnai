@@ -99,14 +99,14 @@ export async function GET(req: NextRequest) {
   const response = NextResponse.redirect(
     `${appUrl}/emails?joined_workspace=${encodeURIComponent(invitation.workspace.name)}`
   );
-  response.cookies.set("amarnai-workspace", invitation.workspaceId, {
+  response.cookies.set("aziru-workspace", invitation.workspaceId, {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 365,
   });
   // Follow the joined workspace's language (cache for proxy.ts locale resolution).
-  response.cookies.set("amarnai_locale", invitation.workspace.locale, {
+  response.cookies.set("aziru_locale", invitation.workspace.locale, {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });

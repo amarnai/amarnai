@@ -35,7 +35,7 @@ const ALL_PLANS: Array<{
   {
     id: 'free',
     name: msg`Apprentice`,
-    tagline: msg`For individuals trying Amarnai on their personal inbox.`,
+    tagline: msg`For individuals trying Aziru on their personal inbox.`,
     price: (_cycle: BillingCycle) => msg`Free`,
   },
   {

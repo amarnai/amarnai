@@ -4,7 +4,7 @@
 
 ## Parity
 
-Amarnai's active clients are the web app (`apps/web`) and the browser extension
+Aziru's active clients are the web app (`apps/web`) and the browser extension
 (`apps/extension`). The mobile app (`apps/mobile`) is shelved. Provider parity
 (Gmail and Outlook, read-only) is also required. See
 [docs/platform-parity.md](../docs/platform-parity.md).

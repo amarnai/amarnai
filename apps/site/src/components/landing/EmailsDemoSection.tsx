@@ -46,7 +46,7 @@ const clampPanel = (px: number) => Math.min(PANEL_MAX_PX, Math.max(PANEL_MIN_PX,
  * The list is what mail.google.com actually looks like when you land on it, and
  * it is the only view that can make the plural claim in this section's heading:
  * a mirrored label on every row, in the folder's own color. A single open thread
- * shows more of Amarnai at once, but it shows one thread being filed, and it
+ * shows more of Aziru at once, but it shows one thread being filed, and it
  * reads as a state someone staged rather than a mailbox someone has.
  *
  * Set this to a thread id to open on that thread instead.
@@ -55,18 +55,18 @@ const DEFAULT_OPEN_THREAD_ID: string | null = null;
 
 /**
  * The in-your-inbox demo: one browser with two tabs open, the visitor's mailbox
- * with Amarnai injected into it and the Amarnai web app beside it. Which mailbox
+ * with Aziru injected into it and the Aziru web app beside it. Which mailbox
  * is a toggle rather than a third tab, so the demo shows one person's inbox
  * instead of implying they keep Gmail and Outlook open on the same mail.
  *
  * The default view is a mailbox with a thread open, because that is where three
  * of the four injected things live at once — the folder label on the thread, the
- * summary card, and the Amarnai Reply entry point. The inbox list, which shows
+ * summary card, and the Aziru Reply entry point. The inbox list, which shows
  * only the labels, is one Back click away.
  *
  * The switch above the frame turns the injected layer off, and it is scoped in
  * its label ("in your inbox") to exactly what it governs: what the extension
- * puts inside Gmail's and Outlook's own UI. Amarnai's own surfaces — the app
+ * puts inside Gmail's and Outlook's own UI. Aziru's own surfaces — the app
  * tab, the toolbar icon, the side panel — are not injections and stay put, which
  * is also how the real per-workspace settings are drawn.
  */
@@ -81,7 +81,7 @@ export function EmailsDemoSection() {
   // id rather than an object so it survives a locale or mailbox change.
   //
   // It starts on a thread rather than on the inbox list because the thread view
-  // is where the label, the summary card and the Amarnai Reply pill are all on
+  // is where the label, the summary card and the Aziru Reply pill are all on
   // screen at once. The list, which carries only the labels, is one Back away.
   const [openThreadId, setOpenThreadId] = useState<string | null>(DEFAULT_OPEN_THREAD_ID);
   // null until the frame is first measured (SSR and pre-layout render).
@@ -224,14 +224,14 @@ export function EmailsDemoSection() {
               {/* Which mailbox, the same control the connect step above uses. */}
               <ProviderToggle provider={provider} onChange={chooseProvider} />
 
-              {/* Scoped in its own label to what it governs: what Amarnai puts
+              {/* Scoped in its own label to what it governs: what Aziru puts
                   inside the mailbox. Off is not a broken state — it is the
                   mailbox a visitor already has, which is the comparison worth
                   making. */}
               <label className="ld-aziru-toggle">
                 <Switch checked={showAziru} onChange={setShowAziru} />
                 <span>
-                  <Trans>Amarnai in your inbox</Trans>
+                  <Trans>Aziru in your inbox</Trans>
                 </span>
               </label>
             </div>
@@ -272,7 +272,7 @@ export function EmailsDemoSection() {
                 />
               </div>
 
-              {/* The Amarnai tab. Mounted on first visit and kept mounted, so
+              {/* The Aziru tab. Mounted on first visit and kept mounted, so
                   coming back to it finds it as it was left. */}
               {appVisited && (
                 <div className="ld-tabbody em-shell" hidden={tab !== "app"}>
@@ -293,7 +293,7 @@ export function EmailsDemoSection() {
                   className="ld-split-divider"
                   role="separator"
                   aria-orientation="vertical"
-                  aria-label={_(msg`Resize the Amarnai side panel`)}
+                  aria-label={_(msg`Resize the Aziru side panel`)}
                   aria-valuemin={PANEL_MIN_PX}
                   aria-valuemax={PANEL_MAX_PX}
                   aria-valuenow={PANEL_DEFAULT_PX}

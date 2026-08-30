@@ -1,4 +1,4 @@
-export const APP_NAME = "Amarnai" as const;
+export const APP_NAME = "Aziru" as const;
 
 export * from "./taxonomy-routable.js";
 export * from "./taxonomy-defaults.js";

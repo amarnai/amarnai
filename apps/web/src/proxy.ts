@@ -4,7 +4,7 @@ import { matchLocale, isSupportedLocale } from "@aziru/i18n";
 import { buildContentSecurityPolicy, cspHeaderName, generateCspNonce } from "@/lib/csp";
 import { OUTLOOK_PANEL_PATH } from "@/lib/outlook-addin";
 
-const LOCALE_COOKIE = "amarnai_locale";
+const LOCALE_COOKIE = "aziru_locale";
 
 function resolveLocale(req: Parameters<Parameters<typeof auth>[0]>[0]): string {
   // Explicit cookie override (manual switcher or prior detection) wins.

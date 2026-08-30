@@ -51,7 +51,7 @@ export function ThreadListHeader({
     : (queueLabel ? i18n._(queueLabel.name) : "—");
   const desc = isFolder
     ? (folders.find((f) => f.id === active.id)?.description ??
-        i18n._(msg`Threads sorted into this folder by Amarnai.`))
+        i18n._(msg`Threads sorted into this folder by Aziru.`))
     : (queueLabel ? i18n._(queueLabel.desc) : "");
 
   const ancestry = isFolder ? getFolderAncestry(active.id, folders) : [];

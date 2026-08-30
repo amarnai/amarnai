@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { matchLocale, SOURCE_LOCALE } from "@aziru/i18n";
 
-const STORAGE_KEY = "amarnai_locale";
+const STORAGE_KEY = "aziru_locale";
 
 // Redirects an unmatched route (via not-found) to the correct localized route,
 // detecting the locale from the stored preference or the browser. The source

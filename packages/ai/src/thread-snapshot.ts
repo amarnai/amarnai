@@ -94,7 +94,7 @@ export type ThreadSnapshot = {
  * True when a message is an unsent draft sitting in the thread.
  *
  * Gmail's `threads.get` returns drafts alongside real messages, so a reply the
- * user (or Amarnai Reply) has composed but not sent arrives in every snapshot of
+ * user (or Aziru Reply) has composed but not sent arrives in every snapshot of
  * that thread. A draft is not part of the conversation: it must never be
  * persisted, classified, summarised, or treated as the message being replied to.
  *

@@ -170,7 +170,7 @@ async function readExpanded(): Promise<boolean> {
 }
 
 /**
- * Put the Amarnai panel on the right edge of OWA. Resolves to a handle other
+ * Put the Aziru panel on the right edge of OWA. Resolves to a handle other
  * features can point controls at (the summary card's comment bubble); the
  * no-panel paths resolve to the inert handle.
  *
