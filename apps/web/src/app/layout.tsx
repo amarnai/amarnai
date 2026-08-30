@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   description: "Your AI email triage assistant.",
   applicationName: "Amarnai",
-  metadataBase: new URL("https://app.amarnai.com"),
+  metadataBase: new URL("https://app.aziru.email"),
   robots: { index: false, follow: false },
 };
 

@@ -184,7 +184,7 @@ let onLine;
 
 if (hostname) {
   // The tunnel name defaults to the first DNS label, which keeps each
-  // developer's tunnel distinct on a shared domain (dev-ben.amarnai.com →
+  // developer's tunnel distinct on a shared domain (dev-ben.aziru.email →
   // "dev-ben").
   const tunnelName = loadEnv("DEV_TUNNEL_NAME") ?? hostname.split(".")[0];
   const base = `https://${hostname}`;

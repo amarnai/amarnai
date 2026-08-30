@@ -126,7 +126,7 @@ const envSchema = z.object({
   // Public HTTPS URL Graph posts change notifications to (the notificationUrl of
   // each subscription). Analogous to GMAIL_PUBSUB_TOPIC: when unset, Outlook runs
   // polling-only. Must be publicly reachable so Graph's validation handshake and
-  // subsequent notifications succeed. e.g. https://api.amarnai.com/webhooks/outlook
+  // subsequent notifications succeed. e.g. https://api.aziru.email/webhooks/outlook
   MS_GRAPH_NOTIFICATION_URL: z.string().optional(),
   // Which mail providers the product offers for connection, comma-separated.
   // Gates the UI/connect flows only; the runtime adapter is always chosen per

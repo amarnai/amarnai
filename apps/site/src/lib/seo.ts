@@ -7,7 +7,7 @@ import {
   type SupportedLocale,
 } from "@aziru/i18n";
 
-export const BASE_URL = "https://amarnai.com";
+export const BASE_URL = "https://aziru.email";
 
 // Canonical URL for a locale + path. The source locale is served at the bare
 // domain so ranking signals consolidate there; other locales live at `/{locale}`.

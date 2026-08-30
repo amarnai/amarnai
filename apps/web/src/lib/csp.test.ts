@@ -105,14 +105,14 @@ describe("buildContentSecurityPolicy — Outlook task pane exception", () => {
 
   it("allows office.js and the API only on the pane", () => {
     enableAddin();
-    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://api.amarnai.com");
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://api.aziru.email");
     const pane = buildContentSecurityPolicy("n", "/outlook-panel");
     expect(directive(pane, "script-src")).toContain("https://appsforoffice.microsoft.com");
-    expect(directive(pane, "connect-src")).toContain("https://api.amarnai.com");
+    expect(directive(pane, "connect-src")).toContain("https://api.aziru.email");
 
     const other = buildContentSecurityPolicy("n", "/emails");
     expect(directive(other, "script-src")).not.toContain("appsforoffice");
-    expect(directive(other, "connect-src")).not.toContain("api.amarnai.com");
+    expect(directive(other, "connect-src")).not.toContain("api.aziru.email");
   });
 
   it("keeps every other route unframable", () => {

@@ -9,7 +9,7 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-function enable(baseUrl = "https://app.amarnai.com") {
+function enable(baseUrl = "https://app.aziru.email") {
   vi.stubEnv("OUTLOOK_ADDIN_ENABLED", "true");
   vi.stubEnv("APP_BASE_URL", baseUrl);
 }
@@ -42,7 +42,7 @@ describe("GET /outlook-manifest.xml", () => {
     expect(xml).toContain(
       '<bt:Url id="paneUrl" DefaultValue="https://mail.example.org/outlook-panel" />',
     );
-    expect(xml).not.toContain("app.amarnai.com");
+    expect(xml).not.toContain("app.aziru.email");
   });
 
   it("strips a trailing slash so URLs never double up", async () => {
@@ -54,7 +54,7 @@ describe("GET /outlook-manifest.xml", () => {
     enable();
     const xml = await body();
     expect(xml).toContain(
-      '<bt:Url id="draftUrl" DefaultValue="https://app.amarnai.com/outlook-panel?focus=draft" />',
+      '<bt:Url id="draftUrl" DefaultValue="https://app.aziru.email/outlook-panel?focus=draft" />',
     );
     expect(xml).toContain("<SourceLocation resid=\"draftUrl\" />");
   });
@@ -124,7 +124,7 @@ describe("GET /outlook-manifest.xml", () => {
     enable();
     const xml = await body();
     for (const size of [16, 32, 80]) {
-      expect(xml).toContain(`https://app.amarnai.com/outlook/icon-${size}.png`);
+      expect(xml).toContain(`https://app.aziru.email/outlook/icon-${size}.png`);
     }
   });
 

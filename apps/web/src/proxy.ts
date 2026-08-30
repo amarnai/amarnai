@@ -33,7 +33,7 @@ export default auth((req) => {
     // session, which is the whole point. Redirecting it to /sign-in would strand
     // exactly the users it exists to carry across.
     pathname === "/auth/bridge" ||
-    // Legal redirect routes (to amarnai.com). Linked from the sign-up/sign-in
+    // Legal redirect routes (to aziru.email). Linked from the sign-up/sign-in
     // notice, so they must be reachable logged-out. Exact-match: these have no
     // sub-routes, and a prefix would silently expose any future route sharing
     // the prefix (e.g. /privacy-settings).

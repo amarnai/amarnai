@@ -39,7 +39,7 @@ export function CtaButtons({ rowClassName, signUpLabel }: CtaButtonsProps) {
       <InstallExtensionButton variant="primary" />
       <Link
         className={`ld-btn ld-signup-btn lg${signUpIsPrimary ? " accent" : ""}`}
-        href="https://app.amarnai.com/sign-up"
+        href="https://app.aziru.email/sign-up"
       >
         {signUpLabel}
       </Link>

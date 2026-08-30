@@ -65,7 +65,7 @@ export function SupportContent() {
 
               <a
                 className="ld-support-row"
-                href="https://docs.amarnai.com"
+                href="https://docs.aziru.email"
                 target="_blank"
                 rel="noopener noreferrer"
               >

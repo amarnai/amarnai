@@ -16,7 +16,7 @@ import { PuzzlePieceIcon } from "./icons";
 export type DemoTab = "inbox" | "app";
 
 export function tabHost(tab: DemoTab, provider: MockProvider): string {
-  if (tab === "app") return "app.amarnai.com";
+  if (tab === "app") return "app.aziru.email";
   return provider === "outlook" ? "outlook.live.com" : "mail.google.com";
 }
 

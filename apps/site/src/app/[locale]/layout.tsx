@@ -19,7 +19,7 @@ export function generateStaticParams() {
   return SUPPORTED_LOCALES.map((locale) => ({ locale }));
 }
 
-const BASE_URL = "https://amarnai.com";
+const BASE_URL = "https://aziru.email";
 
 export async function generateMetadata({
   params,

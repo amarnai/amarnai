@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { buildManifest } from "./manifest.config";
 
-const API = "https://api.amarnai.com";
-const WEB = "https://app.amarnai.com";
+const API = "https://api.aziru.email";
+const WEB = "https://app.aziru.email";
 
 describe("buildManifest — chrome", () => {
   it("emits the Chrome MV3 shape with side panel + service worker", () => {

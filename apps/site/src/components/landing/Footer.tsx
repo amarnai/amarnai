@@ -34,7 +34,7 @@ export function Footer({ anchorBase = "" }: { anchorBase?: string }) {
             <div className="ld-footer-col">
               <h4><Trans>Resources</Trans></h4>
               <Link href={`${anchorBase}#faq`}><Trans>FAQ</Trans></Link>
-              <a href="https://docs.amarnai.com" target="_blank" rel="noopener noreferrer"><Trans>Documentation</Trans></a>
+              <a href="https://docs.aziru.email" target="_blank" rel="noopener noreferrer"><Trans>Documentation</Trans></a>
               <a href="https://github.com/aziruhq/aziru" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>

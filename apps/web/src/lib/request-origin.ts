@@ -16,5 +16,5 @@ export function getReturnBaseUrl(request: Request): string {
     const proto = forwardedProto ?? (host.includes("localhost") || /:\d+$/.test(host) ? "http" : "https");
     return `${proto}://${host}`;
   }
-  return process.env.AUTH_URL ?? "https://app.amarnai.com";
+  return process.env.AUTH_URL ?? "https://app.aziru.email";
 }

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function PrivacyRedirect() {
-  redirect("https://amarnai.com/privacy");
+  redirect("https://aziru.email/privacy");
 }

@@ -212,11 +212,11 @@ export function HeroFeedCard() {
       <div className="ld-feed-cap">
         <a
           className="ld-feed-url"
-          href="https://app.amarnai.com"
+          href="https://app.aziru.email"
           target="_blank"
           rel="noopener noreferrer"
         >
-          app.amarnai.com
+          app.aziru.email
         </a>
         <span className="ld-feed-live">
           <span className="ld-feed-live-dot" />

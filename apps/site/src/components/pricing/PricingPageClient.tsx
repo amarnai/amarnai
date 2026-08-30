@@ -3,7 +3,7 @@
 import { PricingPlans, type PlanId, type BillingCycle } from "@aziru/ui";
 import { ExtensionBanner } from "./ExtensionBanner";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.amarnai.com";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.aziru.email";
 
 export function PricingPageClient() {
   function handleSelectPlan(plan: PlanId, cycle: BillingCycle) {

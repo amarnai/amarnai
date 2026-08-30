@@ -235,5 +235,5 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
 export const SELF_HOST_NOTE = {
   title: "Prefer to self-host?",
   body: "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.",
-  cta: { label: "Self-host guide", href: "https://docs.amarnai.com/docs/self-hosting" },
+  cta: { label: "Self-host guide", href: "https://docs.aziru.email/docs/self-hosting" },
 };
