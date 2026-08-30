@@ -45,7 +45,7 @@ describe("buildManifest — firefox", () => {
   it("declares a stable gecko id, min version, and data-collection", () => {
     expect(m["browser_specific_settings"]).toEqual({
       gecko: {
-        id: "aziru@aziru.com",
+        id: "amarnai@amarnai.com",
         strict_min_version: "128.0",
         data_collection_permissions: { required: ["authenticationInfo"] },
       },

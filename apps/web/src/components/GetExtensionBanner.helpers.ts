@@ -2,7 +2,7 @@
 // detection and URL-pick logic is unit-testable without a browser environment.
 // Mirrors AppDownloadBanner.helpers.ts in packages/ui.
 
-export const DISMISS_KEY = "aziru.extensionBanner.dismissed";
+export const DISMISS_KEY = "amarnai.extensionBanner.dismissed";
 
 // Mobile browsers cannot install a desktop extension, so nudging there is a
 // dead end. Matched on the UA's mobile markers rather than a viewport width:

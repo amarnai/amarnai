@@ -22,7 +22,7 @@ function whenWelcomeTabIs(t: Partial<chrome.tabs.Tab>): void {
   get.mockResolvedValue(t as never);
 }
 
-const WELCOME_TAB_KEY = "aziru.welcomeTabId";
+const WELCOME_TAB_KEY = "amarnai.welcomeTabId";
 
 beforeEach(() => {
   resetChromeStorage();

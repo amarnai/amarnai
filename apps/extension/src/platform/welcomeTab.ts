@@ -4,7 +4,7 @@ import { ext } from "./ext";
 // storage.session (not local) is deliberate: tab ids are unique only within a
 // browser session, so a value that outlived a restart could name an unrelated
 // tab. Session storage is emptied for us at exactly the right moment.
-const KEY = "aziru.welcomeTabId";
+const KEY = "amarnai.welcomeTabId";
 
 function welcomeUrl(): string {
   return ext.runtime.getURL("welcome.html");

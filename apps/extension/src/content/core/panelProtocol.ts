@@ -38,9 +38,9 @@ export const PANEL_EMBED_PARAM = "embed";
 
 // ── Host → iframe ─────────────────────────────────────────────────────────────
 
-export const PANEL_THREAD_CONTEXT = "aziru:panel:threadContext" as const;
-export const PANEL_VISIBILITY = "aziru:panel:visibility" as const;
-export const PANEL_INSERT_RESULT = "aziru:panel:insertResult" as const;
+export const PANEL_THREAD_CONTEXT = "amarnai:panel:threadContext" as const;
+export const PANEL_VISIBILITY = "amarnai:panel:visibility" as const;
+export const PANEL_INSERT_RESULT = "amarnai:panel:insertResult" as const;
 /**
  * The user clicked an in-page comments control (the bubble on the injected
  * summary card): expand the panel's Comments section and scroll it into view.
@@ -51,7 +51,7 @@ export const PANEL_INSERT_RESULT = "aziru:panel:insertResult" as const;
  * direction: an old frame drops the unknown type through its guards and the
  * click simply reveals the panel, and an old host never sends it.
  */
-export const PANEL_FOCUS_COMMENTS = "aziru:panel:focusComments" as const;
+export const PANEL_FOCUS_COMMENTS = "amarnai:panel:focusComments" as const;
 
 export type PanelThreadContextMessage = {
   v: typeof PANEL_PROTOCOL_VERSION;
@@ -108,9 +108,9 @@ export type HostToPanelMessage =
 // here: the panel is an extension document and asks the background to navigate
 // its tab (see content/core/messaging.ts), which needs neither this channel nor
 // a write into Gmail's own location.
-export const PANEL_READY = "aziru:panel:ready" as const;
-export const PANEL_INSERT_DRAFT = "aziru:panel:insertDraft" as const;
-export const PANEL_OPEN_PANEL = "aziru:panel:openPanel" as const;
+export const PANEL_READY = "amarnai:panel:ready" as const;
+export const PANEL_INSERT_DRAFT = "amarnai:panel:insertDraft" as const;
+export const PANEL_OPEN_PANEL = "amarnai:panel:openPanel" as const;
 /**
  * The workspace has switched the injected panel off, as the API just told the
  * frame. The host removes itself: the kill switch has to un-inject, not merely
@@ -122,7 +122,7 @@ export const PANEL_OPEN_PANEL = "aziru:panel:openPanel" as const;
  * old host drops it through the guards below and behaves exactly as it does
  * today, and an old frame never sends it. Nothing can misread it.
  */
-export const PANEL_DISABLED = "aziru:panel:disabled" as const;
+export const PANEL_DISABLED = "amarnai:panel:disabled" as const;
 /**
  * The panel's comment list for the open thread changed (a comment was posted
  * or deleted there, or its poll discovered one). A nudge, not data: the host
@@ -130,7 +130,7 @@ export const PANEL_DISABLED = "aziru:panel:disabled" as const;
  * trusting numbers posted by a frame. Additive without a version bump, like
  * PANEL_DISABLED: an old host drops it and simply stays on its poll cadence.
  */
-export const PANEL_COMMENTS_CHANGED = "aziru:panel:commentsChanged" as const;
+export const PANEL_COMMENTS_CHANGED = "amarnai:panel:commentsChanged" as const;
 
 export type PanelReadyMessage = {
   v: typeof PANEL_PROTOCOL_VERSION;

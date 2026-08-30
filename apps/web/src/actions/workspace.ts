@@ -11,8 +11,8 @@ import { getRequestLocale } from "@/lib/i18n-server";
 import { disconnectGmailBeforeDeletion } from "@/lib/gmail-teardown";
 import { apiFor } from "@/lib/api";
 
-const WORKSPACE_COOKIE = "aziru-workspace";
-const LOCALE_COOKIE = "aziru_locale";
+const WORKSPACE_COOKIE = "amarnai-workspace";
+const LOCALE_COOKIE = "amarnai_locale";
 
 // The active workspace's language drives both the UI and AI-generated taxonomy.
 // proxy.ts resolves the UI locale from this cookie without a DB read, so we keep

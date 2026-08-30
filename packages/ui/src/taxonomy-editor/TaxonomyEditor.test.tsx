@@ -192,7 +192,7 @@ describe("TaxonomyEditor — host seams", () => {
           data-testid="host-apply"
           onClick={() =>
             void applyFile({
-              aziruTaxonomyVersion: 1,
+              amarnaiTaxonomyVersion: 1,
               exportedAt: "2026-01-01T00:00:00.000Z",
               nodes: [],
               edges: [],

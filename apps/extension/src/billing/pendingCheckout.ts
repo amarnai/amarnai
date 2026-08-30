@@ -6,7 +6,7 @@ import { ext } from "../platform/ext";
 // Persisted in storage.local because the panel is destroyed when closed, so
 // in-memory state would not survive the detour.
 
-const KEY = "aziru.billing.pendingCheckout";
+const KEY = "amarnai.billing.pendingCheckout";
 // Drop stale entries so an abandoned checkout is not retried forever.
 const MAX_AGE_MS = 60 * 60 * 1000;
 

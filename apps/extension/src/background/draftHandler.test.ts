@@ -59,7 +59,7 @@ describe("isGenerateDraftRequest", () => {
 
   it("rejects anything else on the message bus", () => {
     expect(isGenerateDraftRequest(null)).toBe(false);
-    expect(isGenerateDraftRequest({ type: "aziru:threadSummary" })).toBe(false);
+    expect(isGenerateDraftRequest({ type: "amarnai:threadSummary" })).toBe(false);
     expect(isGenerateDraftRequest({ ...REQUEST, providerThreadId: 42 })).toBe(false);
     expect(isGenerateDraftRequest({ type: GENERATE_DRAFT_MESSAGE })).toBe(false);
   });

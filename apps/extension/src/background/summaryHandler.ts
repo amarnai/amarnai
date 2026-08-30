@@ -20,7 +20,7 @@ import {
 // refresh single-flight would race the panel's). So it sends one message and the
 // background does the work with the same bearer transport the panel uses.
 
-const WORKSPACE_CACHE_KEY = "aziru.injectWorkspaceByAccount";
+const WORKSPACE_CACHE_KEY = "amarnai.injectWorkspaceByAccount";
 
 /** Built lazily: the background wakes for many events that need no API client. */
 let client: ApiClient | null = null;

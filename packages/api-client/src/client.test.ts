@@ -121,7 +121,7 @@ describe("makeApiClient", () => {
       const fetchFn = vi.fn().mockResolvedValue(mockOk({ ok: true }));
       const client = makeApiClient(makeMockTransport(fetchFn));
       const file = {
-        aziruTaxonomyVersion: 1 as const,
+        amarnaiTaxonomyVersion: 1 as const,
         exportedAt: "2026-01-01T00:00:00.000Z",
         nodes: [],
         edges: [],
@@ -137,7 +137,7 @@ describe("makeApiClient", () => {
       const fetchFn = vi.fn().mockResolvedValue(mockOk({ ok: true }));
       const client = makeApiClient(makeMockTransport(fetchFn));
       const file = {
-        aziruTaxonomyVersion: 1 as const,
+        amarnaiTaxonomyVersion: 1 as const,
         exportedAt: "2026-01-01T00:00:00.000Z",
         nodes: [],
         edges: [],
@@ -153,7 +153,7 @@ describe("makeApiClient", () => {
       const fetchFn = vi.fn().mockResolvedValue(mockOk({ suggestions: [], migrateCount: 0, resortCount: 0 }));
       const client = makeApiClient(makeMockTransport(fetchFn));
       const file = {
-        aziruTaxonomyVersion: 1 as const,
+        amarnaiTaxonomyVersion: 1 as const,
         exportedAt: "2026-01-01T00:00:00.000Z",
         nodes: [],
         edges: [],

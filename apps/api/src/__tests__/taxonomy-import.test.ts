@@ -72,7 +72,7 @@ function post(path: string, body: unknown, headers: Record<string, string> = {})
 
 function validFile() {
   return {
-    aziruTaxonomyVersion: 1,
+    amarnaiTaxonomyVersion: 1,
     exportedAt: "2026-06-14T12:00:00.000Z",
     nodes: [
       {
@@ -180,8 +180,8 @@ describe("POST /workspaces/:workspaceId/taxonomy-import", () => {
     expect(body.error).toMatch(/Invalid JSON/);
   });
 
-  it("returns 400 when aziruTaxonomyVersion is wrong", async () => {
-    const res = await post(IMPORT_PATH, { ...validFile(), aziruTaxonomyVersion: 2 });
+  it("returns 400 when amarnaiTaxonomyVersion is wrong", async () => {
+    const res = await post(IMPORT_PATH, { ...validFile(), amarnaiTaxonomyVersion: 2 });
     expect(res.status).toBe(400);
     const body = await res.json() as { error: string };
     expect(body.error).toBe("Invalid taxonomy file");

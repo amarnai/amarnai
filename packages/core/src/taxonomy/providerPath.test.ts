@@ -93,8 +93,8 @@ describe("buildProviderPaths", () => {
     const edges = [edge("e1", "r", "a", 1), edge("e2", "a", "b", 2)];
     const paths = buildProviderPaths(nodes, edges);
     expect(paths.get("r")).toBeUndefined();
-    expect(paths.get("a")).toEqual(["Aziru", "Clients"]);
-    expect(paths.get("b")).toEqual(["Aziru", "Clients", "Acme"]);
+    expect(paths.get("a")).toEqual(["Amarnai", "Clients"]);
+    expect(paths.get("b")).toEqual(["Amarnai", "Clients", "Acme"]);
   });
 
   it("disambiguates colliding sanitized names with an id suffix", () => {
@@ -116,6 +116,6 @@ describe("buildProviderPaths", () => {
   it("gives catch-all nodes a normal path", () => {
     const nodes = [node("r", "Root", true), node("c", "Other")];
     const edges = [edge("e1", "r", "c", 1)];
-    expect(buildProviderPaths(nodes, edges).get("c")).toEqual(["Aziru", "Other"]);
+    expect(buildProviderPaths(nodes, edges).get("c")).toEqual(["Amarnai", "Other"]);
   });
 });

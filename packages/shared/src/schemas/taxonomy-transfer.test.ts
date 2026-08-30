@@ -16,7 +16,7 @@ const VALID_DESCRIPTION = "Emails from clients and project stakeholders";
 
 function makeFile(overrides?: Partial<TaxonomyTransferFile>): TaxonomyTransferFile {
   return {
-    aziruTaxonomyVersion: 1,
+    amarnaiTaxonomyVersion: 1,
     exportedAt: "2026-06-14T12:00:00.000Z",
     nodes: [
       {
@@ -72,7 +72,7 @@ describe("TaxonomyTransferFileSchema", () => {
 
   it("rejects unknown version", () => {
     const result = TaxonomyTransferFileSchema.safeParse(
-      makeFile({ aziruTaxonomyVersion: 2 as unknown as 1 })
+      makeFile({ amarnaiTaxonomyVersion: 2 as unknown as 1 })
     );
     expect(result.success).toBe(false);
   });
@@ -550,7 +550,7 @@ describe("serializeTaxonomy", () => {
 
   it("produces a valid file", () => {
     const file = serializeTaxonomy(nodes, edges);
-    expect(file.aziruTaxonomyVersion).toBe(1);
+    expect(file.amarnaiTaxonomyVersion).toBe(1);
     expect(file.nodes).toHaveLength(3);
     expect(file.edges).toHaveLength(2);
   });

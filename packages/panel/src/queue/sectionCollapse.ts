@@ -11,7 +11,7 @@
 
 export type QueueSectionKey = "assigned" | "needsReview" | "drafts";
 
-const STORAGE_PREFIX = "aziru.panel.queue";
+const STORAGE_PREFIX = "amarnai.panel.queue";
 
 function storageKey(section: QueueSectionKey): string {
   return `${STORAGE_PREFIX}.${section}.collapsed`;

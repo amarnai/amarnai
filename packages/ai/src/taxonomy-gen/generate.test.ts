@@ -30,7 +30,7 @@ function validFile(): TaxonomyTransferFile {
     positionY: 0,
   });
   return {
-    aziruTaxonomyVersion: 1,
+    amarnaiTaxonomyVersion: 1,
     exportedAt: NOW.toISOString(),
     nodes: [
       node("root", "Inbox", null, true),
@@ -200,7 +200,7 @@ describe("generateTaxonomyFromProfile", () => {
   });
 
   it("stamps a fresh envelope (version + timestamp), ignoring the model's", async () => {
-    const tampered = { ...validFile(), aziruTaxonomyVersion: 99, exportedAt: "not-a-date" };
+    const tampered = { ...validFile(), amarnaiTaxonomyVersion: 99, exportedAt: "not-a-date" };
     const provider = new MockProvider([JSON.stringify(tampered)]);
     const result = await generateTaxonomyFromProfile({
       profile: PROFILE,

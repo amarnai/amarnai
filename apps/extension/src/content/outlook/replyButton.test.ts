@@ -369,7 +369,7 @@ describe("click flow", () => {
 
     button()!.click();
     await settle();
-    expect(sendMessage).toHaveBeenCalledWith({ type: "aziru:openPanel" });
+    expect(sendMessage).toHaveBeenCalledWith({ type: "amarnai:openPanel" });
   });
 
   it("removes the button when the workspace has the feature off", async () => {

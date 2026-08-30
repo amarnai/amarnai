@@ -90,7 +90,7 @@ function coerceAndValidate(raw: string, now: Date, seedCatchAllRef: string | nul
   // Force the envelope fields so a missing/invalid version or timestamp from the
   // model never causes a spurious rejection.
   if (parsed && typeof parsed === "object") {
-    (parsed as Record<string, unknown>).aziruTaxonomyVersion = 1;
+    (parsed as Record<string, unknown>).amarnaiTaxonomyVersion = 1;
     (parsed as Record<string, unknown>).exportedAt = now.toISOString();
   }
   const shape = TaxonomyTransferFileSchema.safeParse(parsed);
@@ -140,7 +140,7 @@ export async function generateTaxonomyFromProfile(
 
   // Guaranteed fallback: the (localized) seed template is always valid.
   return {
-    file: { ...fallbackSeed, aziruTaxonomyVersion: 1, exportedAt: now.toISOString() },
+    file: { ...fallbackSeed, amarnaiTaxonomyVersion: 1, exportedAt: now.toISOString() },
     usedFallback: true,
   };
 }

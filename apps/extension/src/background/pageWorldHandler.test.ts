@@ -21,7 +21,7 @@ describe("isInjectPageWorldRequest", () => {
   });
 
   it("ignores everything else on the bus", () => {
-    expect(isInjectPageWorldRequest({ type: "aziru:generateDraft" })).toBe(false);
+    expect(isInjectPageWorldRequest({ type: "amarnai:generateDraft" })).toBe(false);
     expect(isInjectPageWorldRequest(null)).toBe(false);
     expect(isInjectPageWorldRequest("inboxsdk__injectPageWorld")).toBe(false);
   });

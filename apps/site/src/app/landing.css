@@ -307,11 +307,40 @@
 
 /* ─── Reviews ─────────────────────────────────────────────────────────────── */
 
-.ld-reviews {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.ld-reviews-head {
+  max-width: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 24px;
 }
+
+.ld-reviews-nav {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.ld-reviews-arrow {
+  padding: 9px 11px;
+}
+
+/* Carousel track: two cards visible per page, the rest reachable by swipe,
+   arrow buttons, or keyboard scroll. */
+.ld-reviews {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(50% - 12px);
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.ld-reviews::-webkit-scrollbar { display: none; }
+
+.ld-review { scroll-snap-align: start; }
 
 .ld-review {
   display: flex;
@@ -380,7 +409,7 @@
 }
 
 @media (max-width: 720px) {
-  .ld-reviews { grid-template-columns: 1fr; }
+  .ld-reviews { grid-auto-columns: 100%; }
 }
 
 /* ─── Step art illustrations ──────────────────────────────────────────────── */

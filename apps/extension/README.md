@@ -155,7 +155,7 @@ for Firefox):
 ### Firefox
 
 Firefox has no `EXTENSION_KEY` equivalent: the ID is fixed in the manifest as
-`browser_specific_settings.gecko.id` (`aziru@aziru.com` — an identifier, not a
+`browser_specific_settings.gecko.id` (`amarnai@amarnai.com` — an identifier, not a
 real mailbox; the domain just needs to be one you control). That id is permanent
 and determines the redirect hash, so the redirect URI is stable for dev and store
 builds alike.

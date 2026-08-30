@@ -109,9 +109,9 @@ function buildManifest(base: string, addinId: string): string {
         <DesktopFormFactor>
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
             <OfficeTab id="TabDefault">
-              <Group id="aziruGroup">
+              <Group id="amarnaiGroup">
                 <Label resid="groupLabel" />
-                <Control xsi:type="Button" id="aziruPanelButton">
+                <Control xsi:type="Button" id="amarnaiPanelButton">
                   <Label resid="panelLabel" />
                   <Supertip>
                     <Title resid="panelLabel" />
@@ -127,7 +127,7 @@ function buildManifest(base: string, addinId: string): string {
                     <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
-                <Control xsi:type="Button" id="aziruCommentsButton">
+                <Control xsi:type="Button" id="amarnaiCommentsButton">
                   <Label resid="commentsLabel" />
                   <Supertip>
                     <Title resid="commentsLabel" />

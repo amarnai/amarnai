@@ -7,7 +7,7 @@ import { getOrCreateDefaultWorkspace } from "@aziru/auth";
 // Re-exported so existing web imports from "@/lib/workspace" keep working.
 export { getOrCreateDefaultWorkspace };
 
-const WORKSPACE_COOKIE = "aziru-workspace";
+const WORKSPACE_COOKIE = "amarnai-workspace";
 
 export const getSelectedWorkspace = cache(async function getSelectedWorkspace(userId: string): Promise<{ id: string; name: string; locale: string; plan: string }> {
   const cookieStore = await cookies();

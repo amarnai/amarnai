@@ -11,7 +11,7 @@ export type BrowserTarget = "chrome" | "firefox";
 // identifier, never a real mailbox. It is fixed forever because it (a) pins the
 // AMO listing and (b) determines the OAuth redirect hash
 // (https://<hash-of-id>.extensions.allizom.org/) registered on the Google client.
-const FIREFOX_GECKO_ID = "aziru@aziru.com";
+const FIREFOX_GECKO_ID = "amarnai@amarnai.com";
 // ESR baseline. Covers MV3, module event pages, and install-time host-permission
 // prompting. Firefox <140 ignores data_collection_permissions (warning at most).
 const FIREFOX_MIN_VERSION = "128.0";

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -46,7 +46,7 @@ function ReviewCard({
   children: ReactNode;
 }) {
   return (
-    <figure className="ld-review ld-reveal">
+    <figure className="ld-review">
       <div className="ld-review-head">
         <img className="ld-review-ava" src={portrait} alt="" />
         <figcaption className="ld-review-id">
@@ -62,16 +62,50 @@ function ReviewCard({
 }
 
 export function ReviewsSection() {
+  const { _ } = useLingui();
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // One "page" is whatever is currently in view: two cards on desktop, one on
+  // mobile. Scroll snapping lands the track on a card edge.
+  const page = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    track?.scrollBy({ left: dir * track.clientWidth, behavior: "smooth" });
+  };
+
   return (
     <section className="ld-section" id="reviews">
       <div className="ld-wrap">
-        <div className="ld-section-head ld-reveal">
+        <div className="ld-section-head ld-reviews-head ld-reveal">
           <h2 className="ld-section-h">
             <Trans>Reviews from early users</Trans>
           </h2>
+          <div className="ld-reviews-nav">
+            <button
+              type="button"
+              className="ld-btn ld-reviews-arrow"
+              aria-label={_(msg`Previous reviews`)}
+              aria-controls="reviews-track"
+              onClick={() => page(-1)}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="ld-btn ld-reviews-arrow"
+              aria-label={_(msg`More reviews`)}
+              aria-controls="reviews-track"
+              onClick={() => page(1)}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <div className="ld-reviews">
+        <div className="ld-reviews ld-reveal" id="reviews-track" ref={trackRef} tabIndex={0}>
           <ReviewCard
             portrait="/akhenaten-review.png"
             name={<Trans>Akhenaten</Trans>}
@@ -98,6 +132,52 @@ export function ReviewsSection() {
               here, caravan complaints there, marriage terms in their own
               folder. I still write to Pharaoh about the gold, but now it is
               the first letter of my day instead of the last.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/tushratta-review.png"
+            name={<Trans>Tushratta</Trans>}
+            title={<Trans>King of Mitanni</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              My letters to Egypt are long, and the replies are longer, and for
+              years I could not tell a dowry inventory from a note about the
+              statue of Shaushka. Aziru keeps the gold I am owed in one folder
+              and the pleasantries in another. Pharaoh still sends less gold
+              than promised, but at least I now know exactly which tablet says
+              so.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/abdi-heba-review.png"
+            name={<Trans>Abdi-Heba</Trans>}
+            title={<Trans>Mayor of Jerusalem</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              I have asked the king for archers in nearly every letter I have
+              ever written, and the reports of raids kept getting buried under
+              tax accounts. Aziru puts anything urgent from the hill country in
+              front of me first. The archers have still not arrived, but my
+              inbox is finally in order.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/rib-hadda-review.png"
+            name={<Trans>Rib-Hadda</Trans>}
+            title={<Trans>Mayor of Byblos</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              I have sent sixty-eight letters to Pharaoh and received almost
+              nothing back, so I know something about a hopeless inbox. Aziru
+              files my pleas, my grain shortages, and my warnings about the
+              sons of Abdi-Ashirta into their own folders. I remain besieged,
+              but I am besieged in an organized way.
             </Trans>
           </ReviewCard>
         </div>

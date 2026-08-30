@@ -147,10 +147,10 @@ By default, Aziru polls Gmail every 5 minutes for new messages. To get near-zero
 gcloud services enable gmail.googleapis.com pubsub.googleapis.com
 
 # 2. Create a Pub/Sub topic
-gcloud pubsub topics create aziru-gmail-push
+gcloud pubsub topics create amarnai-gmail-push
 
 # 3. Grant the Gmail service account publish rights on the topic
-gcloud pubsub topics add-iam-policy-binding aziru-gmail-push \
+gcloud pubsub topics add-iam-policy-binding amarnai-gmail-push \
   --member="serviceAccount:gmail-api-push@system.gserviceaccount.com" \
   --role="roles/pubsub.publisher"
 
@@ -158,8 +158,8 @@ gcloud pubsub topics add-iam-policy-binding aziru-gmail-push \
 openssl rand -hex 32
 
 # 5. Create a push subscription pointing at your API's webhook endpoint
-gcloud pubsub subscriptions create aziru-gmail-sub \
-  --topic=aziru-gmail-push \
+gcloud pubsub subscriptions create amarnai-gmail-sub \
+  --topic=amarnai-gmail-push \
   --push-endpoint="https://api.yourdomain.com/webhooks/gmail?token=<your-secret>" \
   --ack-deadline=30
 ```
@@ -167,7 +167,7 @@ gcloud pubsub subscriptions create aziru-gmail-sub \
 **Set the env vars:**
 
 ```env
-GMAIL_PUBSUB_TOPIC=projects/<project-id>/topics/aziru-gmail-push
+GMAIL_PUBSUB_TOPIC=projects/<project-id>/topics/amarnai-gmail-push
 GMAIL_PUBSUB_WEBHOOK_SECRET=<your-secret>
 ```
 
@@ -374,7 +374,7 @@ Start `pnpm dev` without it:
 DEV_TUNNEL=0 pnpm dev
 ```
 
-**Notes for teams:** the tunnel only ever touches the `aziru-gmail-sub-dev` subscription (override with `GMAIL_PUBSUB_SUBSCRIPTION`), never the production one, and it rewrites the endpoint only when it differs. Since each developer has a distinct hostname and a shared GCP project has one dev subscription, whoever started `pnpm dev` last receives the Gmail notifications. Graph subscriptions are per-mailbox, so Outlook has no such contention. `cloudflared` logs each incoming request URL, which includes `GMAIL_PUBSUB_WEBHOOK_SECRET` as a query token, so treat dev console output as sensitive or use a dev-only secret.
+**Notes for teams:** the tunnel only ever touches the `amarnai-gmail-sub-dev` subscription (override with `GMAIL_PUBSUB_SUBSCRIPTION`), never the production one, and it rewrites the endpoint only when it differs. Since each developer has a distinct hostname and a shared GCP project has one dev subscription, whoever started `pnpm dev` last receives the Gmail notifications. Graph subscriptions are per-mailbox, so Outlook has no such contention. `cloudflared` logs each incoming request URL, which includes `GMAIL_PUBSUB_WEBHOOK_SECRET` as a query token, so treat dev console output as sensitive or use a dev-only secret.
 
 ### Database scripts
 

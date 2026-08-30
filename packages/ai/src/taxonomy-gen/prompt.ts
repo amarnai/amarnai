@@ -15,7 +15,7 @@ function buildSystemPrompt(targetLanguage: string, band: TaxonomySizeBand): stri
 
 You output a single JSON object describing a folder tree. The shape is exactly:
 {
-  "aziruTaxonomyVersion": 1,
+  "amarnaiTaxonomyVersion": 1,
   "exportedAt": "<ISO 8601 timestamp>",
   "nodes": [ { "ref": "<unique string>", "name": "<folder name>", "description": "<what belongs here>", "isRoot": <boolean>, "isCatchAll": <boolean, optional>, "instructions": null, "draftPrompt": null, "examples": [], "positionX": <number>, "positionY": <number> } ],
   "edges": [

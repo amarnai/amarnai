@@ -56,7 +56,7 @@ describe("AppDownloadBanner helpers", () => {
 
   describe("buildIntentUrl", () => {
     const playStore =
-      "https://play.google.com/store/apps/details?id=com.aziru.app";
+      "https://play.google.com/store/apps/details?id=com.amarnai.app";
 
     it("builds an Android intent URL with the package and scheme", () => {
       const url = buildIntentUrl(playStore, DEFAULT_PACKAGE, DEFAULT_SCHEME);

@@ -1,5 +1,5 @@
 /** Cookie carrying a pending workspace-invite accept path across the auth flow. */
-export const INVITE_COOKIE = "aziru-invite";
+export const INVITE_COOKIE = "amarnai-invite";
 
 /**
  * The pending-invite cookie is only ever set by the accept route to its own

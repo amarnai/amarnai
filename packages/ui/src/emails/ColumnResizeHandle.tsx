@@ -23,8 +23,8 @@ const CSS_VAR: Record<ResizableColumn, string> = {
 };
 
 const STORAGE_KEY: Record<ResizableColumn, string> = {
-  rail: "aziru.emails.rail-width",
-  list: "aziru.emails.list-width",
+  rail: "amarnai.emails.rail-width",
+  list: "amarnai.emails.list-width",
 };
 
 const LABEL = {

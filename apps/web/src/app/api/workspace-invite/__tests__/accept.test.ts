@@ -121,7 +121,7 @@ describe("GET /api/workspace-invite/accept — signed in", () => {
     });
     expect(db.$transaction).toHaveBeenCalledOnce();
     expect(location(res)).toContain("/emails?joined_workspace=Pro%20Workspace");
-    expect(res.cookies.get("aziru-workspace")?.value).toBe("ws-1");
+    expect(res.cookies.get("amarnai-workspace")?.value).toBe("ws-1");
     // The pending-invite cookie is cleared on success.
     expect(res.cookies.get(INVITE_COOKIE)?.value).toBe("");
   });

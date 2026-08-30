@@ -43,7 +43,7 @@ describe("pendingCheckout", () => {
   });
 
   it("ignores a corrupted marker", async () => {
-    await chrome.storage.local.set({ "aziru.billing.pendingCheckout": "not json" });
+    await chrome.storage.local.set({ "amarnai.billing.pendingCheckout": "not json" });
 
     expect(await getPendingCheckout()).toBeNull();
   });

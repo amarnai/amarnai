@@ -65,7 +65,7 @@ export async function startReplyButton(deps: {
         openPanel: () => {
           // Sign-in happens in the extension's own panel: an OAuth flow started
           // from inside a third-party page is neither reliable nor trustworthy.
-          void chrome.runtime.sendMessage({ type: "aziru:openPanel" });
+          void chrome.runtime.sendMessage({ type: "amarnai:openPanel" });
         },
         onDisabled: () => disableReplyEntryPoints(),
         iconUrl,

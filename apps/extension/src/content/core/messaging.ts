@@ -10,7 +10,7 @@
 // sends only identifiers — an account address and a provider thread id. No page
 // content ever leaves the page.
 
-export const THREAD_SUMMARY_MESSAGE = "aziru:threadSummary" as const;
+export const THREAD_SUMMARY_MESSAGE = "amarnai:threadSummary" as const;
 
 export type ThreadSummaryRequest = {
   type: typeof THREAD_SUMMARY_MESSAGE;
@@ -52,7 +52,7 @@ export type ThreadSummaryResponse =
 // summary, which fires on every thread open, this only ever runs on an explicit
 // click — so it may take its time and report real outcomes to the user.
 
-export const GENERATE_DRAFT_MESSAGE = "aziru:generateDraft" as const;
+export const GENERATE_DRAFT_MESSAGE = "amarnai:generateDraft" as const;
 
 export type GenerateDraftRequest = {
   type: typeof GENERATE_DRAFT_MESSAGE;
@@ -116,7 +116,7 @@ export function isThreadSummaryRequest(msg: unknown): msg is ThreadSummaryReques
 // integers ever come back — comment content stays in the extension-origin
 // panel.
 
-export const COMMENT_META_MESSAGE = "aziru:commentMeta" as const;
+export const COMMENT_META_MESSAGE = "amarnai:commentMeta" as const;
 
 export type CommentMetaRequest = {
   type: typeof COMMENT_META_MESSAGE;
@@ -146,7 +146,7 @@ export function isCommentMetaRequest(msg: unknown): msg is CommentMetaRequest {
 // in happens in Aziru's own panel, never inside the mail page. Fire-and-forget
 // — the content script has nothing to do with the answer.
 
-export const OPEN_PANEL_MESSAGE = "aziru:openPanel" as const;
+export const OPEN_PANEL_MESSAGE = "amarnai:openPanel" as const;
 
 export type OpenPanelRequest = { type: typeof OPEN_PANEL_MESSAGE };
 
@@ -173,7 +173,7 @@ export function isOpenPanelRequest(msg: unknown): msg is OpenPanelRequest {
 // Fire-and-forget: the panel has already switched to the thread's screen by the
 // time this is sent, and the page catches up on its own.
 
-export const OPEN_MAIL_THREAD_MESSAGE = "aziru:openMailThread" as const;
+export const OPEN_MAIL_THREAD_MESSAGE = "amarnai:openMailThread" as const;
 
 export type OpenMailThreadRequest = {
   type: typeof OPEN_MAIL_THREAD_MESSAGE;

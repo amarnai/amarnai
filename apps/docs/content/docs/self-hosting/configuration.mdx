@@ -55,7 +55,7 @@ Enables real-time inbox sync via Google Cloud Pub/Sub instead of polling. Leave 
 |-------------------------------|----------|------------------------------------------------------------------------------------------------------|
 | `GMAIL_PUBSUB_TOPIC`          | No       | Pub/Sub topic, format `projects/<project-id>/topics/<topic-name>`. When set, Gmail pushes on new mail |
 | `GMAIL_PUBSUB_WEBHOOK_SECRET` | If topic set | Secret included as `?token=` on the push endpoint and verified on each request. `openssl rand -hex 32` |
-| `GMAIL_PUBSUB_SUBSCRIPTION`   | No       | Subscription name that receives push notifications. Default `aziru-gmail-sub`                       |
+| `GMAIL_PUBSUB_SUBSCRIPTION`   | No       | Subscription name that receives push notifications. Default `amarnai-gmail-sub`                       |
 
 ## Mail providers
 

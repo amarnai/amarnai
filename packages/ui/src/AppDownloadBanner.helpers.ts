@@ -2,9 +2,9 @@
 // detection/intent logic is unit-testable without a browser environment.
 
 // Default Android identity for the Aziru app (apps/mobile/app.json).
-export const DEFAULT_PACKAGE = "com.aziru.app";
-export const DEFAULT_SCHEME = "aziru";
-export const DISMISS_KEY = "aziru.appBanner.dismissed";
+export const DEFAULT_PACKAGE = "com.amarnai.app";
+export const DEFAULT_SCHEME = "amarnai";
+export const DISMISS_KEY = "amarnai.appBanner.dismissed";
 
 // In-app browsers (webviews) should not be nudged to "download the app":
 // the user is already inside another app and the Play Store deep link is
