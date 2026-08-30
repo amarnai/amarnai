@@ -82,7 +82,7 @@ export function SupportContent() {
 
               <a
                 className="ld-support-row"
-                href="https://github.com/BenAzlay/amarnai/issues"
+                href="https://github.com/aziruhq/aziru/issues"
                 target="_blank"
                 rel="noopener noreferrer"
               >

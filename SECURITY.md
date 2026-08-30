@@ -4,7 +4,7 @@
 
 **Do not file a public GitHub issue for security vulnerabilities.**
 
-Use [GitHub's private vulnerability reporting](https://github.com/BenAzlay/amarnai/security/advisories/new) to submit a report. You will receive a response within 5 business days.
+Use [GitHub's private vulnerability reporting](https://github.com/aziruhq/aziru/security/advisories/new) to submit a report. You will receive a response within 5 business days.
 
 Please include:
 - A description of the vulnerability and its potential impact

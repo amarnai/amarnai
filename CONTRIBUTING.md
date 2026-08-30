@@ -2,7 +2,7 @@
 
 ## Before you start
 
-Check the [open issues](https://github.com/BenAzlay/amarnai/issues) and [existing PRs](https://github.com/BenAzlay/amarnai/pulls) before starting work. For anything beyond a small bug fix, open an issue first to discuss the approach — this avoids wasted effort if the direction doesn't fit the project.
+Check the [open issues](https://github.com/aziruhq/aziru/issues) and [existing PRs](https://github.com/aziruhq/aziru/pulls) before starting work. For anything beyond a small bug fix, open an issue first to discuss the approach — this avoids wasted effort if the direction doesn't fit the project.
 
 Amarnai is intentionally focused. The supported email providers are Gmail and Outlook, both read-only; contributions that add other providers (IMAP and the like) or arbitrary workflow automation are unlikely to be accepted regardless of quality. See the Non-Goals section in [CLAUDE.md](CLAUDE.md).
 
@@ -15,8 +15,8 @@ All contributions to Amarnai are covered by our [Contributor License Agreement](
 Follow the setup steps in [README.md](README.md). The short version:
 
 ```bash
-git clone https://github.com/BenAzlay/amarnai.git
-cd amarnai
+git clone https://github.com/aziruhq/aziru.git
+cd aziru
 pnpm install
 cp .env.example .env        # fill in required values
 cp .env.local.example .env.local

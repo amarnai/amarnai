@@ -35,7 +35,7 @@ export function Footer({ anchorBase = "" }: { anchorBase?: string }) {
               <h4><Trans>Resources</Trans></h4>
               <Link href={`${anchorBase}#faq`}><Trans>FAQ</Trans></Link>
               <a href="https://docs.amarnai.com" target="_blank" rel="noopener noreferrer"><Trans>Documentation</Trans></a>
-              <a href="https://github.com/BenAzlay/amarnai" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/aziruhq/aziru" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
               <Link href="/support"><Trans>Support</Trans></Link>

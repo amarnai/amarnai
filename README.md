@@ -259,8 +259,8 @@ Amarnai can be self-hosted on any machine with Docker and Docker Compose. All se
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/BenAzlay/amarnai.git
-cd amarnai
+git clone https://github.com/aziruhq/aziru.git
+cd aziru
 
 # 2. Create your env file from the self-host template
 cp .env.selfhost.example .env
