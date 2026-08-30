@@ -5,7 +5,7 @@ import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import type { CSSProperties } from "react";
 import { folderColorVars } from "@aziru/core/emails";
-import { AmarnaiMark } from "../../icons/AmarnaiMark.js";
+import { AziruMark } from "../../icons/AziruMark.js";
 import type { ThreadItem } from "../../emails/types.js";
 import type { MockProvider } from "./types.js";
 
@@ -48,7 +48,7 @@ export function InjectedPanelMock({
           aria-label={_(msg`Open the Amarnai panel`)}
           onClick={onToggle}
         >
-          <AmarnaiMark size={16} />
+          <AziruMark size={16} />
         </button>
       </div>
 
@@ -56,7 +56,7 @@ export function InjectedPanelMock({
         <aside className="ld-mb-panel" data-provider={provider}>
           <header className="ld-mb-panel-head">
             <span className="ld-mb-panel-brand">
-              <AmarnaiMark size={13} />
+              <AziruMark size={13} />
               Amarnai
             </span>
             <button

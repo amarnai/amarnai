@@ -18,7 +18,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 const POINTS = "2,12 22,5.7 17.1,12 22,18.3";
 
 /** Marks the icon so the stylesheets below can color it. */
-export const ICON_ATTRIBUTE = "data-amarnai-reply-icon";
+export const ICON_ATTRIBUTE = "data-aziru-reply-icon";
 
 export function createReplyIcon(doc: Document, size: number): SVGElement {
   const svg = doc.createElementNS(SVG_NS, "svg");

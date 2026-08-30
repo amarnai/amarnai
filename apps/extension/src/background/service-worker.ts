@@ -35,7 +35,7 @@ if (ext.sidePanel) {
   // service-worker wake, which is cheap.
   ext.sidePanel
     .setPanelBehavior({ openPanelOnActionClick: true })
-    .catch((err) => console.error("[amarnai] setPanelBehavior:", err));
+    .catch((err) => console.error("[aziru] setPanelBehavior:", err));
 } else if (ext.sidebarAction) {
   // Firefox: there is no openPanelOnActionClick equivalent. sidebarAction.toggle()
   // must run inside a user-input handler; action.onClicked qualifies.

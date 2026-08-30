@@ -113,7 +113,7 @@ describe("ensureReplyEntryPoints", () => {
     ensureReplyEntryPoints();
     ensureReplyEntryPoints();
 
-    const sheets = document.head.querySelectorAll("style[data-amarnai-entry-styles]");
+    const sheets = document.head.querySelectorAll("style[data-aziru-entry-styles]");
     expect(sheets).toHaveLength(1);
     const css = sheets[0]!.textContent ?? "";
     expect(css).toContain("::before");

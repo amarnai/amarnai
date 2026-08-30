@@ -91,9 +91,9 @@ describe("removeExistingWidgets", () => {
     const anchor = anchorInPage();
     mountSummaryWidget(anchor, { kind: "loading" });
     mountSummaryWidget(anchor, { kind: "loading" });
-    expect(document.querySelectorAll("[data-amarnai-summary]")).toHaveLength(2);
+    expect(document.querySelectorAll("[data-aziru-summary]")).toHaveLength(2);
     removeExistingWidgets();
-    expect(document.querySelectorAll("[data-amarnai-summary]")).toHaveLength(0);
+    expect(document.querySelectorAll("[data-aziru-summary]")).toHaveLength(0);
   });
 });
 

@@ -10,14 +10,14 @@ import { initial, outlookAvatarClass } from "./outlook-helpers.js";
 import { DEMO_AVATARS } from "../demo-avatars.js";
 import { ProviderLabelChip } from "./ProviderLabelChip.js";
 import {
-  AmarnaiReplyPill,
-  AmarnaiReplyHeaderButton,
-  AmarnaiCompose,
+  AziruReplyPill,
+  AziruReplyHeaderButton,
+  AziruCompose,
   DRAFTING_MS,
   type ReplyStage,
-} from "./AmarnaiReply.js";
+} from "./AziruReply.js";
 import { InjectedPanelMock } from "./InjectedPanelMock.js";
-import type { AmarnaiDemoData, MockProvider } from "./types.js";
+import type { AziruDemoData, MockProvider } from "./types.js";
 
 /**
  * A stylized Gmail/Outlook conversation view. It stands in for "opened in
@@ -29,21 +29,21 @@ import type { AmarnaiDemoData, MockProvider } from "./types.js";
  *
  * Gmail renders as a centered reading column; Outlook renders as its reading
  * pane (Reply / Reply all / Forward action bar, colored avatars, per-message
- * "To" lines) so each matches the real product. With `amarnai` null the view is
+ * "To" lines) so each matches the real product. With `aziru` null the view is
  * the bare mailbox, which is the comparison the landing page's switch turns on
  * and off; everything Amarnai adds hangs off that one prop being non-null.
  */
 export function MailThreadMock({
   provider,
   thread,
-  amarnai,
+  aziru,
   folderName,
   onBack,
 }: {
   provider: MockProvider;
   thread: ThreadItem;
   /** The Amarnai layer, or null for the untouched mailbox. */
-  amarnai: AmarnaiDemoData | null;
+  aziru: AziruDemoData | null;
   /** Display name of the thread's folder, for the injected panel. */
   folderName: string;
   onBack: () => void;
@@ -76,10 +76,10 @@ export function MailThreadMock({
   // Turning the Amarnai layer off mid-draft has to take the compose with it:
   // that compose is only open because an Amarnai entry point opened it.
   useEffect(() => {
-    if (amarnai) return;
+    if (aziru) return;
     setReplyStage("idle");
     setPanelOpen(false);
-  }, [amarnai]);
+  }, [aziru]);
 
   useEffect(
     () => () => {
@@ -94,24 +94,24 @@ export function MailThreadMock({
     draftTimer.current = setTimeout(() => setReplyStage("ready"), DRAFTING_MS);
   }
 
-  const labelSegments = thread.folderId ? amarnai?.providerLabels[thread.folderId] : undefined;
-  const draftBody = amarnai?.draftBodies[thread.id];
+  const labelSegments = thread.folderId ? aziru?.providerLabels[thread.folderId] : undefined;
+  const draftBody = aziru?.draftBodies[thread.id];
   const replyToName = thread.messages[0]?.fromName ?? thread.participants;
 
   // The summary the injected card shows. A thread Amarnai actually summarized
   // gets its TL;DR; everything else falls back to the stored snippet labelled
   // "Preview", which is what the real widget does for single-message and
   // automated threads — no model call, no stored summary, no metered unit.
-  const bullets = amarnai?.summaryBullets[thread.id];
-  const prose = amarnai?.summaries[thread.id];
+  const bullets = aziru?.summaryBullets[thread.id];
+  const prose = aziru?.summaries[thread.id];
   const summaryState: ThreadSummaryCardState = bullets
     ? { kind: "bullets", bullets }
     : prose
       ? { kind: "summary", text: prose }
       : { kind: "snippet", text: thread.snippet };
 
-  const amarnaiPill = amarnai ? (
-    <AmarnaiReplyPill stage={replyStage} onStart={startDraft} provider={provider} />
+  const aziruPill = aziru ? (
+    <AziruReplyPill stage={replyStage} onStart={startDraft} provider={provider} />
   ) : null;
 
   return (
@@ -147,7 +147,7 @@ export function MailThreadMock({
                 </svg>
                 {_(msg`Forward`)}
               </span>
-              {amarnaiPill}
+              {aziruPill}
             </div>
           )}
 
@@ -177,7 +177,7 @@ export function MailThreadMock({
 
             {/* The injected summary card, above the messages, where the content
                 script mounts it. */}
-            {amarnai && (
+            {aziru && (
               <div className="ld-mb-summary">
                 <ThreadSummaryCard state={summaryState} withMark />
               </div>
@@ -226,8 +226,8 @@ export function MailThreadMock({
                             <path d="M6 3L2.5 6.5 6 10M2.5 6.5H8.5a3 3 0 013 3v1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
-                        {amarnai && (
-                          <AmarnaiReplyHeaderButton stage={replyStage} onStart={startDraft} />
+                        {aziru && (
+                          <AziruReplyHeaderButton stage={replyStage} onStart={startDraft} />
                         )}
                       </span>
                     )}
@@ -252,11 +252,11 @@ export function MailThreadMock({
                     </span>
                     {_(msg`Reply`)}
                   </span>
-                  {amarnaiPill}
+                  {aziruPill}
                 </div>
               )
             ) : (
-              <AmarnaiCompose
+              <AziruCompose
                 provider={provider}
                 toName={replyToName}
                 body={draftBody ?? ""}
@@ -268,7 +268,7 @@ export function MailThreadMock({
           </div>
         </div>
 
-        {amarnai && (
+        {aziru && (
           <InjectedPanelMock
             thread={thread}
             folderName={folderName}

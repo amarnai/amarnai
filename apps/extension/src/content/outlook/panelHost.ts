@@ -25,7 +25,7 @@ import { armOutlookReplyWithDraft } from "./replyButton.js";
 // own: the drawer itself, taking visibility from whether it is expanded, reading
 // the conversation out of OWA's DOM, and arming its reply.
 
-const PANEL_HOST_ATTRIBUTE = "data-amarnai-owa-panel";
+const PANEL_HOST_ATTRIBUTE = "data-aziru-owa-panel";
 const PANEL_URL_PATH = "injected.html";
 
 /** Remembers the drawer open across reloads — an account switch is a real one. */

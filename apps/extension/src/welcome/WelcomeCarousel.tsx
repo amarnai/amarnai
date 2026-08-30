@@ -15,7 +15,7 @@ import {
   DemoTaxonomyCanvas,
   HeroFeedCard,
   MailboxStage,
-  getDemoAmarnaiData,
+  getDemoAziruData,
   getDemoFolders,
   getDemoThreads,
   type MockProvider,
@@ -45,7 +45,7 @@ function EmailsDemo() {
     [i18n, provider],
   );
   const folders = useMemo(() => getDemoFolders(i18n), [i18n]);
-  const amarnai = useMemo(() => getDemoAmarnaiData(i18n), [i18n]);
+  const aziru = useMemo(() => getDemoAziruData(i18n), [i18n]);
 
   function chooseProvider(next: MockProvider) {
     setProvider(next);
@@ -88,7 +88,7 @@ function EmailsDemo() {
           provider={provider}
           threads={threads}
           folders={folders}
-          amarnai={amarnai}
+          aziru={aziru}
           openThread={openThread}
           onOpenThread={setOpenThread}
           onCloseThread={() => setOpenThread(null)}

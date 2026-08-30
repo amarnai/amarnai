@@ -25,7 +25,7 @@ export type WidgetState =
   | { kind: "error"; onRetry: () => void }
   | { kind: "quota"; resetsAt: string };
 
-const HOST_ATTRIBUTE = "data-amarnai-summary";
+const HOST_ATTRIBUTE = "data-aziru-summary";
 
 // Amarnai brand tokens, inlined because the mail page has none of our CSS vars.
 // Light values are packages/tokens colors.ts verbatim; dark values are the
@@ -120,7 +120,7 @@ const STYLES = `
 .card.row .eyebrow { margin-bottom: 0; flex: 0 0 auto; }
 /* The mark keeps the brand color even though the label text is muted, same
    split as the terracotta rail against the card's own neutral ink. */
-.eyebrow [data-amarnai-logo] { color: var(--am-accent-ink); }
+.eyebrow [data-aziru-logo] { color: var(--am-accent-ink); }
 .text { overflow-wrap: anywhere; }
 /* Tighter than the in-app list: vertical space is the scarce resource here,
    since every line pushes the actual conversation further down the page. */
@@ -136,11 +136,11 @@ const STYLES = `
 .pulse {
   width: 5px; height: 5px; border-radius: 50%;
   background: var(--am-accent);
-  animation: amarnai-pulse 1.6s ease-in-out infinite;
+  animation: aziru-pulse 1.6s ease-in-out infinite;
   flex: 0 0 auto;
   align-self: center;
 }
-@keyframes amarnai-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes aziru-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .retry {
   font: inherit;
   font-size: 12px;

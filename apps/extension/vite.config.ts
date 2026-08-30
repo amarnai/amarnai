@@ -28,7 +28,7 @@ process.env["LINGUI_CONFIG"] = path.resolve(
 // ID itself), so a production/store build must omit it.
 function emitManifest(env: Record<string, string>, mode: string): Plugin {
   return {
-    name: "amarnai-emit-manifest",
+    name: "aziru-emit-manifest",
     generateBundle() {
       this.emitFile({
         type: "asset",

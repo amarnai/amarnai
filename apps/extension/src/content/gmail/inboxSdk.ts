@@ -41,7 +41,7 @@ export function loadInboxSDK(): Promise<LoadedInboxSDK> {
   debugLog("inboxsdk: loading…");
   const watchdog = setTimeout(() => {
     console.warn(
-      "[amarnai] InboxSDK did not finish loading after " +
+      "[aziru] InboxSDK did not finish loading after " +
         `${LOAD_WATCHDOG_MS / 1000}s. This usually means pageWorld.js was not ` +
         "injected — check the extension's background console (service worker) " +
         "and that the manifest carries the scripting permission.",

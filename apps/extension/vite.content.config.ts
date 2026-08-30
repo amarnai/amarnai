@@ -29,7 +29,7 @@ const TARGET = process.env["CONTENT_TARGET"] === "outlook" ? "outlook" : "gmail"
  */
 function emitInboxSdkPageWorld(): Plugin {
   return {
-    name: "amarnai-emit-pageworld",
+    name: "aziru-emit-pageworld",
     generateBundle() {
       const require = createRequire(import.meta.url);
       const source = fs.readFileSync(
@@ -51,7 +51,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, `src/content/${TARGET}/index.ts`),
       formats: ["iife"],
-      name: "AmarnaiContent",
+      name: "AziruContent",
       fileName: () => `content-${TARGET}.js`,
     },
     rollupOptions: {

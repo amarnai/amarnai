@@ -28,5 +28,5 @@ export function debugEnabled(): boolean {
 
 export function debugLog(...args: unknown[]): void {
   if (!enabled) return;
-  console.log("[amarnai]", ...args);
+  console.log("[aziru]", ...args);
 }

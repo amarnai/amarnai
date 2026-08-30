@@ -19,7 +19,7 @@ import {
 // panel is TOLD: which conversation, whether anyone is looking, and that the
 // remembered state is known before the frame can ask.
 
-const HOST_SELECTOR = "[data-amarnai-owa-panel]";
+const HOST_SELECTOR = "[data-aziru-owa-panel]";
 
 let teardown: () => void;
 let framePostMessage: ReturnType<typeof vi.fn>;

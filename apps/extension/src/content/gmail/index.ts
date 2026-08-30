@@ -28,7 +28,7 @@ const panelStart: Promise<InjectedPanelHandle> = startInjectedPanel({
   onCommentsChanged: () => content?.refreshComments(),
 })
   .catch((e: unknown) => {
-    console.warn("[amarnai] Amarnai panel failed to start:", e);
+    console.warn("[aziru] Amarnai panel failed to start:", e);
     return inertPanelHandle;
   })
   .then((handle) => {
@@ -53,7 +53,7 @@ try {
   });
 } catch (e) {
   // A content script that throws on load must still leave Gmail usable.
-  console.debug("[amarnai] Gmail content script failed to start:", e);
+  console.debug("[aziru] Gmail content script failed to start:", e);
 }
 
 // Independent of the summary widget above: the button lives in Gmail's compose,
@@ -64,7 +64,7 @@ try {
 // sail straight past a synchronous catch block and vanish.
 startReplyButton({ getAccountEmail: () => findAccountEmail() }).catch(
   (e: unknown) => {
-    console.warn("[amarnai] Amarnai Reply button failed to start:", e);
+    console.warn("[aziru] Amarnai Reply button failed to start:", e);
   },
 );
 

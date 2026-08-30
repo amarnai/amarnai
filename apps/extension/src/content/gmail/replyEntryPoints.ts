@@ -29,9 +29,9 @@ import { startDomTicker } from "../core/scheduler.js";
 //   - Both header and bar buttons OPEN the reply by clicking the bottom bar's
 //     native Reply pill: one battle-tested click target instead of two.
 
-export const ENTRY_ATTRIBUTE = "data-amarnai-reply-entry";
+export const ENTRY_ATTRIBUTE = "data-aziru-reply-entry";
 
-const STYLE_ATTRIBUTE = "data-amarnai-entry-styles";
+const STYLE_ATTRIBUTE = "data-aziru-entry-styles";
 
 /**
  * The persistent "left gap" inside the pill turned out to be no element at all:

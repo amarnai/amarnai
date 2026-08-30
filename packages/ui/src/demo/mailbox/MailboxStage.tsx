@@ -6,7 +6,7 @@ import type { FolderItem } from "../../folder-tree/types.js";
 import { GmailInboxMock } from "./GmailInboxMock.js";
 import { OutlookInboxMock } from "./OutlookInboxMock.js";
 import { MailThreadMock } from "./MailThreadMock.js";
-import type { AmarnaiDemoData, MockProvider } from "./types.js";
+import type { AziruDemoData, MockProvider } from "./types.js";
 
 /**
  * One mailbox, with or without Amarnai in it.
@@ -14,7 +14,7 @@ import type { AmarnaiDemoData, MockProvider } from "./types.js";
  * This is the whole in-your-inbox demo: a Gmail or Outlook window showing the
  * demo threads, plus everything the extension injects into it (folder labels,
  * the summary card, the Amarnai Reply entry point, the panel in the right
- * rail). Pass `amarnai: null` and the same threads render as the untouched
+ * rail). Pass `aziru: null` and the same threads render as the untouched
  * mailbox, which is the comparison the landing page's switch drives.
  *
  * The landing page frames this in simulated browser chrome; the extension's
@@ -29,7 +29,7 @@ export function MailboxStage({
   provider,
   threads,
   folders,
-  amarnai,
+  aziru,
   openThread,
   onOpenThread,
   onCloseThread,
@@ -37,7 +37,7 @@ export function MailboxStage({
   provider: MockProvider;
   threads: ThreadItem[];
   folders: FolderItem[];
-  amarnai: AmarnaiDemoData | null;
+  aziru: AziruDemoData | null;
   openThread: ThreadItem | null;
   onOpenThread: (thread: ThreadItem) => void;
   onCloseThread: () => void;
@@ -52,7 +52,7 @@ export function MailboxStage({
       <MailThreadMock
         provider={provider}
         thread={openThread}
-        amarnai={amarnai}
+        aziru={aziru}
         folderName={folderNames[openThread.folderId ?? ""] ?? ""}
         onBack={onCloseThread}
       />
@@ -60,8 +60,8 @@ export function MailboxStage({
   }
 
   return provider === "outlook" ? (
-    <OutlookInboxMock threads={threads} amarnai={amarnai} onOpenThread={onOpenThread} />
+    <OutlookInboxMock threads={threads} aziru={aziru} onOpenThread={onOpenThread} />
   ) : (
-    <GmailInboxMock threads={threads} amarnai={amarnai} onOpenThread={onOpenThread} />
+    <GmailInboxMock threads={threads} aziru={aziru} onOpenThread={onOpenThread} />
   );
 }

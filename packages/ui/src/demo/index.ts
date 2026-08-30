@@ -8,8 +8,8 @@
 export { HeroFeedCard } from "./HeroFeedCard.js";
 export { DemoTaxonomyCanvas } from "./DemoTaxonomyCanvas.js";
 export { MailboxStage } from "./mailbox/MailboxStage.js";
-export { getDemoAmarnaiData } from "./mailbox/amarnaiData.js";
-export type { AmarnaiDemoData, MockProvider } from "./mailbox/types.js";
+export { getDemoAziruData } from "./mailbox/aziruData.js";
+export type { AziruDemoData, MockProvider } from "./mailbox/types.js";
 export { FolderIcon, SparkleIcon, GmailLogoIcon } from "./icons.js";
 export { DEMO_AVATARS } from "./demo-avatars.js";
 export {

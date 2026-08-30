@@ -162,7 +162,7 @@ export function BrowserChrome({
                 browser itself draws the icon, so it should be that icon. */}
             <button
               type="button"
-              className="ld-tb-amarnai"
+              className="ld-tb-aziru"
               aria-pressed={panelOpen}
               onClick={onTogglePanel}
               aria-label={_(msg`Open the Amarnai side panel`)}

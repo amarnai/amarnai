@@ -17,7 +17,7 @@ import { MockEmailsPage } from "@aziru/ui/emails";
 import {
   MailboxStage,
   type MockProvider,
-  getDemoAmarnaiData,
+  getDemoAziruData,
   getDemoThreads,
   getDemoFolders,
   getDemoDraftBodies,
@@ -74,7 +74,7 @@ export function EmailsDemoSection() {
   const { i18n, _ } = useLingui();
   const [tab, setTab] = useState<DemoTab>("inbox");
   const [provider, setProvider] = useState<MockProvider>("gmail");
-  const [showAmarnai, setShowAmarnai] = useState(true);
+  const [showAziru, setShowAziru] = useState(true);
   const [panelOpen, setPanelOpen] = useState(false);
   // The thread open in the mailbox tab. Held here rather than inside the mailbox
   // so the side panel's "Open in <provider>" button can drive it, and held as an
@@ -101,7 +101,7 @@ export function EmailsDemoSection() {
     [i18n, provider],
   );
   const folders = useMemo(() => getDemoFolders(i18n), [i18n]);
-  const amarnai = useMemo(() => getDemoAmarnaiData(i18n), [i18n]);
+  const aziru = useMemo(() => getDemoAziruData(i18n), [i18n]);
   const draftBodies = useMemo(() => getDemoDraftBodies(i18n), [i18n]);
   const summaries = useMemo(() => getDemoSummaries(i18n), [i18n]);
   const summaryBullets = useMemo(() => getDemoSummaryBullets(i18n), [i18n]);
@@ -228,8 +228,8 @@ export function EmailsDemoSection() {
                   inside the mailbox. Off is not a broken state — it is the
                   mailbox a visitor already has, which is the comparison worth
                   making. */}
-              <label className="ld-amarnai-toggle">
-                <Switch checked={showAmarnai} onChange={setShowAmarnai} />
+              <label className="ld-aziru-toggle">
+                <Switch checked={showAziru} onChange={setShowAziru} />
                 <span>
                   <Trans>Amarnai in your inbox</Trans>
                 </span>
@@ -265,7 +265,7 @@ export function EmailsDemoSection() {
                   provider={provider}
                   threads={threads}
                   folders={folders}
-                  amarnai={showAmarnai ? amarnai : null}
+                  aziru={showAziru ? aziru : null}
                   openThread={openThread}
                   onOpenThread={(thread) => setOpenThreadId(thread.id)}
                   onCloseThread={() => setOpenThreadId(null)}

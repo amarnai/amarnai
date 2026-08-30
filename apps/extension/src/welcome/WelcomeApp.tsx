@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import {
-  AmarnaiMark,
+  AziruMark,
   GoogleGIcon,
   MicrosoftIcon,
   ShieldCheckIcon,
@@ -65,7 +65,7 @@ export function WelcomeApp() {
             {/* The vector mark, not the shipped PNG: that one is a raster on an
                 opaque plate, which renders as a white tile on the dark theme and
                 is soft above 48px. */}
-            <AmarnaiMark size={36} className="wc-brand-mark" />
+            <AziruMark size={36} className="wc-brand-mark" />
             <span className="wc-brand-name">Amarnai</span>
           </div>
 
@@ -136,7 +136,7 @@ export function WelcomeApp() {
 
           <div className="wc-cta-block">
             <button type="button" className="wc-cta" onClick={openPanel}>
-              <AmarnaiMark size={20} />
+              <AziruMark size={20} />
               <Trans>Open Amarnai</Trans>
             </button>
 

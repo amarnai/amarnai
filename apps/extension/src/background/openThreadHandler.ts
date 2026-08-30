@@ -35,13 +35,13 @@ async function openThread(
   providerThreadId: string,
 ): Promise<void> {
   if (tabId === undefined || !tabUrl?.startsWith(GMAIL_URL_PREFIX)) {
-    console.debug("[amarnai] openMailThread: no Gmail tab to navigate", { tabId, tabUrl });
+    console.debug("[aziru] openMailThread: no Gmail tab to navigate", { tabId, tabUrl });
     return;
   }
   try {
     await ext.tabs.update(tabId, { url: buildGmailThreadHashUrl(tabUrl, providerThreadId) });
   } catch (e) {
-    console.debug("[amarnai] openMailThread: could not navigate the tab:", e);
+    console.debug("[aziru] openMailThread: could not navigate the tab:", e);
   }
 }
 

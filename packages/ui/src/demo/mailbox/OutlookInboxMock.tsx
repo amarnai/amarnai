@@ -8,7 +8,7 @@ import type { ThreadItem } from "../../emails/types.js";
 import { initial, outlookAvatarClass } from "./outlook-helpers.js";
 import { DEMO_AVATARS } from "../demo-avatars.js";
 import { ProviderLabelChip } from "./ProviderLabelChip.js";
-import type { AmarnaiDemoData } from "./types.js";
+import type { AziruDemoData } from "./types.js";
 
 // 3x3 app-launcher waffle, the top-left glyph on every Outlook web page.
 function WaffleIcon() {
@@ -99,16 +99,16 @@ function JunkIcon() {
  * writeback name Gmail nests as a label.
  *
  * Clicking a real row opens the Outlook reading-pane mock (MailThreadMock); the
- * skeleton filler rows below stay decorative. With `amarnai` null the list is a
+ * skeleton filler rows below stay decorative. With `aziru` null the list is a
  * plain Outlook inbox, which is the off side of the landing page's switch.
  */
 export function OutlookInboxMock({
   threads,
-  amarnai,
+  aziru,
   onOpenThread,
 }: {
   threads: ThreadItem[];
-  amarnai: AmarnaiDemoData | null;
+  aziru: AziruDemoData | null;
   onOpenThread: (thread: ThreadItem) => void;
 }) {
   const { i18n } = useLingui();
@@ -200,11 +200,11 @@ export function OutlookInboxMock({
                     <span className="ld-ol-row-preview">{t.snippet}</span>
                     {/* Outlook stacks a row's categories under the preview
                         line rather than inline with the subject. */}
-                    {t.folderId && amarnai?.providerLabels[t.folderId] && (
+                    {t.folderId && aziru?.providerLabels[t.folderId] && (
                       <span className="ld-ol-row-cats">
                         <ProviderLabelChip
                           folderId={t.folderId}
-                          segments={amarnai.providerLabels[t.folderId]!}
+                          segments={aziru.providerLabels[t.folderId]!}
                           provider="outlook"
                         />
                       </span>

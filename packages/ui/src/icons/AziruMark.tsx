@@ -1,4 +1,4 @@
-export interface AmarnaiMarkProps {
+export interface AziruMarkProps {
   size?: number;
   className?: string;
 }
@@ -16,7 +16,7 @@ export interface AmarnaiMarkProps {
  * The viewBox is squared around the mark's own bounds, so `size` is the drawn
  * height and there is no built-in padding to compensate for.
  */
-export function AmarnaiMark({ size = 16, className }: AmarnaiMarkProps) {
+export function AziruMark({ size = 16, className }: AziruMarkProps) {
   return (
     <svg
       width={size}

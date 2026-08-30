@@ -24,7 +24,7 @@ async function openPanel(tabId: number | undefined): Promise<void> {
     // Firefox: the sidebar has no per-tab open.
     await ext.sidebarAction?.open();
   } catch (e) {
-    console.debug(`[amarnai] could not open the panel for ${OPEN_PANEL_MESSAGE}:`, e);
+    console.debug(`[aziru] could not open the panel for ${OPEN_PANEL_MESSAGE}:`, e);
   }
 }
 

@@ -197,7 +197,7 @@ describe("ensureOutlookReplyButton", () => {
     expect(svg!.querySelector("polygon")?.getAttribute("fill")).toBe("currentColor");
     expect(button()!.querySelector("img")).toBeNull();
     // The clay coloring rides in one injected stylesheet, not per element.
-    expect(document.head.querySelectorAll("style[data-amarnai-owa-styles]")).toHaveLength(1);
+    expect(document.head.querySelectorAll("style[data-aziru-owa-styles]")).toHaveLength(1);
   });
 
   it("injects nothing on a cold load, then lands in the reply row once it renders", () => {

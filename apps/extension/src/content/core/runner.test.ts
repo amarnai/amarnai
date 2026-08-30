@@ -56,7 +56,7 @@ describe("runContentScript", () => {
     await tick();
 
     expect(sendMessage).toHaveBeenCalledTimes(1);
-    expect(document.querySelector("[data-amarnai-summary]")).not.toBeNull();
+    expect(document.querySelector("[data-aziru-summary]")).not.toBeNull();
   });
 
   // The workspace kill-switch. A refusal is permanent for this page, unlike a
@@ -73,7 +73,7 @@ describe("runContentScript", () => {
     await tick();
 
     expect(sendMessage).toHaveBeenCalledTimes(1);
-    expect(document.querySelector("[data-amarnai-summary]")).toBeNull();
+    expect(document.querySelector("[data-aziru-summary]")).toBeNull();
 
     // Opening a different thread must not produce a second request.
     current = { providerThreadId: "b", accountEmail: "ada@example.com" };
@@ -133,7 +133,7 @@ describe("runContentScript — comment bubble", () => {
   }
 
   function bubble(): HTMLButtonElement | null {
-    const host = document.querySelector("[data-amarnai-summary]");
+    const host = document.querySelector("[data-aziru-summary]");
     return host?.shadowRoot?.querySelector<HTMLButtonElement>(".comments") ?? null;
   }
 
@@ -156,7 +156,7 @@ describe("runContentScript — comment bubble", () => {
     runWithPanel();
     await tick();
 
-    expect(document.querySelector("[data-amarnai-summary]")).not.toBeNull();
+    expect(document.querySelector("[data-aziru-summary]")).not.toBeNull();
     expect(bubble()).toBeNull();
   });
 
@@ -165,7 +165,7 @@ describe("runContentScript — comment bubble", () => {
     runWithPanel({ isCommentsTargetLive: () => false });
     await tick();
 
-    expect(document.querySelector("[data-amarnai-summary]")).not.toBeNull();
+    expect(document.querySelector("[data-aziru-summary]")).not.toBeNull();
     expect(bubble()).toBeNull();
   });
 
@@ -183,7 +183,7 @@ describe("runContentScript — comment bubble", () => {
     runWithPanel();
     await tick();
 
-    const host = document.querySelector("[data-amarnai-summary]");
+    const host = document.querySelector("[data-aziru-summary]");
     expect(host).not.toBeNull();
     expect(host!.shadowRoot!.querySelector(".card")!.classList.contains("row")).toBe(true);
     expect(bubble()!.textContent).toContain("3");
@@ -194,7 +194,7 @@ describe("runContentScript — comment bubble", () => {
     runWithPanel();
     await tick();
 
-    expect(document.querySelector("[data-amarnai-summary]")).toBeNull();
+    expect(document.querySelector("[data-aziru-summary]")).toBeNull();
   });
 
   it("re-fetches and re-renders the count on the controller's refreshComments()", async () => {
@@ -238,12 +238,12 @@ describe("runContentScript — comment bubble", () => {
     runWithPanel();
     await tick();
     expect(bubble()).toBeNull();
-    const hostBefore = document.querySelector("[data-amarnai-summary]");
+    const hostBefore = document.querySelector("[data-aziru-summary]");
 
     resolveMeta(META);
     await new Promise((r) => setTimeout(r, 0));
 
-    expect(document.querySelector("[data-amarnai-summary]")).toBe(hostBefore);
+    expect(document.querySelector("[data-aziru-summary]")).toBe(hostBefore);
     expect(bubble()!.textContent).toContain("3");
   });
 });

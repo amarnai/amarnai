@@ -18,7 +18,7 @@ const WEDGES = [
   "41.2,66.4 0,53.2 9.9,66.4 0.1,79.5",
 ];
 
-export const LOGO_ATTRIBUTE = "data-amarnai-logo";
+export const LOGO_ATTRIBUTE = "data-aziru-logo";
 
 /** `height` in px; width follows the mark's own aspect ratio. */
 export function createLogoMark(doc: Document, height: number): SVGElement {

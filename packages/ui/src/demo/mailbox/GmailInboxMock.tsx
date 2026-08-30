@@ -6,7 +6,7 @@ import { useLingui } from "@lingui/react";
 import type { ThreadItem } from "../../emails/types.js";
 import { GmailLogoIcon } from "../icons.js";
 import { ProviderLabelChip } from "./ProviderLabelChip.js";
-import type { AmarnaiDemoData } from "./types.js";
+import type { AziruDemoData } from "./types.js";
 
 /**
  * Gmail's inbox list. It renders the same demo threads the Amarnai workspace
@@ -15,7 +15,7 @@ import type { AmarnaiDemoData } from "./types.js";
  * carrying the writeback name and the folder's own color.
  *
  * Clicking a real thread row opens the conversation view; the skeleton filler
- * rows below stay decorative. With `amarnai` null the list is a plain Gmail
+ * rows below stay decorative. With `aziru` null the list is a plain Gmail
  * inbox, which is the off side of the landing page's switch.
  *
  * Gmail's Primary/Promotions/Social category tabs are deliberately not drawn.
@@ -28,11 +28,11 @@ import type { AmarnaiDemoData } from "./types.js";
  */
 export function GmailInboxMock({
   threads,
-  amarnai,
+  aziru,
   onOpenThread,
 }: {
   threads: ThreadItem[];
-  amarnai: AmarnaiDemoData | null;
+  aziru: AziruDemoData | null;
   onOpenThread: (thread: ThreadItem) => void;
 }) {
   const { i18n } = useLingui();
@@ -84,10 +84,10 @@ export function GmailInboxMock({
             <span className="ld-gmail-line">
               {/* Gmail draws a thread's labels before the subject, so the
                   mirrored folder is the first thing on the line. */}
-              {t.folderId && amarnai?.providerLabels[t.folderId] && (
+              {t.folderId && aziru?.providerLabels[t.folderId] && (
                 <ProviderLabelChip
                   folderId={t.folderId}
-                  segments={amarnai.providerLabels[t.folderId]!}
+                  segments={aziru.providerLabels[t.folderId]!}
                   provider="gmail"
                 />
               )}

@@ -42,7 +42,7 @@ export async function handleInjectPageWorld(tabId: number | undefined): Promise<
   } catch (e) {
     // warn, not debug: this is the failure that makes the reply button silently
     // absent, and it surfaces in the background console where debug is hidden.
-    console.warn("[amarnai] pageWorld injection failed:", e);
+    console.warn("[aziru] pageWorld injection failed:", e);
     return false;
   }
 }

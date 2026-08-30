@@ -35,7 +35,7 @@ import { detectOutlookThread } from "./detectThread.js";
 // re-implement any of the above; it calls armOutlookReplyWithDraft below, which
 // is the tail of this button's own click flow with the generation step removed.
 
-export const OWA_BUTTON_ATTRIBUTE = "data-amarnai-owa-reply";
+export const OWA_BUTTON_ATTRIBUTE = "data-aziru-owa-reply";
 
 /** How long a generated draft waits for a compose editor before it lapses. */
 const PENDING_TTL_MS = 90_000;
@@ -256,7 +256,7 @@ function makeButton(doc: Document): HTMLElement {
   return button;
 }
 
-const STYLE_ATTRIBUTE = "data-amarnai-owa-styles";
+const STYLE_ATTRIBUTE = "data-aziru-owa-styles";
 
 /** The icon's clay coloring; OWA has no stylesheet of ours otherwise. */
 function ensureOwaStyles(doc: Document): void {

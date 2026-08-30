@@ -25,7 +25,7 @@ function Gate() {
     if (status !== "signedIn") return;
     client
       .registerExtension({ browser: currentBrowser(), version: extensionVersion() })
-      .catch((err) => console.error("[amarnai] registerExtension:", err));
+      .catch((err) => console.error("[aziru] registerExtension:", err));
   }, [status, client]);
 
   // Wrap in the locale provider once the session's locale is known (null before

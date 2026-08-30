@@ -24,11 +24,11 @@ const panelStart: Promise<InjectedPanelHandle> = (() => {
     return startOutlookInjectedPanel(document, {
       onCommentsChanged: () => content?.refreshComments(),
     }).catch((e: unknown) => {
-      console.warn("[amarnai] Amarnai panel (OWA) failed to start:", e);
+      console.warn("[aziru] Amarnai panel (OWA) failed to start:", e);
       return inertPanelHandle;
     });
   } catch (e) {
-    console.warn("[amarnai] Amarnai panel (OWA) failed to start:", e);
+    console.warn("[aziru] Amarnai panel (OWA) failed to start:", e);
     return Promise.resolve(inertPanelHandle);
   }
 })().then((handle) => {
@@ -50,7 +50,7 @@ try {
   });
 } catch (e) {
   // A content script that throws on load must still leave OWA usable.
-  console.debug("[amarnai] Outlook content script failed to start:", e);
+  console.debug("[aziru] Outlook content script failed to start:", e);
 }
 
 // Independent of the summary widget above (same split as Gmail): the reply
@@ -59,6 +59,6 @@ try {
 try {
   startOutlookReplyButton();
 } catch (e) {
-  console.warn("[amarnai] Amarnai Reply button (OWA) failed to start:", e);
+  console.warn("[aziru] Amarnai Reply button (OWA) failed to start:", e);
 }
 

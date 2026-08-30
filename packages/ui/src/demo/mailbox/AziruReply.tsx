@@ -24,7 +24,7 @@ export const DRAFTING_MS = 1400;
  * the points in step with those — this is the third copy of one drawing, and it
  * exists because none of the three can import from the others.
  */
-export function AmarnaiReplyIcon({ size = 14 }: { size?: number }) {
+export function AziruReplyIcon({ size = 14 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden focusable="false">
       <polygon points="2,12 22,5.7 17.1,12 22,18.3" fill="currentColor" />
@@ -37,7 +37,7 @@ export function AmarnaiReplyIcon({ size = 14 }: { size?: number }) {
  * part of the reply row rather than an overlay dropped on top. It carries the
  * Amarnai mark because that is what tells a reader which pill is not Gmail's.
  */
-export function AmarnaiReplyPill({
+export function AziruReplyPill({
   stage,
   onStart,
   provider,
@@ -66,7 +66,7 @@ export function AmarnaiReplyPill({
         </>
       ) : (
         <>
-          <AmarnaiReplyIcon />
+          <AziruReplyIcon />
           <Trans>Amarnai Reply</Trans>
         </>
       )}
@@ -82,7 +82,7 @@ export function AmarnaiReplyPill({
  * Send is drawn but dead. It is the mailbox's button, not ours, and Amarnai
  * never sends: the draft waits here for edits either way.
  */
-export function AmarnaiCompose({
+export function AziruCompose({
   provider,
   toName,
   body,
@@ -132,7 +132,7 @@ export function AmarnaiCompose({
         <span className="ld-mb-send" aria-hidden>
           <Trans>Send</Trans>
         </span>
-        <AmarnaiReplyPill stage={stage} onStart={onDraft} provider={provider} />
+        <AziruReplyPill stage={stage} onStart={onDraft} provider={provider} />
       </div>
     </div>
   );
@@ -144,7 +144,7 @@ export function AmarnaiCompose({
  * of a thread, and clicking it opens the reply and starts drafting in one go,
  * exactly as the pill in the reply row does.
  */
-export function AmarnaiReplyHeaderButton({
+export function AziruReplyHeaderButton({
   stage,
   onStart,
 }: {
@@ -162,7 +162,7 @@ export function AmarnaiReplyHeaderButton({
       aria-label={_(msg`Draft a reply with Amarnai`)}
       title={_(msg`Amarnai Reply`)}
     >
-      <AmarnaiReplyIcon size={15} />
+      <AziruReplyIcon size={15} />
     </button>
   );
 }

@@ -7,7 +7,7 @@ export type MockProvider = "gmail" | "outlook";
  * Bundled into one prop so the mailbox components take a single "here is the
  * Amarnai side of the demo" object instead of five parallel maps.
  */
-export type AmarnaiDemoData = {
+export type AziruDemoData = {
   /** Folder id → namespace-first provider label segments. */
   providerLabels: Record<string, string[]>;
   /** Thread id → prose TL;DR. Absent for single-message threads, by design. */

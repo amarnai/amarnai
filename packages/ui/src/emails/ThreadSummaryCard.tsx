@@ -3,7 +3,7 @@
 import type React from "react";
 import { Trans } from "@lingui/react/macro";
 import { formatQuotaResetDate } from "@aziru/shared";
-import { AmarnaiMark } from "../icons/AmarnaiMark.js";
+import { AziruMark } from "../icons/AziruMark.js";
 
 /**
  * The thread-preview TL;DR slot, shared by the web app and the extension side
@@ -38,7 +38,7 @@ export interface ThreadSummaryCardProps {
 export function ThreadSummaryCard({ state, withMark = false }: ThreadSummaryCardProps) {
   const eyebrow = (label: React.ReactNode) => (
     <div className="em-summary-eyebrow">
-      {withMark && <AmarnaiMark size={11} />}
+      {withMark && <AziruMark size={11} />}
       {label}
     </div>
   );
