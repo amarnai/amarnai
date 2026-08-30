@@ -180,6 +180,22 @@ export function ReviewsSection() {
               but I am besieged in an organized way.
             </Trans>
           </ReviewCard>
+
+          <ReviewCard
+            portrait="/suppiluliuma-review.png"
+            name={<Trans>Suppiluliuma</Trans>}
+            title={<Trans>King of the Hittites</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              A queen of Egypt once wrote asking me to send her one of my sons
+              for a husband. Such a thing had never happened, so I sent a
+              chamberlain all the way to Egypt to confirm the tablet was
+              genuine. Aziru separates what is urgent from what merely claims
+              to be. It does not vet royal marriage proposals, but everything
+              else reaches me already sorted.
+            </Trans>
+          </ReviewCard>
         </div>
       </div>
     </section>
