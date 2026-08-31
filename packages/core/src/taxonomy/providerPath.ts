@@ -9,7 +9,7 @@
 // Changing that would churn every embedding; this module owns writeback naming.
 
 /** Root namespace segment every provider label/category lives under. */
-export const PROVIDER_LABEL_NAMESPACE = "Amarnai";
+export const PROVIDER_LABEL_NAMESPACE = "Aziru";
 
 // Length caps: a single segment is bounded so no one folder name dominates, and
 // the full joined name stays under the tighter of Gmail's (~225) / Outlook's
