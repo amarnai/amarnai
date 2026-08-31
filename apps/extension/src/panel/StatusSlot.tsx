@@ -186,7 +186,7 @@ export function NoPlanEmptyState({
         <Trans>Set up your folders</Trans>
       </div>
       <p className="ax-muted">
-        <Trans>Set up folders so Amarnai knows where to file your mail. It only takes a minute.</Trans>
+        <Trans>Set up folders so Aziru knows where to file your mail. It only takes a minute.</Trans>
       </p>
       <div className="ax-emptyplan-actions">
         <button

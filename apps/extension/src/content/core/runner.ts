@@ -71,7 +71,7 @@ export interface ContentScriptController {
  *
  * Fails silently by construction. Anything unexpected — no anchor, signed out,
  * thread not synced, API down, snippet-kind (Gmail already shows its own
- * snippet) — renders nothing rather than putting an Amarnai error in someone's
+ * snippet) — renders nothing rather than putting an Aziru error in someone's
  * mailbox.
  */
 export function runContentScript(adapter: ProviderAdapter): ContentScriptController {

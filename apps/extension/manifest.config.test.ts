@@ -82,12 +82,12 @@ describe("buildManifest — host permissions", () => {
 
   it("does not duplicate the grant when a self-host serves both from one origin", () => {
     const m = buildManifest({
-      apiUrl: "https://amarnai.example.test/api",
-      webAppUrl: "https://amarnai.example.test",
+      apiUrl: "https://aziru.example.test/api",
+      webAppUrl: "https://aziru.example.test",
     }) as Record<string, unknown>;
 
     expect(m["host_permissions"]).toEqual([
-      "https://amarnai.example.test/*",
+      "https://aziru.example.test/*",
       "https://mail.google.com/*",
       "https://outlook.office.com/*",
       "https://outlook.office365.com/*",

@@ -26,26 +26,26 @@ export const STRINGS = {
 } as const;
 
 /**
- * Labels for the "Amarnai Reply" button in the provider's own compose. Short by
+ * Labels for the "Aziru Reply" button in the provider's own compose. Short by
  * necessity: they sit in a crowded native toolbar next to Send, so the detail
  * goes in the tooltip and the label stays scannable.
  */
 export const REPLY_BUTTON_STRINGS = {
-  idle: "Amarnai Reply",
+  idle: "Aziru Reply",
   /** Hover tooltip on the injected entry points (bottom-bar pill, header icon). */
-  entryTooltip: "Reply with Amarnai",
+  entryTooltip: "Reply with Aziru",
   generating: "Drafting…",
   readyToInsert: "Click Reply to insert",
   error: "Couldn't draft",
-  signedOut: "Sign in to Amarnai",
+  signedOut: "Sign in to Aziru",
   quota: "No drafts left",
   tooltips: {
-    idle: "Draft a reply to this thread with Amarnai",
-    generating: "Amarnai is writing a reply…",
+    idle: "Draft a reply to this thread with Aziru",
+    generating: "Aziru is writing a reply…",
     inserted: "Draft inserted. Click again to re-insert it (replaces the inserted text).",
     readyToInsert: "Your draft is ready — it will be inserted when the reply opens.",
     error: "Something went wrong. Click to try again.",
-    signedOut: "Open the Amarnai panel to sign in",
+    signedOut: "Open the Aziru panel to sign in",
     quota: (resetsAt: string) => `No drafts remaining this month · resets ${resetsAt}`,
   },
 } as const;
@@ -56,9 +56,9 @@ export const REPLY_BUTTON_STRINGS = {
  * is an extension document with the full catalog.
  */
 export const PANEL_TAB_STRINGS = {
-  open: "Open the Amarnai panel",
-  close: "Close the Amarnai panel",
-  title: "Amarnai",
+  open: "Open the Aziru panel",
+  close: "Close the Aziru panel",
+  title: "Aziru",
 } as const;
 
 /** Short, UTC-stable reset date ("Aug 1"), matching the in-app quota copy. */

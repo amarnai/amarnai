@@ -9,7 +9,7 @@ import { PuzzlePieceIcon } from "./icons";
 
 /**
  * The two tabs the demo browser has open: the visitor's mailbox, and the
- * Amarnai web app. Which mailbox is a separate axis (the provider toggle), not
+ * Aziru web app. Which mailbox is a separate axis (the provider toggle), not
  * a third tab — nobody has both a Gmail and an Outlook inbox open to the same
  * mail, and asking a visitor to read one that way was the confusing part.
  */
@@ -60,11 +60,11 @@ function ReloadIcon() {
 /**
  * The browser around the demo: a tab strip and a toolbar.
  *
- * Deliberately generic rather than a copy of any one browser's chrome. Amarnai
+ * Deliberately generic rather than a copy of any one browser's chrome. Aziru
  * ships to both the Chrome Web Store and AMO, and a painted Chrome would tell
  * half the visitors this is not for them. No vendor logos, no vendor wordmarks.
  *
- * Two controls here are live: the tabs, and the pinned Amarnai icon, which opens
+ * Two controls here are live: the tabs, and the pinned Aziru icon, which opens
  * the side panel the way clicking the real one does. Everything else (the nav
  * arrows, the reload, the address, the extensions puzzle) is drawn so the frame
  * reads as a browser and is inert and hidden from assistive tech, because a
@@ -95,7 +95,7 @@ export function BrowserChrome({
     provider === "outlook"
       ? { id: "inbox", label: "Outlook", icon: <OutlookIcon variant="color" size={14} /> }
       : { id: "inbox", label: "Gmail", icon: <GmailLogoIcon /> },
-    { id: "app", label: "Amarnai", icon: <img src="/logo.png" alt="" width={14} height={14} /> },
+    { id: "app", label: "Aziru", icon: <img src="/logo.png" alt="" width={14} height={14} /> },
   ];
 
   // The tablist pattern owns the arrow keys: Tab reaches the strip, arrows move
@@ -165,8 +165,8 @@ export function BrowserChrome({
               className="ld-tb-aziru"
               aria-pressed={panelOpen}
               onClick={onTogglePanel}
-              aria-label={_(msg`Open the Amarnai side panel`)}
-              title={_(msg`Open the Amarnai side panel`)}
+              aria-label={_(msg`Open the Aziru side panel`)}
+              title={_(msg`Open the Aziru side panel`)}
             >
               <img src="/extension-icon.png" alt="" width={18} height={18} />
             </button>

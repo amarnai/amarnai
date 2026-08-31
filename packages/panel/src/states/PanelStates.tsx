@@ -3,7 +3,7 @@
 import { Trans } from "@lingui/react/macro";
 import type { MailAccount } from "@aziru/api-client";
 
-// The screens for every way the mail client can be in a state Amarnai cannot act
+// The screens for every way the mail client can be in a state Aziru cannot act
 // on. They share a shape deliberately: one sentence saying what is true, and at
 // most one action. A panel wedged into someone else's UI that starts explaining
 // itself at length is worse than one that says nothing.
@@ -48,7 +48,7 @@ export function SignedOutState({ onSignIn }: { onSignIn: (() => void) | null }) 
         ) : undefined
       }
     >
-      <Trans>Sign in to Amarnai to see how this thread was sorted.</Trans>
+      <Trans>Sign in to Aziru to see how this thread was sorted.</Trans>
     </PanelMessage>
   );
 }
@@ -64,7 +64,7 @@ export function NotConnectedState({ onOpenApp }: { onOpenApp: (() => void) | nul
         ) : undefined
       }
     >
-      <Trans>Connect a mailbox to Amarnai to start sorting your inbox.</Trans>
+      <Trans>Connect a mailbox to Aziru to start sorting your inbox.</Trans>
     </PanelMessage>
   );
 }
@@ -72,7 +72,7 @@ export function NotConnectedState({ onOpenApp }: { onOpenApp: (() => void) | nul
 /**
  * The ordinary multi-login case: a second Gmail account in the same browser, or
  * a shared mailbox. Naming the connected address is the whole point — it turns
- * "Amarnai is broken here" into "you are in the other account".
+ * "Aziru is broken here" into "you are in the other account".
  */
 export function MismatchState({
   accountEmail,
@@ -86,10 +86,10 @@ export function MismatchState({
     <PanelMessage>
       {knownAccounts.length > 0 ? (
         <Trans>
-          {accountEmail} is not connected to Amarnai. You have {connected} connected.
+          {accountEmail} is not connected to Aziru. You have {connected} connected.
         </Trans>
       ) : (
-        <Trans>{accountEmail} is not connected to Amarnai.</Trans>
+        <Trans>{accountEmail} is not connected to Aziru.</Trans>
       )}
     </PanelMessage>
   );
@@ -104,7 +104,7 @@ export function MismatchState({
 export function NoThreadState() {
   return (
     <PanelMessage>
-      <Trans>Open a conversation to see how Amarnai sorted it.</Trans>
+      <Trans>Open a conversation to see how Aziru sorted it.</Trans>
     </PanelMessage>
   );
 }
@@ -118,7 +118,7 @@ export function NotSyncedState({ onRetry }: { onRetry: () => void }) {
         </PanelActionButton>
       }
     >
-      <Trans>Amarnai hasn't synced this conversation yet.</Trans>
+      <Trans>Aziru hasn't synced this conversation yet.</Trans>
     </PanelMessage>
   );
 }
@@ -130,7 +130,7 @@ export function NotSyncedState({ onRetry }: { onRetry: () => void }) {
 export function InjectionDisabledState() {
   return (
     <PanelMessage>
-      <Trans>The Amarnai panel is switched off for this workspace.</Trans>
+      <Trans>The Aziru panel is switched off for this workspace.</Trans>
     </PanelMessage>
   );
 }
@@ -144,7 +144,7 @@ export function ErrorState({ onRetry }: { onRetry: () => void }) {
         </PanelActionButton>
       }
     >
-      <Trans>Could not reach Amarnai.</Trans>
+      <Trans>Could not reach Aziru.</Trans>
     </PanelMessage>
   );
 }

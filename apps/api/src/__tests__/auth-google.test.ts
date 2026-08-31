@@ -141,7 +141,7 @@ beforeEach(() => {
 });
 
 describe("POST /auth/google", () => {
-  it("redeems the code, provisions the user, and returns an Amarnai token pair", async () => {
+  it("redeems the code, provisions the user, and returns an Aziru token pair", async () => {
     const res = await post(VALID_BODY);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({

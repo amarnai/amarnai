@@ -64,7 +64,7 @@ import type {
  * opposite responses: a failure is worth retrying on the next thread open, a
  * refusal is not — the content script latches on this and stops asking.
  * Only the provider-id routes (providerThreadSummary, generateDraftByProviderThread)
- * can raise it; Amarnai's own surfaces are not gated.
+ * can raise it; Aziru's own surfaces are not gated.
  */
 export class InjectionDisabledError extends Error {
   constructor(message: string) {
@@ -493,7 +493,7 @@ export function makeApiClient(transport: ApiTransport) {
     // ours: resolve + fetch in one round trip, on the critical path of every
     // conversation the user opens.
     //
-    // Null means the thread has never been synced into Amarnai (the panel shows
+    // Null means the thread has never been synced into Aziru (the panel shows
     // "not synced yet" — not an error). A workspace that has turned the panel off
     // raises InjectionDisabledError, which the panel latches on instead of
     // retrying per thread.
@@ -798,7 +798,7 @@ export function makeApiClient(transport: ApiTransport) {
     // Same generation, addressed by the provider's own thread id. Used by the
     // native Gmail/Outlook reply button, which knows the mailbox's thread id but
     // not ours. Throws InjectionDisabledError when the workspace has turned the
-    // button off, and a plain error on 404 (thread never synced into Amarnai).
+    // button off, and a plain error on 404 (thread never synced into Aziru).
     generateDraftByProviderThread: (
       workspaceId: string,
       providerThreadId: string,
@@ -825,7 +825,7 @@ export function makeApiClient(transport: ApiTransport) {
 
     // Same, addressed by the provider's own thread id. Used by the native
     // Gmail/Outlook injection, which knows the mailbox's id but not ours. Throws
-    // on 404 (the thread has not been synced into Amarnai).
+    // on 404 (the thread has not been synced into Aziru).
     providerThreadSummary: (
       workspaceId: string,
       providerThreadId: string,

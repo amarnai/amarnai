@@ -22,7 +22,7 @@ function esc(value: string): string {
 }
 
 function from(): string {
-  return process.env["EMAIL_FROM"] ?? "noreply@amarnai.com";
+  return process.env["EMAIL_FROM"] ?? "noreply@aziru.email";
 }
 
 async function sendEmail(
@@ -67,7 +67,7 @@ async function sendEmail(
 
 // ─── Shared layout ──────────────────────────────────────────────────────────
 //
-// Every Amarnai email renders through `layout()` so the header, container, and
+// Every Aziru email renders through `layout()` so the header, container, and
 // footer markup live in one place (CLAUDE.md: do not duplicate styles). Colors
 // come from the shared design tokens — no brand hex is hardcoded here.
 // Email clients ignore <style>/external CSS, so all styling is inline.
@@ -85,20 +85,20 @@ function button(href: string, label: string): string {
 
 function layout(bodyHtml: string, opts: LayoutOptions = {}): string {
   const unsubscribe = opts.unsubscribeUrl
-    ? `<p style="margin:12px 0 0;">You're receiving this because you have an Amarnai account. <a href="${opts.unsubscribeUrl}" style="color:${colors.ink3};">Unsubscribe from these reminders</a>.</p>`
+    ? `<p style="margin:12px 0 0;">You're receiving this because you have an Aziru account. <a href="${opts.unsubscribeUrl}" style="color:${colors.ink3};">Unsubscribe from these reminders</a>.</p>`
     : "";
 
   return `
   <div style="background:${colors.bg};padding:24px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
     <div style="max-width:520px;margin:0 auto;background:${colors.surface};border:1px solid ${colors.line};border-radius:12px;overflow:hidden;">
       <div style="padding:20px 28px;border-bottom:1px solid ${colors.line};">
-        <span style="font-size:18px;font-weight:700;color:${colors.accent};">Amarnai</span>
+        <span style="font-size:18px;font-weight:700;color:${colors.accent};">Aziru</span>
       </div>
       <div style="padding:28px;color:${colors.ink};font-size:15px;line-height:1.55;">
         ${bodyHtml}
       </div>
       <div style="padding:18px 28px;border-top:1px solid ${colors.line};color:${colors.ink3};font-size:12px;line-height:1.5;">
-        <p style="margin:0;">Amarnai — AI email triage.</p>
+        <p style="margin:0;">Aziru — AI email triage.</p>
         ${unsubscribe}
       </div>
     </div>
@@ -109,9 +109,9 @@ export async function sendVerificationEmail(to: string, token: string): Promise<
   const link = `${appUrl()}/api/auth/verify-email?token=${token}`;
   await sendEmail(
     to,
-    "Verify your Amarnai account",
+    "Verify your Aziru account",
     layout(`
-      <p style="margin:0 0 12px;">Welcome to Amarnai!</p>
+      <p style="margin:0 0 12px;">Welcome to Aziru!</p>
       <p style="margin:0 0 20px;">Confirm your email address to finish setting up your account. This link expires in 24 hours.</p>
       <p style="margin:0 0 20px;">${button(link, "Verify email address")}</p>
       <p style="margin:0;color:${colors.ink3};font-size:13px;">If you didn't create an account, you can ignore this email.</p>
@@ -129,9 +129,9 @@ export async function sendAccountExistsEmail(to: string): Promise<void> {
   const forgot = `${appUrl()}/forgot-password`;
   await sendEmail(
     to,
-    "You already have an Amarnai account",
+    "You already have an Aziru account",
     layout(`
-      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Amarnai with this email address, but you already have an account.</p>
+      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Aziru with this email address, but you already have an account.</p>
       <p style="margin:0 0 20px;">Sign in to pick up where you left off. If you've forgotten your password, you can reset it.</p>
       <p style="margin:0 0 20px;">${button(signIn, "Sign in")}</p>
       <p style="margin:0;color:${colors.ink3};font-size:13px;">Forgot your password? <a href="${forgot}" style="color:${colors.ink3};">Reset it here</a>. If this wasn't you, no action is needed — no changes were made to your account.</p>
@@ -146,9 +146,9 @@ export async function sendGoogleAccountEmail(to: string): Promise<void> {
   const signIn = `${appUrl()}/sign-in`;
   await sendEmail(
     to,
-    "You already have an Amarnai account",
+    "You already have an Aziru account",
     layout(`
-      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Amarnai with this email address, but you already have an account that signs in with Google.</p>
+      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Aziru with this email address, but you already have an account that signs in with Google.</p>
       <p style="margin:0 0 20px;">Use <strong>Sign in with Google</strong> to get back in — there's no password to set.</p>
       <p style="margin:0 0 20px;">${button(signIn, "Go to sign in")}</p>
       <p style="margin:0;color:${colors.ink3};font-size:13px;">If this wasn't you, no action is needed — no changes were made to your account.</p>
@@ -162,9 +162,9 @@ export async function sendMicrosoftAccountEmail(to: string): Promise<void> {
   const signIn = `${appUrl()}/sign-in`;
   await sendEmail(
     to,
-    "You already have an Amarnai account",
+    "You already have an Aziru account",
     layout(`
-      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Amarnai with this email address, but you already have an account that signs in with Microsoft.</p>
+      <p style="margin:0 0 12px;">Someone (probably you) just tried to sign up for Aziru with this email address, but you already have an account that signs in with Microsoft.</p>
       <p style="margin:0 0 20px;">Use <strong>Sign in with Microsoft</strong> to get back in — there's no password to set.</p>
       <p style="margin:0 0 20px;">${button(signIn, "Go to sign in")}</p>
       <p style="margin:0;color:${colors.ink3};font-size:13px;">If this wasn't you, no action is needed — no changes were made to your account.</p>
@@ -181,9 +181,9 @@ export async function sendWorkspaceInvitationEmail(
   const link = `${appUrl()}/api/workspace-invite/accept?token=${token}`;
   await sendEmail(
     to,
-    `You've been invited to join ${workspaceName} on Amarnai`,
+    `You've been invited to join ${workspaceName} on Aziru`,
     layout(`
-      <p style="margin:0 0 12px;">${esc(inviterName)} has invited you to join the <strong>${esc(workspaceName)}</strong> workspace on Amarnai.</p>
+      <p style="margin:0 0 12px;">${esc(inviterName)} has invited you to join the <strong>${esc(workspaceName)}</strong> workspace on Aziru.</p>
       <p style="margin:0 0 20px;">Accept the invitation to get started. This link expires in 48 hours.</p>
       <p style="margin:0 0 20px;">${button(link, "Accept invitation")}</p>
       <p style="margin:0;color:${colors.ink3};font-size:13px;">If you weren't expecting this invitation, you can ignore this email.</p>
@@ -195,9 +195,9 @@ export async function sendPasswordResetEmail(to: string, token: string): Promise
   const link = `${appUrl()}/reset-password?token=${token}`;
   await sendEmail(
     to,
-    "Reset your Amarnai password",
+    "Reset your Aziru password",
     layout(`
-      <p style="margin:0 0 12px;">You requested a password reset for your Amarnai account.</p>
+      <p style="margin:0 0 12px;">You requested a password reset for your Aziru account.</p>
       <p style="margin:0 0 20px;">Set a new password using the button below. This link expires in 1 hour.</p>
       <p style="margin:0 0 20px;">${button(link, "Reset password")}</p>
       <p style="margin:0;color:${colors.ink3};font-size:13px;">If you didn't request this, you can ignore this email.</p>
@@ -206,17 +206,17 @@ export async function sendPasswordResetEmail(to: string, token: string): Promise
 }
 
 export async function sendWelcomeEmail(to: string, name?: string | null): Promise<void> {
-  const greeting = name?.trim() ? `Welcome, ${esc(name.trim())}!` : "Welcome to Amarnai!";
+  const greeting = name?.trim() ? `Welcome, ${esc(name.trim())}!` : "Welcome to Aziru!";
   const link = `${appUrl()}/emails`;
   await sendEmail(
     to,
-    "Welcome to Amarnai",
+    "Welcome to Aziru",
     layout(`
       <p style="margin:0 0 12px;font-size:17px;font-weight:600;">${greeting}</p>
-      <p style="margin:0 0 12px;">Your email is verified and your account is ready. Amarnai sorts and triages your inbox with AI so the threads that need you rise to the top.</p>
-      <p style="margin:0 0 20px;">Connect your Gmail to start triaging, then let Amarnai do the sorting.</p>
-      <p style="margin:0 0 20px;">${button(link, "Open Amarnai")}</p>
-      <p style="margin:0;color:${colors.ink3};font-size:13px;">Drafts always require your approval — Amarnai never sends email on your behalf.</p>
+      <p style="margin:0 0 12px;">Your email is verified and your account is ready. Aziru sorts and triages your inbox with AI so the threads that need you rise to the top.</p>
+      <p style="margin:0 0 20px;">Connect your Gmail to start triaging, then let Aziru do the sorting.</p>
+      <p style="margin:0 0 20px;">${button(link, "Open Aziru")}</p>
+      <p style="margin:0;color:${colors.ink3};font-size:13px;">Drafts always require your approval — Aziru never sends email on your behalf.</p>
     `)
   );
 }
@@ -273,13 +273,13 @@ export async function sendLifecycleReminderEmail(
 
   await sendEmail(
     to,
-    "Your Amarnai inbox needs a look",
+    "Your Aziru inbox needs a look",
     layout(
       `
       <p style="margin:0 0 12px;">${greeting}</p>
       <p style="margin:0 0 16px;">${headline}</p>
       <ul style="margin:0 0 20px;padding-left:20px;color:${colors.ink2};">${rows}</ul>
-      <p style="margin:0 0 20px;">${button(link, "Review in Amarnai")}</p>
+      <p style="margin:0 0 20px;">${button(link, "Review in Aziru")}</p>
     `,
       { unsubscribeUrl: payload.unsubscribeUrl }
     ),

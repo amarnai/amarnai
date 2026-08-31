@@ -4,8 +4,8 @@ import { buildLegalMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildLegalMetadata(
   "delete-account",
-  "Delete Your Account | Amarnai",
-  "How to delete your Amarnai account and the data it removes."
+  "Delete Your Account | Aziru",
+  "How to delete your Aziru account and the data it removes."
 );
 
 const LAST_UPDATED = "July 8, 2026";
@@ -17,17 +17,17 @@ export default function DeleteAccountPage() {
       <p className="prose-meta">Last updated: {LAST_UPDATED}</p>
 
       <p>
-        This page explains how to permanently delete your Amarnai account and
+        This page explains how to permanently delete your Aziru account and
         everything associated with it. You can start account deletion yourself
-        from the Amarnai app on the web or on mobile, no request or waiting
+        from the Aziru app on the web or on mobile, no request or waiting
         period required.
       </p>
 
       <h2>Delete Your Whole Account</h2>
-      <p>Choose whichever way you use Amarnai:</p>
+      <p>Choose whichever way you use Aziru:</p>
       <ul>
         <li>
-          <strong>On the web:</strong> sign in at amarnai.com, open{" "}
+          <strong>On the web:</strong> sign in at aziru.email, open{" "}
           <strong>Account</strong>, scroll to the{" "}
           <strong>Danger zone</strong>, and click{" "}
           <strong>Delete account</strong>. If you signed up with a password,
@@ -40,7 +40,7 @@ export default function DeleteAccountPage() {
         </li>
         <li>
           <strong>Revoke access from Google:</strong> you can also remove
-          Amarnai&rsquo;s access to your Google account at any time by visiting{" "}
+          Aziru&rsquo;s access to your Google account at any time by visiting{" "}
           <a
             href="https://myaccount.google.com/permissions"
             target="_blank"
@@ -48,11 +48,11 @@ export default function DeleteAccountPage() {
           >
             myaccount.google.com/permissions
           </a>{" "}
-          and removing Amarnai from the list of connected apps.
+          and removing Aziru from the list of connected apps.
         </li>
         <li>
           <strong>Revoke access from Microsoft:</strong> you can also remove
-          Amarnai&rsquo;s access to your Microsoft account at any time. For a
+          Aziru&rsquo;s access to your Microsoft account at any time. For a
           personal account, visit{" "}
           <a
             href="https://account.live.com/consent/Manage"
@@ -69,7 +69,7 @@ export default function DeleteAccountPage() {
           >
             myapps.microsoft.com
           </a>
-          . Then remove Amarnai from the list of connected apps.
+          . Then remove Aziru from the list of connected apps.
         </li>
       </ul>
 
@@ -101,12 +101,12 @@ export default function DeleteAccountPage() {
       <h2>If You Do Not Want to Delete Everything</h2>
       <p>
         You do not have to delete your whole account to remove data. From the
-        Amarnai app you can instead:
+        Aziru app you can instead:
       </p>
       <ul>
         <li>
           <strong>Disconnect your inbox and erase synced data:</strong> revokes
-          Amarnai&rsquo;s access to Gmail or Outlook, deletes your stored OAuth token,
+          Aziru&rsquo;s access to Gmail or Outlook, deletes your stored OAuth token,
           and
           erases the email data synced into the workspace. Your account and
           workspaces are kept.
@@ -137,7 +137,7 @@ export default function DeleteAccountPage() {
       <p>
         If you cannot access your account or have questions about deletion,
         email us at{" "}
-        <a href="mailto:privacy@amarnai.com">privacy@amarnai.com</a> and we will
+        <a href="mailto:privacy@aziru.email">privacy@aziru.email</a> and we will
         help you delete your data.
       </p>
     </ProseLayout>

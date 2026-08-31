@@ -86,13 +86,13 @@ export function LabelWritebackSection({
         {isOutlook ? (
           <Trans>
             Your folders are mirrored as Outlook categories and kept in sync as threads are
-            sorted. Amarnai only manages categories under the <strong>Amarnai</strong> namespace
+            sorted. Aziru only manages categories under the <strong>Aziru</strong> namespace
             and never sends, deletes, or moves your mail.
           </Trans>
         ) : (
           <Trans>
             Your folders are mirrored as Gmail labels and kept in sync as threads are sorted.
-            Amarnai only manages labels under the <strong>Amarnai/</strong> namespace and never
+            Aziru only manages labels under the <strong>Aziru/</strong> namespace and never
             sends, deletes, or moves your mail.
           </Trans>
         )}

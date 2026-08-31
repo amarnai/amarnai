@@ -4,7 +4,7 @@ export interface AziruMarkProps {
 }
 
 /**
- * The Amarnai mark, filled with `currentColor`.
+ * The Aziru mark, filled with `currentColor`.
  *
  * The shipped app icon (public/icons/*.png, public/logo.png) is a raster on an
  * opaque warm-white plate, so it cannot sit on a tinted surface and goes soft

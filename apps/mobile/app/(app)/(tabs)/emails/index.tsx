@@ -181,7 +181,7 @@ export default function EmailsScreen() {
             </Text>
             <Text style={styles.hintBody}>
               <Trans>
-                Connect your Gmail account to sync your inbox into Amarnai. Amarnai
+                Connect your Gmail account to sync your inbox into Aziru. Aziru
                 connects with{' '}
                 <Text style={styles.hintBodyStrong}>read-only access</Text> and{' '}
                 <Text style={styles.hintBodyStrong}>

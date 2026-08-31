@@ -25,7 +25,7 @@ export interface NotificationActionDeps {
  *
  * - Gmail disconnected → deep-link to the emails tab (reconnect banner lives there).
  * - Body tap / "Open"  → deep-link to the thread.
- * - "Mark reviewed"    → resolve the thread in Amarnai state (readonly; never
+ * - "Mark reviewed"    → resolve the thread in Aziru state (readonly; never
  *                        touches Gmail).
  *
  * Pure over its deps so it can be unit-tested without a device. Unknown payloads

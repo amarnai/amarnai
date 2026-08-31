@@ -18,11 +18,11 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Amarnai",
-    default: "Amarnai",
+    template: "%s | Aziru",
+    default: "Aziru",
   },
   description: "Your AI email triage assistant.",
-  applicationName: "Amarnai",
+  applicationName: "Aziru",
   metadataBase: new URL("https://app.aziru.email"),
   robots: { index: false, follow: false },
 };

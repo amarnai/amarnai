@@ -128,7 +128,7 @@ describe("GET /workspaces/:workspaceId/panel-queue", () => {
   });
 
   // Only the assigned section is a to-do list. Needs review and drafts describe
-  // what Amarnai thinks about a thread, which marking it done does not change.
+  // what Aziru thinks about a thread, which marking it done does not change.
   it("does not exclude done threads from the other two sections", async () => {
     await get();
     expect(findManyWhere(1)).not.toHaveProperty("resolvedAt");

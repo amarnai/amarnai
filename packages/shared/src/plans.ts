@@ -96,7 +96,7 @@ export const PLANS: Plan[] = [
   {
     id: "free",
     name: "Apprentice",
-    tagline: "For trying Amarnai on your own inbox.",
+    tagline: "For trying Aziru on your own inbox.",
     monthlyPrice: 0,
     annualMonthlyPrice: 0,
     free: true,
@@ -234,6 +234,6 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
 
 export const SELF_HOST_NOTE = {
   title: "Prefer to self-host?",
-  body: "Amarnai is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.",
+  body: "Aziru is open source under AGPL-3.0. Clone it, bring your own keys, and run every tier free on your own infrastructure.",
   cta: { label: "Self-host guide", href: "https://docs.aziru.email/docs/self-hosting" },
 };

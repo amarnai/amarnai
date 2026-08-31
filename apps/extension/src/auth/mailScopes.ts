@@ -19,7 +19,7 @@ const GOOGLE_READ_SCOPES = [
   "https://www.googleapis.com/auth/gmail.readonly",
 ].join(" ");
 
-/** Mirrors GMAIL_MODIFY_SCOPE. Labels only: Amarnai never sends or deletes. */
+/** Mirrors GMAIL_MODIFY_SCOPE. Labels only: Aziru never sends or deletes. */
 const GOOGLE_WRITE_SCOPE = "https://www.googleapis.com/auth/gmail.modify";
 
 /** Mirrors OUTLOOK_CONSENT_SCOPES. */

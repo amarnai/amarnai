@@ -446,14 +446,14 @@ describe("GmailClient.ensureFolderLabels", () => {
     mockFetch
       .mockResolvedValueOnce(makeTokenResponse()) // token
       .mockResolvedValueOnce(labelsList([])) // labels.list (empty)
-      .mockResolvedValueOnce(created("L_amarnai")) // create "Amarnai"
-      .mockResolvedValueOnce(created("L_clients")) // create "Amarnai/Clients"
-      .mockResolvedValueOnce(created("L_acme")) // create "Amarnai/Clients/Acme"
+      .mockResolvedValueOnce(created("L_aziru")) // create "Aziru"
+      .mockResolvedValueOnce(created("L_clients")) // create "Aziru/Clients"
+      .mockResolvedValueOnce(created("L_acme")) // create "Aziru/Clients/Acme"
       .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color patch
 
     const client = new GmailClient("encrypted:refresh:token");
     const map = await client.ensureFolderLabels([
-      { nodeId: "n1", pathSegments: ["Amarnai", "Clients", "Acme"], colorKey: "blue" },
+      { nodeId: "n1", pathSegments: ["Aziru", "Clients", "Acme"], colorKey: "blue" },
     ]);
 
     expect(map.get("n1")).toBe("L_acme");
@@ -464,7 +464,7 @@ describe("GmailClient.ensureFolderLabels", () => {
           String(c[0]).endsWith("/labels") && (c[1] as RequestInit)?.method === "POST",
       )
       .map((c) => JSON.parse((c[1] as RequestInit).body as string).name);
-    expect(createBodies).toEqual(["Amarnai", "Amarnai/Clients", "Amarnai/Clients/Acme"]);
+    expect(createBodies).toEqual(["Aziru", "Aziru/Clients", "Aziru/Clients/Acme"]);
   });
 
   it("reuses existing labels: no creates and no color patch (user recolors are kept)", async () => {
@@ -472,14 +472,14 @@ describe("GmailClient.ensureFolderLabels", () => {
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce(
         labelsList([
-          { id: "L_amarnai", name: "Amarnai" },
-          { id: "L_acme", name: "Amarnai/Acme" },
+          { id: "L_aziru", name: "Aziru" },
+          { id: "L_acme", name: "Aziru/Acme" },
         ]),
       );
 
     const client = new GmailClient("encrypted:refresh:token");
     const map = await client.ensureFolderLabels([
-      { nodeId: "n1", pathSegments: ["Amarnai", "Acme"], colorKey: "red" },
+      { nodeId: "n1", pathSegments: ["Aziru", "Acme"], colorKey: "red" },
     ]);
 
     expect(map.get("n1")).toBe("L_acme");
@@ -492,16 +492,16 @@ describe("GmailClient.ensureFolderLabels", () => {
 
   it("recreates a label the user deleted in Gmail (absent from the fresh list)", async () => {
     // Link bookkeeping is irrelevant here: the adapter trusts labels.list, so a
-    // deleted "Amarnai/Acme" is simply missing and gets recreated.
+    // deleted "Aziru/Acme" is simply missing and gets recreated.
     mockFetch
       .mockResolvedValueOnce(makeTokenResponse())
-      .mockResolvedValueOnce(labelsList([{ id: "L_amarnai", name: "Amarnai" }])) // leaf deleted
+      .mockResolvedValueOnce(labelsList([{ id: "L_aziru", name: "Aziru" }])) // leaf deleted
       .mockResolvedValueOnce(created("L_acme_v2")) // recreate leaf
       .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) }); // color new leaf
 
     const client = new GmailClient("encrypted:refresh:token");
     const map = await client.ensureFolderLabels([
-      { nodeId: "n1", pathSegments: ["Amarnai", "Acme"], colorKey: "red" },
+      { nodeId: "n1", pathSegments: ["Aziru", "Acme"], colorKey: "red" },
     ]);
     expect(map.get("n1")).toBe("L_acme_v2");
   });
@@ -510,28 +510,28 @@ describe("GmailClient.ensureFolderLabels", () => {
     mockFetch
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce(labelsList([])) // initial list: empty
-      .mockResolvedValueOnce({ ok: false, status: 409 }) // create "Amarnai" conflicts
-      .mockResolvedValueOnce(labelsList([{ id: "L_amarnai", name: "Amarnai" }])); // re-list
+      .mockResolvedValueOnce({ ok: false, status: 409 }) // create "Aziru" conflicts
+      .mockResolvedValueOnce(labelsList([{ id: "L_aziru", name: "Aziru" }])); // re-list
 
     const client = new GmailClient("encrypted:refresh:token");
     const map = await client.ensureFolderLabels([
-      { nodeId: "n1", pathSegments: ["Amarnai"], colorKey: "green" },
+      { nodeId: "n1", pathSegments: ["Aziru"], colorKey: "green" },
     ]);
-    expect(map.get("n1")).toBe("L_amarnai");
+    expect(map.get("n1")).toBe("L_aziru");
   });
 
   it("still returns the label when the best-effort color patch fails", async () => {
     mockFetch
       .mockResolvedValueOnce(makeTokenResponse())
       .mockResolvedValueOnce(labelsList([]))
-      .mockResolvedValueOnce(created("L_amarnai"))
+      .mockResolvedValueOnce(created("L_aziru"))
       .mockResolvedValueOnce({ ok: false, status: 400 }); // color rejected
 
     const client = new GmailClient("encrypted:refresh:token");
     const map = await client.ensureFolderLabels([
-      { nodeId: "n1", pathSegments: ["Amarnai"], colorKey: "teal" },
+      { nodeId: "n1", pathSegments: ["Aziru"], colorKey: "teal" },
     ]);
-    expect(map.get("n1")).toBe("L_amarnai");
+    expect(map.get("n1")).toBe("L_aziru");
   });
 });
 

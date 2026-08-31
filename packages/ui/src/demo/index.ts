@@ -8,10 +8,16 @@
 export { HeroFeedCard } from "./HeroFeedCard.js";
 export { DemoTaxonomyCanvas } from "./DemoTaxonomyCanvas.js";
 export { MailboxStage } from "./mailbox/MailboxStage.js";
+export {
+  AziruCompose,
+  AziruReplyPill,
+  DRAFTING_MS,
+  type ReplyStage,
+} from "./mailbox/AziruReply.js";
 export { getDemoAziruData } from "./mailbox/aziruData.js";
 export type { AziruDemoData, MockProvider } from "./mailbox/types.js";
 export { FolderIcon, SparkleIcon, GmailLogoIcon } from "./icons.js";
-export { DEMO_AVATARS } from "./demo-avatars.js";
+export { DEMO_AVATARS, DEMO_MEMBER_AVATARS } from "./demo-avatars.js";
 export {
   getDemoNodes,
   getDemoThreads,
@@ -21,6 +27,8 @@ export {
   getDemoSummaryBullets,
   getDemoProviderLabels,
   getDemoMembers,
+  getDemoComments,
+  DEMO_COMMENT_THREAD_ID,
   DEMO_WORKSPACE_PLAN,
   DEMO_EDGES,
   DEMO_NODE_DEPTH,

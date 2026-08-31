@@ -16,7 +16,7 @@ interface CtaButtonsProps {
  * The landing page's paired calls to action: install the extension first,
  * sign up on the web second.
  *
- * Installing is the primary action because the extension is where Amarnai is
+ * Installing is the primary action because the extension is where Aziru is
  * used. Two cases leave no extension button on screen, and both promote the
  * sign-up link so a primary action always exists:
  *   - Firefox while the AMO listing is unpublished (handled here, post-mount).

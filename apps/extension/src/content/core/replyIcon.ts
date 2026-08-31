@@ -1,4 +1,4 @@
-// The Amarnai Reply mark, as an inline SVG node.
+// The Aziru Reply mark, as an inline SVG node.
 //
 // Inline rather than <img src=chrome-extension://…>: an extension URL loaded by
 // the mail page needs a web_accessible_resources grant, and OWA rejected it
@@ -14,7 +14,7 @@
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-/** Left-pointing wedge from the Amarnai logo (aspect ~1.58:1, barb notch ~24%). */
+/** Left-pointing wedge from the Aziru logo (aspect ~1.58:1, barb notch ~24%). */
 const POINTS = "2,12 22,5.7 17.1,12 22,18.3";
 
 /** Marks the icon so the stylesheets below can color it. */

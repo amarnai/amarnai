@@ -8,7 +8,7 @@ import { isOpenMailThreadRequest } from "../content/core/messaging.js";
 // to move the mail client to it, not just the panel. Doing that from here rather
 // than from the content script is deliberate: the background knows which tab the
 // message came from (`sender.tab`) and can navigate it with the browser's own
-// API, which is exactly what Amarnai's side panel does when a row is clicked
+// API, which is exactly what Aziru's side panel does when a row is clicked
 // there. The content script's alternative — assigning `location` inside Gmail —
 // depends on the panel's postMessage channel and on the page reacting to a write
 // we cannot observe.
@@ -27,7 +27,7 @@ const GMAIL_URL_PREFIX = "https://mail.google.com/";
  * A hash-only change, so Gmail routes it client-side with no reload and the tab
  * keeps whichever account (`/u/<n>/`) it is already on. Failures are logged and
  * dropped: nothing is waiting on this, and a mail tab must never sprout an
- * Amarnai error because a navigation was refused.
+ * Aziru error because a navigation was refused.
  */
 async function openThread(
   tabId: number | undefined,

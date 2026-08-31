@@ -27,12 +27,12 @@ const SLIDE_MS = 9000;
 
 /**
  * The in-your-inbox preview: Gmail or Outlook with everything the extension
- * just added to it — the mirrored folder labels, the summary card, the Amarnai
+ * just added to it — the mirrored folder labels, the summary card, the Aziru
  * Reply pill, and the panel in the mailbox's right rail.
  *
  * The landing page frames this in painted browser chrome. This tab does not:
  * it is already open in a real browser, a few inches below a real toolbar with
- * the real Amarnai icon in it, and a second painted browser here would only
+ * the real Aziru icon in it, and a second painted browser here would only
  * make a reader wonder which one to click.
  */
 function EmailsDemo() {
@@ -124,13 +124,13 @@ const SLIDES: Slide[] = [
     id: "sorting",
     Art: SortingDemo,
     title: msg`Stop sorting email`,
-    body: msg`Amarnai sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review.`,
+    body: msg`Aziru sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review.`,
   },
   {
     id: "plan",
     Art: PlanDemo,
     title: msg`Generate your folders`,
-    body: msg`Your folders are a simple tree branching out from your inbox. Let Amarnai generate them from your inbox, start from a template, or draw them yourself.`,
+    body: msg`Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself.`,
   },
   {
     id: "emails",
@@ -226,7 +226,7 @@ export function WelcomeCarousel() {
           className="wc-dots"
           role="tablist"
           ref={tabsRef}
-          aria-label={_(msg`Choose which part of Amarnai to preview`)}
+          aria-label={_(msg`Choose which part of Aziru to preview`)}
           onKeyDown={onTabKeyDown}
         >
           {SLIDES.map((s, i) => (

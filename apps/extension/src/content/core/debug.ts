@@ -2,7 +2,7 @@
 //
 // The widget deliberately renders NOTHING on every failure path (signed out,
 // mailbox not connected, thread not synced, no anchor, API down) so it can never
-// put an Amarnai error in someone's mailbox. That is right for users and awful
+// put an Aziru error in someone's mailbox. That is right for users and awful
 // for debugging: "no card appeared" has a dozen indistinguishable causes.
 //
 // Enable from the mail page's devtools console:

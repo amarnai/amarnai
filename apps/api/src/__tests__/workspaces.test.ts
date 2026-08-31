@@ -32,12 +32,12 @@ describe("GET /workspaces", () => {
         name: "Demo Workspace",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        owner: { id: "u1", email: "demo@amarnai.local", name: "Demo User" },
+        owner: { id: "u1", email: "demo@aziru.local", name: "Demo User" },
         members: [
           {
             id: "m1",
             role: "OWNER",
-            user: { id: "u1", email: "demo@amarnai.local", name: "Demo User" },
+            user: { id: "u1", email: "demo@aziru.local", name: "Demo User" },
           },
         ],
       },

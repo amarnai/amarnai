@@ -11,10 +11,10 @@ export const QUEUES: { id: QueueId; name: string; warn?: boolean; desc: string }
     id: "review",
     name: "Needs review",
     warn: true,
-    desc: "Threads flagged for review — Amarnai wasn't confident enough to sort automatically.",
+    desc: "Threads flagged for review — Aziru wasn't confident enough to sort automatically.",
   },
   { id: "pending", name: "Pending", desc: "Threads that haven't been sorted yet." },
-  { id: "sorted", name: "Sorted", desc: "Threads Amarnai has successfully routed to a folder." },
+  { id: "sorted", name: "Sorted", desc: "Threads Aziru has successfully routed to a folder." },
   { id: "important", name: "Important", desc: "Threads you've marked as important." },
 ];
 

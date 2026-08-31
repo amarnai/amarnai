@@ -95,7 +95,7 @@ beforeEach(() => {
 });
 
 describe("ensureReplyEntryPoints", () => {
-  it("injects the pill after Reply all, labeled Amarnai Reply", () => {
+  it("injects the pill after Reply all, labeled Aziru Reply", () => {
     buildGmail();
     ensureReplyEntryPoints();
 
@@ -132,7 +132,7 @@ describe("ensureReplyEntryPoints", () => {
     }
   });
 
-  it("carries the 'Reply with Amarnai' tooltip on both buttons", () => {
+  it("carries the 'Reply with Aziru' tooltip on both buttons", () => {
     buildGmail();
     ensureReplyEntryPoints();
     for (const el of [barButton()!, headerButton()!]) {

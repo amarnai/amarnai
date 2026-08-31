@@ -62,10 +62,10 @@ export function AppDownloadBanner({
   const openUrl = buildIntentUrl(playStoreUrl, packageName, appScheme);
 
   return (
-    <div role="region" aria-label={i18n._(msg`Get the Amarnai app`)} style={bannerStyle}>
+    <div role="region" aria-label={i18n._(msg`Get the Aziru app`)} style={bannerStyle}>
       <div style={textStyle}>
         <span style={titleStyle}>
-          <Trans>Amarnai for Android</Trans>
+          <Trans>Aziru for Android</Trans>
         </span>
         <span style={subtitleStyle}>
           <Trans>Triage your inbox on the go.</Trans>

@@ -66,7 +66,7 @@ export function PanelHeader({
           ))}
         </select>
       ) : (
-        <span className="ax-ws-name">{active?.name ?? "Amarnai"}</span>
+        <span className="ax-ws-name">{active?.name ?? "Aziru"}</span>
       )}
 
       <NotificationBell />

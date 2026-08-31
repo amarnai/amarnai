@@ -1,6 +1,6 @@
-# Amarnai
+# Aziru
 
-Gmail-first AI email triage assistant, with read-only Outlook support in beta. Both connections are read-only: Amarnai sorts and labels your inbox but never sends or mutates mail, and drafts always require your approval.
+Gmail-first AI email triage assistant, with read-only Outlook support in beta. Both connections are read-only: Aziru sorts and labels your inbox but never sends or mutates mail, and drafts always require your approval.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ Values in `.env.local` take precedence over `.env`.
 
 ### Local Ollama testing
 
-Amarnai can use an Ollama instance running on your machine.
+Aziru can use an Ollama instance running on your machine.
 
 ```bash
 # 1. Install Ollama if needed
@@ -88,7 +88,7 @@ Get a Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey)
 
 ## Authentication setup
 
-Amarnai supports two sign-in methods:
+Aziru supports two sign-in methods:
 
 - **Google** — one-step signup: Google OAuth grants both app identity and `gmail.readonly` inbox access simultaneously. The default workspace is created and connected automatically.
 - **Email + password** — sign up with any email address, verify it, then connect a Gmail inbox separately from Settings.
@@ -134,11 +134,11 @@ SMTP_PASS=<SES SMTP password>
 
 ## Gmail inbox setup
 
-Amarnai lets each workspace connect one Gmail inbox for email triage. The connection requests only `gmail.readonly` access — it cannot send or modify email.
+Aziru lets each workspace connect one Gmail inbox for email triage. The connection requests only `gmail.readonly` access — it cannot send or modify email.
 
 ### Real-time sync (Gmail Push Notifications)
 
-By default, Amarnai polls Gmail every 5 minutes for new messages. To get near-zero latency — Gmail notifies Amarnai the instant a message arrives — enable Gmail Push Notifications via Google Cloud Pub/Sub.
+By default, Aziru polls Gmail every 5 minutes for new messages. To get near-zero latency — Gmail notifies Aziru the instant a message arrives — enable Gmail Push Notifications via Google Cloud Pub/Sub.
 
 **One-time GCP setup:**
 
@@ -171,7 +171,7 @@ GMAIL_PUBSUB_TOPIC=projects/<project-id>/topics/amarnai-gmail-push
 GMAIL_PUBSUB_WEBHOOK_SECRET=<your-secret>
 ```
 
-When these are set, Amarnai automatically registers each connected inbox with Gmail's push API on connection and renews the registration daily (Gmail watches expire after 7 days). Polling continues as a fallback for any missed events.
+When these are set, Aziru automatically registers each connected inbox with Gmail's push API on connection and renews the registration daily (Gmail watches expire after 7 days). Polling continues as a fallback for any missed events.
 
 **Notes:**
 - The Pub/Sub push endpoint (`/webhooks/gmail`) must be reachable from the public internet — this is a Google → your server call.
@@ -203,7 +203,7 @@ When these are set, Amarnai automatically registers each connected inbox with Gm
 
 ## Outlook inbox setup (beta, read-only)
 
-Amarnai supports Outlook read-only via Microsoft Graph, at feature parity with Gmail. It is opt-in: Gmail is the default provider, and Outlook only appears in the connect flow once you enable it.
+Aziru supports Outlook read-only via Microsoft Graph, at feature parity with Gmail. It is opt-in: Gmail is the default provider, and Outlook only appears in the connect flow once you enable it.
 
 1. In the [Microsoft Entra admin center](https://entra.microsoft.com/), register a **confidential Web app**.
 2. For **Supported account types**, choose "Accounts in any organizational directory (multitenant) and personal Microsoft accounts". The tenant/authority is then the literal string `common`.
@@ -239,15 +239,15 @@ Running `pnpm db:seed` creates a local dev user and workspace:
 
 | Field | Value |
 |-------|-------|
-| Email | `dev@amarnai.local` |
-| Name | Amarnai Dev User |
+| Email | `dev@aziru.local` |
+| Name | Aziru Dev User |
 | Workspace | Default Workspace |
 
 This seed user is attached to the mock taxonomy and sample email threads used for local testing and AI sorting tests. It is **not** created in production signups.
 
 ## Self-hosting
 
-Amarnai can be self-hosted on any machine with Docker and Docker Compose. All services (web, API, worker, Postgres, Redis) start with a single command.
+Aziru can be self-hosted on any machine with Docker and Docker Compose. All services (web, API, worker, Postgres, Redis) start with a single command.
 
 ### Prerequisites
 
@@ -406,7 +406,7 @@ and browser extension are not part of `pnpm dev`. Run them on demand with
 
 ## Browser extension
 
-`apps/extension` is the Amarnai browser side-panel extension (Manifest V3),
+`apps/extension` is the Aziru browser side-panel extension (Manifest V3),
 available for Chrome and Firefox. It holds a live SSE connection to the API and
 mirrors the web app's triage surface in a side panel. It is built with Vite and
 kept out of `pnpm dev`.
@@ -429,7 +429,7 @@ for the full build, configuration, and store-deployment guide.
 > updated for every feature or UI change. Web and the browser extension are the
 > active clients.
 
-`apps/mobile` is the Amarnai Android app (Expo + Expo Router), a readonly triage
+`apps/mobile` is the Aziru Android app (Expo + Expo Router), a readonly triage
 companion. It is intentionally kept out of `pnpm dev` so web/API/worker
 contributors aren't forced into the React Native toolchain.
 
@@ -549,10 +549,10 @@ packages/
 
 Copyright (C) 2026 Azgard LLC
 
-Amarnai is free software licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only). See [LICENSE](LICENSE) for the full text.
+Aziru is free software licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only). See [LICENSE](LICENSE) for the full text.
 
 Contributions are accepted under a Contributor License Agreement — see [CLA.md](CLA.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Trademarks
 
-Gmail™ is a trademark of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Amarnai is an independent project, not affiliated with or endorsed by Google or Microsoft.
+Gmail™ is a trademark of Google LLC. Outlook™ is a trademark of the Microsoft group of companies. Aziru is an independent project, not affiliated with or endorsed by Google or Microsoft.

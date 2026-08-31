@@ -57,7 +57,7 @@ export const provisionLabelsQueue = new Queue<ProvisionLabelsJobData>(
 /**
  * Shared writeback-thread-label queue instance for the API process. Used after a
  * classification write (manual move / inline sort) to reconcile the thread's
- * Amarnai-managed label/category to its current folder.
+ * Aziru-managed label/category to its current folder.
  */
 export const writebackThreadLabelQueue = new Queue<WritebackThreadLabelJobData>(
   QUEUE_WRITEBACK_THREAD_LABEL,

@@ -67,7 +67,7 @@ const GMAIL_ERROR_MESSAGES: Record<string, MessageDescriptor> = {
   insufficient_scope:
     msg`Gmail read access was not granted. Please try again and approve the requested permission.`,
   gmail_profile_fetch:
-    msg`Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Amarnai requests are added to the OAuth consent screen in Google Cloud Console.`,
+    msg`Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Aziru requests are added to the OAuth consent screen in Google Cloud Console.`,
   google_account_info:
     msg`Could not verify your Google account. Please try again.`,
   db_upsert:
@@ -192,19 +192,19 @@ export function GmailConnectionSection({
 
   const disconnectWarning = !sharedMailbox ? (
     <Trans>
-      Stops syncing and revokes Amarnai&apos;s access to this mailbox. Synced
+      Stops syncing and revokes Aziru&apos;s access to this mailbox. Synced
       email data is kept so you can reconnect later.
     </Trans>
   ) : isShared ? (
     <Trans>
-      Disconnects this workspace. Amarnai keeps access because this mailbox is
+      Disconnects this workspace. Aziru keeps access because this mailbox is
       still connected in {sharedNames}.
     </Trans>
   ) : (
     <Trans>
-      Disconnects this workspace. Amarnai keeps access because this mailbox is
-      also connected elsewhere in Amarnai. To fully revoke access, remove
-      Amarnai from your <AccountPermissionsLink provider={provider} />.
+      Disconnects this workspace. Aziru keeps access because this mailbox is
+      also connected elsewhere in Aziru. To fully revoke access, remove
+      Aziru from your <AccountPermissionsLink provider={provider} />.
     </Trans>
   );
 
@@ -340,30 +340,30 @@ export function GmailConnectionSection({
             outcome.sharedMailbox ? (
               <div className="alert alert-info">
                 <Trans>
-                  Disconnected from this workspace. {erasedNote} Amarnai still has
+                  Disconnected from this workspace. {erasedNote} Aziru still has
                   access because this mailbox is connected in another workspace.
-                  To fully revoke access, remove Amarnai from your{" "}
+                  To fully revoke access, remove Aziru from your{" "}
                   <AccountPermissionsLink provider={provider} />.
                 </Trans>
               </div>
             ) : outcome.revoked ? (
               <div className="alert alert-success">
                 <Trans>
-                  Disconnected. Amarnai&apos;s access to this mailbox was revoked.
+                  Disconnected. Aziru&apos;s access to this mailbox was revoked.
                   {erasedNote}
                 </Trans>
               </div>
             ) : (
               <div className="alert alert-info">
                 <Trans>
-                  Disconnected. {erasedNote} To fully revoke Amarnai&apos;s access,
+                  Disconnected. {erasedNote} To fully revoke Aziru&apos;s access,
                   remove it from your <AccountPermissionsLink provider={provider} />.
                 </Trans>
               </div>
             )
           ) : (
             <div className="alert alert-error">
-              <Trans>Disconnected. Amarnai is no longer syncing this inbox.</Trans>
+              <Trans>Disconnected. Aziru is no longer syncing this inbox.</Trans>
             </div>
           )}
           {hasSyncedData && (

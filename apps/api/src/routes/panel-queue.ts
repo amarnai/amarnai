@@ -96,7 +96,7 @@ const panelQueue = new Hono<AppEnv>();
 // also be assigned and can also need review, and it appears in each. Only the
 // assigned section excludes threads marked done, because that section is the
 // user's own queue and done means "off my plate"; the other two describe what
-// Amarnai thinks about a thread, which marking it done does not change.
+// Aziru thinks about a thread, which marking it done does not change.
 //
 // Gated by the workspace's injected-panel kill switch like the provider-id
 // routes: without it a workspace that switched the panel off would still get a

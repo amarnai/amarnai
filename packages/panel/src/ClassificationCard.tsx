@@ -9,7 +9,7 @@ import type { FolderItem } from "@aziru/ui/emails";
 import { ReroutePopover, TriageBar, AssigneePicker } from "@aziru/ui/emails";
 import type { EmailThreadDetail, MemberItem } from "./types.js";
 
-// Where Amarnai put this thread, and every way the reader can disagree with it.
+// Where Aziru put this thread, and every way the reader can disagree with it.
 //
 // There is no separate "approve" action and no rationale card: a folder the user
 // leaves alone IS the approval, and the reasoning behind a sort turned out to be
@@ -18,7 +18,7 @@ import type { EmailThreadDetail, MemberItem } from "./types.js";
 //
 // No important star either, unlike the web preview. This panel sits a few
 // inches from the mail client's own star for the same conversation, wearing the
-// same glyph and meaning something else (Amarnai's important queue, which does
+// same glyph and meaning something else (Aziru's important queue, which does
 // not sync with the provider's flag in either direction). Two stars that can
 // disagree about one thread is worse than one star in the web app.
 
@@ -108,7 +108,7 @@ export function ClassificationCard({
 
       {needsReview && !isSorting && (
         <p className="apn-review-note">
-          <Trans>Amarnai wasn't sure about this one. Move it if it's in the wrong place.</Trans>
+          <Trans>Aziru wasn't sure about this one. Move it if it's in the wrong place.</Trans>
         </p>
       )}
 

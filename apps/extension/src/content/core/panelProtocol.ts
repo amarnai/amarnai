@@ -10,7 +10,7 @@
 //      was embedded in. Neither side trusts `event.data` to say who it is.
 //   2. Shape. A guard per message type, in the messaging.ts style. Anything that
 //      does not match is dropped silently — a mail page must never sprout an
-//      Amarnai error because some other script on it posted something.
+//      Aziru error because some other script on it posted something.
 //
 // `v` versions the protocol so an extension update that reloads the content
 // script while an old iframe is still alive cannot half-understand it.
@@ -115,7 +115,7 @@ export const PANEL_OPEN_PANEL = "amarnai:panel:openPanel" as const;
  * The workspace has switched the injected panel off, as the API just told the
  * frame. The host removes itself: the kill switch has to un-inject, not merely
  * blank what is injected, or a workspace that turned the panel off still has
- * Amarnai chrome on every mail page (OWA's drawer tab above Fluent's dialog
+ * Aziru chrome on every mail page (OWA's drawer tab above Fluent's dialog
  * layer, an entry in Gmail's sidebar rail).
  *
  * Additive without a version bump, unlike v2: this is frame → host only, so an

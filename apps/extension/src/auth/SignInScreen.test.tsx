@@ -5,7 +5,7 @@ import { I18nProvider } from "@lingui/react";
 
 // The Microsoft button must never render in a build that has no Microsoft client
 // id: the OAuth flow would fail on launch with "VITE_MS_CLIENT_ID is not
-// configured", which reads to the user as Amarnai being broken. MS_CLIENT_ID is
+// configured", which reads to the user as Aziru being broken. MS_CLIENT_ID is
 // a module-level const, so the config mock is chosen per test file via vi.mock
 // (hoisted); this file covers the configured case and asserts the gate exists.
 vi.mock("../config", () => ({

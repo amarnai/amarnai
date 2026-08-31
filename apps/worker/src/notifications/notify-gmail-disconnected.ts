@@ -78,8 +78,8 @@ export async function notifyGmailDisconnected(
 
   const title = "Gmail disconnected";
   const body = connection.emailAddress
-    ? `Amarnai lost access to ${connection.emailAddress}. Reconnect to resume email sync.`
-    : "Amarnai lost access to your inbox. Reconnect to resume email sync.";
+    ? `Aziru lost access to ${connection.emailAddress}. Reconnect to resume email sync.`
+    : "Aziru lost access to your inbox. Reconnect to resume email sync.";
 
   const messages: ExpoPushMessage[] = [];
   let recipientUserCount = 0;

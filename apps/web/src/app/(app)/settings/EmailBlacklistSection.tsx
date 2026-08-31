@@ -82,7 +82,7 @@ export function EmailBlacklistSection({ workspaceId, initialEmails }: Props) {
 
       <p className="settings-hint">
         <Trans>
-          Threads from these senders will never be imported or sorted by Amarnai.
+          Threads from these senders will never be imported or sorted by Aziru.
         </Trans>
       </p>
 

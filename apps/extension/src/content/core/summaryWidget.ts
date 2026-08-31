@@ -27,7 +27,7 @@ export type WidgetState =
 
 const HOST_ATTRIBUTE = "data-aziru-summary";
 
-// Amarnai brand tokens, inlined because the mail page has none of our CSS vars.
+// Aziru brand tokens, inlined because the mail page has none of our CSS vars.
 // Light values are packages/tokens colors.ts verbatim; dark values are the
 // html[data-theme="dark"] oklch tokens converted to sRGB. Keep both in step with
 // the token package — this is the one place the palette is duplicated, and it is
@@ -63,7 +63,7 @@ function paletteVars(p: typeof LIGHT): string {
     --am-hover: ${p.hover};`;
 }
 
-// Design intent: unmistakably Amarnai while sitting quietly inside Gmail.
+// Design intent: unmistakably Aziru while sitting quietly inside Gmail.
 //
 // The border does ALL the work of defining the card, because a fill cannot: the
 // most separation any surface achieves against Gmail's own background is 1.14:1
@@ -350,11 +350,11 @@ function render(
 
   const card = document.createElement("div");
   const base = dark ? "card dark" : "card";
-  // Announced as an aside rather than mail content, and named for Amarnai even
+  // Announced as an aside rather than mail content, and named for Aziru even
   // though the visible eyebrow is just "Summary" — a screen-reader user gets the
   // attribution a sighted user reads from the terracotta chrome.
   card.setAttribute("role", "note");
-  card.setAttribute("aria-label", "Amarnai thread summary");
+  card.setAttribute("aria-label", "Aziru thread summary");
   // The card is replaced in place as the request resolves; polite live region so
   // the arriving summary is announced instead of silently swapping under focus.
   card.setAttribute("aria-live", "polite");
@@ -401,7 +401,7 @@ function render(
     // mounted when the thread actually has discussion, so a thread without a
     // summary and without comments stays untouched.
     card.className = `${base} row`;
-    card.setAttribute("aria-label", "Amarnai team comments");
+    card.setAttribute("aria-label", "Aziru team comments");
     const eyebrow = document.createElement("span");
     eyebrow.className = "eyebrow";
     eyebrow.append(createLogoMark(document, 11));

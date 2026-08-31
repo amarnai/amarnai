@@ -27,7 +27,7 @@ export type ThreadSummaryCardState =
 export interface ThreadSummaryCardProps {
   state: ThreadSummaryCardState;
   /**
-   * Show the Amarnai mark beside the eyebrow. Off in the app and the panel,
+   * Show the Aziru mark beside the eyebrow. Off in the app and the panel,
    * where the reader already knows whose surface they are on; on where the card
    * is injected into Gmail or Outlook and has to say who wrote it. Matches the
    * in-page widget, whose eyebrow is the mark plus "Summary".

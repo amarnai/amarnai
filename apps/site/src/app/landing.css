@@ -307,11 +307,73 @@
 
 /* ─── Reviews ─────────────────────────────────────────────────────────────── */
 
+.ld-reviews-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.ld-reviews-arrow {
+  padding: 9px 11px;
+}
+
+.ld-reviews-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+  background: var(--surface);
+  border-color: var(--line-2);
+}
+
+.ld-reviews-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Dots are 8px tall for looks; the ::after pad gives them a real tap target. */
+.ld-reviews-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--line-3);
+  cursor: pointer;
+  transition: background 0.16s, width 0.16s;
+}
+
+.ld-reviews-dot::after {
+  content: "";
+  position: absolute;
+  inset: -9px -4px;
+}
+
+.ld-reviews-dot:hover { background: var(--ink-3); }
+
+.ld-reviews-dot[aria-current="true"] {
+  width: 22px;
+  background: var(--accent);
+}
+
+/* Carousel track: two cards visible per page, the rest reachable by swipe,
+   arrow buttons, or keyboard scroll. */
 .ld-reviews {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: calc(50% - 12px);
   gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 4px;
 }
+
+.ld-reviews::-webkit-scrollbar { display: none; }
+
+.ld-review { scroll-snap-align: start; }
 
 .ld-review {
   display: flex;
@@ -380,14 +442,14 @@
 }
 
 @media (max-width: 720px) {
-  .ld-reviews { grid-template-columns: 1fr; }
+  .ld-reviews { grid-auto-columns: 100%; }
 }
 
 /* ─── Step art illustrations ──────────────────────────────────────────────── */
 
 .ld-step-art {
   margin-top: 18px;
-  height: 116px;
+  min-height: 116px;
   border: 1px solid var(--line);
   background: var(--bg-soft);
   border-radius: var(--r-md);
@@ -403,7 +465,17 @@
 }
 
 /* Art 1 — Connect inbox */
-.ld-sa-connect { flex-direction: column; gap: 11px; }
+.ld-sa-connect { flex-direction: column; gap: 8px; }
+
+/* The real store CTA, compacted from its hero `lg` size to fit the card art. */
+.ld-sa-connect .ld-ext-btn.lg {
+  padding: 8px 16px;
+  font-size: 13.5px;
+  border-radius: 9px;
+}
+
+/* Install-then-connect flow arrow, drawn like the connectors between cards. */
+.ld-sa-connect-arrow { color: var(--line-3); flex: none; }
 
 /* Quiet Gmail/Outlook toggle in the connect step header. */
 .ld-sa-toggle {
@@ -501,6 +573,31 @@
   max-width: 286px;
 }
 
+/* The real mailbox compose, compacted from its mailbox-stage sizing (message
+   indent, tall body, full-size Send and pill) to fit the card art. */
+.ld-sa-draft .ld-mb-compose {
+  margin: 0;
+  max-width: none;
+  box-shadow: var(--shadow-1);
+}
+
+.ld-sa-draft .ld-mb-compose-body {
+  min-height: 40px;
+  padding: 10px 12px 8px;
+}
+
+.ld-sa-draft .ld-mb-compose-text { font-size: 12px; line-height: 1.55; }
+
+.ld-sa-draft .ld-mb-compose-foot { padding: 8px 10px; gap: 8px; }
+
+.ld-sa-draft .ld-mb-send { padding: 5px 14px; font-size: 12px; }
+
+.ld-sa-draft .ld-mb-reply-pill {
+  padding: 5px 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 .ld-dr-thread { display: flex; align-items: center; gap: 8px; }
 
 .ld-sa-ava {
@@ -544,55 +641,6 @@
   white-space: nowrap;
 }
 
-.ld-dr-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 9px 11px;
-  box-shadow: var(--shadow-1);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.ld-dr-card-top {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--f-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent-ink);
-}
-
-.ld-dr-body {
-  margin: 0;
-  font-size: 11px;
-  color: var(--ink-2);
-  line-height: 1.55;
-}
-
-.ld-dr-cursor {
-  display: inline-block;
-  font-size: 11px;
-  width: 1.5px;
-  height: 1em;
-  background: var(--accent-ink);
-  vertical-align: text-bottom;
-  margin-left: 1px;
-  opacity: 0;
-}
-
-.ld-dr-cursor--blink {
-  animation: ld-dr-cursor-blink 1.1s step-end infinite;
-}
-
-@keyframes ld-dr-cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
 /* ─── Demo sections ───────────────────────────────────────────────────────── */
 
 .ld-demo-section {
@@ -624,7 +672,7 @@
 /* ─── Browser demo frame (emails section) ─────────────────────────────────── */
 
 /* Simulated browser chrome: a tab strip over a toolbar. Deliberately generic —
-   Amarnai ships to both Chrome and Firefox, so nothing here copies one vendor's
+   Aziru ships to both Chrome and Firefox, so nothing here copies one vendor's
    shapes. Only the tabs and the pinned extension icon are interactive; the rest
    is drawn to make the frame read as a browser. */
 .ld-chrome {
@@ -839,7 +887,7 @@
 .ld-split-divider[hidden] { display: none; }
 
 
-/* Resize seam where the Amarnai side panel docks against the page.
+/* Resize seam where the Aziru side panel docks against the page.
    At rest it reads as the panel's own edge: a hairline border matching the
    pane divider, with a slim grab handle that only firms up on hover/drag.
    No two-way chevrons or standing caption, so it doesn't look like a
@@ -945,8 +993,10 @@
   .ld-browser-frame .ld-split-divider,
   .ld-browser-frame .ld-tb-ext { display: none; }
 
-  /* Browser extensions can't be installed on mobile; hide the CTA there. */
-  .ld-ext-btn { display: none; }
+  /* Browser extensions can't be installed on mobile; hide the CTA there,
+     and with it the install-then-connect arrow in the first step's art. */
+  .ld-ext-btn,
+  .ld-sa-connect-arrow { display: none; }
 
   /* With the extension button gone, the sign-up link is the only call to
      action left, so it takes the primary treatment. Same declarations as
@@ -1282,7 +1332,7 @@
 }
 
 /* The demo's two controls, side by side under the lede: which mailbox, and
-   whether Amarnai is in it. Different questions, so they read as two controls
+   whether Aziru is in it. Different questions, so they read as two controls
    rather than one segmented group. They sit inside .ld-copy — as a sibling they
    claimed a column of the head's flex row and squashed the paragraph. */
 .ld-demo-controls {
@@ -1291,4 +1341,298 @@
   gap: 20px;
   flex-wrap: wrap;
   margin-top: 20px;
+}
+
+/* ─── Collaboration demo (two screens, one comment thread) ────────────────── */
+
+.ld-collab-stage {
+  display: grid;
+  /* Pane, sync mark, pane; the email card up top spans all three tracks. */
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  padding: 20px;
+  background: var(--bg-soft);
+}
+
+/* The email the team is discussing, spanning both screens. */
+.ld-collab-email {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.ld-collab-sender-pfp {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ld-collab-email-main { flex: 1; min-width: 0; }
+
+.ld-collab-email-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ld-collab-sender { font-weight: 600; font-size: 14px; color: var(--ink); }
+.ld-collab-sender-email { font-size: 12px; color: var(--ink-3); }
+
+.ld-collab-subject {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  margin-top: 2px;
+}
+
+.ld-collab-snippet {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 4px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* The card's one call to action, on the header line rather than in a side
+   column so a changing assignee name only eats the line's whitespace and never
+   reflows the subject and snippet below. Scoped under the header to outrank
+   the shared .em-preview-assign ghost treatment regardless of import order. */
+.ld-collab-email-top .ld-collab-assign {
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 4px 12px;
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  transition: background 0.1s, color 0.1s;
+}
+
+.ld-collab-email-top .ld-collab-assign:hover {
+  background: var(--accent-line);
+  color: var(--accent-ink);
+}
+
+/* One member's screen: their identity on top, the shared comment card below.
+   Each pane is tinted with its member's hue — border in the hue's line token
+   and a soft halo mixed from its ink — so the two mirrored lists read as two
+   people at a glance. Both glows are identical in shape and strength; only the
+   hue differs, so neither pane reads as selected. The halo swells while the
+   pane has unread comments (the glow is the notification) and settles when
+   the visitor clicks or focuses into it. */
+.ld-collab-pane {
+  --pane-glow: 16%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--pane-line, var(--line));
+  border-radius: var(--r-md);
+  min-width: 0;
+  box-shadow: 0 0 28px -6px color-mix(in srgb, var(--pane-ink, var(--ink-3)) var(--pane-glow), transparent);
+  transition: box-shadow 0.4s ease;
+}
+
+.ld-collab-hue-gold {
+  --pane-ink: var(--folder-yellow-ink);
+  --pane-soft: var(--folder-yellow-soft);
+  --pane-line: var(--folder-yellow-line);
+}
+
+.ld-collab-hue-teal {
+  --pane-ink: var(--folder-teal-ink);
+  --pane-soft: var(--folder-teal-soft);
+  --pane-line: var(--folder-teal-line);
+}
+
+.ld-collab-pane.has-unread { --pane-glow: 40%; }
+
+/* Glows bloom harder against a dark ground; pull the alpha back. */
+html[data-theme="dark"] .ld-collab-pane { --pane-glow: 11%; }
+html[data-theme="dark"] .ld-collab-pane.has-unread { --pane-glow: 30%; }
+
+/* Flatten the comments widget's own inset box: its job in the app is to
+   separate comments from the preview's other content, and here the pane holds
+   nothing else — the hue border is the boundary. The comment items and the
+   composer keep their chrome; the eyebrow (with its live count) stays as a
+   plain label. */
+.ld-collab-pane .em-comments-card {
+  margin-top: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+/* Two small echoes tying the hue to the person: a ring on the avatar and the
+   role pill tinted in the same family. */
+.ld-collab-pane .ld-collab-pfp { box-shadow: 0 0 0 2px var(--pane-line); }
+
+.ld-collab-pane .ld-collab-role {
+  color: var(--pane-ink);
+  background: var(--pane-soft);
+  border-color: var(--pane-line);
+}
+
+.ld-collab-persona {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ld-collab-pfp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ld-collab-persona-text { display: flex; flex-direction: column; }
+
+.ld-collab-role {
+  align-self: flex-start;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 7px;
+  margin-top: 3px;
+}
+
+.ld-collab-name { font-weight: 600; font-size: 14px; color: var(--ink); }
+
+/* Between the two screens: a two-way sync mark, so the mirrored lists read
+   as one conversation kept identical rather than two widgets side by side.
+   Keyed on a nonce in the component, it remounts on every post, restarting
+   the pulse at the exact moment the other pane updates. */
+.ld-collab-sync {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  gap: 8px;
+  max-width: 104px;
+  text-align: center;
+}
+
+.ld-collab-sync-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+}
+
+.ld-collab-sync-badge.pulse {
+  animation: ld-collab-sync-pulse 0.55s ease;
+}
+
+@keyframes ld-collab-sync-pulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.ld-collab-sync-caption {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ink-3);
+}
+
+/* Wraps the badge; on mobile it grows an avatar button on each side and
+   becomes the seat switcher. The buttons are display:none on desktop, so
+   there the row collapses to the badge alone. */
+.ld-collab-switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ld-collab-switch-btn {
+  display: none;
+  position: relative;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.ld-collab-switch-btn img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--pane-line);
+  opacity: 0.55;
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+
+.ld-collab-switch-btn.is-active img {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--pane-ink);
+}
+
+.ld-collab-switch-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Narrow viewports show one screen at a time. The sync mark moves between the
+   email and the visible pane and becomes the seat switcher: both avatars with
+   the two-way badge between them, active seat ringed in its hue, the hidden
+   member's unread count on their avatar (their pane's glow can't be seen). */
+@media (max-width: 720px) {
+  .ld-collab-stage { grid-template-columns: 1fr; }
+  .ld-collab-email { flex-wrap: wrap; }
+  /* Narrow header: the pill stays on line one beside the name, and the email
+     address takes its own full-width line, instead of the three-line rag the
+     free wrap produced. */
+  .ld-collab-sender-email { order: 1; flex-basis: 100%; }
+  /* And the name truncates rather than pushing the pill off the line. */
+  .ld-collab-sender {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* email (0) → switcher (1) → the one visible pane (2). */
+  .ld-collab-sync { order: 1; max-width: none; gap: 8px; }
+  .ld-collab-pane { order: 2; }
+  .ld-collab-pane:not(.is-active) { display: none; }
+  .ld-collab-switch-btn { display: inline-flex; }
 }

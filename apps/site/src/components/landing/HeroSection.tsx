@@ -11,15 +11,15 @@ export function HeroSection() {
           <div className="ld-hero-main">
             <h1>
               <Trans>
-                Stop sorting email.<br />
-                <span className="soft">Sort it once.</span>
+                Open your inbox.<br />
+                <span className="soft">It&apos;s already sorted.</span>
               </Trans>
             </h1>
 
             <p className="ld-hero-sub">
               <Trans>
-                Save hours of email sorting every week. Let Amarnai sort your
-                inbox, filing old and new mail where it belongs.
+                Save hours of work every week. Aziru sorts your old and new
+                emails, summarizes your threads, and drafts your replies.
               </Trans>
             </p>
 

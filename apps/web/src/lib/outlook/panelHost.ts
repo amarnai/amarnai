@@ -41,7 +41,7 @@ export function createOutlookPanelHost({
     tokenStore: paneTokenStore,
 
     onThreadContext(listener) {
-      // Outlook calls it a conversationId, Amarnai calls it a providerThreadId,
+      // Outlook calls it a conversationId, Aziru calls it a providerThreadId,
       // and they are the same value. Renamed once, here, rather than teaching
       // the shared panel a second word for the same thing.
       //

@@ -51,7 +51,7 @@ export function defaultFolderColorKey(id: string): FolderColorKey {
 
 // Resolve a folder to its palette key in priority order.
 export function resolveFolderColorKey(folder: FolderColorInput): FolderColorKey {
-  // 1. Provider-native color. Left as a commented stub: Amarnai will later
+  // 1. Provider-native color. Left as a commented stub: Aziru will later
   //    create Gmail labels / Outlook categories that carry their own colors,
   //    map those back to a palette key, and prefer them here. No provider
   //    color sync exists today, so this branch never fires.

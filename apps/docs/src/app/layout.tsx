@@ -4,10 +4,10 @@ import type { ReactNode } from 'react';
 
 export const metadata = {
   title: {
-    template: '%s | Amarnai Docs',
-    default: 'Amarnai Docs',
+    template: '%s | Aziru Docs',
+    default: 'Aziru Docs',
   },
-  description: 'Amarnai documentation — self-hosting and architecture.',
+  description: 'Aziru documentation — self-hosting and architecture.',
 };
 
 export default function Layout({ children }: { children: ReactNode }) {

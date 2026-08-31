@@ -18,9 +18,9 @@ export const MS_CLIENT_ID: string =
   (import.meta.env["VITE_MS_CLIENT_ID"] as string | undefined) ?? "";
 
 // InboxSDK application id, used by the Gmail content script to render the
-// "Amarnai Reply" button in Gmail's own compose. Not a secret — it ships inside
+// "Aziru Reply" button in Gmail's own compose. Not a secret — it ships inside
 // the extension bundle and identifies the app to the SDK. Self-hosters should
-// register their own at inboxsdk.com rather than reuse Amarnai's. Empty means
+// register their own at inboxsdk.com rather than reuse Aziru's. Empty means
 // the button never loads; everything else in the content script still works.
 export const INBOXSDK_APP_ID: string =
   (import.meta.env["VITE_INBOXSDK_APP_ID"] as string | undefined) ?? "";

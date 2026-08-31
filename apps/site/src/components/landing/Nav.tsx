@@ -39,15 +39,16 @@ export function Nav({ anchorBase = "" }: { anchorBase?: string }) {
   return (
     <header className={`ld-nav${scrolled ? " scrolled" : ""}`} id="nav">
       <div className="ld-nav-inner">
-        <a className="ld-brand" {...anchorProps("top")} aria-label={_(msg`Amarnai home`)}>
+        <a className="ld-brand" {...anchorProps("top")} aria-label={_(msg`Aziru home`)}>
           <img src="/logo.png" alt="" aria-hidden="true" className="ld-brand-mark" />
-          Amarnai
+          Aziru
         </a>
 
         <nav className="ld-nav-links">
+          <a {...anchorProps("triage")}><Trans>See it work</Trans></a>
           <a {...anchorProps("how")}><Trans>How it works</Trans></a>
           <a {...anchorProps("taxonomy")}><Trans>Your folders</Trans></a>
-          <a {...anchorProps("triage")}><Trans>See it work</Trans></a>
+          <a {...anchorProps("collab")}><Trans>Teamwork</Trans></a>
           <a {...anchorProps("faq")}><Trans>FAQ</Trans></a>
           <ThemeToggle className="theme-toggle--nav" />
           <Link className="ld-btn ld-nav-cta accent" href="/pricing">

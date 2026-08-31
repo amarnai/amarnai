@@ -12,7 +12,7 @@ import { OPEN_PANEL_MESSAGE } from "../core/messaging.js";
 // Gmail's own right-hand sidebar, fed the open conversation over postMessage.
 //
 // An iframe rather than DOM in the page, for one reason that decides everything
-// else: the panel needs Amarnai's session tokens, and a content script shares
+// else: the panel needs Aziru's session tokens, and a content script shares
 // the page's origin. Putting the UI in an extension-origin document keeps the
 // tokens, the API calls, and the SSE connection out of reach of anything running
 // on mail.google.com — including Gmail itself.
@@ -23,9 +23,9 @@ import { OPEN_PANEL_MESSAGE } from "../core/messaging.js";
 // conversation out of Gmail's DOM, and arming the compose.
 
 const PANEL_URL_PATH = "injected.html";
-const PANEL_TITLE = "Amarnai";
+const PANEL_TITLE = "Aziru";
 // The full logomark, not the reply button's single mirrored wedge: this is the
-// entry point for Amarnai as a whole in Gmail's rail, so it carries the brand
+// entry point for Aziru as a whole in Gmail's rail, so it carries the brand
 // mark rather than one feature's affordance.
 const ICON_PATH = "panel-icon.svg";
 
@@ -72,7 +72,7 @@ function watchThreadContext(onChange: (context: PanelThreadContext | null) => vo
 }
 
 /**
- * Put the Amarnai panel in Gmail's sidebar.
+ * Put the Aziru panel in Gmail's sidebar.
  *
  * Resolves to a handle other features can point controls at (the summary
  * card's comment bubble); every no-panel path resolves to the inert handle. A

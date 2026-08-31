@@ -9,12 +9,12 @@ import type { MockProvider } from "./types.js";
  * Outlook category pill. The namespace is on screen rather than implied, so a
  * visitor can see whose label it is.
  *
- * The chip reads "Amarnai/<folder>": the namespace, held back, and the folder
+ * The chip reads "Aziru/<folder>": the namespace, held back, and the folder
  * itself. Intermediate ancestors are left out because a full path swamps an
  * inbox row; the whole stored name is still the chip's title.
  *
  * The swatch comes from the same resolver the workspace chips use, keyed on the
- * same folder id, so one folder is one color in the plan canvas, in the Amarnai
+ * same folder id, so one folder is one color in the plan canvas, in the Aziru
  * panel, and here inside the mailbox.
  */
 export function ProviderLabelChip({
@@ -23,7 +23,7 @@ export function ProviderLabelChip({
   provider,
 }: {
   folderId: string;
-  /** Namespace-first path segments, e.g. ["Amarnai", "Customers", "Billing"]. */
+  /** Namespace-first path segments, e.g. ["Aziru", "Customers", "Billing"]. */
   segments: string[];
   provider: MockProvider;
 }) {

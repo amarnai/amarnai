@@ -75,7 +75,7 @@ export function describeNotification(n: NotificationItem, i18n: I18n): Notificat
     case "extension_not_installed": {
       const href = extensionStoreUrl();
       return {
-        title: i18n._(msg`Install the Amarnai browser extension`),
+        title: i18n._(msg`Install the Aziru browser extension`),
         body: i18n._(msg`Save time by triaging your inbox without leaving your email.`),
         action: href ? { kind: "open_url", href } : null,
       };
@@ -84,8 +84,8 @@ export function describeNotification(n: NotificationItem, i18n: I18n): Notificat
       return {
         title: i18n._(msg`Gmail disconnected`),
         body: d.gmailAddress
-          ? i18n._(msg`Amarnai lost access to ${d.gmailAddress}. Click to reconnect your Google account.`)
-          : i18n._(msg`Amarnai lost access to your inbox. Click to reconnect your Google account.`),
+          ? i18n._(msg`Aziru lost access to ${d.gmailAddress}. Click to reconnect your Google account.`)
+          : i18n._(msg`Aziru lost access to your inbox. Click to reconnect your Google account.`),
         action: { kind: "reconnect_gmail" },
       };
     case "backfill_complete":

@@ -171,7 +171,7 @@ triage.patch(
       }
     }
 
-    // Reconcile the thread's Amarnai label/category to the new folder (opt-in
+    // Reconcile the thread's Aziru label/category to the new folder (opt-in
     // writeback). Best-effort + deduped; the worker no-ops when writeback is off.
     try {
       await writebackThreadLabelQueue.add(

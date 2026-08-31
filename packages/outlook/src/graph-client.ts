@@ -747,7 +747,7 @@ export class GraphClient {
    * Idempotently ensure a master category exists for each folder def and return
    * nodeId → category display name (the identifier used on messages). Outlook
    * categories are FLAT, so the full path is encoded as a single literal display
-   * name ("Amarnai/Clients/Acme") — only the leaf category is created, no
+   * name ("Aziru/Clients/Acme") — only the leaf category is created, no
    * ancestors. Matching is case-insensitive (Outlook treats category names so).
    * The palette key maps to an Outlook preset color. Never deletes or renames.
    */
@@ -800,7 +800,7 @@ export class GraphClient {
   }
 
   /**
-   * Reconcile the Amarnai-managed categories on a thread's messages to exactly
+   * Reconcile the Aziru-managed categories on a thread's messages to exactly
    * `desiredLabelIds` (of the `managedLabelIds` set), preserving any categories
    * the user set themselves. Outlook applies categories PER MESSAGE, and PATCH
    * replaces the whole array, so this reads-modifies-writes each message and

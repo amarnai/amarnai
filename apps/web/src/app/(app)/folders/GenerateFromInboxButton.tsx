@@ -291,7 +291,7 @@ export function GenerateFromInboxButton({
                   <>
                     <p className="text-muted" style={{ marginBottom: 8 }}>
                       <Trans>
-                        Amarnai will analyze your senders, labels, and subject keywords (never message
+                        Aziru will analyze your senders, labels, and subject keywords (never message
                         bodies) to suggest a personalized set of folders. You can review and edit before
                         anything is applied.
                       </Trans>

@@ -12,7 +12,7 @@ import {
 } from "../core/replyState.js";
 import { detectOutlookThread } from "./detectThread.js";
 
-// The "Amarnai Reply" button in OWA's own reading pane (product decision
+// The "Aziru Reply" button in OWA's own reading pane (product decision
 // 2026-07-27: Outlook gets the same injected surfaces as Gmail; the Office
 // add-in stays the surface for desktop Outlook, where content scripts cannot
 // go). There is no InboxSDK for OWA, so both halves are hand-rolled:
@@ -227,7 +227,7 @@ function makeButton(doc: Document): HTMLElement {
   button.setAttribute(OWA_BUTTON_ATTRIBUTE, "");
   button.type = "button";
   // OWA's classes are build-hashed, so the pill is self-styled to match the
-  // native [Reply] [Forward] pills' shape; clay accent marks it as Amarnai.
+  // native [Reply] [Forward] pills' shape; clay accent marks it as Aziru.
   button.style.display = "inline-flex";
   button.style.alignItems = "center";
   button.style.gap = "8px";

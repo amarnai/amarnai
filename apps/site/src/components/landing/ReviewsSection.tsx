@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -46,7 +46,7 @@ function ReviewCard({
   children: ReactNode;
 }) {
   return (
-    <figure className="ld-review ld-reveal">
+    <figure className="ld-review">
       <div className="ld-review-head">
         <img className="ld-review-ava" src={portrait} alt="" />
         <figcaption className="ld-review-id">
@@ -61,7 +61,77 @@ function ReviewCard({
   );
 }
 
+// Card order. Names are proper nouns, so they are not translated; they exist
+// only to name each dot for screen readers.
+const REVIEWERS = [
+  "Akhenaten",
+  "Tutu",
+  "Burna-Buriash",
+  "Tushratta",
+  "Abdi-Heba",
+  "Rib-Hadda",
+  "Suppiluliuma",
+];
+
 export function ReviewsSection() {
+  const { _ } = useLingui();
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // Which cards the track currently shows, and whether it is scrolled to an
+  // end. Derived from layout rather than arithmetic on widths and gaps, so it
+  // holds for two-up desktop and one-up mobile without knowing which is which.
+  const [view, setView] = useState({ first: 0, last: 0, atStart: true, atEnd: false });
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const update = () => {
+      const box = track.getBoundingClientRect();
+      const shown = [...track.children].flatMap((card, i) => {
+        const r = card.getBoundingClientRect();
+        return r.left < box.right - 1 && r.right > box.left + 1 ? [i] : [];
+      });
+      const next = {
+        first: shown[0] ?? 0,
+        last: shown[shown.length - 1] ?? 0,
+        atStart: track.scrollLeft <= 1,
+        atEnd: track.scrollLeft >= track.scrollWidth - track.clientWidth - 1,
+      };
+      // Scroll fires per frame; skip the re-render when nothing moved a card.
+      setView((v) =>
+        v.first === next.first &&
+        v.last === next.last &&
+        v.atStart === next.atStart &&
+        v.atEnd === next.atEnd
+          ? v
+          : next,
+      );
+    };
+
+    update();
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      track.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  // A "page" is whatever is in view: two cards on desktop, one on mobile.
+  const page = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    track?.scrollBy({ left: dir * track.clientWidth, behavior: "smooth" });
+  };
+
+  const goTo = (i: number) => {
+    trackRef.current?.children[i]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    });
+  };
+
   return (
     <section className="ld-section" id="reviews">
       <div className="ld-wrap">
@@ -71,7 +141,14 @@ export function ReviewsSection() {
           </h2>
         </div>
 
-        <div className="ld-reviews">
+        <div
+          className="ld-reviews ld-reveal"
+          id="reviews-track"
+          ref={trackRef}
+          tabIndex={0}
+          role="group"
+          aria-label={_(msg`Reviews from early users`)}
+        >
           <ReviewCard
             portrait="/akhenaten-review.png"
             name={<Trans>Akhenaten</Trans>}
@@ -79,26 +156,149 @@ export function ReviewsSection() {
             source={<Trans>Translated from hieroglyphics</Trans>}
           >
             <Trans>
-              Before Amarnai, my scribes and I sorted letters from sunrise to
+              Before Aziru, my scribes and I sorted letters from sunrise to
               sunset. Now I finally have the bandwidth to help my vassals,
               promote the cult of Aten, and plan the city of Amarna.
             </Trans>
           </ReviewCard>
 
           <ReviewCard
-            portrait="/aziru-review.png"
-            name={<Trans>Aziru</Trans>}
-            title={<Trans>King of Amurru</Trans>}
+            portrait="/tutu-review.png"
+            name={<Trans>Tutu</Trans>}
+            title={<Trans>Royal scribe</Trans>}
+            source={<Trans>Translated from hieroglyphics</Trans>}
+          >
+            <Trans>
+              Aziru saved me so much time that Pharaoh believed I had doubled
+              my staff. Petitions, tribute lists, complaints: all sorted before
+              I break a seal. It even drafts my replies, though nothing is sent
+              without my approval. And when a letter is beyond my judgment, I
+              simply tag Pharaoh so he can take a look.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/burna-buriash-review.png"
+            name={<Trans>Burna-Buriash</Trans>}
+            title={<Trans>King of Babylon</Trans>}
             source={<Trans>Translated from cuneiform</Trans>}
           >
             <Trans>
-              Letters reached me from Pharaoh in the south and the Hittites in
-              the north, and I could answer only one lord at a time. Amarnai
-              puts the mail that cannot wait at the top of my pile and drafts
-              my reply, ready for my seal. Nothing important
-              goes unanswered now.
+              Tablets arrive from Egypt, from Hatti, and from every merchant
+              robbed on the road to Canaan, and all of them land in the same
+              basket. Aziru sorts them before I break the seal: gold shipments
+              here, caravan complaints there, marriage terms in their own
+              folder. I still write to Pharaoh about the gold, but now it is
+              the first letter of my day instead of the last.
             </Trans>
           </ReviewCard>
+
+          <ReviewCard
+            portrait="/tushratta-review.png"
+            name={<Trans>Tushratta</Trans>}
+            title={<Trans>King of Mitanni</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              My letters to Egypt are long, and the replies are longer, and for
+              years I could not tell a dowry inventory from a note about the
+              statue of Shaushka. Aziru keeps the gold I am owed in one folder
+              and the pleasantries in another. Pharaoh still sends less gold
+              than promised, but at least I now know exactly which tablet says
+              so.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/abdi-heba-review.png"
+            name={<Trans>Abdi-Heba</Trans>}
+            title={<Trans>Governor of Urushalim</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              I have asked the king for archers in nearly every letter I have
+              ever written, and the reports of raids kept getting buried under
+              tax accounts. Aziru puts anything urgent from the hill country in
+              front of me first. The archers have still not arrived, but my
+              inbox is finally in order.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/rib-hadda-review.png"
+            name={<Trans>Rib-Hadda</Trans>}
+            title={<Trans>Governor of Byblos</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              I have sent sixty-eight letters to Pharaoh and received almost
+              nothing back, so I know something about a hopeless inbox. Aziru
+              files my pleas, my grain shortages, and my warnings about the
+              sons of Abdi-Ashirta into their own folders. I remain besieged,
+              but I am besieged in an organized way.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/suppiluliuma-review.png"
+            name={<Trans>Suppiluliuma</Trans>}
+            title={<Trans>King of Hatti</Trans>}
+            source={<Trans>Translated from cuneiform</Trans>}
+          >
+            <Trans>
+              A queen of Egypt once wrote asking me to send her one of my sons
+              for a husband. Such a thing had never happened, so I sent a
+              chamberlain all the way to Egypt to confirm the tablet was
+              genuine. Aziru separates what is urgent from what merely claims
+              to be. It does not vet royal marriage proposals, but everything
+              else reaches me already sorted.
+            </Trans>
+          </ReviewCard>
+        </div>
+
+        <div className="ld-reviews-nav ld-reveal">
+          <button
+            type="button"
+            className="ld-btn ld-reviews-arrow"
+            aria-label={_(msg`Previous reviews`)}
+            aria-controls="reviews-track"
+            disabled={view.atStart}
+            onClick={() => page(-1)}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+
+          <div className="ld-reviews-dots">
+            {REVIEWERS.map((reviewer, i) => {
+              const n = i + 1;
+              return (
+                <button
+                  key={reviewer}
+                  type="button"
+                  className="ld-reviews-dot"
+                  aria-label={_(msg`Review ${n}, ${reviewer}`)}
+                  aria-controls="reviews-track"
+                  aria-current={i >= view.first && i <= view.last}
+                  onClick={() => goTo(i)}
+                />
+              );
+            })}
+          </div>
+
+          <button
+            type="button"
+            className="ld-btn ld-reviews-arrow"
+            aria-label={_(msg`More reviews`)}
+            aria-controls="reviews-track"
+            disabled={view.atEnd}
+            onClick={() => page(1)}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         </div>
       </div>
     </section>

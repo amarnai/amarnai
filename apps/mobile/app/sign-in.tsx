@@ -81,7 +81,7 @@ export default function SignInScreen() {
         keyboardDismissMode="interactive"
       >
         <View style={authStyles.form}>
-          <Text style={authStyles.heading}>Amarnai</Text>
+          <Text style={authStyles.heading}>Aziru</Text>
           <Text style={authStyles.subheading}><Trans>Sign in to triage your inbox</Trans></Text>
 
           <TextInput

@@ -11,7 +11,7 @@ export function TaxonomyDemoSection() {
             <p className="ld-section-lede">
               <Trans>
                 Your folders form a simple tree, branching out from the inbox.
-                Let Amarnai generate them from your inbox, start from a
+                Let Aziru generate them from your inbox, start from a
                 template, or draw them yourself. Then it walks the tree for
                 every email that arrives.
               </Trans>

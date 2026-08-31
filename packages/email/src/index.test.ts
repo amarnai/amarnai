@@ -25,7 +25,7 @@ describe("registration notice emails", () => {
     expect(sendMail).toHaveBeenCalledTimes(1);
     const mail = sendMail.mock.calls[0]![0] as Record<string, unknown>;
     expect(mail.to).toBe("owner@x.com");
-    expect(mail.subject).toBe("You already have an Amarnai account");
+    expect(mail.subject).toBe("You already have an Aziru account");
     expect(mail.html).toContain("/sign-in");
     expect(mail.html).toContain("/forgot-password");
     expect(mail.html).not.toContain("Unsubscribe");
@@ -35,7 +35,7 @@ describe("registration notice emails", () => {
     await sendGoogleAccountEmail("owner@x.com");
 
     const mail = sendMail.mock.calls[0]![0] as Record<string, unknown>;
-    expect(mail.subject).toBe("You already have an Amarnai account");
+    expect(mail.subject).toBe("You already have an Aziru account");
     expect(mail.html).toContain("/sign-in");
     expect(mail.html).toContain("Google");
   });
@@ -48,7 +48,7 @@ describe("sendWelcomeEmail", () => {
     expect(sendMail).toHaveBeenCalledTimes(1);
     const mail = sendMail.mock.calls[0]![0] as Record<string, unknown>;
     expect(mail.to).toBe("new@user.com");
-    expect(mail.subject).toBe("Welcome to Amarnai");
+    expect(mail.subject).toBe("Welcome to Aziru");
     expect(mail.html).toContain("Welcome, Ada!");
     expect(mail.html).toContain("/emails");
     // Transactional one-shot — never carries an unsubscribe affordance.
@@ -59,7 +59,7 @@ describe("sendWelcomeEmail", () => {
   it("falls back to a generic greeting without a name", async () => {
     await sendWelcomeEmail("new@user.com");
     const mail = sendMail.mock.calls[0]![0] as Record<string, unknown>;
-    expect(mail.html).toContain("Welcome to Amarnai!");
+    expect(mail.html).toContain("Welcome to Aziru!");
   });
 
   it("escapes HTML in the display name (no markup injection)", async () => {

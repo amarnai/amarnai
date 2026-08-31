@@ -6,10 +6,10 @@ import { msg } from "@lingui/core/macro";
 import type { MockProvider } from "./types.js";
 
 /**
- * The Amarnai Reply flow inside the mail page, which runs in the order the real
+ * The Aziru Reply flow inside the mail page, which runs in the order the real
  * extension runs it: the entry point opens the provider's own reply compose,
  * generation starts by itself, and the finished text lands in the compose body.
- * Nothing here is an Amarnai window — the draft ends up in the mailbox's editor,
+ * Nothing here is an Aziru window — the draft ends up in the mailbox's editor,
  * under the mailbox's own Send button, which is the whole point of the feature.
  */
 export type ReplyStage = "idle" | "drafting" | "ready";
@@ -18,7 +18,7 @@ export type ReplyStage = "idle" | "drafting" | "ready";
 export const DRAFTING_MS = 1400;
 
 /**
- * The Amarnai Reply mark: the left-pointing wedge from the logo, the same
+ * The Aziru Reply mark: the left-pointing wedge from the logo, the same
  * polygon the extension injects (content/core/replyIcon.ts, and its twin in the
  * extension's public/reply-button-icon.svg for InboxSDK's URL-only API). Keep
  * the points in step with those — this is the third copy of one drawing, and it
@@ -35,7 +35,7 @@ export function AziruReplyIcon({ size = 14 }: { size?: number }) {
 /**
  * The entry point, styled as one of the host mailbox's own pills so it reads as
  * part of the reply row rather than an overlay dropped on top. It carries the
- * Amarnai mark because that is what tells a reader which pill is not Gmail's.
+ * Aziru mark because that is what tells a reader which pill is not Gmail's.
  */
 export function AziruReplyPill({
   stage,
@@ -57,7 +57,7 @@ export function AziruReplyPill({
       data-drafting={drafting || undefined}
       disabled={drafting}
       onClick={onStart}
-      aria-label={_(msg`Draft a reply with Amarnai`)}
+      aria-label={_(msg`Draft a reply with Aziru`)}
     >
       {drafting ? (
         <>
@@ -67,7 +67,7 @@ export function AziruReplyPill({
       ) : (
         <>
           <AziruReplyIcon />
-          <Trans>Amarnai Reply</Trans>
+          <Trans>Aziru Reply</Trans>
         </>
       )}
     </button>
@@ -79,7 +79,7 @@ export function AziruReplyPill({
  * is the same control in its second position (the real extension puts it beside
  * Send), so a visitor who missed it in the reply row meets it here.
  *
- * Send is drawn but dead. It is the mailbox's button, not ours, and Amarnai
+ * Send is drawn but dead. It is the mailbox's button, not ours, and Aziru
  * never sends: the draft waits here for edits either way.
  */
 export function AziruCompose({
@@ -139,7 +139,7 @@ export function AziruCompose({
 }
 
 /**
- * The Amarnai Reply icon button in a message's header row, beside the mailbox's
+ * The Aziru Reply icon button in a message's header row, beside the mailbox's
  * own reply arrow. Gmail-only: the real extension mounts it on the last message
  * of a thread, and clicking it opens the reply and starts drafting in one go,
  * exactly as the pill in the reply row does.
@@ -159,8 +159,8 @@ export function AziruReplyHeaderButton({
       className="ld-mb-head-btn"
       disabled={stage === "drafting"}
       onClick={onStart}
-      aria-label={_(msg`Draft a reply with Amarnai`)}
-      title={_(msg`Amarnai Reply`)}
+      aria-label={_(msg`Draft a reply with Aziru`)}
+      title={_(msg`Aziru Reply`)}
     >
       <AziruReplyIcon size={15} />
     </button>

@@ -124,7 +124,7 @@ export function Sidebar({
       <div className="sidebar-brand-row">
         <span className="sidebar-brand">
           <Image src="/logo.png" alt="" width={22} height={22} />
-          Amarnai
+          Aziru
         </span>
         <NotificationBell currentWorkspaceId={workspace?.id ?? null} />
       </div>

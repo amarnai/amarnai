@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { isOutlookAddinEnabled, OFFICE_JS_ORIGIN } from "@/lib/outlook-addin";
 
 export const metadata = {
-  title: "Amarnai",
+  title: "Aziru",
   robots: { index: false, follow: false },
 };
 

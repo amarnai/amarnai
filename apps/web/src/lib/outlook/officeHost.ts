@@ -140,7 +140,7 @@ export function subscribeOutlookContext(
 /**
  * Open Outlook's own reply form with the draft in it. This is the only mailbox
  * write the add-in ever performs: Outlook composes and the user sends, exactly
- * as they would without Amarnai. Nothing here can send mail.
+ * as they would without Aziru. Nothing here can send mail.
  */
 export function insertReplyDraft(office: OfficeLike, htmlBody: string): void {
   const item = office.context.mailbox?.item;

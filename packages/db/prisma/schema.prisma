@@ -510,7 +510,7 @@ model TaxonomyNodeProviderLink {
   mailboxKey  String
   // Gmail: label id ("Label_123"). Outlook: category displayName (its identifier).
   providerLabelId String
-  // The "Amarnai/Parent/Child" path used at provisioning time. Drift between this
+  // The "Aziru/Parent/Child" path used at provisioning time. Drift between this
   // and the node's current path is the seam for the deferred rename cascade.
   providerPath    String
   provisionedAt   DateTime @default(now())
@@ -596,7 +596,7 @@ model EmailThread {
   gmailIsSpam       Boolean      @default(false)
   gmailIsPromotions Boolean      @default(false)
   gmailIsTrash      Boolean      @default(false)
-  // User-marked "important" star. Set from the Amarnai UI (never derived from
+  // User-marked "important" star. Set from the Aziru UI (never derived from
   // Gmail's own IMPORTANT label); shared across the workspace.
   isImportant       Boolean      @default(false)
   // True when every message looks automated/bulk (notifications, newsletters,
@@ -1055,12 +1055,12 @@ model GmailSyncSettings {
   // shipping the content scripts); the extension itself has no toggle, so this
   // workspace setting is the only way to turn it off.
   threadSummaryInjectionEnabled Boolean @default(true)
-  // Whether the browser extension injects its "Amarnai Reply" draft button into
+  // Whether the browser extension injects its "Aziru Reply" draft button into
   // the native Gmail/Outlook compose for this workspace. On by default. Kept
   // separate from the summary toggle: the surfaces are independently useful, and
   // drafting spends draft quota while reading a summary does not.
   replyButtonInjectionEnabled Boolean @default(true)
-  // Whether the browser extension / Outlook add-in renders the full Amarnai
+  // Whether the browser extension / Outlook add-in renders the full Aziru
   // panel inside the native Gmail/Outlook UI for this workspace. On by default.
   // A third toggle rather than a reuse of the two above: the panel is the only
   // surface that reads thread classification and mutates it, so a workspace may

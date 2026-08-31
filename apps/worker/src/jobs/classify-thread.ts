@@ -703,7 +703,7 @@ export function createClassifyThreadWorker(): Worker {
           }).catch(() => {});
 
           // ── Folder-label writeback (opt-in) ───────────────────────────────
-          // Reconcile the thread's Amarnai label/category to its new folder.
+          // Reconcile the thread's Aziru label/category to its new folder.
           // Best-effort + deduped per (workspace, thread); the job itself no-ops
           // when writeback is off, so this is cheap when the feature is unused.
           await writebackThreadLabelQueue

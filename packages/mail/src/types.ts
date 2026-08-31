@@ -82,7 +82,7 @@ export interface MailProvider {
   ensureFolderLabels(defs: MailFolderLabelDef[]): Promise<Map<string, string>>;
 
   /**
-   * Declaratively reconcile the Amarnai-managed labels/categories on one thread:
+   * Declaratively reconcile the Aziru-managed labels/categories on one thread:
    * after the call, of `managedLabelIds` exactly `desiredLabelIds` are present
    * (foreign labels/categories the user set are left untouched). Idempotent and
    * MUST make zero write calls when the thread already matches — that no-op is
@@ -95,11 +95,11 @@ export interface MailProvider {
 }
 
 /** One folder to mirror provider-side. Segments are pre-sanitized, root-first,
- *  and namespace-prefixed (the first segment is the "Amarnai" namespace). */
+ *  and namespace-prefixed (the first segment is the "Aziru" namespace). */
 export type MailFolderLabelDef = {
   /** Taxonomy node id — for the returned map and logging only. */
   nodeId: string;
-  /** e.g. ["Amarnai", "Clients", "Acme"]. Gmail joins on "/" (nesting); Outlook
+  /** e.g. ["Aziru", "Clients", "Acme"]. Gmail joins on "/" (nesting); Outlook
    *  uses the joined string as a flat display name. */
   pathSegments: string[];
   /** A FOLDER_COLOR_KEYS member; the adapter maps it to a provider-native color. */
@@ -114,7 +114,7 @@ export type MailApplyThreadLabelsOptions = {
   messageIds: string[];
   /** Managed label/category ids that SHOULD be on the thread after the call. */
   desiredLabelIds: string[];
-  /** Every Amarnai-managed label/category id, so foreign ones are preserved. */
+  /** Every Aziru-managed label/category id, so foreign ones are preserved. */
   managedLabelIds: string[];
 };
 

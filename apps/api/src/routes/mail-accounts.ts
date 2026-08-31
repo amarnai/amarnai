@@ -7,7 +7,7 @@ const mailAccounts = new Hono<AppEnv>();
 // ─── GET /me/mail-accounts ─────────────────────────────────────────────────────
 //
 // Every surface injected into a mail client starts from the same question: the
-// page knows which mailbox is open, but every Amarnai call is keyed by
+// page knows which mailbox is open, but every Aziru call is keyed by
 // workspace. Answering it used to mean one /workspaces call plus one
 // /gmail-connection call per workspace — O(workspaces) round trips on the
 // critical path of opening a thread, on a connection the extension pays for in

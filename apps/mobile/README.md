@@ -1,6 +1,6 @@
 # @aziru/mobile
 
-Amarnai's Android app (Expo + Expo Router). Readonly triage companion.
+Aziru's Android app (Expo + Expo Router). Readonly triage companion.
 
 ## Test on a physical device (local dev)
 

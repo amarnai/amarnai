@@ -37,7 +37,7 @@ export function DisconnectedBanner({
     <View style={styles.banner}>
       <Text style={styles.text} numberOfLines={2}>
         <Trans>
-          Gmail disconnected. Amarnai stopped syncing this inbox, so new mail will
+          Gmail disconnected. Aziru stopped syncing this inbox, so new mail will
           not appear until you reconnect.
         </Trans>
       </Text>

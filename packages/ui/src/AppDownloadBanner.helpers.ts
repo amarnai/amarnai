@@ -1,7 +1,7 @@
 // Pure, DOM-free helpers for AppDownloadBanner — kept separate so the
 // detection/intent logic is unit-testable without a browser environment.
 
-// Default Android identity for the Amarnai app (apps/mobile/app.json).
+// Default Android identity for the Aziru app (apps/mobile/app.json).
 export const DEFAULT_PACKAGE = "com.amarnai.app";
 export const DEFAULT_SCHEME = "amarnai";
 export const DISMISS_KEY = "amarnai.appBanner.dismissed";

@@ -54,13 +54,13 @@ export function GetExtensionBanner() {
   }
 
   return (
-    <div className="ext-banner" role="region" aria-label={_(msg`Get the Amarnai extension`)}>
+    <div className="ext-banner" role="region" aria-label={_(msg`Get the Aziru extension`)}>
       <div className="ext-banner-text">
         <span className="ext-banner-title">
           <Trans>Triage without leaving your inbox</Trans>
         </span>
         <span className="ext-banner-sub">
-          <Trans>Amarnai sits in a side panel next to Gmail and Outlook.</Trans>
+          <Trans>Aziru sits in a side panel next to Gmail and Outlook.</Trans>
         </span>
       </div>
       <a className="ext-banner-cta" href={href} target="_blank" rel="noopener noreferrer">

@@ -62,7 +62,7 @@ describe("token encryption", () => {
       fileURLToPath(new URL("./encryption.ts", import.meta.url)),
       "utf8",
     );
-    expect(source).not.toContain("amarnai-fallback");
+    expect(source).not.toContain("aziru-fallback");
     // AUTH_SECRET must not be part of the token-key derivation path.
     expect(source).not.toContain("AUTH_SECRET");
   });

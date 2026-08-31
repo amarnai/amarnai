@@ -132,8 +132,8 @@ describe("provisionFolderLabels", () => {
     // ensureFolderLabels received the namespaced, nested paths for non-root nodes.
     const defs = mockEnsure.mock.calls[0]![0] as Array<{ nodeId: string; pathSegments: string[] }>;
     const byNode = new Map(defs.map((d) => [d.nodeId, d.pathSegments]));
-    expect(byNode.get("clients")).toEqual(["Amarnai", "Clients"]);
-    expect(byNode.get("acme")).toEqual(["Amarnai", "Clients", "Acme"]);
+    expect(byNode.get("clients")).toEqual(["Aziru", "Clients"]);
+    expect(byNode.get("acme")).toEqual(["Aziru", "Clients", "Acme"]);
     expect(byNode.has("root")).toBe(false);
     // A link row is upserted per provisioned node.
     expect(db.taxonomyNodeProviderLink.upsert).toHaveBeenCalledTimes(2);
@@ -163,7 +163,7 @@ describe("provisionFolderLabels", () => {
       { id: "e1", sourceNodeId: "root", targetNodeId: "clients", createdAt: new Date(1) },
     ] as never);
     vi.mocked(db.taxonomyNodeProviderLink.findMany).mockResolvedValue([
-      { nodeId: "clients", providerPath: "Amarnai/Clients" },
+      { nodeId: "clients", providerPath: "Aziru/Clients" },
     ] as never);
     // Label was deleted in Gmail; the adapter recreates it under a fresh id.
     mockEnsure.mockResolvedValue(new Map([["clients", "L_clients_v2"]]));

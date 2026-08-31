@@ -14,12 +14,12 @@ export const GmailSyncSettingsSchema = z.object({
   // Gmail/Outlook UI for this workspace. On by default; the extension has no
   // toggle of its own, so this is the only place it can be turned off.
   threadSummaryInjectionEnabled: z.boolean().default(true),
-  // Browser extension injects its "Amarnai Reply" draft button into the native
+  // Browser extension injects its "Aziru Reply" draft button into the native
   // Gmail/Outlook compose for this workspace. Separate from the summary toggle:
   // the two surfaces are independently useful, and drafting costs quota while
   // reading a summary of an already-open thread does not.
   replyButtonInjectionEnabled: z.boolean().default(true),
-  // Browser extension / Outlook add-in renders the full Amarnai panel inside the
+  // Browser extension / Outlook add-in renders the full Aziru panel inside the
   // native Gmail/Outlook UI for this workspace. On by default. Its own toggle
   // because the panel is the only injected surface that reads and mutates a
   // thread's classification, which a workspace may want to allow or refuse

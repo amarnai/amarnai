@@ -39,7 +39,7 @@ export function resolveMailboxAccount(
  * Map a mailbox address to the workspace that has it connected.
  *
  * Every surface that is injected into a mail client faces the same problem: the
- * page knows which mailbox the user is looking at, but every Amarnai API call is
+ * page knows which mailbox the user is looking at, but every Aziru API call is
  * keyed by workspace. Shared by the browser extension and the Outlook task pane
  * so the two can never disagree about which workspace a mailbox belongs to.
  *

@@ -14,7 +14,8 @@ export type {
 export type { FolderItem } from "../folder-tree/types.js";
 
 export { filterThreads, countForActive, buildFolderCounts, QUEUES } from "./selection.js";
-export { buildThreadUrl } from "@aziru/core/emails";
+export { buildThreadUrl, folderColorVars } from "@aziru/core/emails";
+export type { ThreadCommentItem } from "@aziru/api-client";
 export { openInProviderLabel } from "./providerLabels.js";
 export { QueueList } from "./QueueList.js";
 export { ColumnResizeHandle } from "./ColumnResizeHandle.js";

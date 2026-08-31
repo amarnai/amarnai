@@ -6,9 +6,9 @@ import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 
-// Branding easter egg: explains where the "Amarnai" / "King Aziru" naming comes
-// from. Opened from the Connect Gmail CTA by clicking the mascot or the
-// "King Aziru" text. Vertical layout: centered title, image, then the story.
+// Branding easter egg: explains where the "Aziru" name comes from. Opened from
+// the Connect Gmail CTA by clicking the mascot or the "King Aziru" text.
+// Vertical layout: centered title, image, then the story.
 export function AziruIntroDialog({ onClose }: { onClose: () => void }) {
   const { _ } = useLingui();
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -58,12 +58,11 @@ export function AziruIntroDialog({ onClose }: { onClose: () => void }) {
 
         <p className="text-muted aziru-intro-text">
           <Trans>
-            Amarnai is named after the <em>Amarna Letters</em>: clay cuneiform
-            tablets used for diplomatic correspondence with the Egyptian pharaohs
-            during the
-            Bronze Age. One sender of these letters was Aziru, king of Amurru, a
-            resourceful ruler and shrewd diplomat who navigated the rivalry between
-            Egypt and the Hittites. Thousands of years later, he has found a new
+            Aziru is named after a king. The <em>Amarna Letters</em> are clay
+            cuneiform tablets used for diplomatic correspondence with the
+            Egyptian pharaohs during the Bronze Age, and one of the rulers who
+            wrote them was Aziru, king of Amurru: a resourceful ruler and shrewd
+            diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new
             calling: helping folks like you bring order to their emails.
           </Trans>
         </p>

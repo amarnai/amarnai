@@ -12,7 +12,7 @@ import type { Draft, EmailThreadDetail, QuotaInfo } from "./types.js";
 //
 // The one thing this does that the web app cannot: hand the finished text to the
 // mail client's own compose window, so the user reviews and sends it there. That
-// is also the boundary — Amarnai composes, the mail client sends. There is no
+// is also the boundary — Aziru composes, the mail client sends. There is no
 // code path here that sends anything, in either host.
 
 const POLL_INTERVAL_MS = 2_000;

@@ -87,7 +87,7 @@ export function AccountForm({
             disabled={remindersPending}
             onChange={toggleReminders}
           />
-          <Trans>Send me a weekly reminder when my Amarnai inbox needs attention.</Trans>
+          <Trans>Send me a weekly reminder when my Aziru inbox needs attention.</Trans>
         </label>
       </section>
 

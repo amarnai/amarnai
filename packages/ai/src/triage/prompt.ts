@@ -77,7 +77,7 @@ Field definitions:
 
 - dueAt: Explicit deadline or due date mentioned in the email, as ISO 8601 UTC string (e.g. "2026-06-01T00:00:00Z"). Null if none is mentioned.
 
-- suggestedNextStep: Recommended next action in the Amarnai interface.
+- suggestedNextStep: Recommended next action in the Aziru interface.
     CREATE_DRAFT  = a reply is expected — start drafting a response
     LABEL_ONLY    = no reply needed — just file it into the right category
     OPEN_IN_GMAIL = action requires opening Gmail directly (e.g. payment, approval via link)

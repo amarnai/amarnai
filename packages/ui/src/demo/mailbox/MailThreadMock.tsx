@@ -24,14 +24,14 @@ import type { AziruDemoData, MockProvider } from "./types.js";
  * <provider>": the view a visitor lands on after clicking a thread in the inbox
  * mock or the workspace's "Open in <provider>" control, and it is where three of
  * the four things the extension injects live — the label on the thread, the
- * summary card above the messages, and the Amarnai Reply entry point in the
+ * summary card above the messages, and the Aziru Reply entry point in the
  * mailbox's own reply row.
  *
  * Gmail renders as a centered reading column; Outlook renders as its reading
  * pane (Reply / Reply all / Forward action bar, colored avatars, per-message
  * "To" lines) so each matches the real product. With `aziru` null the view is
  * the bare mailbox, which is the comparison the landing page's switch turns on
- * and off; everything Amarnai adds hangs off that one prop being non-null.
+ * and off; everything Aziru adds hangs off that one prop being non-null.
  */
 export function MailThreadMock({
   provider,
@@ -42,7 +42,7 @@ export function MailThreadMock({
 }: {
   provider: MockProvider;
   thread: ThreadItem;
-  /** The Amarnai layer, or null for the untouched mailbox. */
+  /** The Aziru layer, or null for the untouched mailbox. */
   aziru: AziruDemoData | null;
   /** Display name of the thread's folder, for the injected panel. */
   folderName: string;
@@ -73,8 +73,8 @@ export function MailThreadMock({
     return () => document.removeEventListener("keydown", onKey);
   }, [onBack]);
 
-  // Turning the Amarnai layer off mid-draft has to take the compose with it:
-  // that compose is only open because an Amarnai entry point opened it.
+  // Turning the Aziru layer off mid-draft has to take the compose with it:
+  // that compose is only open because an Aziru entry point opened it.
   useEffect(() => {
     if (aziru) return;
     setReplyStage("idle");
@@ -98,7 +98,7 @@ export function MailThreadMock({
   const draftBody = aziru?.draftBodies[thread.id];
   const replyToName = thread.messages[0]?.fromName ?? thread.participants;
 
-  // The summary the injected card shows. A thread Amarnai actually summarized
+  // The summary the injected card shows. A thread Aziru actually summarized
   // gets its TL;DR; everything else falls back to the stored snippet labelled
   // "Preview", which is what the real widget does for single-message and
   // automated threads — no model call, no stored summary, no metered unit.
@@ -125,7 +125,7 @@ export function MailThreadMock({
         <div className="ld-mailthread-col">
           {/* Outlook's reading pane leads with a Reply / Reply all / Forward
               bar. Its own actions are decorative in this read-only mock, so
-              they stay hidden from assistive tech; the Amarnai pill beside them
+              they stay hidden from assistive tech; the Aziru pill beside them
               is live and stays in the tree. */}
           {isOutlook && (
             <div className="ld-ol-actions">
@@ -239,7 +239,7 @@ export function MailThreadMock({
 
             {replyStage === "idle" ? (
               // Gmail's reply row at the foot of a thread. Its own Reply button
-              // is a dead affordance in this read-only mock; the Amarnai pill
+              // is a dead affordance in this read-only mock; the Aziru pill
               // beside it is the live one, and that is where the real extension
               // puts it too. Outlook leads with its action bar instead.
               !isOutlook && (

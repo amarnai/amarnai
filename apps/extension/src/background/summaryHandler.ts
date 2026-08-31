@@ -153,7 +153,7 @@ export async function handleThreadSummaryRequest(
     // it is permanent for this session: the content script latches on it and
     // stops requesting, rather than paying a roundtrip per thread open.
     if (e instanceof InjectionDisabledError) return { ok: false, reason: "injectionDisabled" };
-    // A 404 (thread never synced into Amarnai) lands here alongside real errors.
+    // A 404 (thread never synced into Aziru) lands here alongside real errors.
     // Both render nothing, so they need not be told apart.
     return { ok: false, reason: "noThread" };
   }

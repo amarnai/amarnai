@@ -18,7 +18,7 @@ type Toggle =
   | "injectedPanelEnabled";
 
 /**
- * What Amarnai shows inside Gmail and Outlook themselves. All three are ON by
+ * What Aziru shows inside Gmail and Outlook themselves. All three are ON by
  * default (showing up in the mail client is the point of shipping the extension
  * and the add-in) and all three are enforced server-side, because the extension
  * is the half we do not control: an old build must stop injecting the moment
@@ -75,7 +75,7 @@ export function NativeInjectionSection({
           onChange={(next) => handleToggle("injectedPanelEnabled", next)}
           disabled={isPending}
         />
-        <Trans>Show the Amarnai panel next to the thread you are reading</Trans>
+        <Trans>Show the Aziru panel next to the thread you are reading</Trans>
       </label>
 
       <label className="settings-toggle">
@@ -93,7 +93,7 @@ export function NativeInjectionSection({
           onChange={(next) => handleToggle("replyButtonInjectionEnabled", next)}
           disabled={isPending}
         />
-        <Trans>Show the Amarnai Reply button for drafting replies</Trans>
+        <Trans>Show the Aziru Reply button for drafting replies</Trans>
       </label>
 
       {error && (

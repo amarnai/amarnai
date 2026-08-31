@@ -322,7 +322,7 @@ async function buildProvider() {
 
 // ── Domain glossary ───────────────────────────────────────────────────────────
 // Preferred target-language term for key app concepts, so the AI translator picks
-// the SAME word every batch/run instead of a fresh synonym each time. In Amarnai a
+// the SAME word every batch/run instead of a fresh synonym each time. In Aziru a
 // "thread" is always an email *conversation* (never a literal sewing thread/wire),
 // so we anchor it to the locale's word for a conversation. Extend this with other
 // domain terms (e.g. "folder") as drift shows up.
@@ -392,7 +392,7 @@ HARD CONSTRAINTS:
 - Preserve ALL HTML/JSX-style tags (e.g. <strong>, </em>, <0>, <1/>) and their positions.
 - LINE BREAKS: a <br/>, self-closing tag (<0/>), or literal newline splits a headline into separate display lines, each of which must fit on one line. Keep every segment no longer than its English counterpart, rephrasing tighter if needed.
 - COMPACT STATUS STRINGS: short inline status or metric strings that pair two values around a middot or bullet separator (·, •), e.g. "{a} sorted · {b} to review", render in a narrow fixed-width strip and must stay on ONE line. Keep each side to one or two words, no longer than the English side, and drop filler words rather than spill onto a second line. Keep the same separator character.
-- Keep the brand name "Amarnai" and proper nouns (Gmail, GitHub, AGPL-3.0, etc.) untranslated.
+- Keep the brand name "Aziru" and proper nouns (Gmail, GitHub, AGPL-3.0, etc.) untranslated.
 - Never use em dashes. Use commas, colons, or restructure the sentence. Apply ${targetName} punctuation, spacing, and quotation conventions.
 - Avoid calques and gratuitous Anglicisms unless they are the standard term in ${targetName} tech marketing.
 - Do NOT add any explanatory text outside the JSON.${glossaryBlock}`,

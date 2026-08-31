@@ -42,7 +42,7 @@ export function appBaseUrl(): string {
 }
 
 /**
- * The add-in Id Amarnai's own hosted deployment publishes under. Every other
+ * The add-in Id Aziru's own hosted deployment publishes under. Every other
  * deployment needs a different one.
  */
 const DEFAULT_ADDIN_ID = "6f3a5b1e-9c24-4a7d-8f16-2b8d4e0c93a1";
@@ -54,12 +54,12 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
  * The add-in's identity. Outlook keys installed add-ins by this value, so two
  * deployments sharing one Id cannot coexist in a mailbox: installing the second
  * replaces the first, silently. That makes it a per-deployment value, not a
- * constant — a self-hoster, and Amarnai's own staging environment, each need
+ * constant — a self-hoster, and Aziru's own staging environment, each need
  * their own.
  *
  * It must NEVER change for a deployment that has already published, which is
  * why this is settable at all: the Id is unfixable after publication, so the
- * seam has to exist before then. Amarnai's hosted deployment keeps the default
+ * seam has to exist before then. Aziru's hosted deployment keeps the default
  * and must never set this.
  *
  * Generate one with `uuidgen` (or any UUID v4 source).

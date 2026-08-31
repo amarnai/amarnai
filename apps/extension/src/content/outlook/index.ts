@@ -24,11 +24,11 @@ const panelStart: Promise<InjectedPanelHandle> = (() => {
     return startOutlookInjectedPanel(document, {
       onCommentsChanged: () => content?.refreshComments(),
     }).catch((e: unknown) => {
-      console.warn("[aziru] Amarnai panel (OWA) failed to start:", e);
+      console.warn("[aziru] Aziru panel (OWA) failed to start:", e);
       return inertPanelHandle;
     });
   } catch (e) {
-    console.warn("[aziru] Amarnai panel (OWA) failed to start:", e);
+    console.warn("[aziru] Aziru panel (OWA) failed to start:", e);
     return Promise.resolve(inertPanelHandle);
   }
 })().then((handle) => {
@@ -59,6 +59,6 @@ try {
 try {
   startOutlookReplyButton();
 } catch (e) {
-  console.warn("[aziru] Amarnai Reply button (OWA) failed to start:", e);
+  console.warn("[aziru] Aziru Reply button (OWA) failed to start:", e);
 }
 

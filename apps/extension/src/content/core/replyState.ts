@@ -1,4 +1,4 @@
-// The "Amarnai Reply" button's state machine, shared by both providers.
+// The "Aziru Reply" button's state machine, shared by both providers.
 //
 // Gmail's button lives in InboxSDK's compose tray and OWA's is a hand-rolled
 // pill in the reading pane, so how a state is PAINTED differs completely. What
@@ -47,7 +47,7 @@ export function describeReplyState(state: ReplyButtonState): {
     case "ready":
       return { label: S.readyToInsert, tooltip: S.tooltips.readyToInsert, enabled: true };
     case "inserted":
-      // The label stays "Amarnai Reply": a toolbar button is an identity, not a
+      // The label stays "Aziru Reply": a toolbar button is an identity, not a
       // status readout, and renaming it after a click reads as a different
       // control. The outcome lives in the tooltip.
       return { label: S.idle, tooltip: S.tooltips.inserted, enabled: true };

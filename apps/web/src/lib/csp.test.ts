@@ -77,7 +77,7 @@ describe("generateCspNonce", () => {
   });
 });
 
-// The Outlook task pane is the only page Amarnai lets anyone frame, and the only
+// The Outlook task pane is the only page Aziru lets anyone frame, and the only
 // one that loads a third-party script. Every assertion here is about keeping that
 // exception to exactly one path: a leak would make the whole app clickjackable.
 describe("buildContentSecurityPolicy — Outlook task pane exception", () => {

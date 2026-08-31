@@ -116,7 +116,7 @@ export type ProvisionLabelsJobData = {
 /**
  * Payload for a `writeback-thread-label` job. Enqueued (best-effort) after a
  * classification write. The worker re-reads the thread's latest classification
- * and reconciles the Amarnai-managed labels/categories on the thread to match
+ * and reconciles the Aziru-managed labels/categories on the thread to match
  * (declarative — no add/remove delta is carried), so retries and coalesced
  * duplicates converge on the newest decision. No-op when writeback is off, the
  * scope is missing, or the thread already matches.

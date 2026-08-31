@@ -10,7 +10,7 @@ import {
 // Inline notification action ids for the "thread needs attention" category.
 //
 // v1 is READONLY (CLAUDE.md safety invariants): both actions are read-oriented
-// and touch only Amarnai's own state. Neither performs a Gmail write or send —
+// and touch only Aziru's own state. Neither performs a Gmail write or send —
 // no archive, no reply, no label change in Gmail. Write actions are deferred to
 // the email-client phase along with the gmail.modify scope.
 export const THREAD_ACTION_OPEN = 'open_thread';
@@ -32,8 +32,8 @@ export async function registerNotificationCategories(): Promise<void> {
     {
       identifier: THREAD_ACTION_MARK_REVIEWED,
       buttonTitle: 'Mark reviewed',
-      // Resolves the thread in Amarnai state without opening the app. This is an
-      // Amarnai-internal status change only — it does NOT touch Gmail.
+      // Resolves the thread in Aziru state without opening the app. This is an
+      // Aziru-internal status change only — it does NOT touch Gmail.
       options: { opensAppToForeground: false },
     },
   ]);

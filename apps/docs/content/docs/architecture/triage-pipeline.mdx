@@ -1,9 +1,9 @@
 ---
 title: Triage Pipeline
-description: How Amarnai sorts email threads from inbox to labelled category.
+description: How Aziru sorts email threads from inbox to labelled category.
 ---
 
-The triage pipeline is the core of Amarnai. It runs inside the worker for every thread that needs sorting: both new threads arriving in real time and existing threads during a backfill. It reads the inbox through the provider seam (`packages/mail`), so the same pipeline serves Gmail and Outlook connections unchanged.
+The triage pipeline is the core of Aziru. It runs inside the worker for every thread that needs sorting: both new threads arriving in real time and existing threads during a backfill. It reads the inbox through the provider seam (`packages/mail`), so the same pipeline serves Gmail and Outlook connections unchanged.
 
 ## Pipeline stages
 
@@ -42,12 +42,12 @@ Provider inbox (Gmail or Outlook)
     ▼
 7. Apply label
     │  The provider applies the corresponding label to the thread.
-    │  Amarnai never modifies thread content or sends email.
+    │  Aziru never modifies thread content or sends email.
     ▼
 Done
 ```
 
-Amarnai can also generate a suggested draft reply for a thread. Drafts are always presented for user approval and are never auto-sent.
+Aziru can also generate a suggested draft reply for a thread. Drafts are always presented for user approval and are never auto-sent.
 
 ## Real-time vs. backfill
 
@@ -69,4 +69,4 @@ Swapping providers requires only an env var change, no code changes.
 
 ## Taxonomy
 
-Categories are defined in a per-workspace taxonomy: a tree of named nodes (for example `Work → Invoices`, `Personal → Travel`). Each node has a name and description used to generate its embedding, and the taxonomy is what the embedding sorter compares threads against. Amarnai can also generate a starting taxonomy from your existing inbox.
+Categories are defined in a per-workspace taxonomy: a tree of named nodes (for example `Work → Invoices`, `Personal → Travel`). Each node has a name and description used to generate its embedding, and the taxonomy is what the embedding sorter compares threads against. Aziru can also generate a starting taxonomy from your existing inbox.

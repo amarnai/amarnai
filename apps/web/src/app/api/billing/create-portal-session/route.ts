@@ -16,7 +16,7 @@ async function configurePortal(): Promise<void> {
     if (config) {
       await stripe.billingPortal.configurations.update(config.id, {
         business_profile: {
-          headline: "Amarnai",
+          headline: "Aziru",
         },
         features: {
           subscription_cancel: {

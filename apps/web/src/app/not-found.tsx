@@ -8,8 +8,8 @@ export default function NotFound() {
   return (
     <div className="page-404">
       <Link href="/" className="page-404-nav">
-        <Image src="/logo.png" alt="Amarnai" width={28} height={28} />
-        <span className="page-404-nav-name">Amarnai</span>
+        <Image src="/logo.png" alt="Aziru" width={28} height={28} />
+        <span className="page-404-nav-name">Aziru</span>
       </Link>
 
       <div className="page-404-center">

@@ -42,7 +42,7 @@ export function SupportContent() {
           <div className="ld-wrap">
             <div className="ld-section-head center ld-reveal">
               <h2 className="ld-section-h">
-                <Trans>Get help with Amarnai</Trans>
+                <Trans>Get help with Aziru</Trans>
               </h2>
               <p className="ld-section-lede">
                 <Trans>
@@ -115,7 +115,7 @@ export function SupportContent() {
                     <Trans>Privacy and data handling</Trans>
                   </span>
                   <span className="ld-support-row-value">
-                    <Trans>How Amarnai stores and protects your data</Trans>
+                    <Trans>How Aziru stores and protects your data</Trans>
                   </span>
                 </span>
                 <RowArrow />
