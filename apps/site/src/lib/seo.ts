@@ -36,8 +36,8 @@ export function buildHomeMetadata(
 ): Metadata {
   // Visible browser-tab / search-result headline uses the human-facing brand
   // tagline. Machine-facing OG/Twitter titles keep the keyword-rich SEO phrasing.
-  const title = i18n._(msg`Aziru: AI Email Sorter for Gmail™ & Outlook`);
-  const seoTitle = i18n._(msg`Aziru: Sort emails your way`);
+  const title = i18n._(msg`Aziru: Your inbox, already sorted`);
+  const seoTitle = i18n._(msg`Aziru: AI Email Sorter for Gmail™ & Outlook`);
   const url = localeUrl(locale);
 
   return {

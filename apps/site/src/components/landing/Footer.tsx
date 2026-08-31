@@ -16,7 +16,7 @@ export function Footer({ anchorBase = "" }: { anchorBase?: string }) {
               Aziru
             </div>
             <p className="ld-footer-tagline">
-              <Trans>Sort emails your way.</Trans>
+              <Trans>Your inbox, already sorted.</Trans>
             </p>
           </div>
 
