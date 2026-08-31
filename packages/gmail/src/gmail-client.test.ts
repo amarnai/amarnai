@@ -535,6 +535,43 @@ describe("GmailClient.ensureFolderLabels", () => {
   });
 });
 
+// ─── GmailClient.renameFolderLabel ────────────────────────────────────────────
+
+describe("GmailClient.renameFolderLabel", () => {
+  it("PATCHes the label id with the joined path as its new name", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({}) });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await client.renameFolderLabel("L_old", ["Aziru", "Updates - Other"]);
+
+    const [url, init] = mockFetch.mock.calls[1] as [string, RequestInit];
+    expect(url).toContain("/labels/L_old");
+    expect(init.method).toBe("PATCH");
+    expect(JSON.parse(init.body as string)).toEqual({ name: "Aziru/Updates - Other" });
+  });
+
+  it("tolerates a deleted label (404) and a taken name (409) — ensure resolves by name next", async () => {
+    for (const status of [404, 409]) {
+      mockFetch
+        .mockResolvedValueOnce(makeTokenResponse())
+        .mockResolvedValueOnce({ ok: false, status });
+      const client = new GmailClient("encrypted:refresh:token");
+      await expect(client.renameFolderLabel("L_gone", ["Aziru", "X"])).resolves.toBeUndefined();
+    }
+  });
+
+  it("throws on an unexpected error status so the job retries", async () => {
+    mockFetch
+      .mockResolvedValueOnce(makeTokenResponse())
+      .mockResolvedValueOnce({ ok: false, status: 500 });
+
+    const client = new GmailClient("encrypted:refresh:token");
+    await expect(client.renameFolderLabel("L_old", ["Aziru", "X"])).rejects.toThrow();
+  });
+});
+
 // ─── GmailClient.applyThreadFolderLabels ──────────────────────────────────────
 
 describe("GmailClient.applyThreadFolderLabels", () => {

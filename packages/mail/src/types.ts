@@ -82,6 +82,18 @@ export interface MailProvider {
   ensureFolderLabels(defs: MailFolderLabelDef[]): Promise<Map<string, string>>;
 
   /**
+   * Rename the label/category behind `providerLabelId` to the new path, so the
+   * existing provider-side object — and every thread already carrying it —
+   * follows a folder rename instead of being orphaned next to a duplicate.
+   * Best-effort: a label already deleted, or a name conflict, is left for
+   * {@link ensureFolderLabels} to resolve by name afterwards. Gmail renames in
+   * place (label ids are stable across renames); Outlook cannot (Graph
+   * master-category displayName is immutable), so there this is a no-op and the
+   * old category stays on already-tagged messages.
+   */
+  renameFolderLabel(providerLabelId: string, pathSegments: string[]): Promise<void>;
+
+  /**
    * Declaratively reconcile the Aziru-managed labels/categories on one thread:
    * after the call, of `managedLabelIds` exactly `desiredLabelIds` are present
    * (foreign labels/categories the user set are left untouched). Idempotent and

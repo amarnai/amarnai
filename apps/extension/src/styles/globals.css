@@ -139,6 +139,10 @@ body {
 /* ─── Header ─────────────────────────────────────────────────────────────── */
 
 .ax-header {
+  /* Positioning context for the notification pop-up, which anchors to the
+     full-width header rather than the narrow bell button so it can never
+     overflow the panel edge. */
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-md);
@@ -444,7 +448,6 @@ body {
 /* ─── Notification bell + pop-up ─────────────────────────────────────────── */
 
 .ax-notif {
-  position: relative;
   flex-shrink: 0;
   display: flex;
 }
@@ -473,28 +476,21 @@ body {
   text-align: center;
 }
 
+/* Anchored to the header (not the bell), pinned inside the panel's right edge,
+   and width-capped to the panel viewport, so it stays fully visible at any
+   panel width. */
 .ax-notif-panel {
   position: absolute;
   top: calc(100% + var(--space-xs));
+  right: var(--space-sm);
   width: 260px;
-  max-width: calc(100vw - var(--space-lg) * 2);
+  max-width: calc(100vw - var(--space-sm) * 2);
   background: var(--surface);
   border: 1px solid var(--line-2);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-2);
   z-index: 40;
   overflow: hidden;
-}
-
-/* Anchor the pop-up to the edge it should grow away from, so it opens toward
-   screen centre: leftward for a right-docked panel, rightward for a left-docked
-   one (see detectPanelSide). */
-.ax-notif-panel--open-left {
-  right: 0;
-}
-
-.ax-notif-panel--open-right {
-  left: 0;
 }
 
 .ax-notif-header {

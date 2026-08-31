@@ -800,6 +800,15 @@ export class GraphClient {
   }
 
   /**
+   * No-op: Graph master-category displayName is immutable after creation, so a
+   * rename-in-place is not possible. ensureFolderLabels creates the new name
+   * instead; the old category remains on already-tagged messages.
+   * TODO(writeback): full Outlook rename cascade = create new + per-message
+   * re-tag + delete old master category (deferred).
+   */
+  async renameFolderLabel(_providerLabelId: string, _pathSegments: string[]): Promise<void> {}
+
+  /**
    * Reconcile the Aziru-managed categories on a thread's messages to exactly
    * `desiredLabelIds` (of the `managedLabelIds` set), preserving any categories
    * the user set themselves. Outlook applies categories PER MESSAGE, and PATCH

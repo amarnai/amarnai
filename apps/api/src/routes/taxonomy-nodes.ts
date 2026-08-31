@@ -215,7 +215,7 @@ taxonomyNodes.post("/workspaces/:workspaceId/taxonomy-nodes", async (c) => {
   // default; a missing settings row means the shared default). Deduped per
   // workspace so a burst of folder creates collapses to one provisioning run;
   // the job itself no-ops when the flag or write scope is missing.
-  // TODO(writeback): rename/delete cascades are deferred; only creation provisions.
+  // TODO(writeback): the delete cascade is deferred; creation and rename provision.
   const settingsRow = await db.gmailSyncSettings.findUnique({
     where: { workspaceId },
     select: { labelWritebackEnabled: true },
@@ -298,10 +298,12 @@ taxonomyNodes.patch(
       select: nodeSelect,
     });
 
-    // TODO(writeback): a name change shifts this node's (and its descendants')
-    // provider label/category path, but the rename cascade is deferred — the
-    // provider-side label keeps its old name until a future cascade job renames
-    // it. The TaxonomyNodeProviderLink.providerPath is the drift-detection seam.
+    // A name change shifts this node's (and its descendants') provider
+    // label/category path; provisioning detects the drift via
+    // TaxonomyNodeProviderLink.providerPath and renames the label in place.
+    if (d.name !== undefined) {
+      await enqueueFolderLabelProvisioning(workspaceId, { relabelThreads: false });
+    }
 
     // Name change: also invalidate descendants — their breadcrumb includes this node's name.
     if (d.name !== undefined) {

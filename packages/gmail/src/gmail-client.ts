@@ -699,6 +699,26 @@ export class GmailClient {
   }
 
   /**
+   * Rename an existing label in place. Gmail label ids are stable across a
+   * rename, so every thread carrying the label follows automatically — no
+   * per-thread rewrites. 404 (label deleted in Gmail) and 400/409 (target name
+   * already taken) are tolerated: ensureFolderLabels runs next and resolves by
+   * the new name, recreating or reusing as needed.
+   */
+  async renameFolderLabel(providerLabelId: string, pathSegments: string[]): Promise<void> {
+    if (pathSegments.length === 0) return;
+    const accessToken = await this.refreshAccessToken();
+    const url = `${GMAIL_LABELS_URL}/${encodeURIComponent(providerLabelId)}`;
+    const res = await fetch(url, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ name: pathSegments.join("/") }),
+    });
+    if (res.status === 404 || res.status === 400 || res.status === 409) return;
+    if (!res.ok) throw new Error(`Gmail label rename failed: ${res.status}`);
+  }
+
+  /**
    * Reconcile the Aziru-managed labels on a thread to exactly `desiredLabelIds`
    * (of the `managedLabelIds` set), leaving the user's own labels untouched.
    * Idempotent: computes the add/remove delta against the thread's current labels

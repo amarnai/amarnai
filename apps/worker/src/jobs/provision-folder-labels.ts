@@ -1,7 +1,7 @@
 import { Worker } from "bullmq";
 import { db, markGmailConnectionAuthFailed } from "@aziru/db";
 import { config } from "@aziru/config";
-import { DEFAULT_GMAIL_SYNC_SETTINGS } from "@aziru/shared";
+import { DEFAULT_GMAIL_SYNC_SETTINGS, isTaxonomyRoutable } from "@aziru/shared";
 import { createMailProvider, MailAuthError, providerHasWritebackScope, type MailFolderLabelDef } from "@aziru/mail";
 import { buildProviderPaths, resolveFolderColorKey } from "@aziru/core";
 import { DEDUP_WRITEBACK } from "@aziru/queue";
@@ -26,8 +26,9 @@ type WritebackConnection = {
 /**
  * Load and gate the connection for label writeback. Returns null (a silent
  * no-op) when the feature flag is off, writeback is disabled for the workspace,
- * there is no ACTIVE connection, or the write scope was never granted. Every
- * writeback code path funnels through this so the gates stay in one place.
+ * there is no ACTIVE connection, the write scope was never granted, or the
+ * taxonomy is not routable. Every writeback code path funnels through this so
+ * the gates stay in one place.
  */
 export async function loadWritebackConnection(
   workspaceId: string,
@@ -57,6 +58,22 @@ export async function loadWritebackConnection(
   });
   if (!connection || connection.status !== "ACTIVE") return null;
   if (!providerHasWritebackScope(connection.provider, connection.grantedScopes)) return null;
+
+  // No routing plan ⇒ no mailbox writes. Same predicate as the classifier,
+  // backfill, and the UI's "set up folders" state: without it, sign-in
+  // provisioning mirrors the seeded catch-all into the mailbox and the relabel
+  // sweep re-applies stale classifications before the user has set anything up.
+  const [nodes, edges] = await Promise.all([
+    db.taxonomyNode.findMany({
+      where: { workspaceId },
+      select: { id: true, isRoot: true, isCatchAll: true },
+    }),
+    db.taxonomyEdge.findMany({
+      where: { workspaceId },
+      select: { sourceNodeId: true, targetNodeId: true },
+    }),
+  ]);
+  if (!isTaxonomyRoutable(nodes, edges)) return null;
 
   return {
     provider: connection.provider,
@@ -120,6 +137,25 @@ export async function provisionFolderLabels(
   if (defs.length === 0) return 0;
 
   const provider = createMailProvider(connection);
+
+  // Rename cascade: a link whose stored path no longer matches the computed one
+  // (folder renamed in-app, or the label namespace changed) is renamed
+  // provider-side first, so the existing label — and every thread already
+  // carrying it — follows under the new name instead of being orphaned next to
+  // a freshly created duplicate. ensureFolderLabels then resolves it by the new
+  // name and the link upsert below records the new path.
+  const links = await db.taxonomyNodeProviderLink.findMany({
+    where: { workspaceId, provider: connection.provider, mailboxKey: connection.mailboxKey },
+    select: { nodeId: true, providerLabelId: true, providerPath: true },
+  });
+  const linkByNode = new Map(links.map((l) => [l.nodeId, l]));
+  for (const def of defs) {
+    const link = linkByNode.get(def.nodeId);
+    if (link && link.providerPath !== def.pathSegments.join("/")) {
+      await provider.renameFolderLabel(link.providerLabelId, def.pathSegments);
+    }
+  }
+
   const idByNode = await provider.ensureFolderLabels(defs);
 
   for (const def of defs) {
@@ -181,8 +217,9 @@ async function relabelAllClassifiedThreads(workspaceId: string): Promise<number>
  * provision-folder-labels worker: (re)mirror a workspace's taxonomy into its
  * mailbox. Enqueued when writeback is enabled or the taxonomy gains a folder;
  * the enable path additionally requests a full thread re-labeling sweep.
- * TODO(writeback): rename/delete cascade — compare link.providerPath to the
- * current path and patch/remove the provider-side label (deferred).
+ * Renames cascade via provisionFolderLabels (link.providerPath drift).
+ * TODO(writeback): delete cascade — remove the provider-side label when its
+ * folder is deleted (deferred).
  */
 export function createProvisionFolderLabelsWorker(): Worker<ProvisionLabelsJobData> {
   return new Worker<ProvisionLabelsJobData>(

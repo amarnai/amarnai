@@ -3,7 +3,7 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 // Uses the REAL @aziru/core path builder + folder-color resolver, mocking only
 // the DB and the mail adapter, so the node→path→label wiring is exercised end to end.
 
-const { mockEnsure } = vi.hoisted(() => ({ mockEnsure: vi.fn() }));
+const { mockEnsure, mockRename } = vi.hoisted(() => ({ mockEnsure: vi.fn(), mockRename: vi.fn() }));
 
 vi.mock("@aziru/config", () => ({ config: { mail: { labelWritebackEnabled: true } } }));
 
@@ -20,7 +20,7 @@ vi.mock("@aziru/db", () => ({
 }));
 
 vi.mock("@aziru/mail", () => ({
-  createMailProvider: vi.fn(() => ({ ensureFolderLabels: mockEnsure })),
+  createMailProvider: vi.fn(() => ({ ensureFolderLabels: mockEnsure, renameFolderLabel: mockRename })),
   MailAuthError: class MailAuthError extends Error {},
   providerHasWritebackScope: vi.fn(() => true),
 }));
@@ -58,6 +58,8 @@ beforeEach(() => {
   vi.mocked(db.taxonomyNodeProviderLink.upsert).mockResolvedValue({} as never);
   vi.mocked(db.taxonomyNodeProviderLink.findMany).mockResolvedValue([] as never);
   vi.mocked(db.emailClassification.findMany).mockResolvedValue([] as never);
+  mockEnsure.mockResolvedValue(new Map());
+  mockRename.mockResolvedValue(undefined);
 });
 
 function getProcessor(): (job: unknown) => Promise<void> {
@@ -66,7 +68,22 @@ function getProcessor(): (job: unknown) => Promise<void> {
   return lastCall?.[1] as (job: unknown) => Promise<void>;
 }
 
-/** Minimal happy-path db state: an active scoped connection, no folders. */
+/** A routable taxonomy: root + 3 reachable folders (the writeback threshold). */
+function primeRoutableTaxonomy() {
+  vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
+    { id: "root", name: "Root", isRoot: true, isCatchAll: false, colorKey: null },
+    { id: "a", name: "A", isRoot: false, isCatchAll: false, colorKey: null },
+    { id: "b", name: "B", isRoot: false, isCatchAll: false, colorKey: null },
+    { id: "c", name: "C", isRoot: false, isCatchAll: false, colorKey: null },
+  ] as never);
+  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([
+    { id: "e1", sourceNodeId: "root", targetNodeId: "a", createdAt: new Date(1) },
+    { id: "e2", sourceNodeId: "root", targetNodeId: "b", createdAt: new Date(2) },
+    { id: "e3", sourceNodeId: "root", targetNodeId: "c", createdAt: new Date(3) },
+  ] as never);
+}
+
+/** Minimal happy-path db state: an active scoped connection, routable taxonomy. */
 function primeActiveConnection() {
   vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ labelWritebackEnabled: true } as never);
   vi.mocked(db.emailConnection.findUnique).mockResolvedValue({
@@ -77,8 +94,7 @@ function primeActiveConnection() {
     emailAddress: "user@example.com",
     subjectId: null,
   } as never);
-  vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([] as never);
-  vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([] as never);
+  primeRoutableTaxonomy();
 }
 
 describe("loadWritebackConnection", () => {
@@ -100,15 +116,33 @@ describe("loadWritebackConnection", () => {
   it("treats a MISSING settings row as the on-by-default state", async () => {
     vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue(null as never);
     vi.mocked(db.emailConnection.findUnique).mockResolvedValue(ACTIVE_ROW as never);
+    primeRoutableTaxonomy();
     const conn = await loadWritebackConnection(WS);
     expect(conn?.mailboxKey).toBe("user@example.com");
   });
 
-  it("returns the mailbox-keyed connection when active + scoped", async () => {
+  it("returns the mailbox-keyed connection when active + scoped + routable", async () => {
     vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ labelWritebackEnabled: true } as never);
     vi.mocked(db.emailConnection.findUnique).mockResolvedValue(ACTIVE_ROW as never);
+    primeRoutableTaxonomy();
     const conn = await loadWritebackConnection(WS);
     expect(conn?.mailboxKey).toBe("user@example.com");
+  });
+
+  it("returns null when the taxonomy is not routable (no plan ⇒ no mailbox writes)", async () => {
+    // The seeded state every new workspace starts in: root + catch-all only.
+    // The catch-all is excluded from the routable count, so nothing may be
+    // mirrored into the mailbox — no labels at sign-in, no relabel sweep.
+    vi.mocked(db.gmailSyncSettings.findUnique).mockResolvedValue({ labelWritebackEnabled: true } as never);
+    vi.mocked(db.emailConnection.findUnique).mockResolvedValue(ACTIVE_ROW as never);
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
+      { id: "root", name: "Inbox", isRoot: true, isCatchAll: false, colorKey: null },
+      { id: "other", name: "Updates / Other", isRoot: false, isCatchAll: true, colorKey: null },
+    ] as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([
+      { id: "e1", sourceNodeId: "root", targetNodeId: "other", createdAt: new Date(1) },
+    ] as never);
+    expect(await loadWritebackConnection(WS)).toBeNull();
   });
 });
 
@@ -177,6 +211,54 @@ describe("provisionFolderLabels", () => {
         update: expect.objectContaining({ providerLabelId: "L_clients_v2" }),
       }),
     );
+  });
+
+  it("renames a drifted label in place before ensuring (path changed, id kept)", async () => {
+    // The stored link carries the pre-rename namespace; the computed path is
+    // the new one. The provider must be asked to rename the EXISTING label id
+    // so threads already carrying it follow, and no duplicate is created.
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
+      { id: "root", name: "Root", isRoot: true, isCatchAll: false, colorKey: null },
+      { id: "clients", name: "Clients", isRoot: false, isCatchAll: false, colorKey: null },
+    ] as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([
+      { id: "e1", sourceNodeId: "root", targetNodeId: "clients", createdAt: new Date(1) },
+    ] as never);
+    vi.mocked(db.taxonomyNodeProviderLink.findMany).mockResolvedValue([
+      { nodeId: "clients", providerLabelId: "L_old", providerPath: "Amarnai/Clients" },
+    ] as never);
+    mockEnsure.mockResolvedValue(new Map([["clients", "L_old"]]));
+
+    await provisionFolderLabels(WS, CONNECTION);
+
+    expect(mockRename).toHaveBeenCalledWith("L_old", ["Aziru", "Clients"]);
+    // Rename runs before ensure so ensure resolves the new name to the same id.
+    expect(mockRename.mock.invocationCallOrder[0]!).toBeLessThan(
+      mockEnsure.mock.invocationCallOrder[0]!,
+    );
+    expect(db.taxonomyNodeProviderLink.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        update: expect.objectContaining({ providerLabelId: "L_old", providerPath: "Aziru/Clients" }),
+      }),
+    );
+  });
+
+  it("does not rename when the stored path already matches", async () => {
+    vi.mocked(db.taxonomyNode.findMany).mockResolvedValue([
+      { id: "root", name: "Root", isRoot: true, isCatchAll: false, colorKey: null },
+      { id: "clients", name: "Clients", isRoot: false, isCatchAll: false, colorKey: null },
+    ] as never);
+    vi.mocked(db.taxonomyEdge.findMany).mockResolvedValue([
+      { id: "e1", sourceNodeId: "root", targetNodeId: "clients", createdAt: new Date(1) },
+    ] as never);
+    vi.mocked(db.taxonomyNodeProviderLink.findMany).mockResolvedValue([
+      { nodeId: "clients", providerLabelId: "L_clients", providerPath: "Aziru/Clients" },
+    ] as never);
+    mockEnsure.mockResolvedValue(new Map([["clients", "L_clients"]]));
+
+    await provisionFolderLabels(WS, CONNECTION);
+
+    expect(mockRename).not.toHaveBeenCalled();
   });
 });
 

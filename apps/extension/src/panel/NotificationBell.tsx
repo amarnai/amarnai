@@ -8,7 +8,6 @@ import {
 } from "@aziru/api-client";
 import { useSession } from "../auth/session";
 import { useWebAppLink } from "./openWebApp";
-import { detectPanelSide, type PanelSide } from "../platform/panelSide";
 import { notificationTitle } from "./notificationText";
 
 function BellIcon() {
@@ -42,10 +41,6 @@ export function NotificationBell() {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(false);
-  // The pop-up opens away from the docked edge so it grows toward screen centre
-  // instead of off the near side: leftward for a right-docked panel (Chrome's
-  // default) and rightward for a left-docked one (Firefox's default).
-  const [panelSide, setPanelSide] = useState<PanelSide>("right");
   const rootRef = useRef<HTMLDivElement>(null);
 
   const refreshCount = useCallback(() => {
@@ -79,8 +74,6 @@ export function NotificationBell() {
     const next = !open;
     setOpen(next);
     if (next) {
-      // Re-measure on open: the sidebar can be moved between edges at any time.
-      setPanelSide(detectPanelSide());
       setLoading(true);
       client
         .notifications(undefined, 30, { undismissedOnly: true })
@@ -120,7 +113,7 @@ export function NotificationBell() {
 
       {open && (
         <div
-          className={`ax-notif-panel ax-notif-panel--${panelSide === "left" ? "open-right" : "open-left"}`}
+          className="ax-notif-panel"
           role="dialog"
           aria-label={_(msg`Notifications`)}
         >
