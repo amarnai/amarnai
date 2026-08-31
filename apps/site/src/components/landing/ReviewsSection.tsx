@@ -64,8 +64,8 @@ function ReviewCard({
 // Card order. Names are proper nouns, so they are not translated; they exist
 // only to name each dot for screen readers.
 const REVIEWERS = [
-  "Akhenaten",
   "Tutu",
+  "Akhenaten",
   "Burna-Buriash",
   "Tushratta",
   "Abdi-Heba",
@@ -150,19 +150,6 @@ export function ReviewsSection() {
           aria-label={_(msg`Reviews from early users`)}
         >
           <ReviewCard
-            portrait="/akhenaten-review.png"
-            name={<Trans>Akhenaten</Trans>}
-            title={<Trans>Pharaoh of Egypt</Trans>}
-            source={<Trans>Translated from hieroglyphics</Trans>}
-          >
-            <Trans>
-              Before Aziru, my scribes and I sorted letters from sunrise to
-              sunset. Now I finally have the bandwidth to help my vassals,
-              promote the cult of Aten, and plan the city of Amarna.
-            </Trans>
-          </ReviewCard>
-
-          <ReviewCard
             portrait="/tutu-review.png"
             name={<Trans>Tutu</Trans>}
             title={<Trans>Royal scribe</Trans>}
@@ -174,6 +161,19 @@ export function ReviewsSection() {
               I break a seal. It even drafts my replies, though nothing is sent
               without my approval. And when a letter is beyond my judgment, I
               simply tag Pharaoh so he can take a look.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/akhenaten-review.png"
+            name={<Trans>Akhenaten</Trans>}
+            title={<Trans>Pharaoh of Egypt</Trans>}
+            source={<Trans>Translated from hieroglyphics</Trans>}
+          >
+            <Trans>
+              Before Aziru, my scribes and I sorted letters from sunrise to
+              sunset. Now I finally have the bandwidth to help my vassals,
+              promote the cult of Aten, and plan the city of Amarna.
             </Trans>
           </ReviewCard>
 
