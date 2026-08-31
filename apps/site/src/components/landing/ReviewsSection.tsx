@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
@@ -61,51 +61,93 @@ function ReviewCard({
   );
 }
 
+// Card order. Names are proper nouns, so they are not translated; they exist
+// only to name each dot for screen readers.
+const REVIEWERS = [
+  "Akhenaten",
+  "Burna-Buriash",
+  "Tushratta",
+  "Abdi-Heba",
+  "Rib-Hadda",
+  "Suppiluliuma",
+];
+
 export function ReviewsSection() {
   const { _ } = useLingui();
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // One "page" is whatever is currently in view: two cards on desktop, one on
-  // mobile. Scroll snapping lands the track on a card edge.
+  // Which cards the track currently shows, and whether it is scrolled to an
+  // end. Derived from layout rather than arithmetic on widths and gaps, so it
+  // holds for two-up desktop and one-up mobile without knowing which is which.
+  const [view, setView] = useState({ first: 0, last: 0, atStart: true, atEnd: false });
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const update = () => {
+      const box = track.getBoundingClientRect();
+      const shown = [...track.children].flatMap((card, i) => {
+        const r = card.getBoundingClientRect();
+        return r.left < box.right - 1 && r.right > box.left + 1 ? [i] : [];
+      });
+      const next = {
+        first: shown[0] ?? 0,
+        last: shown[shown.length - 1] ?? 0,
+        atStart: track.scrollLeft <= 1,
+        atEnd: track.scrollLeft >= track.scrollWidth - track.clientWidth - 1,
+      };
+      // Scroll fires per frame; skip the re-render when nothing moved a card.
+      setView((v) =>
+        v.first === next.first &&
+        v.last === next.last &&
+        v.atStart === next.atStart &&
+        v.atEnd === next.atEnd
+          ? v
+          : next,
+      );
+    };
+
+    update();
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      track.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  // A "page" is whatever is in view: two cards on desktop, one on mobile.
   const page = (dir: 1 | -1) => {
     const track = trackRef.current;
     track?.scrollBy({ left: dir * track.clientWidth, behavior: "smooth" });
   };
 
+  const goTo = (i: number) => {
+    trackRef.current?.children[i]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    });
+  };
+
   return (
     <section className="ld-section" id="reviews">
       <div className="ld-wrap">
-        <div className="ld-section-head ld-reviews-head ld-reveal">
+        <div className="ld-section-head ld-reveal">
           <h2 className="ld-section-h">
             <Trans>Reviews from early users</Trans>
           </h2>
-          <div className="ld-reviews-nav">
-            <button
-              type="button"
-              className="ld-btn ld-reviews-arrow"
-              aria-label={_(msg`Previous reviews`)}
-              aria-controls="reviews-track"
-              onClick={() => page(-1)}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="ld-btn ld-reviews-arrow"
-              aria-label={_(msg`More reviews`)}
-              aria-controls="reviews-track"
-              onClick={() => page(1)}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </div>
         </div>
 
-        <div className="ld-reviews ld-reveal" id="reviews-track" ref={trackRef} tabIndex={0}>
+        <div
+          className="ld-reviews ld-reveal"
+          id="reviews-track"
+          ref={trackRef}
+          tabIndex={0}
+          role="group"
+          aria-label={_(msg`Reviews from early users`)}
+        >
           <ReviewCard
             portrait="/akhenaten-review.png"
             name={<Trans>Akhenaten</Trans>}
@@ -184,7 +226,7 @@ export function ReviewsSection() {
           <ReviewCard
             portrait="/suppiluliuma-review.png"
             name={<Trans>Suppiluliuma</Trans>}
-            title={<Trans>King of the Hittites</Trans>}
+            title={<Trans>King of Hatti</Trans>}
             source={<Trans>Translated from cuneiform</Trans>}
           >
             <Trans>
@@ -196,6 +238,51 @@ export function ReviewsSection() {
               else reaches me already sorted.
             </Trans>
           </ReviewCard>
+        </div>
+
+        <div className="ld-reviews-nav ld-reveal">
+          <button
+            type="button"
+            className="ld-btn ld-reviews-arrow"
+            aria-label={_(msg`Previous reviews`)}
+            aria-controls="reviews-track"
+            disabled={view.atStart}
+            onClick={() => page(-1)}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+
+          <div className="ld-reviews-dots">
+            {REVIEWERS.map((reviewer, i) => {
+              const n = i + 1;
+              return (
+                <button
+                  key={reviewer}
+                  type="button"
+                  className="ld-reviews-dot"
+                  aria-label={_(msg`Review ${n}, ${reviewer}`)}
+                  aria-controls="reviews-track"
+                  aria-current={i >= view.first && i <= view.last}
+                  onClick={() => goTo(i)}
+                />
+              );
+            })}
+          </div>
+
+          <button
+            type="button"
+            className="ld-btn ld-reviews-arrow"
+            aria-label={_(msg`More reviews`)}
+            aria-controls="reviews-track"
+            disabled={view.atEnd}
+            onClick={() => page(1)}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         </div>
       </div>
     </section>

@@ -373,7 +373,7 @@ Burna-Buriash II, King of Babylon`,
   },
   {
     id: "t2",
-    subject: msg`Alliance proposal: house of Hatti`,
+    subject: msg`Alliance proposal`,
     providerThreadId: "p2",
     participants: "suppiluliuma@hatti.gov",
     latestAt: d("2026-05-29T16:45:00Z"),

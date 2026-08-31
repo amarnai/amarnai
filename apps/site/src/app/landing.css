@@ -307,22 +307,55 @@
 
 /* ─── Reviews ─────────────────────────────────────────────────────────────── */
 
-.ld-reviews-head {
-  max-width: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
 .ld-reviews-nav {
   display: flex;
-  gap: 8px;
-  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 28px;
 }
 
 .ld-reviews-arrow {
   padding: 9px 11px;
+}
+
+.ld-reviews-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+  background: var(--surface);
+  border-color: var(--line-2);
+}
+
+.ld-reviews-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Dots are 8px tall for looks; the ::after pad gives them a real tap target. */
+.ld-reviews-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--line-3);
+  cursor: pointer;
+  transition: background 0.16s, width 0.16s;
+}
+
+.ld-reviews-dot::after {
+  content: "";
+  position: absolute;
+  inset: -9px -4px;
+}
+
+.ld-reviews-dot:hover { background: var(--ink-3); }
+
+.ld-reviews-dot[aria-current="true"] {
+  width: 22px;
+  background: var(--accent);
 }
 
 /* Carousel track: two cards visible per page, the rest reachable by swipe,
