@@ -45,9 +45,9 @@ export function Nav({ anchorBase = "" }: { anchorBase?: string }) {
         </a>
 
         <nav className="ld-nav-links">
+          <a {...anchorProps("triage")}><Trans>See it work</Trans></a>
           <a {...anchorProps("how")}><Trans>How it works</Trans></a>
           <a {...anchorProps("taxonomy")}><Trans>Your folders</Trans></a>
-          <a {...anchorProps("triage")}><Trans>See it work</Trans></a>
           <a {...anchorProps("faq")}><Trans>FAQ</Trans></a>
           <ThemeToggle className="theme-toggle--nav" />
           <Link className="ld-btn ld-nav-cta accent" href="/pricing">

@@ -2,6 +2,8 @@
 
 When working on Aziru, prioritize readability, safety, and a focused feature set. Avoid clever abstractions and do not add out-of-scope features without explicit approval.
 
+**Do not edit any code without the user's explicit consent.** Propose changes first and wait for approval before modifying files.
+
 ## About
 
 Aziru is an open-source, self-hostable AI email triage assistant. It is Gmail-first, but not a full email client.

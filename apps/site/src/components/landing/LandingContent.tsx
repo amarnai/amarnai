@@ -20,9 +20,9 @@ export function LandingContent() {
       <Nav />
       <main id="top" suppressHydrationWarning>
         <HeroSection />
+        <EmailsDemoSection />
         <HowItWorksSection />
         <TaxonomyDemoSection />
-        <EmailsDemoSection />
         <ReviewsSection />
         <FAQSection />
         <FinalCTASection />

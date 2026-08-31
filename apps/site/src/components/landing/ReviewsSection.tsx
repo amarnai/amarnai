@@ -196,7 +196,7 @@ export function ReviewsSection() {
           <ReviewCard
             portrait="/abdi-heba-review.png"
             name={<Trans>Abdi-Heba</Trans>}
-            title={<Trans>Mayor of Jerusalem</Trans>}
+            title={<Trans>Governor of Urushalim</Trans>}
             source={<Trans>Translated from cuneiform</Trans>}
           >
             <Trans>
@@ -211,7 +211,7 @@ export function ReviewsSection() {
           <ReviewCard
             portrait="/rib-hadda-review.png"
             name={<Trans>Rib-Hadda</Trans>}
-            title={<Trans>Mayor of Byblos</Trans>}
+            title={<Trans>Governor of Byblos</Trans>}
             source={<Trans>Translated from cuneiform</Trans>}
           >
             <Trans>
