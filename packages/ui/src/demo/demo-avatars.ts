@@ -17,3 +17,14 @@ export const DEMO_AVATARS: Record<string, string> = {
   t5: "/abdi-heba-pfp.png",
   t6: "/tushratta-pfp.png",
 };
+
+/**
+ * Profile photos for the demo workspace members (the court), keyed by userId
+ * for the same reason the sender map is keyed by thread id: names localize,
+ * ids don't. Akhenaten reuses the portrait the reviews carousel already ships;
+ * Pentu appears only in the picker and mentions and falls back to initials.
+ */
+export const DEMO_MEMBER_AVATARS: Record<string, string> = {
+  "u-akhenaten": "/akhenaten-review.png",
+  "u-tutu": "/tutu-pfp.png",
+};

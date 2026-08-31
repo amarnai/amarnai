@@ -2,6 +2,7 @@ import { Nav } from "./Nav";
 import { HeroSection } from "./HeroSection";
 import { HowItWorksSection } from "./HowItWorksSection";
 import { TaxonomyDemoSection } from "./TaxonomyDemoSection";
+import { CollaborationSection } from "./CollaborationSection";
 import { EmailsDemoSection } from "./EmailsDemoSection";
 import { ReviewsSection } from "./ReviewsSection";
 import { FAQSection } from "./FAQSection";
@@ -23,6 +24,7 @@ export function LandingContent() {
         <EmailsDemoSection />
         <HowItWorksSection />
         <TaxonomyDemoSection />
+        <CollaborationSection />
         <ReviewsSection />
         <FAQSection />
         <FinalCTASection />

@@ -17,6 +17,10 @@ msgstr ""
 #~ msgid " (Inbox)"
 #~ msgstr " (Inbox)"
 
+#: ../ui/src/demo/demo-seed.ts:211
+msgid "\"Matters easier said than written\" — that usually means he wants more archers. @{tutu}, what did we promise him last time?"
+msgstr "\"Matters easier said than written\" — that usually means he wants more archers. @{tutu}, what did we promise him last time?"
+
 #: ../../apps/mobile/src/components/MessageCard.tsx:57
 #: ../ui/src/emails/MessageCard.tsx:62
 msgid "(No body)"
@@ -538,11 +542,11 @@ msgstr "500 threads"
 msgid "75,000 threads"
 msgstr "75,000 threads"
 
-#: ../ui/src/demo/demo-seed.ts:422
+#: ../ui/src/demo/demo-seed.ts:468
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 msgstr "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence."
 
-#: ../ui/src/demo/demo-seed.ts:436
+#: ../ui/src/demo/demo-seed.ts:482
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
@@ -570,11 +574,11 @@ msgstr "A workspace owner manages this workspace's folders."
 msgid "Abdi-Heba"
 msgstr "Abdi-Heba"
 
-#: ../ui/src/demo/demo-seed.ts:510
+#: ../ui/src/demo/demo-seed.ts:556
 msgid "Abdi-Heba of Urushalim"
 msgstr "Abdi-Heba of Urushalim"
 
-#: ../ui/src/demo/demo-seed.ts:247
+#: ../ui/src/demo/demo-seed.ts:293
 msgid "Abdi-Heba,\n"
 "\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
@@ -671,7 +675,7 @@ msgstr "Add at least 3 connected folders to export"
 msgid "Add members"
 msgstr "Add members"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:354
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:332
 msgid "Add the browser extension, then sign in with Google or Microsoft. Aziru syncs your threads and labels. It never sends or deletes on your behalf."
 msgstr "Add the browser extension, then sign in with Google or Microsoft. Aziru syncs your threads and labels. It never sends or deletes on your behalf."
 
@@ -684,6 +688,7 @@ msgid "Add to Firefox"
 msgstr "Add to Firefox"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:111
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #: ../ui/src/i18n/taxonomy-template-messages.ts:30
 msgid "Admin"
@@ -745,7 +750,7 @@ msgid "AI TL;DR of a thread, generated the first time you open it"
 msgstr "AI TL;DR of a thread, generated the first time you open it"
 
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:153
-#: ../ui/src/demo/demo-seed.ts:158
+#: ../ui/src/demo/demo-seed.ts:159
 msgid "Akhenaten"
 msgstr "Akhenaten"
 
@@ -778,7 +783,7 @@ msgstr "All workspace data will be permanently deleted."
 msgid "All your workspaces, emails, and settings will be deleted permanently."
 msgstr "All your workspaces, emails, and settings will be deleted permanently."
 
-#: ../ui/src/demo/demo-seed.ts:376
+#: ../ui/src/demo/demo-seed.ts:422
 msgid "Alliance proposal"
 msgstr "Alliance proposal"
 
@@ -849,11 +854,11 @@ msgstr "API error {0}"
 msgid "Appearance"
 msgstr "Appearance"
 
-#: ../ui/src/demo/demo-seed.ts:417
+#: ../ui/src/demo/demo-seed.ts:463
 msgid "Application: Chief of Correspondence"
 msgstr "Application: Chief of Correspondence"
 
-#: ../ui/src/demo/demo-seed.ts:36
+#: ../ui/src/demo/demo-seed.ts:37
 msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "Applications, recruiter outreach, and interview scheduling."
 
@@ -901,6 +906,7 @@ msgid "Ask the workspace owner to change the plan."
 msgstr "Ask the workspace owner to change the plan."
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:209
 #: ../ui/src/emails/ThreadPreview.tsx:251
 #: ../ui/src/emails/TriageBar.tsx:71
 msgid "Assign"
@@ -910,6 +916,10 @@ msgstr "Assign"
 msgid "Assign a thread to yourself from any conversation and it will show up here."
 msgstr "Assign a thread to yourself from any conversation and it will show up here."
 
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:141
+msgid "Assign any thread to a teammate so everyone knows who has what, and settle it in comments on the thread itself — @mention someone to pull them in. Conversations and assignments live in Aziru — the app and the side panel — layered over your shared inbox. And as always, Aziru never sends mail."
+msgstr "Assign any thread to a teammate so everyone knows who has what, and settle it in comments on the thread itself — @mention someone to pull them in. Conversations and assignments live in Aziru — the app and the side panel — layered over your shared inbox. And as always, Aziru never sends mail."
+
 #: ../ui/src/emails/AssigneePicker.tsx:105
 msgid "Assign thread"
 msgstr "Assign thread"
@@ -918,6 +928,7 @@ msgstr "Assign thread"
 msgid "Assign to"
 msgstr "Assign to"
 
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:194
 #: ../ui/src/emails/ThreadPreview.tsx:243
 #: ../ui/src/emails/ThreadRow.tsx:386
 #: ../ui/src/emails/ThreadRow.tsx:395
@@ -939,6 +950,11 @@ msgstr "Assigned"
 #: ../ui/src/emails/MockEmailsPage.tsx:240
 msgid "Assigned to {0}"
 msgstr "Assigned to {0}"
+
+#. placeholder {0}: assignee.name ?? assignee.email
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:193
+msgid "Assigned to {0}. Change assignee"
+msgstr "Assigned to {0}. Change assignee"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 msgid "Assigned to {assigneeName}"
@@ -986,7 +1002,7 @@ msgstr "Automated and bulk mail ({0}) always moves to the new catch-all folder."
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 msgstr "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
 
-#: ../ui/src/demo/demo-seed.ts:427
+#: ../ui/src/demo/demo-seed.ts:473
 msgid "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 msgstr "Automated notice from the Bureau of Royal Appointments. Subject and sender clearly indicate a new application for an open position."
 
@@ -1265,7 +1281,7 @@ msgstr "Aziru: AI Email Sorter for Gmail™ & Outlook"
 msgid "Aziru: Sort emails your way"
 msgstr "Aziru: Sort emails your way"
 
-#: ../ui/src/demo/demo-seed.ts:273
+#: ../ui/src/demo/demo-seed.ts:319
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 msgstr "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
 
@@ -1332,8 +1348,8 @@ msgstr "Billed annually · <0>save {pct}%</0>"
 msgid "Billed monthly · 14-day free trial"
 msgstr "Billed monthly · 14-day free trial"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:259
-#: ../ui/src/demo/demo-seed.ts:32
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:233
+#: ../ui/src/demo/demo-seed.ts:33
 msgid "Billing"
 msgstr "Billing"
 
@@ -1363,7 +1379,7 @@ msgstr "Board & Governance"
 msgid "Board meetings, governance policies, bylaws, and trustee correspondence."
 msgstr "Board meetings, governance policies, bylaws, and trustee correspondence."
 
-#: ../ui/src/demo/demo-seed.ts:35
+#: ../ui/src/demo/demo-seed.ts:36
 msgid "Board members, existing fund partners, and portfolio updates."
 msgstr "Board members, existing fund partners, and portfolio updates."
 
@@ -1371,13 +1387,17 @@ msgstr "Board members, existing fund partners, and portfolio updates."
 msgid "Brand Deals"
 msgstr "Brand Deals"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:357
+msgid "Browse emails easily through your folders. Click Aziru Reply, and the draft lands in your compose window, ready for your edits."
+msgstr "Browse emails easily through your folders. Click Aziru Reply, and the draft lands in your compose window, ready for your edits."
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 #~ msgstr "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:379
-msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
-msgstr "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
+#~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
+#~ msgstr "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:817
@@ -1414,7 +1434,7 @@ msgstr "Build plan"
 #~ msgid "Bulk triage your inbox"
 #~ msgstr "Bulk triage your inbox"
 
-#: ../ui/src/demo/demo-seed.ts:432
+#: ../ui/src/demo/demo-seed.ts:478
 msgid "Bureau of Royal Appointments"
 msgstr "Bureau of Royal Appointments"
 
@@ -1422,7 +1442,7 @@ msgstr "Bureau of Royal Appointments"
 msgid "Burna-Buriash"
 msgstr "Burna-Buriash"
 
-#: ../ui/src/demo/demo-seed.ts:350
+#: ../ui/src/demo/demo-seed.ts:396
 msgid "Burna-Buriash II"
 msgstr "Burna-Buriash II"
 
@@ -1452,7 +1472,7 @@ msgstr "Buyers & Showings"
 msgid "By continuing, you agree to the <0>Terms of Service</0> and acknowledge the <1>Privacy Policy</1>."
 msgstr "By continuing, you agree to the <0>Terms of Service</0> and acknowledge the <1>Privacy Policy</1>."
 
-#: ../ui/src/demo/demo-seed.ts:275
+#: ../ui/src/demo/demo-seed.ts:321
 msgid "Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times."
 msgstr "Byblos is still waiting on the third grain shipment and the city is restless. Rib-Hadda has now written seven times."
 
@@ -1586,6 +1606,10 @@ msgstr "Check your email"
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 msgid "Check your inbox"
 msgstr "Check your inbox"
+
+#: ../ui/src/demo/demo-seed.ts:220
+msgid "Checked the archive: he asked for fifty, we sent twenty. I would take the meeting — @{pentu} can sit in and keep the record."
+msgstr "Checked the archive: he asked for fifty, we sent twenty. I would take the meeting — @{pentu} can sit in and keep the record."
 
 #. placeholder {0}: err.message
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:143
@@ -1835,7 +1859,7 @@ msgstr "Connect a mailbox to Aziru to start sorting your inbox."
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:202
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:130
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:333
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:311
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:453
 msgid "Connect Gmail"
 msgstr "Connect Gmail"
@@ -1856,7 +1880,7 @@ msgstr "Connect Gmail"
 #~ msgid "Connect Gmail and Aziru starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 #~ msgstr "Connect Gmail and Aziru starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:326
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:304
 msgid "Connect Gmail button"
 msgstr "Connect Gmail button"
 
@@ -1876,7 +1900,7 @@ msgstr "Connect Gmail to generate folders from your inbox"
 msgid "Connect Gmail to start triaging"
 msgstr "Connect Gmail to start triaging"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:349
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:327
 msgid "Connect inbox"
 msgstr "Connect inbox"
 
@@ -1884,7 +1908,7 @@ msgstr "Connect inbox"
 #~ msgid "Connect inbox button"
 #~ msgstr "Connect inbox button"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:396
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:374
 msgid "Connect once, generate your folders once, and let Aziru handle new mail and the thousands of threads already sitting in your inbox."
 msgstr "Connect once, generate your folders once, and let Aziru handle new mail and the thousands of threads already sitting in your inbox."
 
@@ -1894,12 +1918,12 @@ msgstr "Connect once, generate your folders once, and let Aziru handle new mail 
 
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:153
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:331
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:309
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:461
 msgid "Connect Outlook"
 msgstr "Connect Outlook"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:325
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:303
 msgid "Connect Outlook button"
 msgstr "Connect Outlook button"
 
@@ -2239,15 +2263,15 @@ msgstr "Couldn't reach Aziru. Check your connection and try again."
 msgid "Couldn't start generation."
 msgstr "Couldn't start generation."
 
-#: ../ui/src/demo/demo-seed.ts:283
+#: ../ui/src/demo/demo-seed.ts:329
 msgid "Council convenes at the start of Shemu"
 msgstr "Council convenes at the start of Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:534
+#: ../ui/src/demo/demo-seed.ts:580
 msgid "Council convening: season of Shemu"
 msgstr "Council convening: season of Shemu"
 
-#: ../ui/src/demo/demo-seed.ts:544
+#: ../ui/src/demo/demo-seed.ts:590
 msgid "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 msgstr "Council preparation request from a known royal ally. Sender domain and context clearly match the Current investors folder."
 
@@ -2309,7 +2333,7 @@ msgstr "Creating…"
 #: ../../apps/mobile/src/components/AssigneeSheet.tsx:63
 #: ../../apps/mobile/src/components/RerouteSheet.tsx:45
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:107
-#: ../ui/src/demo/demo-seed.ts:35
+#: ../ui/src/demo/demo-seed.ts:36
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1073
 msgid "Current"
 msgstr "Current"
@@ -2336,8 +2360,8 @@ msgstr "Customer Questions"
 #~ msgid "Customer support, onboarding, product feedback, churn, and success conversations."
 #~ msgstr "Customer support, onboarding, product feedback, churn, and success conversations."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:158
-#: ../ui/src/demo/demo-seed.ts:31
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:164
+#: ../ui/src/demo/demo-seed.ts:32
 #: ../ui/src/i18n/taxonomy-template-messages.ts:59
 msgid "Customers"
 msgstr "Customers"
@@ -2457,7 +2481,7 @@ msgstr "Deployments"
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 msgstr "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:364
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:342
 msgid "Describe your folders"
 msgstr "Describe your folders"
 
@@ -2681,7 +2705,6 @@ msgstr "Draft generation failed. Try again."
 #~ msgstr "Draft ready in your reply. Review it, then send when you are happy."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:63
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:265
 #: ../ui/src/emails/SuggestedDraftCard.tsx:82
 msgid "Draft reply"
 msgstr "Draft reply"
@@ -2921,7 +2944,7 @@ msgstr "Every thread in your inbox."
 #~ msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 
-#: ../ui/src/demo/demo-seed.ts:37
+#: ../ui/src/demo/demo-seed.ts:38
 msgid "Everything that doesn't fit a named folder."
 msgstr "Everything that doesn't fit a named folder."
 
@@ -3013,7 +3036,7 @@ msgstr "Fan messages, viewer comments, and follower engagement notifications."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:84
 #: ../../apps/site/src/components/landing/Footer.tsx:36
-#: ../../apps/site/src/components/landing/Nav.tsx:51
+#: ../../apps/site/src/components/landing/Nav.tsx:52
 msgid "FAQ"
 msgstr "FAQ"
 
@@ -3058,7 +3081,7 @@ msgstr "Filters match rules you write by hand: this sender, that subject keyword
 msgid "Finance"
 msgstr "Finance"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:376
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:354
 msgid "Find and draft"
 msgstr "Find and draft"
 
@@ -3086,7 +3109,7 @@ msgstr "Five things keep your inbox safe. First, Aziru's access is narrow by des
 #~ msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 #~ msgstr "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
 
-#: ../ui/src/demo/demo-seed.ts:386
+#: ../ui/src/demo/demo-seed.ts:432
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Suppiluliuma has been known to send similar overtures to multiple courts."
 msgstr "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Suppiluliuma has been known to send similar overtures to multiple courts."
 
@@ -3203,7 +3226,7 @@ msgstr "For K-12 educators managing classroom, parents, and school administratio
 msgid "For larger organizations."
 msgstr "For larger organizations."
 
-#: ../ui/src/demo/demo-seed.ts:381
+#: ../ui/src/demo/demo-seed.ts:427
 msgid "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 msgstr "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples."
 
@@ -3299,7 +3322,7 @@ msgstr "Full"
 #~ msgid "Full + admin controls"
 #~ msgstr "Full + admin controls"
 
-#: ../ui/src/demo/demo-seed.ts:284
+#: ../ui/src/demo/demo-seed.ts:330
 msgid "Full accounting of the eastern territories requested"
 msgstr "Full accounting of the eastern territories requested"
 
@@ -3506,7 +3529,7 @@ msgstr "Go to {0}"
 msgid "Go to sign in"
 msgstr "Go to sign in"
 
-#: ../ui/src/demo/demo-seed.ts:335
+#: ../ui/src/demo/demo-seed.ts:381
 msgid "Gold balance: third consignment overdue"
 msgstr "Gold balance: third consignment overdue"
 
@@ -3552,7 +3575,7 @@ msgstr "Grant requests, foundation deadlines, and funder reporting requirements.
 msgid "Grants & Foundations"
 msgstr "Grants & Foundations"
 
-#: ../ui/src/demo/demo-seed.ts:252
+#: ../ui/src/demo/demo-seed.ts:298
 msgid "Great King,\n"
 "\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
@@ -3576,7 +3599,7 @@ msgstr "Hand the sorting to Aziru."
 msgid "Health"
 msgstr "Health"
 
-#: ../ui/src/demo/demo-seed.ts:33
+#: ../ui/src/demo/demo-seed.ts:34
 msgid "Help requests, supply issues, and escalations from customers."
 msgstr "Help requests, supply issues, and escalations from customers."
 
@@ -3585,7 +3608,7 @@ msgstr "Help requests, supply issues, and escalations from customers."
 msgid "Hide tips"
 msgstr "Hide tips"
 
-#: ../ui/src/demo/demo-seed.ts:36
+#: ../ui/src/demo/demo-seed.ts:37
 #: ../ui/src/i18n/taxonomy-template-messages.ts:62
 msgid "Hiring"
 msgstr "Hiring"
@@ -3672,7 +3695,7 @@ msgstr "I have asked the king for archers in nearly every letter I have ever wri
 msgid "I have sent sixty-eight letters to Pharaoh and received almost nothing back, so I know something about a hopeless inbox. Aziru files my pleas, my grain shortages, and my warnings about the sons of Abdi-Ashirta into their own folders. I remain besieged, but I am besieged in an organized way."
 msgstr "I have sent sixty-eight letters to Pharaoh and received almost nothing back, so I know something about a hopeless inbox. Aziru files my pleas, my grain shortages, and my warnings about the sons of Abdi-Ashirta into their own folders. I remain besieged, but I am besieged in an organized way."
 
-#: ../ui/src/demo/demo-seed.ts:394
+#: ../ui/src/demo/demo-seed.ts:440
 msgid "I write to propose that we formalise our friendship."
 msgstr "I write to propose that we formalise our friendship."
 
@@ -3744,8 +3767,8 @@ msgstr "In Gmail and Outlook"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:107
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:183
 #: ../../apps/mobile/src/components/taxonomy/TaxonomyNodeRow.tsx:45
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:152
-#: ../ui/src/demo/demo-seed.ts:30
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:158
+#: ../ui/src/demo/demo-seed.ts:31
 #: ../ui/src/demo/mailbox/OutlookInboxMock.tsx:122
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:281
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
@@ -3794,7 +3817,7 @@ msgstr "Included"
 msgid "Incorrect email or password."
 msgstr "Incorrect email or password."
 
-#: ../ui/src/demo/demo-seed.ts:505
+#: ../ui/src/demo/demo-seed.ts:551
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 msgstr "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
 
@@ -3880,8 +3903,8 @@ msgstr "Invalid taxonomy file: {0}"
 msgid "Invalid taxonomy file: {detail}"
 msgstr "Invalid taxonomy file: {detail}"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:164
-#: ../ui/src/demo/demo-seed.ts:34
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:170
+#: ../ui/src/demo/demo-seed.ts:35
 #: ../ui/src/i18n/taxonomy-template-messages.ts:57
 msgid "Investors"
 msgstr "Investors"
@@ -3910,7 +3933,7 @@ msgstr "Invite teammates to this workspace to triage the inbox together."
 #~ msgid "Invited"
 #~ msgstr "Invited"
 
-#: ../ui/src/demo/demo-seed.ts:32
+#: ../ui/src/demo/demo-seed.ts:33
 msgid "Invoice questions, overdue balances, and payment disputes."
 msgstr "Invoice questions, overdue balances, and payment disputes."
 
@@ -4074,7 +4097,7 @@ msgstr "Last verified: {0}"
 #~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 #~ msgstr "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each is the whole config."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:367
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:345
 msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 msgstr "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
 
@@ -4338,6 +4361,7 @@ msgstr "Media inquiries, journalist requests, and press coverage bookings."
 #~ msgstr "Media inquiries, press coverage, co-marketing proposals, and partnership outreach."
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:111
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 msgid "Member"
 msgstr "Member"
@@ -4346,7 +4370,7 @@ msgstr "Member"
 msgid "Messages from parents and guardians about attendance, behavior, and progress."
 msgstr "Messages from parents and guardians about attendance, behavior, and progress."
 
-#: ../ui/src/demo/demo-seed.ts:31
+#: ../ui/src/demo/demo-seed.ts:32
 msgid "Messages from paying customers and account holders."
 msgstr "Messages from paying customers and account holders."
 
@@ -4451,7 +4475,7 @@ msgstr "Moved to {folderName}"
 msgid "My letters to Egypt are long, and the replies are longer, and for years I could not tell a dowry inventory from a note about the statue of Shaushka. Aziru keeps the gold I am owed in one folder and the pleasantries in another. Pharaoh still sends less gold than promised, but at least I now know exactly which tablet says so."
 msgstr "My letters to Egypt are long, and the replies are longer, and for years I could not tell a dowry inventory from a note about the statue of Shaushka. Aziru keeps the gold I am owed in one folder and the pleasantries in another. Pharaoh still sends less gold than promised, but at least I now know exactly which tablet says so."
 
-#: ../ui/src/demo/demo-seed.ts:500
+#: ../ui/src/demo/demo-seed.ts:546
 msgid "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 msgstr "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face."
 
@@ -4484,7 +4508,7 @@ msgstr "Never"
 msgid "Never auto-sends · Encrypted at rest · Minimal data"
 msgstr "Never auto-sends · Encrypted at rest · Minimal data"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:337
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:315
 msgid "Never sends · OAuth · revoke anytime"
 msgstr "Never sends · OAuth · revoke anytime"
 
@@ -4492,7 +4516,7 @@ msgstr "Never sends · OAuth · revoke anytime"
 msgid "Never sends or deletes"
 msgstr "Never sends or deletes"
 
-#: ../ui/src/demo/demo-seed.ts:435
+#: ../ui/src/demo/demo-seed.ts:481
 msgid "New application from Horemheb of Thebes."
 msgstr "New application from Horemheb of Thebes."
 
@@ -4783,6 +4807,10 @@ msgstr "Official university emails: registrar, student services, and housing."
 msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "On-call alerts, outage reports, and production incident escalations."
 
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:241
+msgid "One conversation, shared by the whole team."
+msgstr "One conversation, shared by the whole team."
+
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:96
 msgid "One sign-in creates your account and connects Gmail or Outlook. Aziru never sends or deletes mail."
 msgstr "One sign-in creates your account and connects Gmail or Outlook. Aziru never sends or deletes mail."
@@ -4799,7 +4827,7 @@ msgstr "One sign-in creates your account and connects Gmail or Outlook. Aziru ne
 #~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Aziru never sends or deletes mail."
 #~ msgstr "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Aziru never sends or deletes mail."
 
-#: ../ui/src/demo/demo-seed.ts:464
+#: ../ui/src/demo/demo-seed.ts:510
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 msgstr "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
 
@@ -4958,7 +4986,7 @@ msgstr "Or connect a different inbox:"
 msgid "Orders"
 msgstr "Orders"
 
-#: ../ui/src/demo/demo-seed.ts:37
+#: ../ui/src/demo/demo-seed.ts:38
 #: ../ui/src/demo/mailbox/OutlookInboxMock.tsx:171
 msgid "Other"
 msgstr "Other"
@@ -5001,8 +5029,8 @@ msgstr "Partners"
 msgid "Passed Google's security review"
 msgstr "Passed Google's security review"
 
-#: ../ui/src/demo/demo-seed.ts:495
-#: ../ui/src/demo/demo-seed.ts:513
+#: ../ui/src/demo/demo-seed.ts:541
+#: ../ui/src/demo/demo-seed.ts:559
 msgid "Passing through the Delta: free to meet?"
 msgstr "Passing through the Delta: free to meet?"
 
@@ -5067,7 +5095,7 @@ msgstr "Pending"
 msgid "Pending invitations"
 msgstr "Pending invitations"
 
-#: ../ui/src/demo/demo-seed.ts:160
+#: ../ui/src/demo/demo-seed.ts:161
 msgid "Pentu"
 msgstr "Pentu"
 
@@ -5220,7 +5248,7 @@ msgstr "Prefer to self-host?"
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 msgstr "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
 
-#: ../ui/src/demo/demo-seed.ts:552
+#: ../ui/src/demo/demo-seed.ts:598
 msgid "Prepare your accounts before the council convenes."
 msgstr "Prepare your accounts before the council convenes."
 
@@ -5254,7 +5282,7 @@ msgstr "Priced per workspace. Clear plans, clear limits."
 #~ msgstr "Priced per workspace. Sort as much as you like."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:32
-#: ../../apps/site/src/components/landing/Nav.tsx:54
+#: ../../apps/site/src/components/landing/Nav.tsx:55
 msgid "Pricing"
 msgstr "Pricing"
 
@@ -5293,6 +5321,10 @@ msgstr "Privacy and data handling"
 #: ../../apps/site/src/components/landing/HeroSection.tsx:39
 msgid "Privacy by design"
 msgstr "Privacy by design"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:238
+msgid "Priya"
+msgstr "Priya"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:39
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
@@ -5400,11 +5432,11 @@ msgstr "Re-sorting threads already sorted this month is free. If you reach your 
 msgid "Re-sorting…"
 msgstr "Re-sorting…"
 
-#: ../ui/src/demo/demo-seed.ts:454
+#: ../ui/src/demo/demo-seed.ts:500
 msgid "Re: Grain shipment: third delay this season"
 msgstr "Re: Grain shipment: third delay this season"
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:254
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:228
 msgid "Re: Q3 renewal"
 msgstr "Re: Q3 renewal"
 
@@ -5765,11 +5797,11 @@ msgstr "Reviews from early users"
 msgid "Rib-Hadda"
 msgstr "Rib-Hadda"
 
-#: ../ui/src/demo/demo-seed.ts:469
+#: ../ui/src/demo/demo-seed.ts:515
 msgid "Rib-Hadda of Byblos"
 msgstr "Rib-Hadda of Byblos"
 
-#: ../ui/src/demo/demo-seed.ts:242
+#: ../ui/src/demo/demo-seed.ts:288
 msgid "Rib-Hadda,\n"
 "\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
@@ -5956,7 +5988,7 @@ msgstr "Sellers"
 msgid "Send"
 msgstr "Send"
 
-#: ../ui/src/demo/demo-seed.ts:285
+#: ../ui/src/demo/demo-seed.ts:331
 msgid "Send ahead by fast courier, before the new moon"
 msgstr "Send ahead by fast courier, before the new moon"
 
@@ -5982,7 +6014,7 @@ msgstr "Sender blacklist"
 msgid "Sender Blacklist"
 msgstr "Sender Blacklist"
 
-#: ../ui/src/demo/demo-seed.ts:345
+#: ../ui/src/demo/demo-seed.ts:391
 msgid "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 msgstr "Sender is a known treaty partner of significant standing. Subject explicitly references an outstanding balance on an agreed consignment, which matches the Billing folder."
 
@@ -6454,15 +6486,15 @@ msgstr "Supervision"
 msgid "Suppiluliuma"
 msgstr "Suppiluliuma"
 
-#: ../ui/src/demo/demo-seed.ts:391
+#: ../ui/src/demo/demo-seed.ts:437
 msgid "Suppiluliuma of Hatti"
 msgstr "Suppiluliuma of Hatti"
 
-#: ../ui/src/demo/demo-seed.ts:274
+#: ../ui/src/demo/demo-seed.ts:320
 msgid "Suppiluliuma proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier."
 msgstr "Suppiluliuma proposes a formal pact of mutual protection and shared routes, and wants word sent back by the next courier."
 
-#: ../ui/src/demo/demo-seed.ts:232
+#: ../ui/src/demo/demo-seed.ts:278
 msgid "Suppiluliuma,\n"
 "\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Hatti proposes. Send your terms by the next courier.\n"
@@ -6479,7 +6511,7 @@ msgid "Suppliers"
 msgstr "Suppliers"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:41
-#: ../ui/src/demo/demo-seed.ts:33
+#: ../ui/src/demo/demo-seed.ts:34
 #: ../ui/src/pricing/planMessages.ts:56
 msgid "Support"
 msgstr "Support"
@@ -6596,10 +6628,14 @@ msgstr "Teacher"
 msgid "Teacher training workshops, certification renewals, and education webinars."
 msgstr "Teacher training workshops, certification renewals, and education webinars."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:170
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:176
 #: ../ui/src/i18n/taxonomy-template-messages.ts:42
 msgid "Team"
 msgstr "Team"
+
+#: ../../apps/site/src/components/landing/Nav.tsx:51
+msgid "Teamwork"
+msgstr "Teamwork"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:230
 msgid "Template applied"
@@ -6617,7 +6653,7 @@ msgstr "Terms"
 msgid "Thank you for your message. I'll follow up shortly."
 msgstr "Thank you for your message. I'll follow up shortly."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:191
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:239
 msgid "Thanks for the update. Friday works."
 msgstr "Thanks for the update. Friday works."
 
@@ -6673,7 +6709,7 @@ msgstr "The comment could not be posted. Try again."
 msgid "The connection could not be saved due to a server error. Please try again."
 msgstr "The connection could not be saved due to a server error. Please try again."
 
-#: ../ui/src/demo/demo-seed.ts:276
+#: ../ui/src/demo/demo-seed.ts:322
 msgid "The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier."
 msgstr "The council convenes at the start of Shemu. Tushratta asks for a full accounting of the eastern territories, sent ahead by fast courier."
 
@@ -6685,11 +6721,11 @@ msgstr "The council convenes at the start of Shemu. Tushratta asks for a full ac
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 msgstr "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
 
-#: ../ui/src/demo/demo-seed.ts:459
+#: ../ui/src/demo/demo-seed.ts:505
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 msgstr "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
 
-#: ../ui/src/demo/demo-seed.ts:539
+#: ../ui/src/demo/demo-seed.ts:585
 msgid "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 msgstr "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier."
 
@@ -6697,15 +6733,15 @@ msgstr "The great council convenes at the start of Shemu. I ask that you prepare
 msgid "The new limits apply right away."
 msgstr "The new limits apply right away."
 
-#: ../ui/src/demo/demo-seed.ts:340
+#: ../ui/src/demo/demo-seed.ts:386
 msgid "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 msgstr "The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait."
 
-#: ../ui/src/demo/demo-seed.ts:353
+#: ../ui/src/demo/demo-seed.ts:399
 msgid "The third gold consignment is overdue."
 msgstr "The third gold consignment is overdue."
 
-#: ../ui/src/demo/demo-seed.ts:472
+#: ../ui/src/demo/demo-seed.ts:518
 msgid "The third grain shipment has not arrived."
 msgstr "The third grain shipment has not arrived."
 
@@ -6896,7 +6932,7 @@ msgstr "Threads to handle"
 msgid "Threads you've marked as important."
 msgstr "Threads you've marked as important."
 
-#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:393
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
 msgid "Three steps to a sorted inbox."
 msgstr "Three steps to a sorted inbox."
 
@@ -6908,7 +6944,7 @@ msgstr "Three steps to a sorted inbox."
 msgid "Tip: pin the Aziru icon in your toolbar to keep it one click away."
 msgstr "Tip: pin the Aziru icon in your toolbar to keep it one click away."
 
-#: ../ui/src/demo/demo-seed.ts:553
+#: ../ui/src/demo/demo-seed.ts:599
 msgid "To my brother, the Great King,\n"
 "\n"
 "The great council convenes at the start of Shemu. I ask that you prepare a full accounting of the eastern territories and send it ahead by fast courier, before the new moon if possible.\n"
@@ -6924,7 +6960,7 @@ msgstr "To my brother, the Great King,\n"
 "\n"
 "Tushratta, Great King of Mitanni"
 
-#: ../ui/src/demo/demo-seed.ts:237
+#: ../ui/src/demo/demo-seed.ts:283
 msgid "To the Bureau of Royal Appointments,\n"
 "\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
@@ -6952,7 +6988,7 @@ msgstr "To the Bureau of Royal Appointments,\n"
 #~ "\n"
 #~ "Aziru, servant of the Great King, lord of Amurru"
 
-#: ../ui/src/demo/demo-seed.ts:395
+#: ../ui/src/demo/demo-seed.ts:441
 msgid "To the Great King,\n"
 "\n"
 "For many years our houses have been as brothers. I write now to propose that we formalise this friendship for the benefit of both our peoples: a pact of mutual protection and shared routes.\n"
@@ -6968,7 +7004,7 @@ msgstr "To the Great King,\n"
 "\n"
 "Suppiluliuma, Great King, king of Hatti"
 
-#: ../ui/src/demo/demo-seed.ts:514
+#: ../ui/src/demo/demo-seed.ts:560
 msgid "To the Great King,\n"
 "\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
@@ -6980,7 +7016,7 @@ msgstr "To the Great King,\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
 
-#: ../ui/src/demo/demo-seed.ts:227
+#: ../ui/src/demo/demo-seed.ts:273
 msgid "To the Great King, my brother,\n"
 "\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
@@ -6992,7 +7028,7 @@ msgstr "To the Great King, my brother,\n"
 "\n"
 "In friendship,"
 
-#: ../ui/src/demo/demo-seed.ts:354
+#: ../ui/src/demo/demo-seed.ts:400
 msgid "To the Great King, my brother,\n"
 "\n"
 "I write in friendship, as our fathers wrote before us. The third gold consignment agreed under our treaty has not arrived. Two messengers have passed and still we wait.\n"
@@ -7008,7 +7044,7 @@ msgstr "To the Great King, my brother,\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
 
-#: ../ui/src/demo/demo-seed.ts:473
+#: ../ui/src/demo/demo-seed.ts:519
 msgid "To the Great King, my lord, my sun,\n"
 "\n"
 "The grain you sent last month was received with gratitude and I praised your name before the people. But I must write again: the third shipment has not arrived and the city grows restless.\n"
@@ -7074,6 +7110,10 @@ msgstr "Triage"
 msgid "Triage & review"
 msgstr "Triage & review"
 
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:138
+msgid "Triage together."
+msgstr "Triage together."
+
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:60
 msgid "Triage without leaving your inbox"
 msgstr "Triage without leaving your inbox"
@@ -7110,11 +7150,11 @@ msgstr "Turning this on will ask for permission to manage your labels."
 msgid "Tushratta"
 msgstr "Tushratta"
 
-#: ../ui/src/demo/demo-seed.ts:549
+#: ../ui/src/demo/demo-seed.ts:595
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta of Mitanni"
 
-#: ../ui/src/demo/demo-seed.ts:159
+#: ../ui/src/demo/demo-seed.ts:160
 msgid "Tutu"
 msgstr "Tutu"
 
@@ -7233,7 +7273,7 @@ msgstr "Update payment method"
 msgid "Updates / Other"
 msgstr "Updates / Other"
 
-#: ../ui/src/demo/demo-seed.ts:34
+#: ../ui/src/demo/demo-seed.ts:35
 msgid "Updates, intros, and check-ins from current or prospective investors."
 msgstr "Updates, intros, and check-ins from current or prospective investors."
 
@@ -7556,6 +7596,10 @@ msgstr "Workspace type"
 #: ../ui/src/pricing/planMessages.ts:61
 msgid "Workspaces included"
 msgstr "Workspaces included"
+
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:156
+msgid "Write as either teammate — type @ to mention someone."
+msgstr "Write as either teammate — type @ to mention someone."
 
 #: ../ui/src/settings/LabelWritebackSection.tsx:110
 msgid "Write sorted folders as Gmail labels"

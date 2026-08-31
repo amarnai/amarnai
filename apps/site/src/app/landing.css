@@ -449,7 +449,7 @@
 
 .ld-step-art {
   margin-top: 18px;
-  height: 116px;
+  min-height: 116px;
   border: 1px solid var(--line);
   background: var(--bg-soft);
   border-radius: var(--r-md);
@@ -465,7 +465,17 @@
 }
 
 /* Art 1 — Connect inbox */
-.ld-sa-connect { flex-direction: column; gap: 11px; }
+.ld-sa-connect { flex-direction: column; gap: 8px; }
+
+/* The real store CTA, compacted from its hero `lg` size to fit the card art. */
+.ld-sa-connect .ld-ext-btn.lg {
+  padding: 8px 16px;
+  font-size: 13.5px;
+  border-radius: 9px;
+}
+
+/* Install-then-connect flow arrow, drawn like the connectors between cards. */
+.ld-sa-connect-arrow { color: var(--line-3); flex: none; }
 
 /* Quiet Gmail/Outlook toggle in the connect step header. */
 .ld-sa-toggle {
@@ -563,6 +573,31 @@
   max-width: 286px;
 }
 
+/* The real mailbox compose, compacted from its mailbox-stage sizing (message
+   indent, tall body, full-size Send and pill) to fit the card art. */
+.ld-sa-draft .ld-mb-compose {
+  margin: 0;
+  max-width: none;
+  box-shadow: var(--shadow-1);
+}
+
+.ld-sa-draft .ld-mb-compose-body {
+  min-height: 40px;
+  padding: 10px 12px 8px;
+}
+
+.ld-sa-draft .ld-mb-compose-text { font-size: 12px; line-height: 1.55; }
+
+.ld-sa-draft .ld-mb-compose-foot { padding: 8px 10px; gap: 8px; }
+
+.ld-sa-draft .ld-mb-send { padding: 5px 14px; font-size: 12px; }
+
+.ld-sa-draft .ld-mb-reply-pill {
+  padding: 5px 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 .ld-dr-thread { display: flex; align-items: center; gap: 8px; }
 
 .ld-sa-ava {
@@ -604,55 +639,6 @@
   border-radius: 999px;
   padding: 2px 8px;
   white-space: nowrap;
-}
-
-.ld-dr-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 9px 11px;
-  box-shadow: var(--shadow-1);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.ld-dr-card-top {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--f-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent-ink);
-}
-
-.ld-dr-body {
-  margin: 0;
-  font-size: 11px;
-  color: var(--ink-2);
-  line-height: 1.55;
-}
-
-.ld-dr-cursor {
-  display: inline-block;
-  font-size: 11px;
-  width: 1.5px;
-  height: 1em;
-  background: var(--accent-ink);
-  vertical-align: text-bottom;
-  margin-left: 1px;
-  opacity: 0;
-}
-
-.ld-dr-cursor--blink {
-  animation: ld-dr-cursor-blink 1.1s step-end infinite;
-}
-
-@keyframes ld-dr-cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
 }
 
 /* ─── Demo sections ───────────────────────────────────────────────────────── */
@@ -1353,4 +1339,168 @@
   gap: 20px;
   flex-wrap: wrap;
   margin-top: 20px;
+}
+
+/* ─── Collaboration demo (two screens, one comment thread) ────────────────── */
+
+.ld-collab-stage {
+  display: grid;
+  /* Pane, sync mark, pane; the email card up top spans all three tracks. */
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  padding: 20px;
+  background: var(--bg-soft);
+}
+
+/* The email the team is discussing, spanning both screens. */
+.ld-collab-email {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.ld-collab-sender-pfp {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ld-collab-email-main { flex: 1; min-width: 0; }
+
+.ld-collab-email-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ld-collab-sender { font-weight: 600; font-size: 14px; color: var(--ink); }
+.ld-collab-sender-email { font-size: 12px; color: var(--ink-3); }
+
+.ld-collab-subject {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  margin-top: 2px;
+}
+
+.ld-collab-snippet {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin: 4px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ld-collab-email-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* One member's screen: their identity on top, the shared comment card below. */
+.ld-collab-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  min-width: 0;
+}
+
+.ld-collab-persona {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ld-collab-pfp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ld-collab-persona-text { display: flex; flex-direction: column; }
+
+.ld-collab-role {
+  align-self: flex-start;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 7px;
+  margin-top: 3px;
+}
+
+.ld-collab-name { font-weight: 600; font-size: 14px; color: var(--ink); }
+
+/* Between the two screens: a two-way sync mark, so the mirrored lists read
+   as one conversation kept identical rather than two widgets side by side.
+   Keyed on a nonce in the component, it remounts on every post, restarting
+   the pulse at the exact moment the other pane updates. */
+.ld-collab-sync {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  gap: 8px;
+  max-width: 104px;
+  text-align: center;
+}
+
+.ld-collab-sync-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+}
+
+.ld-collab-sync-badge.pulse {
+  animation: ld-collab-sync-pulse 0.55s ease;
+}
+
+@keyframes ld-collab-sync-pulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.ld-collab-sync-caption {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ink-3);
+}
+
+/* The screens stack on narrow viewports; the email card already spans, and
+   the sync mark lands between the stacked panes, arrows turned vertical. */
+@media (max-width: 720px) {
+  .ld-collab-stage { grid-template-columns: 1fr; }
+  .ld-collab-email { flex-wrap: wrap; }
+  .ld-collab-email-side { flex-direction: row; align-items: center; }
+  .ld-collab-sync { flex-direction: row; max-width: none; gap: 10px; }
+  .ld-collab-sync-badge svg { transform: rotate(90deg); }
 }

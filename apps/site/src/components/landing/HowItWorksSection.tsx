@@ -1,11 +1,17 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Trans } from "@lingui/react/macro";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/core/macro";
 import { GoogleGIcon, OutlookIcon } from "@aziru/ui";
-import { FolderIcon } from "@aziru/ui/demo";
+import {
+  AziruCompose,
+  DRAFTING_MS,
+  FolderIcon,
+  type ReplyStage,
+} from "@aziru/ui/demo";
+import { InstallExtensionButton } from "./InstallExtensionButton";
 import { ProviderToggle, type Provider } from "./ProviderToggle";
 
 function StepArt2() {
@@ -21,25 +27,25 @@ function StepArt2() {
     type Pt = [number, number];
     const SEG: Pt[][] = [
       [
-        [72, 46],
-        [120, 46],
+        [72, 66],
+        [120, 66],
         [150, 21],
         [196, 21],
       ],
       [
-        [72, 46],
-        [113, 46],
-        [155, 46],
-        [196, 46],
+        [72, 66],
+        [113, 66],
+        [155, 66],
+        [196, 66],
       ],
       [
-        [72, 46],
-        [120, 46],
-        [150, 71],
-        [196, 71],
+        [72, 66],
+        [120, 66],
+        [150, 111],
+        [196, 111],
       ],
     ];
-    const ROOT: Pt = [72, 46];
+    const ROOT: Pt = [72, 66];
 
     const dotEl = container.querySelector<SVGCircleElement>(".ld-flow-dot");
     const folders = [".f1", ".f2", ".f3"].map((s) =>
@@ -139,16 +145,16 @@ function StepArt2() {
   return (
     <div className="ld-sa ld-sa-flow" ref={ref}>
       <svg
-        viewBox="0 0 300 92"
+        viewBox="0 0 300 132"
         preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
       >
-        <path className="ld-flow-link" d="M72 46 C 120 46 150 21 196 21" />
-        <path className="ld-flow-link" d="M72 46 L 196 46" />
-        <path className="ld-flow-link" d="M72 46 C 120 46 150 71 196 71" />
+        <path className="ld-flow-link" d="M72 66 C 120 66 150 21 196 21" />
+        <path className="ld-flow-link" d="M72 66 L 196 66" />
+        <path className="ld-flow-link" d="M72 66 C 120 66 150 111 196 111" />
         <g className="ld-flow-pill ld-flow-root">
-          <rect x="8" y="34" width="64" height="24" rx="8" />
-          <text x="40" y="50">
+          <rect x="8" y="54" width="64" height="24" rx="8" />
+          <text x="40" y="70">
             {_(msg`Inbox`)}
           </text>
         </g>
@@ -159,93 +165,61 @@ function StepArt2() {
           </text>
         </g>
         <g className="ld-flow-folder f2">
-          <rect x="196" y="35" width="96" height="22" rx="7" />
-          <text x="209" y="50">
+          <rect x="196" y="55" width="96" height="22" rx="7" />
+          <text x="209" y="70">
             {_(msg`Investors`)}
           </text>
         </g>
         <g className="ld-flow-folder f3">
-          <rect x="196" y="60" width="96" height="22" rx="7" />
-          <text x="209" y="75">
+          <rect x="196" y="100" width="96" height="22" rx="7" />
+          <text x="209" y="115">
             {_(msg`Team`)}
           </text>
         </g>
-        <circle className="ld-flow-dot" cx="72" cy="46" r="4.5" />
+        <circle className="ld-flow-dot" cx="72" cy="66" r="4.5" />
       </svg>
     </div>
   );
 }
 
-function StepArt3() {
+function StepArt3({ provider }: { provider: Provider }) {
   const { _ } = useLingui();
   const ref = useRef<HTMLDivElement>(null);
+  const [stage, setStage] = useState<ReplyStage>("idle");
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  const startDraft = useCallback(() => {
+    clearTimeout(timer.current);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStage("ready");
+      return;
+    }
+    setStage("drafting");
+    timer.current = setTimeout(() => setStage("ready"), DRAFTING_MS);
+  }, []);
 
   useEffect(() => {
     const container = ref.current;
-    if (!container) return;
-
-    const textEl = container.querySelector<HTMLElement>(".ld-dr-text");
-    const cursorEl = container.querySelector<HTMLElement>(".ld-dr-cursor");
-    if (!textEl || !cursorEl) return;
-
-    const DRAFT = _(msg`Thanks for the update. Friday works.`);
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduce) {
-      textEl.textContent = DRAFT;
-      cursorEl.style.opacity = "1";
+    if (!container || !("IntersectionObserver" in window)) {
+      startDraft();
       return;
     }
-
-    let alive = true;
-    let tid: ReturnType<typeof setTimeout>;
-
-    function startTyping() {
-      clearTimeout(tid);
-      textEl!.textContent = "";
-      cursorEl!.style.opacity = "1";
-      cursorEl!.classList.remove("ld-dr-cursor--blink");
-      let i = 0;
-      function next() {
-        if (!alive) return;
-        if (i < DRAFT.length) {
-          textEl!.textContent = DRAFT.slice(0, i + 1);
-          i++;
-          tid = setTimeout(next, 36);
-        } else {
-          cursorEl!.classList.add("ld-dr-cursor--blink");
+    const io = new IntersectionObserver(
+      (es) => {
+        if (es[0]?.isIntersecting) startDraft();
+        else {
+          clearTimeout(timer.current);
+          setStage("idle");
         }
-      }
-      next();
-    }
-
-    function reset() {
-      clearTimeout(tid);
-      textEl!.textContent = "";
-      cursorEl!.style.opacity = "0";
-      cursorEl!.classList.remove("ld-dr-cursor--blink");
-    }
-
-    let io: IntersectionObserver | undefined;
-    if ("IntersectionObserver" in window) {
-      io = new IntersectionObserver(
-        (es) => {
-          if (es[0]?.isIntersecting) startTyping();
-          else reset();
-        },
-        { threshold: 0.5 }
-      );
-      io.observe(container);
-    } else {
-      startTyping();
-    }
-
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(container);
     return () => {
-      alive = false;
-      clearTimeout(tid);
-      io?.disconnect();
+      io.disconnect();
+      clearTimeout(timer.current);
     };
-  }, [_]);
+  }, [startDraft]);
 
   return (
     <div className="ld-sa ld-sa-draft" ref={ref}>
@@ -259,16 +233,17 @@ function StepArt3() {
           <Trans>Billing</Trans>
         </span>
       </div>
-      <div className="ld-dr-card">
-        <div className="ld-dr-card-top">
-          <span className="ld-dr-pen">{penIcon}</span>
-          <Trans>Draft reply</Trans>
-        </div>
-        <div className="ld-dr-body">
-          <span className="ld-dr-text" />
-          <span className="ld-dr-cursor" aria-hidden="true" />
-        </div>
-      </div>
+      <AziruCompose
+        provider={provider}
+        toName={_(msg`Priya`)}
+        body={_(msg`Thanks for the update. Friday works.`)}
+        stage={stage}
+        onDraft={startDraft}
+        onDiscard={() => {
+          clearTimeout(timer.current);
+          setStage("idle");
+        }}
+      />
     </div>
   );
 }
@@ -294,31 +269,34 @@ const stepArrow = (
   </svg>
 );
 
-const penIcon = (
-  <svg
-    width="11"
-    height="11"
-    viewBox="0 0 14 14"
-    fill="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M9.3 2.4 11.6 4.7 5.3 11l-3 .7.7-3 6.3-6.3Z"
-      stroke="currentColor"
-      strokeWidth="1.1"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 function StepArt1({ provider }: { provider: Provider }) {
   const { _ } = useLingui();
   const ProviderIcon = provider === "outlook" ? OutlookIcon : GoogleGIcon;
 
   return (
     <div className="ld-sa ld-sa-connect">
+      <InstallExtensionButton variant="primary" />
+      <svg
+        className="ld-sa-connect-arrow"
+        width="10"
+        height="16"
+        viewBox="0 0 10 16"
+        fill="none"
+        aria-hidden="true"
+      >
+        <line
+          x1="5"
+          y1="0"
+          x2="5"
+          y2="9"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <path d="M1 8 L5 15 L9 8 Z" fill="currentColor" />
+      </svg>
       <span
-        className="ld-sa-gbtn primary"
+        className="ld-sa-gbtn"
         role="img"
         aria-label={
           provider === "outlook"
@@ -377,11 +355,11 @@ export function HowItWorksSection() {
       headerExtra: null,
       body: (
         <Trans>
-          Browse emails easily through your folders. Generate draft replies and
-          copy them to your inbox.
+          Browse emails easily through your folders. Click Aziru Reply, and the
+          draft lands in your compose window, ready for your edits.
         </Trans>
       ),
-      art: <StepArt3 />,
+      art: <StepArt3 provider={provider} />,
     },
   ];
 

@@ -1,5 +1,6 @@
 import { msg } from "@lingui/core/macro";
 import type { I18n, MessageDescriptor } from "@lingui/core";
+import type { ThreadCommentItem } from "@aziru/api-client";
 import { PROVIDER_LABEL_NAMESPACE, sanitizeProviderSegment } from "@aziru/core/taxonomy";
 import type { FolderItem } from "../folder-tree/types.js";
 import type { ThreadItem, MemberItem, ThreadAssignment } from "../emails/types.js";
@@ -179,6 +180,51 @@ const ASSIGNMENTS: Record<string, string> = {
   t2: "u-pentu",
   t4: "u-tutu",
 };
+
+// ─── Thread comments ─────────────────────────────────────────────────────────
+
+/** The thread the landing page's collaboration demo discusses: Abdi-Heba's
+ *  low-confidence "free to meet?" — ambiguous enough that two people would
+ *  actually talk it over. */
+export const DEMO_COMMENT_THREAD_ID = "t5";
+
+function commentAuthor(userId: string, i18n: I18n) {
+  const member = MEMBERS.find((m) => m.userId === userId)!;
+  return { userId: member.userId, name: i18n._(member.name), email: member.email };
+}
+
+/**
+ * A seeded exchange on DEMO_COMMENT_THREAD_ID between Akhenaten and Tutu, with
+ * Pentu pulled in by mention so every member shows up somewhere. Mentioned
+ * names are interpolated from the member list rather than typed into the copy,
+ * so the "@Name" text always matches the localized member name — which is what
+ * ThreadCommentsCard's mention highlighting string-matches against. Timestamps
+ * are fixed ISO strings (assignedAt precedent: the seed carries no clock).
+ */
+export function getDemoComments(i18n: I18n): ThreadCommentItem[] {
+  const tutu = i18n._(MEMBERS[1]!.name);
+  const pentu = i18n._(MEMBERS[2]!.name);
+  return [
+    {
+      id: "dc1",
+      body: i18n._(
+        msg`"Matters easier said than written" — that usually means he wants more archers. @${tutu}, what did we promise him last time?`,
+      ),
+      mentionUserIds: ["u-tutu"],
+      author: commentAuthor("u-akhenaten", i18n),
+      createdAt: "2026-05-27T19:05:00.000Z",
+    },
+    {
+      id: "dc2",
+      body: i18n._(
+        msg`Checked the archive: he asked for fifty, we sent twenty. I would take the meeting — @${pentu} can sit in and keep the record.`,
+      ),
+      mentionUserIds: ["u-pentu"],
+      author: commentAuthor("u-tutu", i18n),
+      createdAt: "2026-05-27T19:22:00.000Z",
+    },
+  ];
+}
 
 function assignmentFor(threadId: string, i18n: I18n): ThreadAssignment | null {
   const userId = ASSIGNMENTS[threadId];
