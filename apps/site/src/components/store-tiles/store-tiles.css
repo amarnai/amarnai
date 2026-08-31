@@ -1,0 +1,259 @@
+/* Chrome Web Store promotional tiles — dev-only artboards, captured headless
+   at exactly 1280×800 (see docs in the tile page). Shared frame: a headline
+   band up top, and the product stage bleeding off the bottom edge. */
+
+/* Keep Next's dev-mode indicator out of captures (dev-only element). */
+nextjs-portal {
+  display: none !important;
+}
+
+.st-tile {
+  width: 1280px;
+  height: 800px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, var(--bg-soft), var(--bg));
+}
+
+.st-band {
+  padding: 30px 48px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.st-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* The mark takes the brand rust (AziruMark fills with currentColor). */
+.st-brand svg {
+  color: var(--accent);
+}
+
+.st-band h1 {
+  font-size: 46px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Same accent as the landing hero's tagline. */
+.st-band h1 .soft {
+  color: var(--accent);
+}
+
+/* The tiles promote the extension alone: hide the demo browser's Aziru
+   web-app tab, leaving the mailbox tab (always the active one here). */
+.st-tile .ld-tab:not(.active) {
+  display: none;
+}
+
+/* The panel's per-thread actions (open in provider, done, important) are
+   hover-revealed in the app; a static capture has no hover, and the assign
+   avatar alone reads as clutter. Show the full row so it reads as a toolbar. */
+.st-tile .em-thread-gmail-link,
+.st-tile .em-done-btn,
+.st-tile .em-thread-actions .em-star-btn {
+  opacity: 1;
+}
+
+/* Tile 3 is about the reply: drop the summary card (tile 2's story) so the
+   whole compose — draft, Send, the Aziru pill — sits above the fold. */
+.st-tile-reply .ld-mb-summary {
+  display: none;
+}
+
+/* The landing demos' "try me" caption invites interaction; a static capture
+   can't honor it. With the bar's center column gone, keep the trailing
+   control in the right-hand column instead of auto-placing into the middle. */
+.st-tile .ld-play-note {
+  display: none;
+}
+
+.st-tile .ld-frame-bar > :last-child {
+  grid-column: 3;
+}
+
+/* Demos that carry their own fixed-height stage (e.g. the taxonomy canvas's
+   560px .ld-demo-stage) stretch to the tile's bottom edge instead. */
+.st-tile .ld-tabbody > .ld-demo-stage {
+  height: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Tile 4: the two-ways cards over the folder canvas ── */
+
+/* The tile renders its own frame bar (.st-bar) with both starting points;
+   hide the canvas's built-in bar, which carries only the generate button. */
+.st-tile-folders .ld-frame-bar:not(.st-bar) {
+  display: none;
+}
+
+.st-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Secondary sibling of .demo-generate-btn, matching its size and radius. */
+.st-bar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* The card stack covers the canvas's right edge, so recenter the tree in the
+   space left of it: widen the flow element beyond the (overflow-hidden) frame
+   and pull it left — fitView then centers the tree 100px further left, and the
+   dotted background still covers the full visible width. */
+.st-tile-folders .taxonomy-canvas .react-flow {
+  width: calc(100% + 200px);
+  margin-left: -200px;
+}
+
+.st-card-stack {
+  position: absolute;
+  top: 90px;
+  right: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 260px;
+}
+
+.st-float-card {
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-3);
+  font-size: 13.5px;
+  color: var(--ink-2);
+  overflow: hidden;
+}
+
+.st-card-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  font-weight: 650;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+
+.st-card-head svg {
+  color: var(--accent);
+}
+
+.st-tpl-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+
+.st-tpl-card li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px;
+}
+
+.st-tpl-card li svg {
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.st-tpl-card li.is-active {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-weight: 550;
+}
+
+.st-tpl-card li.is-active svg {
+  color: var(--accent);
+}
+
+.st-card-foot {
+  padding: 8px 14px 10px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+
+.st-gen-card ol {
+  list-style: none;
+  counter-reset: st-step;
+  margin: 0;
+  padding: 10px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.st-gen-card li {
+  counter-increment: st-step;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.st-gen-card li::before {
+  content: counter(st-step);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 650;
+  flex-shrink: 0;
+}
+
+/* The stage: the landing page's browser frame, pinned to the tile's bottom
+   edge so the window reads as continuing beyond the tile. */
+.st-stage {
+  flex: 1;
+  min-height: 0;
+  margin: 0 44px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+}
+
+.st-stage .ld-demo-stage.emails {
+  height: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Tile 5: the collaboration stage ── */
+
+/* Fill the frame to the tile's bottom edge, panes anchored to the top. */
+.st-collab {
+  height: 100%;
+  align-content: start;
+}

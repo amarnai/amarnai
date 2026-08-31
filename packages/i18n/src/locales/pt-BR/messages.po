@@ -18,6 +18,11 @@ msgstr ""
 #~ msgid " (Inbox)"
 #~ msgstr " (Caixa de entrada)"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:92
+#, fuzzy
+msgid "…and 8 more"
+msgstr "...e mais 8"
+
 #: ../ui/src/demo/demo-seed.ts:211
 #~ msgid "\"Matters easier said than written\" — that usually means he wants more archers. @{tutu}, what did we promise him last time?"
 #~ msgstr "\"Coisas mais fáceis de falar do que de escrever\" — isso geralmente significa que ele quer mais arqueiros. @{tutu}, o que prometemos a ele da última vez?"
@@ -373,6 +378,15 @@ msgstr "+ Novo espaço de trabalho"
 #~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 #~ msgstr "<0>{migrateLive}</0> conversas são movidas para a nova pasta instantaneamente. <1>{resortLive}</1> conversas serão reclassificadas por IA."
 
+#: ../../apps/site/src/components/store-tiles/Tile3.tsx:32
+#, fuzzy
+msgid "<0>Draft in one click.</0> You approve and send."
+msgstr "<0>Rascunhe em um clique.</0> Você aprova e envia."
+
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:73
+msgid "<0>Email is teamwork.</0> Assign and discuss."
+msgstr "<0>Email é trabalho em equipe.</0> Atribua e discuta."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:96
 #, fuzzy
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Aziru <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
@@ -385,6 +399,11 @@ msgstr "<0>King Aziru</0> está pronto para organizar suas conversas de e-mail. 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Aziru connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>King Aziru</0> está pronto para organizar suas conversas por e-mail. Conecte sua conta do Gmail para começar. Aziru se conecta com <1>acesso somente leitura</1> e <2>jamais envia, apaga ou altera nada</2>. Sua caixa de entrada continua sendo sua."
+
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:19
+#, fuzzy
+msgid "<0>Your folders,</0> your way."
+msgstr "<0>Suas pastas,</0> do seu jeito."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:238
 msgid "${price} per month"
@@ -780,6 +799,7 @@ msgstr "Adicionar ao Firefox"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:51
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
@@ -979,6 +999,7 @@ msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "Candidaturas, contato com recrutadores e agendamento de entrevistas."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:64
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
 #, fuzzy
 msgid "Apply"
@@ -1071,8 +1092,10 @@ msgstr "Atribuído"
 #~ msgid "Assigned · {assigneeName}"
 #~ msgstr "Atribuído · {assigneeName}"
 
+#. placeholder {0}: assignee.name ?? assignee.email
 #. placeholder {0}: member.name ?? member.email
 #. placeholder {0}: thread.assignment.userName ?? thread.assignment.userEmail
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:101
 #: ../ui/src/demo/mailbox/InjectedPanelMock.tsx:83
 #: ../ui/src/emails/MockEmailsPage.tsx:240
 #, fuzzy
@@ -1490,7 +1513,7 @@ msgstr "Voltar ao Outlook"
 msgid "Back to sign in"
 msgstr "Voltar para o login"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:162
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:169
 msgid "Back to the inbox"
 msgstr "Voltar para a caixa de entrada"
 
@@ -1898,6 +1921,11 @@ msgstr "Sala de Aula"
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "Clique em pastas e conversas, depois gere um rascunho."
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:58
+#, fuzzy
+msgid "Click once"
+msgstr "Clique uma vez"
+
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:181
 msgid "Click the Aziru icon in your toolbar to open the panel."
 msgstr "Clique no ícone Aziru na sua barra de ferramentas para abrir o painel."
@@ -2242,6 +2270,7 @@ msgstr "Conectando…"
 msgid "Connection failed. Please try again."
 msgstr "Falha na conexão. Por favor, tente novamente."
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:88
 #: ../ui/src/i18n/taxonomy-template-messages.ts:148
 msgid "Content Creator"
 msgstr "Criador de Conteúdo"
@@ -3335,6 +3364,11 @@ msgstr "Todas as conversas na sua caixa de entrada."
 #~ msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "Cada conversa vai para uma das suas pastas, exatamente onde você esperaria encontrá-la. Quando uma resposta é necessária, um rascunho está a um clique, pronto para suas edições e nunca enviado sem elas."
 
+#: ../../apps/site/src/components/store-tiles/Tile2.tsx:32
+#, fuzzy
+msgid "Every thread opens <0>with a summary.</0>"
+msgstr "Cada conversa abre <0>com um resumo.</0>"
+
 #: ../ui/src/demo/demo-seed.ts:38
 msgid "Everything that doesn't fit a named folder."
 msgstr "Tudo o que não se encaixa em nenhuma pasta nomeada."
@@ -3588,6 +3622,7 @@ msgstr "Pasta: {activeFolderName}"
 
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:83
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:34
 #: ../../apps/web/src/app/(app)/folders/page.tsx:45
 #: ../../apps/web/src/components/Sidebar.tsx:33
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
@@ -3710,7 +3745,7 @@ msgstr "Para sua caixa de entrada de alto volume ou compartilhada como recrutado
 msgid "Forgot password?"
 msgstr "Esqueceu a senha?"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:148
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:155
 msgid "Forward"
 msgstr "Encaminhar"
 
@@ -3744,6 +3779,7 @@ msgstr "Teste grátis até {0}."
 msgid "Free trial until <0>{0}</0>. You won't be charged before then."
 msgstr "Teste gratuito até <0>{0}</0>. Você não será cobrado antes disso."
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:76
 #: ../ui/src/i18n/taxonomy-template-messages.ts:16
 #, fuzzy
 msgid "Freelancer"
@@ -3824,6 +3860,8 @@ msgstr "Gerar pastas da sua caixa de entrada"
 #: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:43
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:54
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
@@ -4942,6 +4980,7 @@ msgstr "Consultas da mídia, solicitações de jornalistas e agendamentos de cob
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:51
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
@@ -5447,6 +5486,7 @@ msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "Alertas de plantão, relatórios de interrupção e escalonamentos de incidentes de produção."
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:278
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:130
 #, fuzzy
 msgid "One conversation, shared by the whole team."
 msgstr "Uma conversa, compartilhada por toda a equipe."
@@ -5577,6 +5617,11 @@ msgstr "Abra pelo botão Aziru no Outlook."
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
 #~ msgid "Open thread"
 #~ msgstr "Abrir conversa"
+
+#: ../../apps/site/src/components/store-tiles/Tile1.tsx:35
+#, fuzzy
+msgid "Open your inbox. <0>It's already sorted.</0>"
+msgstr "Abra sua caixa de entrada. <0>Já está organizada.</0>"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -6409,13 +6454,13 @@ msgstr "Substituir pastas"
 msgid "Replace with a template"
 msgstr "Substituir por um modelo"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:136
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:253
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:143
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:260
 #, fuzzy
 msgid "Reply"
 msgstr "Responder"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:142
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:149
 #, fuzzy
 msgid "Reply all"
 msgstr "Responder a todos"
@@ -6550,6 +6595,11 @@ msgstr "Revisar {n}, {reviewer}"
 #: ../ui/src/pricing/planMessages.ts:68
 #~ msgid "Review queue"
 #~ msgstr "Fila de revisão"
+
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:61
+#, fuzzy
+msgid "Review the proposed folders"
+msgstr "Revise as pastas propostas"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
 msgid "Review your folders"
@@ -7053,6 +7103,7 @@ msgstr "Preço simples por workspace. Comece grátis, faça upgrade ou crie work
 msgid "Social"
 msgstr "Social"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:84
 #: ../ui/src/i18n/taxonomy-template-messages.ts:108
 #, fuzzy
 msgid "Software Developer"
@@ -7204,6 +7255,8 @@ msgid "Start free"
 msgstr "Comece grátis"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:39
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:71
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1025
 #, fuzzy
 msgid "Start from a template"
@@ -7227,6 +7280,7 @@ msgstr "Começar a organizar"
 msgid "Starting…"
 msgstr "Iniciando…"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:80
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 msgid "Startup Founder"
 msgstr "Fundador de Startup"
@@ -7992,7 +8046,7 @@ msgstr "Ao Grande Rei, meu senhor, meu sol,\n"
 msgid "To: {toName}"
 msgstr "Para: {toName}"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:215
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:222
 msgid "To: You"
 msgstr "Para: Você"
 
@@ -8541,6 +8595,7 @@ msgstr "Funciona com Gmail™ e Outlook."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:30
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:53

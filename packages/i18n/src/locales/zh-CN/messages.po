@@ -18,6 +18,11 @@ msgstr ""
 #~ msgid " (Inbox)"
 #~ msgstr "（收件箱）"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:92
+#, fuzzy
+msgid "…and 8 more"
+msgstr "…还有 8 个"
+
 #: ../ui/src/demo/demo-seed.ts:211
 #~ msgid "\"Matters easier said than written\" — that usually means he wants more archers. @{tutu}, what did we promise him last time?"
 #~ msgstr "“有些事，口头说比写下来更容易，”这通常意味着他想要更多弓箭手。@{tutu}，我们上次答应他什么了？"
@@ -373,6 +378,15 @@ msgstr "+ 新建工作区"
 #~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 #~ msgstr "<0>{migrateLive}</0> 会话即时移至新文件夹。<1>{resortLive}</1> 会话将由AI重新分类。"
 
+#: ../../apps/site/src/components/store-tiles/Tile3.tsx:32
+#, fuzzy
+msgid "<0>Draft in one click.</0> You approve and send."
+msgstr "<0>一键起草。</0> 您批准并发送。"
+
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:73
+msgid "<0>Email is teamwork.</0> Assign and discuss."
+msgstr "<0>邮件，是团队协作。</0> 分配并讨论。"
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:96
 #, fuzzy
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Aziru <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
@@ -385,6 +399,11 @@ msgstr "<0>King Aziru</0> 随时为您整理邮件会话。连接您的 {provide
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Aziru connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>阿齐鲁国王</0>已准备好为您整理邮件会话。连接您的 Gmail 账户即可开始。Aziru 以<1>只读权限</1>连接，<2>绝不发送、删除或更改任何内容</2>。您的收件箱，由您掌控。"
+
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:19
+#, fuzzy
+msgid "<0>Your folders,</0> your way."
+msgstr "<0>您的文件夹，</0>您做主。"
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:238
 msgid "${price} per month"
@@ -780,6 +799,7 @@ msgstr "添加到 Firefox"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:51
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
@@ -979,6 +999,7 @@ msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "申请、招聘外联和面试安排。"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:64
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
 #, fuzzy
 msgid "Apply"
@@ -1071,8 +1092,10 @@ msgstr "已指派"
 #~ msgid "Assigned · {assigneeName}"
 #~ msgstr "已分配 · {assigneeName}"
 
+#. placeholder {0}: assignee.name ?? assignee.email
 #. placeholder {0}: member.name ?? member.email
 #. placeholder {0}: thread.assignment.userName ?? thread.assignment.userEmail
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:101
 #: ../ui/src/demo/mailbox/InjectedPanelMock.tsx:83
 #: ../ui/src/emails/MockEmailsPage.tsx:240
 #, fuzzy
@@ -1490,7 +1513,7 @@ msgstr "返回 Outlook"
 msgid "Back to sign in"
 msgstr "返回登录"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:162
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:169
 msgid "Back to the inbox"
 msgstr "返回收件箱"
 
@@ -1898,6 +1921,11 @@ msgstr "课堂"
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "点击文件夹和会话，然后生成草稿。"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:58
+#, fuzzy
+msgid "Click once"
+msgstr "一键点击"
+
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:181
 msgid "Click the Aziru icon in your toolbar to open the panel."
 msgstr "点击工具栏中的 Aziru 图标即可打开面板。"
@@ -2242,6 +2270,7 @@ msgstr "连接中…"
 msgid "Connection failed. Please try again."
 msgstr "连接失败。请重试。"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:88
 #: ../ui/src/i18n/taxonomy-template-messages.ts:148
 msgid "Content Creator"
 msgstr "内容创作者"
@@ -3335,6 +3364,11 @@ msgstr "收件箱中的所有会话。"
 #~ msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "每个会话都将精准归入您的文件夹，恰如您所预料。需要回复时，一键即可生成草稿，随时供您修改，未经确认绝不发送。"
 
+#: ../../apps/site/src/components/store-tiles/Tile2.tsx:32
+#, fuzzy
+msgid "Every thread opens <0>with a summary.</0>"
+msgstr "每个会话打开，<0>皆有摘要。</0>"
+
 #: ../ui/src/demo/demo-seed.ts:38
 msgid "Everything that doesn't fit a named folder."
 msgstr "不符合任何指定文件夹的内容。"
@@ -3588,6 +3622,7 @@ msgstr "文件夹：{activeFolderName}"
 
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:83
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:34
 #: ../../apps/web/src/app/(app)/folders/page.tsx:45
 #: ../../apps/web/src/components/Sidebar.tsx:33
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
@@ -3710,7 +3745,7 @@ msgstr "适合招聘人员、代理机构或小型团队，管理高容量或共
 msgid "Forgot password?"
 msgstr "忘记密码？"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:148
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:155
 msgid "Forward"
 msgstr "转发"
 
@@ -3744,6 +3779,7 @@ msgstr "免费试用至 {0}。"
 msgid "Free trial until <0>{0}</0>. You won't be charged before then."
 msgstr "免费试用至<0>{0}</0>。在此之前不会向您收费。"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:76
 #: ../ui/src/i18n/taxonomy-template-messages.ts:16
 #, fuzzy
 msgid "Freelancer"
@@ -3824,6 +3860,8 @@ msgstr "从您的收件箱生成文件夹"
 #: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:43
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:54
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
@@ -4942,6 +4980,7 @@ msgstr "媒体咨询、记者请求及媒体报道预约。"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:51
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
@@ -5447,6 +5486,7 @@ msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "待命警报、中断报告及生产事件升级。"
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:278
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:130
 #, fuzzy
 msgid "One conversation, shared by the whole team."
 msgstr "一个会话，全团队共享。"
@@ -5577,6 +5617,11 @@ msgstr "从 Outlook 中的 Aziru 按钮打开此项。"
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
 #~ msgid "Open thread"
 #~ msgstr "打开会话"
+
+#: ../../apps/site/src/components/store-tiles/Tile1.tsx:35
+#, fuzzy
+msgid "Open your inbox. <0>It's already sorted.</0>"
+msgstr "打开您的收件箱。<0>它已自动整理。</0>"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -6407,13 +6452,13 @@ msgstr "替换文件夹"
 msgid "Replace with a template"
 msgstr "替换为模板"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:136
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:253
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:143
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:260
 #, fuzzy
 msgid "Reply"
 msgstr "回复"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:142
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:149
 #, fuzzy
 msgid "Reply all"
 msgstr "回复全部"
@@ -6548,6 +6593,11 @@ msgstr "审核 {n}，{reviewer}"
 #: ../ui/src/pricing/planMessages.ts:68
 #~ msgid "Review queue"
 #~ msgstr "审阅队列"
+
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:61
+#, fuzzy
+msgid "Review the proposed folders"
+msgstr "审阅建议的文件夹"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
 msgid "Review your folders"
@@ -7051,6 +7101,7 @@ msgstr "按工作区简单定价。免费体验，按需升级或创建更多工
 msgid "Social"
 msgstr "社交"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:84
 #: ../ui/src/i18n/taxonomy-template-messages.ts:108
 #, fuzzy
 msgid "Software Developer"
@@ -7202,6 +7253,8 @@ msgid "Start free"
 msgstr "免费开始"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:39
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:71
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1025
 #, fuzzy
 msgid "Start from a template"
@@ -7225,6 +7278,7 @@ msgstr "开始分类"
 msgid "Starting…"
 msgstr "正在启动……"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:80
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 msgid "Startup Founder"
 msgstr "初创公司创始人"
@@ -7990,7 +8044,7 @@ msgstr "致大王，吾主，吾日，\n"
 msgid "To: {toName}"
 msgstr "收件人: {toName}"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:215
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:222
 msgid "To: You"
 msgstr "发送至：您"
 
@@ -8539,6 +8593,7 @@ msgstr "支持 Gmail™ 和 Outlook。"
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:30
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:53

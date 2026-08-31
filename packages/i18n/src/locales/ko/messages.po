@@ -18,6 +18,11 @@ msgstr ""
 #~ msgid " (Inbox)"
 #~ msgstr "(받은편지함)"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:92
+#, fuzzy
+msgid "…and 8 more"
+msgstr "…외 8개"
+
 #: ../ui/src/demo/demo-seed.ts:211
 #~ msgid "\"Matters easier said than written\" — that usually means he wants more archers. @{tutu}, what did we promise him last time?"
 #~ msgstr "“말로 하는 게 글보다 쉽다.” 그건 보통 그가 궁수를 더 원한다는 뜻이야. @{tutu}님, 지난번에 우리가 뭐라고 약속했죠?"
@@ -381,6 +386,15 @@ msgstr "+ 새 워크스페이스"
 #~ msgid "<0>{migrateLive}</0> threads move to their new folder instantly. <1>{resortLive}</1> threads will be re-sorted by AI."
 #~ msgstr "<0>{migrateLive}</0> 스레드는 새 폴더로 즉시 이동합니다. <1>{resortLive}</1> 스레드는 AI가 재분류합니다."
 
+#: ../../apps/site/src/components/store-tiles/Tile3.tsx:32
+#, fuzzy
+msgid "<0>Draft in one click.</0> You approve and send."
+msgstr "<0>한 번 클릭으로 초안 완성.</0> 승인하고 바로 보내세요."
+
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:73
+msgid "<0>Email is teamwork.</0> Assign and discuss."
+msgstr "<0>이메일은 팀워크.</0> 담당 지정 및 논의."
+
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:96
 #, fuzzy
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Aziru <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
@@ -393,6 +407,11 @@ msgstr "<0>King Aziru</0>가 이메일 스레드를 정리해 드릴 준비가 �
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Aziru connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
 #~ msgstr "<0>King Aziru</0>가 이메일 스레드를 정리해 드립니다. 시작하려면 Gmail 계정을 연결하세요. Aziru는 <1>읽기 전용 액세스</1>로 연결되며 <2>어떠한 이메일도 전송, 삭제, 변경하지 않습니다</2>. 받은편지함은 온전히 회원님의 것입니다."
+
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:19
+#, fuzzy
+msgid "<0>Your folders,</0> your way."
+msgstr "<0>내 폴더,</0> 원하는 대로."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:238
 msgid "${price} per month"
@@ -787,6 +806,7 @@ msgstr "Firefox에 추가"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:51
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
@@ -992,6 +1012,7 @@ msgid "Applications, recruiter outreach, and interview scheduling."
 msgstr "지원서, 채용 담당자 연락, 면접 일정 조율."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:64
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
 #, fuzzy
 msgid "Apply"
@@ -1084,8 +1105,10 @@ msgstr "담당"
 #~ msgid "Assigned · {assigneeName}"
 #~ msgstr "할당됨 · {assigneeName}"
 
+#. placeholder {0}: assignee.name ?? assignee.email
 #. placeholder {0}: member.name ?? member.email
 #. placeholder {0}: thread.assignment.userName ?? thread.assignment.userEmail
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:101
 #: ../ui/src/demo/mailbox/InjectedPanelMock.tsx:83
 #: ../ui/src/emails/MockEmailsPage.tsx:240
 #, fuzzy
@@ -1502,7 +1525,7 @@ msgstr "Outlook으로 돌아가기"
 msgid "Back to sign in"
 msgstr "로그인으로"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:162
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:169
 msgid "Back to the inbox"
 msgstr "받은편지함으로 돌아가기"
 
@@ -1914,6 +1937,11 @@ msgstr "강의실"
 #~ msgid "Click folders & threads, then generate a draft."
 #~ msgstr "폴더 및 스레드를 클릭한 다음 초안을 생성하세요."
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:58
+#, fuzzy
+msgid "Click once"
+msgstr "한 번 클릭"
+
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:181
 msgid "Click the Aziru icon in your toolbar to open the panel."
 msgstr "패널을 열려면 도구 모음에서 Aziru 아이콘을 클릭하세요."
@@ -2262,6 +2290,7 @@ msgstr "연결 중…"
 msgid "Connection failed. Please try again."
 msgstr "연결에 실패했습니다. 다시 시도해주세요."
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:88
 #: ../ui/src/i18n/taxonomy-template-messages.ts:148
 msgid "Content Creator"
 msgstr "콘텐츠 크리에이터"
@@ -3370,6 +3399,10 @@ msgstr "받은편지함의 모든 대화."
 #~ msgid "Every thread lands in one of your folders, exactly where you would expect to find it. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "모든 대화는 예상했던 폴더에 정확히 보관됩니다. 답장이 필요할 때는 클릭 한 번으로 초안을 작성하고 수정할 수 있으며, 수정 없이 전송되는 일은 절대 없습니다."
 
+#: ../../apps/site/src/components/store-tiles/Tile2.tsx:32
+msgid "Every thread opens <0>with a summary.</0>"
+msgstr "모든 스레드 <0>요약과 함께 시작됩니다.</0>"
+
 #: ../ui/src/demo/demo-seed.ts:38
 #, fuzzy
 msgid "Everything that doesn't fit a named folder."
@@ -3628,6 +3661,7 @@ msgstr "폴더: {activeFolderName}"
 
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:83
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:34
 #: ../../apps/web/src/app/(app)/folders/page.tsx:45
 #: ../../apps/web/src/components/Sidebar.tsx:33
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:224
@@ -3752,7 +3786,7 @@ msgstr "채용 담당자, 에이전시, 단일 메일함 소규모 팀 등 대�
 msgid "Forgot password?"
 msgstr "비밀번호를 잊으셨나요?"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:148
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:155
 msgid "Forward"
 msgstr "전달"
 
@@ -3787,6 +3821,7 @@ msgstr "{0}까지 무료 체험."
 msgid "Free trial until <0>{0}</0>. You won't be charged before then."
 msgstr "<0>{0}</0>까지 무료 체험. 그 전에 요금이 청구되지 않습니다."
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:76
 #: ../ui/src/i18n/taxonomy-template-messages.ts:16
 #, fuzzy
 msgid "Freelancer"
@@ -3870,6 +3905,8 @@ msgstr "받은편지함에서 폴더 생성"
 #: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
 #: ../../apps/mobile/src/components/taxonomy/RoutingIndicator.tsx:32
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:43
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:54
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
@@ -5002,6 +5039,7 @@ msgstr "언론 문의, 기자 요청 및 보도 예약"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:51
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
@@ -5512,6 +5550,7 @@ msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "온콜 알림, 장애 보고서 및 운영 사고 에스컬레이션"
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:278
+#: ../../apps/site/src/components/store-tiles/Tile5.tsx:130
 #, fuzzy
 msgid "One conversation, shared by the whole team."
 msgstr "팀 전체가 공유하는 하나의 대화."
@@ -5642,6 +5681,11 @@ msgstr "Outlook의 Aziru 버튼을 통해 여세요."
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:282
 #~ msgid "Open thread"
 #~ msgstr "스레드 열기"
+
+#: ../../apps/site/src/components/store-tiles/Tile1.tsx:35
+#, fuzzy
+msgid "Open your inbox. <0>It's already sorted.</0>"
+msgstr "받은 편지함을 열어보세요. <0>이미 정리되어 있습니다.</0>"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -6479,12 +6523,12 @@ msgstr "폴더 바꾸기"
 msgid "Replace with a template"
 msgstr "템플릿으로 교체"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:136
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:253
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:143
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:260
 msgid "Reply"
 msgstr "답장"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:142
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:149
 msgid "Reply all"
 msgstr "전체 답장"
 
@@ -6620,6 +6664,11 @@ msgstr "{n} 검토, {reviewer}"
 #, fuzzy
 #~ msgid "Review queue"
 #~ msgstr "검토 대기열"
+
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:61
+#, fuzzy
+msgid "Review the proposed folders"
+msgstr "제안된 폴더 검토"
 
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
 msgid "Review your folders"
@@ -7133,6 +7182,7 @@ msgstr "워크스페이스별 간편 요금제. 무료로 시작하고, 필요�
 msgid "Social"
 msgstr "소셜"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:84
 #: ../ui/src/i18n/taxonomy-template-messages.ts:108
 msgid "Software Developer"
 msgstr "소프트웨어 개발자"
@@ -7289,6 +7339,8 @@ msgid "Start free"
 msgstr "무료로 시작"
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:52
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:39
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:71
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1025
 #, fuzzy
 msgid "Start from a template"
@@ -7311,6 +7363,7 @@ msgstr "분류 시작"
 msgid "Starting…"
 msgstr "시작 중…"
 
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:80
 #: ../ui/src/i18n/taxonomy-template-messages.ts:55
 #, fuzzy
 msgid "Startup Founder"
@@ -8088,7 +8141,7 @@ msgstr "대왕, 저의 주인이시여, 저의 태양이시여,\n"
 msgid "To: {toName}"
 msgstr "받는 사람: {toName}"
 
-#: ../ui/src/demo/mailbox/MailThreadMock.tsx:215
+#: ../ui/src/demo/mailbox/MailThreadMock.tsx:222
 msgid "To: You"
 msgstr "수신: 나"
 
@@ -8647,6 +8700,7 @@ msgstr "Gmail™ 및 Outlook을 지원합니다."
 
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:60
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:220
+#: ../../apps/site/src/components/store-tiles/Tile4.tsx:30
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:222
 #: ../ui/src/emails/ThreadListHeader.tsx:65
 #: ../ui/src/pricing/planMessages.ts:53

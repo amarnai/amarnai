@@ -6,6 +6,7 @@ import type { FolderItem } from "../../folder-tree/types.js";
 import { GmailInboxMock } from "./GmailInboxMock.js";
 import { OutlookInboxMock } from "./OutlookInboxMock.js";
 import { MailThreadMock } from "./MailThreadMock.js";
+import type { ReplyStage } from "./AziruReply.js";
 import type { AziruDemoData, MockProvider } from "./types.js";
 
 /**
@@ -33,6 +34,7 @@ export function MailboxStage({
   openThread,
   onOpenThread,
   onCloseThread,
+  initialReplyStage,
 }: {
   provider: MockProvider;
   threads: ThreadItem[];
@@ -41,6 +43,8 @@ export function MailboxStage({
   openThread: ThreadItem | null;
   onOpenThread: (thread: ThreadItem) => void;
   onCloseThread: () => void;
+  /** Forwarded to MailThreadMock; see its doc. */
+  initialReplyStage?: ReplyStage;
 }) {
   const folderNames = useMemo(
     () => Object.fromEntries(folders.map((f) => [f.id, f.name])),
@@ -55,6 +59,7 @@ export function MailboxStage({
         aziru={aziru}
         folderName={folderNames[openThread.folderId ?? ""] ?? ""}
         onBack={onCloseThread}
+        initialReplyStage={initialReplyStage}
       />
     );
   }

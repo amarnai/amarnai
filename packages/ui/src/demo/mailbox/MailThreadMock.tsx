@@ -39,6 +39,7 @@ export function MailThreadMock({
   aziru,
   folderName,
   onBack,
+  initialReplyStage,
 }: {
   provider: MockProvider;
   thread: ThreadItem;
@@ -47,10 +48,16 @@ export function MailThreadMock({
   /** Display name of the thread's folder, for the injected panel. */
   folderName: string;
   onBack: () => void;
+  /**
+   * Where the Aziru Reply flow starts. Defaults to "idle" (the pill, waiting
+   * to be clicked); the store-tile artboards pass "ready" to freeze the view
+   * on a finished draft, since a screenshot can't click.
+   */
+  initialReplyStage?: ReplyStage | undefined;
 }) {
   const { i18n, _ } = useLingui();
   const isOutlook = provider === "outlook";
-  const [replyStage, setReplyStage] = useState<ReplyStage>("idle");
+  const [replyStage, setReplyStage] = useState<ReplyStage>(initialReplyStage ?? "idle");
   const [panelOpen, setPanelOpen] = useState(false);
   const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
