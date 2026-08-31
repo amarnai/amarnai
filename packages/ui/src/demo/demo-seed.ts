@@ -208,7 +208,7 @@ export function getDemoComments(i18n: I18n): ThreadCommentItem[] {
     {
       id: "dc1",
       body: i18n._(
-        msg`"Matters easier said than written" — that usually means he wants more archers. @${tutu}, what did we promise him last time?`,
+        msg`"Matters easier said than written" usually means he wants more archers. @${tutu}, what did we promise him last time?`,
       ),
       mentionUserIds: ["u-tutu"],
       author: commentAuthor("u-akhenaten", i18n),
@@ -217,7 +217,7 @@ export function getDemoComments(i18n: I18n): ThreadCommentItem[] {
     {
       id: "dc2",
       body: i18n._(
-        msg`Checked the archive: he asked for fifty, we sent twenty. I would take the meeting — @${pentu} can sit in and keep the record.`,
+        msg`Checked the archive: he asked for fifty, we sent twenty. I would take the meeting. @${pentu} can you take care of replying to him?`,
       ),
       mentionUserIds: ["u-pentu"],
       author: commentAuthor("u-tutu", i18n),

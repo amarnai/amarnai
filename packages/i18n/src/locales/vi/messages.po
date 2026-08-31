@@ -19,8 +19,12 @@ msgstr ""
 #~ msgstr " (Hộp thư đến)"
 
 #: ../ui/src/demo/demo-seed.ts:211
-msgid "\"Matters easier said than written\" — that usually means he wants more archers. @{tutu}, what did we promise him last time?"
-msgstr ""
+#~ msgid "\"Matters easier said than written\" — that usually means he wants more archers. @{tutu}, what did we promise him last time?"
+#~ msgstr ""
+
+#: ../ui/src/demo/demo-seed.ts:211
+msgid "\"Matters easier said than written\" usually means he wants more archers. @{tutu}, what did we promise him last time?"
+msgstr "“Nói dễ hơn viết” thường là ông ta muốn thêm cung thủ. @{tutu}, lần trước chúng ta đã hứa gì với ông ta vậy?"
 
 #: ../../apps/mobile/src/components/MessageCard.tsx:57
 #: ../ui/src/emails/MessageCard.tsx:62
@@ -634,7 +638,7 @@ msgid "A new application has been received from Horemheb of Thebes for the posit
 "View the application in the House of Records."
 msgstr "Đã nhận được hồ sơ ứng tuyển mới từ Horemheb của Thebes cho vị trí Trưởng phòng Thư tín.\n\nXem hồ sơ trong Nhà Lưu trữ."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:232
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:248
 msgid "A queen of Egypt once wrote asking me to send her one of my sons for a husband. Such a thing had never happened, so I sent a chamberlain all the way to Egypt to confirm the tablet was genuine. Aziru separates what is urgent from what merely claims to be. It does not vet royal marriage proposals, but everything else reaches me already sorted."
 msgstr "Một nữ hoàng Ai Cập từng viết thư xin tôi gả một trong các con trai làm chồng. Chuyện chưa từng có tiền lệ, nên tôi đã cử một thị thần đến tận Ai Cập để xác nhận bức thư là thật. Aziru tách bạch điều khẩn cấp khỏi những gì chỉ tự nhận là quan trọng. Dù không kiểm định các lời cầu hôn hoàng gia, nhưng mọi thứ khác đều đến tay tôi đã được sắp xếp gọn gàng."
 
@@ -651,7 +655,7 @@ msgstr "Chủ sở hữu không gian làm việc quản lý các thư mục củ
 #~ msgid "A workspace owner manages this workspace's sorting plan."
 #~ msgstr "Chủ sở hữu không gian làm việc quản lý kế hoạch sắp xếp của không gian này."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:198
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:214
 msgid "Abdi-Heba"
 msgstr "Abdi-Heba"
 
@@ -776,7 +780,7 @@ msgid "Add to Firefox"
 msgstr "Thêm vào Firefox"
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
-#: ../../apps/site/src/components/landing/CollaborationSection.tsx:111
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #: ../ui/src/i18n/taxonomy-template-messages.ts:30
 #, fuzzy
@@ -849,7 +853,7 @@ msgstr "Định tuyến AI"
 msgid "AI TL;DR of a thread, generated the first time you open it"
 msgstr "Tóm tắt chủ đề bằng AI, được tạo tự động khi bạn mở lần đầu"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:153
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:154
 #: ../ui/src/demo/demo-seed.ts:159
 msgid "Akhenaten"
 msgstr "Akhenaten"
@@ -1031,7 +1035,7 @@ msgid "Ask the workspace owner to change the plan."
 msgstr "Yêu cầu chủ sở hữu không gian làm việc thay đổi gói dịch vụ."
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
-#: ../../apps/site/src/components/landing/CollaborationSection.tsx:209
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:251
 #: ../ui/src/emails/TriageBar.tsx:71
 #, fuzzy
@@ -1043,8 +1047,8 @@ msgid "Assign a thread to yourself from any conversation and it will show up her
 msgstr "Gán một luồng cho bạn từ bất kỳ cuộc hội thoại nào, nó sẽ hiển thị ở đây."
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:141
-msgid "Assign any thread to a teammate so everyone knows who has what, and settle it in comments on the thread itself — @mention someone to pull them in. Conversations and assignments live in Aziru — the app and the side panel — layered over your shared inbox. And as always, Aziru never sends mail."
-msgstr ""
+#~ msgid "Assign any thread to a teammate so everyone knows who has what, and settle it in comments on the thread itself — @mention someone to pull them in. Conversations and assignments live in Aziru — the app and the side panel — layered over your shared inbox. And as always, Aziru never sends mail."
+#~ msgstr ""
 
 #: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
@@ -1056,7 +1060,7 @@ msgstr "Giao chủ đề"
 msgid "Assign to"
 msgstr "Giao cho"
 
-#: ../../apps/site/src/components/landing/CollaborationSection.tsx:194
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:215
 #: ../ui/src/emails/ThreadPreview.tsx:243
 #: ../ui/src/emails/ThreadRow.tsx:386
 #: ../ui/src/emails/ThreadRow.tsx:395
@@ -1083,9 +1087,10 @@ msgid "Assigned to {0}"
 msgstr "Giao cho {0}"
 
 #. placeholder {0}: assignee.name ?? assignee.email
-#: ../../apps/site/src/components/landing/CollaborationSection.tsx:193
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:214
+#, fuzzy
 msgid "Assigned to {0}. Change assignee"
-msgstr ""
+msgstr "Đã giao cho {0}. Đổi người được giao"
 
 #: ../ui/src/emails/TriageBar.tsx:70
 msgid "Assigned to {assigneeName}"
@@ -1361,6 +1366,11 @@ msgstr "Aziru đọc hộp thư đến, sắp xếp mọi chuỗi email vào cá
 msgid "Aziru Reply"
 msgstr "Aziru Trả lời"
 
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:171
+#, fuzzy
+msgid "Aziru saved me so much time that Pharaoh believed I had doubled my staff. Petitions, tribute lists, complaints: all sorted before I break a seal. It even drafts my replies, though nothing is sent without my approval. And when a letter is beyond my judgment, I simply tag Pharaoh so he can take a look."
+msgstr "Aziru giúp tôi tiết kiệm thời gian đến mức Pharaoh cứ ngỡ tôi đã tăng gấp đôi nhân lực. Đơn thư, danh sách cống nạp, khiếu nại: tất cả được xử lý gọn gàng trước khi tôi kịp bóc niêm phong. Nó thậm chí còn soạn thảo thư hồi đáp, dù không thư nào được gửi đi nếu chưa có sự chấp thuận của tôi. Và khi một lá thư nằm ngoài khả năng phán quyết của tôi, tôi chỉ cần gắn thẻ Pharaoh để ông ấy xem xét."
+
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:63
 msgid "Aziru sits in a side panel next to Gmail and Outlook."
 msgstr "Aziru nằm trong bảng điều khiển bên cạnh Gmail và Outlook."
@@ -1505,7 +1515,7 @@ msgstr "Sao kê ngân hàng, đầu tư, hợp đồng bảo hiểm và hồ sơ
 msgid "Basic"
 msgstr "Cơ bản"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:157
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:158
 msgid "Before Aziru, my scribes and I sorted letters from sunrise to sunset. Now I finally have the bandwidth to help my vassals, promote the cult of Aten, and plan the city of Amarna."
 msgstr "Trước Aziru, ta và các văn thư phải sắp xếp thư từ sáng đến tối. Nay ta cuối cùng cũng có thời gian để giúp chư hầu, quảng bá giáo phái Aten và quy hoạch thành phố Amarna."
 
@@ -1567,7 +1577,7 @@ msgstr "Thỏa thuận thương hiệu"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:357
 msgid "Browse emails easily through your folders. Click Aziru Reply, and the draft lands in your compose window, ready for your edits."
-msgstr ""
+msgstr "Dễ dàng duyệt email qua các thư mục của bạn. Nhấp vào Aziru Reply, bản nháp sẽ xuất hiện trong cửa sổ soạn thảo, sẵn sàng để bạn chỉnh sửa."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #, fuzzy
@@ -1623,7 +1633,7 @@ msgstr "Tạo gói"
 msgid "Bureau of Royal Appointments"
 msgstr "Cục Bổ nhiệm Hoàng gia"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:166
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:182
 msgid "Burna-Buriash"
 msgstr "Burna-Buriash"
 
@@ -1817,8 +1827,12 @@ msgid "Check your inbox"
 msgstr "Kiểm tra hộp thư đến của bạn"
 
 #: ../ui/src/demo/demo-seed.ts:220
-msgid "Checked the archive: he asked for fifty, we sent twenty. I would take the meeting — @{pentu} can sit in and keep the record."
-msgstr ""
+#~ msgid "Checked the archive: he asked for fifty, we sent twenty. I would take the meeting — @{pentu} can sit in and keep the record."
+#~ msgstr ""
+
+#: ../ui/src/demo/demo-seed.ts:220
+msgid "Checked the archive: he asked for fifty, we sent twenty. I would take the meeting. @{pentu} can you take care of replying to him?"
+msgstr "Kiểm tra kho lưu trữ: ông ta yêu cầu năm mươi, chúng ta đã gửi hai mươi. Tôi sẽ tham gia cuộc họp này. @{pentu} anh có thể lo việc trả lời ông ta được không?"
 
 #. placeholder {0}: err.message
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:143
@@ -3178,6 +3192,10 @@ msgstr "Địa chỉ email cần đưa vào danh sách đen"
 msgid "Email address to invite"
 msgstr "Địa chỉ email để mời"
 
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:177
+msgid "Email is teamwork."
+msgstr "Email là làm việc nhóm."
+
 #: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
 msgid "email organizer"
@@ -4053,12 +4071,12 @@ msgstr "Google không thể hoàn tất ủy quyền. Liên kết có thể đã
 msgid "Google sign-in failed. Please try again."
 msgstr "Đăng nhập Google thất bại. Vui lòng thử lại."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:214
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:230
 #, fuzzy
 msgid "Governor of Byblos"
 msgstr "Thống đốc Byblos"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:199
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:215
 msgid "Governor of Urushalim"
 msgstr "Thống đốc Urushalim"
 
@@ -4209,12 +4227,12 @@ msgstr "Cách thức hoạt động"
 msgid "How to write a good description"
 msgstr "Cách viết mô tả hay"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:202
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:218
 #, fuzzy
 msgid "I have asked the king for archers in nearly every letter I have ever written, and the reports of raids kept getting buried under tax accounts. Aziru puts anything urgent from the hill country in front of me first. The archers have still not arrived, but my inbox is finally in order."
 msgstr "Gần như trong mọi bức thư tôi từng gửi, tôi đều xin nhà vua cung thủ, nhưng báo cáo về các cuộc đột kích cứ bị chôn vùi dưới giấy tờ thuế. Aziru ưu tiên mọi vấn đề khẩn cấp từ vùng đồi núi lên trước mắt tôi. Cung thủ vẫn chưa đến, nhưng hộp thư của tôi cuối cùng đã gọn gàng."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:217
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:233
 msgid "I have sent sixty-eight letters to Pharaoh and received almost nothing back, so I know something about a hopeless inbox. Aziru files my pleas, my grain shortages, and my warnings about the sons of Abdi-Ashirta into their own folders. I remain besieged, but I am besieged in an organized way."
 msgstr "Tôi đã gửi sáu mươi tám lá thư cho Pharaoh và gần như không nhận được hồi âm, nên tôi hiểu thế nào là một hộp thư vô vọng. Aziru sắp xếp những lời thỉnh cầu, báo cáo thiếu hụt ngũ cốc, và cảnh báo về các con trai của Abdi-Ashirta vào các thư mục riêng. Tôi vẫn đang bị bao vây, nhưng ít nhất giờ đây, việc bị bao vây cũng có tổ chức hơn."
 
@@ -4620,15 +4638,15 @@ msgstr "King Aziru đã tra cứu mọi phiến đất sét trong kho lưu trữ
 #~ msgid "King of Amurru"
 #~ msgstr "Vua của Amurru"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:167
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:183
 msgid "King of Babylon"
 msgstr "Vua Babylon"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:229
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:245
 msgid "King of Hatti"
 msgstr "Vua Hatti"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:183
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:199
 #, fuzzy
 msgid "King of Mitanni"
 msgstr "Vua Mitanni"
@@ -4973,7 +4991,7 @@ msgstr "Yêu cầu từ báo chí, phóng viên và đặt lịch đưa tin."
 #~ msgstr "Các yêu cầu truyền thông, tin tức báo chí, đề xuất đồng tiếp thị và liên hệ hợp tác."
 
 #: ../../apps/mobile/src/components/CollaboratorsSheet.tsx:58
-#: ../../apps/site/src/components/landing/CollaborationSection.tsx:111
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:150
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:42
 #, fuzzy
 msgid "Member"
@@ -5042,7 +5060,7 @@ msgstr "Hàng tháng"
 msgid "Monthly sorting limit reached"
 msgstr "Đã đạt giới hạn phân loại hàng tháng"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:277
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:293
 msgid "More reviews"
 msgstr "Xem thêm đánh giá"
 
@@ -5096,7 +5114,7 @@ msgstr "Chuyển đến…"
 msgid "Moved to {folderName}"
 msgstr "Đã chuyển đến {folderName}"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:186
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:202
 msgid "My letters to Egypt are long, and the replies are longer, and for years I could not tell a dowry inventory from a note about the statue of Shaushka. Aziru keeps the gold I am owed in one folder and the pleasantries in another. Pharaoh still sends less gold than promised, but at least I now know exactly which tablet says so."
 msgstr "Những lá thư tôi gửi đến Ai Cập dài, và hồi âm còn dài hơn. Suốt nhiều năm, tôi không thể phân biệt được danh sách của hồi môn với một ghi chú về bức tượng Shaushka. Aziru tách vàng tôi đáng được nhận vào một thư mục, còn những lời lẽ xã giao vào một thư mục khác. Pharaoh vẫn gửi ít vàng hơn đã hứa, nhưng ít nhất giờ đây tôi biết chính xác bức thư nào ghi rõ điều đó."
 
@@ -5325,6 +5343,10 @@ msgstr "Không có thành viên khả dụng"
 msgid "No notifications yet"
 msgstr "Chưa có thông báo nào"
 
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:180
+msgid "No one emails alone. Assign each thread an owner, and talk it through in comments. Try it below: write as {akhenatenName} or as {tutuName}."
+msgstr "Email không phải việc của riêng ai. Giao mỗi chuỗi email cho một người phụ trách, và cùng thảo luận trong bình luận. Hãy thử ngay dưới đây: viết với vai trò {akhenatenName} hoặc {tutuName}."
+
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 #, fuzzy
 msgid "No senders blocked yet."
@@ -5479,9 +5501,10 @@ msgstr "Email chính thức từ trường đại học: phòng đăng ký, dị
 msgid "On-call alerts, outage reports, and production incident escalations."
 msgstr "Cảnh báo trực ban, báo cáo ngừng hoạt động và leo thang sự cố sản xuất."
 
-#: ../../apps/site/src/components/landing/CollaborationSection.tsx:241
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:278
+#, fuzzy
 msgid "One conversation, shared by the whole team."
-msgstr ""
+msgstr "Một cuộc trò chuyện, cả đội cùng chia sẻ."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:96
 msgid "One sign-in creates your account and connects Gmail or Outlook. Aziru never sends or deletes mail."
@@ -5902,7 +5925,7 @@ msgstr "Thư từ cá nhân và email phi học thuật cho cuộc sống hàng 
 msgid "Pharaoh"
 msgstr "Pharaoh"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:154
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:155
 msgid "Pharaoh of Egypt"
 msgstr "Pharaoh Ai Cập"
 
@@ -5998,7 +6021,7 @@ msgstr "Xem trước"
 msgid "Previous preview"
 msgstr "Bản xem trước trước đó"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:247
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:263
 #, fuzzy
 msgid "Previous reviews"
 msgstr "Xem các đánh giá trước"
@@ -6062,7 +6085,7 @@ msgstr "Quyền riêng tư theo thiết kế"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:238
 msgid "Priya"
-msgstr ""
+msgstr "Priya"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:39
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
@@ -6579,7 +6602,7 @@ msgstr "Yêu cầu trả hàng, phê duyệt hoàn tiền và nhãn đổi hàng
 msgid "Returns"
 msgstr "Trả hàng"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:265
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:281
 msgid "Review {n}, {reviewer}"
 msgstr "Xem lại {n}, {reviewer}"
 
@@ -6597,8 +6620,8 @@ msgstr "Xem lại các thư mục của bạn"
 #~ msgid "Review your plan"
 #~ msgstr "Xem lại kế hoạch của bạn"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:139
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:149
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:140
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:150
 msgid "Reviews from early users"
 msgstr "Đánh giá từ người dùng tiên phong"
 
@@ -6606,7 +6629,7 @@ msgstr "Đánh giá từ người dùng tiên phong"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr ""
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:213
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:229
 msgid "Rib-Hadda"
 msgstr "Rib-Hadda"
 
@@ -6639,6 +6662,10 @@ msgstr "Rib-Hadda,\n\nChúng tôi đã nhận được thông tin. Ngũ cốc b�
 #, fuzzy
 #~ msgid "Routing…"
 #~ msgstr "Đang định tuyến..."
+
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:168
+msgid "Royal scribe"
+msgstr "Thư lại hoàng gia"
 
 #. placeholder {0}: altFolder.name
 #. placeholder {1}: Math.round(thread.alternativeFolder.weight * 100)
@@ -7392,7 +7419,7 @@ msgstr "Tóm tắt"
 msgid "Supervision"
 msgstr "Giám sát"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:228
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:244
 msgid "Suppiluliuma"
 msgstr "Suppiluliuma"
 
@@ -7460,6 +7487,11 @@ msgstr "Đổi chế độ xem thư mục"
 msgid "Switch theme"
 msgstr "Đổi giao diện"
 
+#. placeholder {0}: member.name ?? member.email
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:112
+msgid "Switch to {0}"
+msgstr "Chuyển sang {0}"
+
 #: ../../apps/extension/src/panel/UpgradeSuccessOverlay.tsx:54
 #, fuzzy
 msgid "Switch to it"
@@ -7502,7 +7534,7 @@ msgstr "Đang đồng bộ..."
 #~ msgid "System"
 #~ msgstr "Hệ thống"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:170
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:186
 msgid "Tablets arrive from Egypt, from Hatti, and from every merchant robbed on the road to Canaan, and all of them land in the same basket. Aziru sorts them before I break the seal: gold shipments here, caravan complaints there, marriage terms in their own folder. I still write to Pharaoh about the gold, but now it is the first letter of my day instead of the last."
 msgstr "Các phiến đất sét đến từ Ai Cập, từ Hatti, và từ mọi thương nhân bị cướp trên đường đến Canaan, và tất cả chúng đều đổ vào cùng một giỏ. Aziru sắp xếp chúng trước khi tôi mở niêm phong: các lô hàng vàng ở đây, các khiếu nại của đoàn caravan ở đó, các điều khoản hôn nhân trong thư mục riêng của chúng. Tôi vẫn viết thư cho Pharaoh về vàng, nhưng giờ nó là lá thư đầu tiên trong ngày của tôi thay vì lá cuối cùng."
 
@@ -7557,8 +7589,9 @@ msgid "Team"
 msgstr "Nhóm"
 
 #: ../../apps/site/src/components/landing/Nav.tsx:51
+#, fuzzy
 msgid "Teamwork"
-msgstr ""
+msgstr "Làm việc nhóm"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:230
 msgid "Template applied"
@@ -8024,16 +8057,17 @@ msgstr "Hiện/ẩn thư mục"
 msgid "Transactions"
 msgstr "Giao dịch"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:168
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:184
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:200
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:215
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:230
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:216
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:231
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:246
 #, fuzzy
 msgid "Translated from cuneiform"
 msgstr "Dịch từ chữ hình nêm"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:155
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:156
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:169
 msgid "Translated from hieroglyphics"
 msgstr "Dịch từ chữ tượng hình"
 
@@ -8054,8 +8088,8 @@ msgid "Triage & review"
 msgstr "Phân loại & xem lại"
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:138
-msgid "Triage together."
-msgstr ""
+#~ msgid "Triage together."
+#~ msgstr ""
 
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:60
 msgid "Triage without leaving your inbox"
@@ -8093,7 +8127,7 @@ msgstr "Dùng thử Aziru"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "Bật tính năng này sẽ yêu cầu quyền quản lý nhãn của bạn."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:182
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:198
 msgid "Tushratta"
 msgstr "Tushratta"
 
@@ -8102,6 +8136,7 @@ msgstr "Tushratta"
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta xứ Mitanni"
 
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:167
 #: ../ui/src/demo/demo-seed.ts:160
 #, fuzzy
 msgid "Tutu"
@@ -8613,8 +8648,8 @@ msgid "Workspaces included"
 msgstr "Không gian làm việc bao gồm"
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:156
-msgid "Write as either teammate — type @ to mention someone."
-msgstr ""
+#~ msgid "Write as either teammate — type @ to mention someone."
+#~ msgstr ""
 
 #: ../ui/src/settings/LabelWritebackSection.tsx:110
 #, fuzzy

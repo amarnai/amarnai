@@ -65,6 +65,7 @@ function ReviewCard({
 // only to name each dot for screen readers.
 const REVIEWERS = [
   "Akhenaten",
+  "Tutu",
   "Burna-Buriash",
   "Tushratta",
   "Abdi-Heba",
@@ -158,6 +159,21 @@ export function ReviewsSection() {
               Before Aziru, my scribes and I sorted letters from sunrise to
               sunset. Now I finally have the bandwidth to help my vassals,
               promote the cult of Aten, and plan the city of Amarna.
+            </Trans>
+          </ReviewCard>
+
+          <ReviewCard
+            portrait="/tutu-review.png"
+            name={<Trans>Tutu</Trans>}
+            title={<Trans>Royal scribe</Trans>}
+            source={<Trans>Translated from hieroglyphics</Trans>}
+          >
+            <Trans>
+              Aziru saved me so much time that Pharaoh believed I had doubled
+              my staff. Petitions, tribute lists, complaints: all sorted before
+              I break a seal. It even drafts my replies, though nothing is sent
+              without my approval. And when a letter is beyond my judgment, I
+              simply tag Pharaoh so he can take a look.
             </Trans>
           </ReviewCard>
 

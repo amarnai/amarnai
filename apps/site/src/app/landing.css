@@ -993,8 +993,10 @@
   .ld-browser-frame .ld-split-divider,
   .ld-browser-frame .ld-tb-ext { display: none; }
 
-  /* Browser extensions can't be installed on mobile; hide the CTA there. */
-  .ld-ext-btn { display: none; }
+  /* Browser extensions can't be installed on mobile; hide the CTA there,
+     and with it the install-then-connect arrow in the first step's art. */
+  .ld-ext-btn,
+  .ld-sa-connect-arrow { display: none; }
 
   /* With the extension button gone, the sign-up link is the only call to
      action left, so it takes the primary treatment. Same declarations as
@@ -1376,7 +1378,7 @@
 
 .ld-collab-email-top {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
@@ -1401,24 +1403,86 @@
   overflow: hidden;
 }
 
-.ld-collab-email-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+/* The card's one call to action, on the header line rather than in a side
+   column so a changing assignee name only eats the line's whitespace and never
+   reflows the subject and snippet below. Scoped under the header to outrank
+   the shared .em-preview-assign ghost treatment regardless of import order. */
+.ld-collab-email-top .ld-collab-assign {
+  margin-left: auto;
   flex-shrink: 0;
+  white-space: nowrap;
+  padding: 4px 12px;
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  transition: background 0.1s, color 0.1s;
 }
 
-/* One member's screen: their identity on top, the shared comment card below. */
+.ld-collab-email-top .ld-collab-assign:hover {
+  background: var(--accent-line);
+  color: var(--accent-ink);
+}
+
+/* One member's screen: their identity on top, the shared comment card below.
+   Each pane is tinted with its member's hue — border in the hue's line token
+   and a soft halo mixed from its ink — so the two mirrored lists read as two
+   people at a glance. Both glows are identical in shape and strength; only the
+   hue differs, so neither pane reads as selected. The halo swells while the
+   pane has unread comments (the glow is the notification) and settles when
+   the visitor clicks or focuses into it. */
 .ld-collab-pane {
+  --pane-glow: 16%;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 14px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--pane-line, var(--line));
   border-radius: var(--r-md);
   min-width: 0;
+  box-shadow: 0 0 28px -6px color-mix(in srgb, var(--pane-ink, var(--ink-3)) var(--pane-glow), transparent);
+  transition: box-shadow 0.4s ease;
+}
+
+.ld-collab-hue-gold {
+  --pane-ink: var(--folder-yellow-ink);
+  --pane-soft: var(--folder-yellow-soft);
+  --pane-line: var(--folder-yellow-line);
+}
+
+.ld-collab-hue-teal {
+  --pane-ink: var(--folder-teal-ink);
+  --pane-soft: var(--folder-teal-soft);
+  --pane-line: var(--folder-teal-line);
+}
+
+.ld-collab-pane.has-unread { --pane-glow: 40%; }
+
+/* Glows bloom harder against a dark ground; pull the alpha back. */
+html[data-theme="dark"] .ld-collab-pane { --pane-glow: 11%; }
+html[data-theme="dark"] .ld-collab-pane.has-unread { --pane-glow: 30%; }
+
+/* Flatten the comments widget's own inset box: its job in the app is to
+   separate comments from the preview's other content, and here the pane holds
+   nothing else — the hue border is the boundary. The comment items and the
+   composer keep their chrome; the eyebrow (with its live count) stays as a
+   plain label. */
+.ld-collab-pane .em-comments-card {
+  margin-top: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+/* Two small echoes tying the hue to the person: a ring on the avatar and the
+   role pill tinted in the same family. */
+.ld-collab-pane .ld-collab-pfp { box-shadow: 0 0 0 2px var(--pane-line); }
+
+.ld-collab-pane .ld-collab-role {
+  color: var(--pane-ink);
+  background: var(--pane-soft);
+  border-color: var(--pane-line);
 }
 
 .ld-collab-persona {
@@ -1495,12 +1559,80 @@
   color: var(--ink-3);
 }
 
-/* The screens stack on narrow viewports; the email card already spans, and
-   the sync mark lands between the stacked panes, arrows turned vertical. */
+/* Wraps the badge; on mobile it grows an avatar button on each side and
+   becomes the seat switcher. The buttons are display:none on desktop, so
+   there the row collapses to the badge alone. */
+.ld-collab-switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ld-collab-switch-btn {
+  display: none;
+  position: relative;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.ld-collab-switch-btn img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--pane-line);
+  opacity: 0.55;
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+
+.ld-collab-switch-btn.is-active img {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--pane-ink);
+}
+
+.ld-collab-switch-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Narrow viewports show one screen at a time. The sync mark moves between the
+   email and the visible pane and becomes the seat switcher: both avatars with
+   the two-way badge between them, active seat ringed in its hue, the hidden
+   member's unread count on their avatar (their pane's glow can't be seen). */
 @media (max-width: 720px) {
   .ld-collab-stage { grid-template-columns: 1fr; }
   .ld-collab-email { flex-wrap: wrap; }
-  .ld-collab-email-side { flex-direction: row; align-items: center; }
-  .ld-collab-sync { flex-direction: row; max-width: none; gap: 10px; }
-  .ld-collab-sync-badge svg { transform: rotate(90deg); }
+  /* Narrow header: the pill stays on line one beside the name, and the email
+     address takes its own full-width line, instead of the three-line rag the
+     free wrap produced. */
+  .ld-collab-sender-email { order: 1; flex-basis: 100%; }
+  /* And the name truncates rather than pushing the pill off the line. */
+  .ld-collab-sender {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* email (0) → switcher (1) → the one visible pane (2). */
+  .ld-collab-sync { order: 1; max-width: none; gap: 8px; }
+  .ld-collab-pane { order: 2; }
+  .ld-collab-pane:not(.is-active) { display: none; }
+  .ld-collab-switch-btn { display: inline-flex; }
 }
