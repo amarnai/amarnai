@@ -7,6 +7,8 @@ import { startDomTicker } from "../core/scheduler.js";
 import { attachPanelFrame } from "../core/panelFrame.js";
 import { inertPanelHandle, type InjectedPanelHandle } from "../core/panelHandle.js";
 import { OPEN_PANEL_MESSAGE } from "../core/messaging.js";
+import { claimFirstReveal } from "./firstReveal.js";
+import { mountRailTab } from "./railTab.js";
 
 // The Gmail half of the injected panel: an extension-origin iframe living in
 // Gmail's own right-hand sidebar, fed the open conversation over postMessage.
@@ -150,11 +152,22 @@ export async function startInjectedPanel(
     return inertPanelHandle;
   }
 
+  // The visible entry point (see railTab.ts): the rail slot itself cannot be
+  // made bigger, so the tab is DOM of our own. Hidden while the panel is
+  // active — an "open" control over an already-open panel is noise.
+  const railTab = mountRailTab(document, () => sidebarPanel.open());
+
   // A collapsed sidebar is not a hidden document: Gmail keeps the panel in the
   // DOM. Without this the panel would hold an SSE connection open for a surface
   // nobody is looking at.
-  const onActivate = () => link.setVisible(true);
-  const onDeactivate = () => link.setVisible(false);
+  const onActivate = () => {
+    link.setVisible(true);
+    railTab.setHidden(true);
+  };
+  const onDeactivate = () => {
+    link.setVisible(false);
+    railTab.setHidden(false);
+  };
   sidebarPanel.on("activate", onActivate);
   sidebarPanel.on("deactivate", onDeactivate);
 
@@ -162,16 +175,23 @@ export async function startInjectedPanel(
   // being looked at until an activate says so. The frame is not loaded yet, so
   // this send goes nowhere and the handshake carries the value across.
   link.setVisible(sidebarPanel.isActive());
+  railTab.setHidden(sidebarPanel.isActive());
 
   const stopWatching = watchThreadContext(link.postContext);
 
   teardown = () => {
     link.stop();
     stopWatching();
+    railTab.remove();
     sidebarPanel.off("activate", onActivate);
     sidebarPanel.off("deactivate", onDeactivate);
     sidebarPanel.remove();
   };
+
+  // The one-time self-introduction (see firstReveal.ts). Guarded like reveal():
+  // the disable relay can fire during the storage read, and a removed panel must
+  // not be reopened.
+  if ((await claimFirstReveal()) && teardown !== null) sidebarPanel.open();
 
   // `teardown` doubling as the liveness flag is what keeps the handle honest
   // after the kill-switch relay: onDisabled runs the same stop(), which nulls

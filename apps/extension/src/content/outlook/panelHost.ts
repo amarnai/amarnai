@@ -1,6 +1,7 @@
 import type { PanelThreadContext } from "@aziru/panel";
 import { debugLog } from "../core/debug.js";
 import { createLogoMark } from "../core/logoMark.js";
+import { EDGE_TAB_CSS } from "../core/edgeTabStyles.js";
 import { attachPanelFrame } from "../core/panelFrame.js";
 import { inertPanelHandle, type InjectedPanelHandle } from "../core/panelHandle.js";
 import { startDomTicker } from "../core/scheduler.js";
@@ -28,7 +29,13 @@ import { armOutlookReplyWithDraft } from "./replyButton.js";
 const PANEL_HOST_ATTRIBUTE = "data-aziru-owa-panel";
 const PANEL_URL_PATH = "injected.html";
 
-/** Remembers the drawer open across reloads — an account switch is a real one. */
+/**
+ * Remembers the drawer open across reloads — an account switch is a real one.
+ * Never written yet means the very first visit, and that is the one time the
+ * drawer starts expanded on its own: a collapsed 30px tab was being missed
+ * outright, and one self-introduction is how the Gmail panel handles the same
+ * problem. The first collapse writes `false` and ends it.
+ */
 const EXPANDED_KEY = "owaPanelExpanded";
 
 /**
@@ -48,15 +55,17 @@ const DRAWER_WIDTH = "min(360px, calc(100vw - 40px))";
  * Above Fluent UI's `ms-Layer`, which OWA renders dialogs and callouts into at
  * around z-index 1,000,000. The drawer has to clear that to be usable at all,
  * which does mean an expanded drawer sits over an OWA modal — acceptable only
- * because it starts collapsed, so what actually overlaps by default is a 30px
- * tab. Deliberately no backdrop of our own: that would be obstructive.
+ * because past the first visit it starts collapsed, so what usually overlaps by
+ * default is a 30px tab. Deliberately no backdrop of our own: that would be
+ * obstructive.
  */
 const Z_INDEX = 2147483000;
 
-// Brand terracotta on a white mark, which reads correctly against OWA light and
-// dark alike — so the tab needs none of the backdrop-measuring the summary card
-// does. Everything below the tab is the iframe, which themes itself from the
-// same storage the side panel writes.
+// The tab's skin is the shared clay edge-tab look (core/edgeTabStyles.ts, also
+// the Gmail rail tab's) — it reads correctly against OWA light and dark alike,
+// so the tab needs none of the backdrop-measuring the summary card does.
+// Everything below the tab is the iframe, which themes itself from the same
+// storage the side panel writes.
 const STYLES = `
 :host {
   all: initial;
@@ -72,24 +81,13 @@ const STYLES = `
   pointer-events: none;
 }
 .tab, .drawer { pointer-events: auto; }
+${EDGE_TAB_CSS}
 .tab {
   margin-top: ${TAB_TOP};
   flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 30px;
   height: 58px;
-  padding: 0;
-  border: 0;
-  border-radius: 8px 0 0 8px;
-  background: #c2683f;
-  color: #faf9f6;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 0.22);
 }
-.tab:hover { background: #b15c36; }
-.tab:focus-visible { outline: 2px solid #faf9f6; outline-offset: -4px; }
 .drawer {
   width: 0;
   height: 100vh;
@@ -159,10 +157,16 @@ function watchThreadContext(
   return startDomTicker(doc, check);
 }
 
-/** Whether the drawer was left open. Defaults to collapsed on anything unclear. */
+/**
+ * Whether the drawer starts open: the remembered state, or expanded on the very
+ * first visit (see EXPANDED_KEY). Unreadable storage means collapsed — a drawer
+ * that pops open on every load because storage keeps failing is the one thing
+ * the first-visit rule must not decay into.
+ */
 async function readExpanded(): Promise<boolean> {
   try {
     const stored = await ext.storage.local.get(EXPANDED_KEY);
+    if (!(EXPANDED_KEY in stored)) return true;
     return stored[EXPANDED_KEY] === true;
   } catch {
     return false;

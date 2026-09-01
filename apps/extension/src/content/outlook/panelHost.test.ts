@@ -165,8 +165,34 @@ describe("startOutlookInjectedPanel — mounting", () => {
   });
 });
 
+/**
+ * A returning user who collapsed the drawer at some point. The very first
+ * visit — nothing stored — starts expanded as the drawer's one
+ * self-introduction, so every test about ordinary collapsed-first behavior
+ * seeds this.
+ */
+async function seedCollapsed() {
+  await chrome.storage.local.set({ owaPanelExpanded: false });
+}
+
 describe("startOutlookInjectedPanel — the drawer", () => {
-  it("starts collapsed on a first visit", async () => {
+  // The one self-introduction: a 30px tab alone was being missed outright.
+  it("starts expanded on the very first visit", async () => {
+    buildConversation();
+    teardown = (await startOutlookInjectedPanel(document)).stop;
+
+    expect(hostEl()?.getAttribute("data-expanded")).toBe("true");
+    expect(tab().getAttribute("aria-expanded")).toBe("true");
+  });
+
+  // The introduction happens once. The first collapse is remembered, so the
+  // drawer must never pop open again on later loads.
+  it("stays collapsed once the first-visit drawer is collapsed", async () => {
+    buildConversation();
+    teardown = (await startOutlookInjectedPanel(document)).stop;
+    tab().click();
+    teardown();
+
     buildConversation();
     teardown = (await startOutlookInjectedPanel(document)).stop;
 
@@ -175,6 +201,7 @@ describe("startOutlookInjectedPanel — the drawer", () => {
   });
 
   it("expands on the tab, and says so to the panel", async () => {
+    await seedCollapsed();
     buildConversation();
     teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
@@ -190,6 +217,7 @@ describe("startOutlookInjectedPanel — the drawer", () => {
   });
 
   it("collapses again on a second click", async () => {
+    await seedCollapsed();
     buildConversation();
     teardown = (await startOutlookInjectedPanel(document)).stop;
     stubFrameWindow();
@@ -207,6 +235,7 @@ describe("startOutlookInjectedPanel — the drawer", () => {
   // An account switch and the office365.com → office.com redirect are real
   // navigations, so the drawer has to be remembered rather than reset.
   it("reopens expanded after a reload", async () => {
+    await seedCollapsed();
     buildConversation();
     teardown = (await startOutlookInjectedPanel(document)).stop;
     tab().click();
@@ -221,6 +250,7 @@ describe("startOutlookInjectedPanel — the drawer", () => {
   // The value has to be KNOWN before the frame can load, or the panel opens an
   // SSE connection for a drawer that turns out to be shut.
   it("seeds visibility from storage before the frame is addressed", async () => {
+    await seedCollapsed();
     buildConversation();
     teardown = (await startOutlookInjectedPanel(document)).stop;
     tab().click();
@@ -421,6 +451,7 @@ describe("startOutlookInjectedPanel — teardown", () => {
 
 describe("startOutlookInjectedPanel — the handle", () => {
   it("reveal() expands a collapsed drawer through the remembered-state path", async () => {
+    await seedCollapsed();
     buildConversation();
     const handle = await startOutlookInjectedPanel(document);
     teardown = handle.stop;
