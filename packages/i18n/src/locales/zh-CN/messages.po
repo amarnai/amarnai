@@ -651,12 +651,12 @@ msgstr "已收到底比斯的霍伦海布呈报的文书长职位申请。\n\n�
 msgid "A queen of Egypt once wrote asking me to send her one of my sons for a husband. Such a thing had never happened, so I sent a chamberlain all the way to Egypt to confirm the tablet was genuine. Aziru separates what is urgent from what merely claims to be. It does not vet royal marriage proposals, but everything else reaches me already sorted."
 msgstr "埃及女王曾致函于我，欲求我的一个儿子为夫。此等前所未有之事，我遂派侍臣远赴埃及，以验书信真伪。Aziru 甄别真正紧急与虚报紧急的事项。它不负责审查皇室联姻提案，但除此之外，所有信息都已替我整理妥当。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:449
 #, fuzzy
 msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "模板助您即刻开始整理，稍后还可编辑。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:475
 msgid "A workspace owner manages this workspace's folders."
 msgstr "工作区所有者管理此工作区的文件夹。"
 
@@ -1017,7 +1017,7 @@ msgstr "应用后会替换您当前的计划。您之后可以完全编辑它。
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 #, fuzzy
 msgid "Applying…"
 msgstr "正在应用…"
@@ -1042,6 +1042,7 @@ msgstr "归档"
 msgid "Ask the workspace owner to change the plan."
 msgstr "请联系工作区所有者更改套餐。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:166
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:251
@@ -1068,6 +1069,7 @@ msgstr "分配会话"
 msgid "Assign to"
 msgstr "分配给"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:153
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:215
 #: ../ui/src/emails/ThreadPreview.tsx:243
 #: ../ui/src/emails/ThreadRow.tsx:386
@@ -1097,6 +1099,7 @@ msgid "Assigned to {0}"
 msgstr "分配给 {0}"
 
 #. placeholder {0}: assignee.name ?? assignee.email
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:152
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:214
 #, fuzzy
 msgid "Assigned to {0}. Change assignee"
@@ -1175,8 +1178,8 @@ msgid "aziru business plan"
 msgstr "Aziru 商业版"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
-msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
-msgstr "Aziru 将所有 Gmail 和 Outlook 会话归入您自定义的文件夹，并在您的收件箱内保持整洁有序。"
+#~ msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
+#~ msgstr "Aziru 将所有 Gmail 和 Outlook 会话归入您自定义的文件夹，并在您的收件箱内保持整洁有序。"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:71
 #~ msgid "Aziru files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
@@ -1187,7 +1190,7 @@ msgstr "Aziru 将所有 Gmail 和 Outlook 会话归入您自定义的文件夹�
 #~ msgid "Aziru files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 #~ msgstr "Aziru 将所有会话归档到您选择的文件夹中。您可以从自己的收件箱生成一套，或从模板开始。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:342
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:415
 msgid "Aziru files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
 msgstr "Aziru 将您的邮件归档到您选择的文件夹中。您可以从自己的收件箱构建，或从现成的组合开始。"
 
@@ -1394,7 +1397,7 @@ msgstr "Aziru 位于 Gmail 和 Outlook 旁边的侧边面板中。"
 #~ msgid "Aziru sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Aziru 将您的 Gmail 会话分拣到您定义的文件夹，为您起草回复供您批准，并解释每项决策。开源且支持自托管。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:127
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:230
 msgid "Aziru sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Aziru 自动整理收件箱，新旧邮件各归其位。未识别的会话将等待您审核。"
 
@@ -1481,8 +1484,8 @@ msgstr "巴比伦的第三批黄金货物已延期，此前已派出两名信使
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:511
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:531
 #, fuzzy
 msgid "Back"
 msgstr "返回"
@@ -1862,7 +1865,7 @@ msgstr "子文件夹"
 msgid "Choose {planName}"
 msgstr "选择 {planName}"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:71
 msgid "Choose a mailbox"
 msgstr "选择邮箱"
 
@@ -1876,7 +1879,7 @@ msgstr "为您的账户选择新密码。"
 msgid "Choose a subscription"
 msgstr "选择订阅"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:317
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:390
 msgid "Choose a template"
 msgstr "选择模板"
 
@@ -1907,7 +1910,7 @@ msgstr "为您的新文件夹选择每个会话的归属。匹配的文件夹会
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "请选择新套餐下每个文件夹的会话归属。已匹配的文件夹会话即时保留；任何设置为重新分类的会话都将由AI重新分类。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:338
 #, fuzzy
 msgid "Choose which part of Aziru to preview"
 msgstr "选择要预览的 Aziru 部分"
@@ -1954,10 +1957,10 @@ msgstr "客户"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:327
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:400
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:494
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:504
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:546
 #: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
@@ -2036,6 +2039,11 @@ msgstr "颜色"
 #, fuzzy
 msgid "Comment"
 msgstr "评论"
+
+#. placeholder {0}: tutu.name
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:174
+msgid "Commenting as {0}"
+msgstr "以 {0} 身份评论"
 
 #: ../panel/src/CommentsSection.tsx:128
 #: ../ui/src/emails/ThreadCommentsCard.tsx:117
@@ -2560,8 +2568,8 @@ msgstr "无法升级"
 msgid "Could not verify your Google account. Please try again."
 msgstr "无法验证您的 Google 账户。请重试。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:283
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:304
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:377
 msgid "Couldn't apply the folders."
 msgstr "无法应用文件夹。"
 
@@ -2570,7 +2578,7 @@ msgstr "无法应用文件夹。"
 #~ msgid "Couldn't apply the plan."
 #~ msgstr "无法应用方案。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:191
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:284
 #, fuzzy
 msgid "Couldn't check generation status."
 msgstr "无法检查生成状态。"
@@ -2583,7 +2591,7 @@ msgstr "无法加载收件箱。请检查您的网络连接并重新打开面板
 msgid "Couldn't reach Aziru. Check your connection and try again."
 msgstr "无法连接 Aziru。请检查您的网络连接并重试。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:246
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:218
 #, fuzzy
 msgid "Couldn't start generation."
 msgstr "无法开始生成。"
@@ -3197,6 +3205,10 @@ msgstr "要邀请的电子邮件地址"
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:177
 msgid "Email is teamwork."
 msgstr "邮件是团队协作。"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:247
+msgid "Email is teamwork. Assign and discuss."
+msgstr "邮件即协作。分配、讨论。"
 
 #: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
@@ -3865,7 +3877,7 @@ msgstr "从您的收件箱生成文件夹"
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:484
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
@@ -3876,7 +3888,7 @@ msgstr "从收件箱生成"
 msgid "Generate plan from inbox"
 msgstr "从收件箱生成方案"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:132
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:235
 #, fuzzy
 msgid "Generate your folders"
 msgstr "生成您的文件夹"
@@ -3894,7 +3906,7 @@ msgstr "生成您的文件夹。"
 #~ msgid "Generate your plan."
 #~ msgstr "制定您的方案。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:348
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "生成过程会读取您的发件人、标签和主题关键词，但绝不会读取邮件正文。在应用任何内容之前，您会先审阅结果。"
 
@@ -3919,7 +3931,7 @@ msgstr "生成失败。请在 {0} 后重试，或从模板开始。"
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "生成失败。请稍后重试，或从模板开始。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:159
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:163
 #, fuzzy
 msgid "Generation didn't complete. You can start from a template instead."
 msgstr "生成未完成。您可以改用模板。"
@@ -4794,7 +4806,7 @@ msgstr "正在加载评论…"
 msgid "Loading past threads…"
 msgstr "正在加载过去的会话…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:133
+#: ../../apps/extension/src/panel/NotificationBell.tsx:126
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
@@ -4827,7 +4839,7 @@ msgstr "大额捐赠者关系、认捐确认及捐赠致谢。"
 msgid "Manage"
 msgstr "管理"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:156
+#: ../../apps/extension/src/panel/NotificationBell.tsx:149
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
 #: ../../apps/web/src/components/NotificationBell.tsx:192
 #, fuzzy
@@ -5224,7 +5236,7 @@ msgstr "新建工作区"
 msgid "New workspace name"
 msgstr "新工作区名称"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:262
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:371
 #, fuzzy
 msgid "Next preview"
 msgstr "下一个预览"
@@ -5312,7 +5324,7 @@ msgstr "无成员"
 msgid "No members available"
 msgstr "无可用成员"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:138
+#: ../../apps/extension/src/panel/NotificationBell.tsx:131
 #: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
@@ -5320,6 +5332,10 @@ msgstr "无可用成员"
 #, fuzzy
 msgid "No notifications yet"
 msgstr "暂无通知"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:248
+msgid "No one emails alone. Assign each thread an owner and talk it through in comments, so everyone can see who has what."
+msgstr "告别单打独斗。为每个会话分配负责人，在评论中讨论，职责分明，一目了然。"
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:180
 #, fuzzy
@@ -5451,9 +5467,9 @@ msgstr "尚未同步"
 msgid "Nothing is waiting on you right now."
 msgstr "目前没有待办事项。"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:40
-#: ../../apps/extension/src/panel/NotificationBell.tsx:125
-#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/extension/src/panel/NotificationBell.tsx:39
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
+#: ../../apps/extension/src/panel/NotificationBell.tsx:121
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
@@ -5465,7 +5481,7 @@ msgstr "目前没有待办事项。"
 msgid "Notifications"
 msgstr "通知"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/extension/src/panel/NotificationBell.tsx:100
 #: ../../apps/web/src/components/NotificationBell.tsx:137
 #, fuzzy
 msgid "Notifications, {unread} unread"
@@ -5590,7 +5606,7 @@ msgstr "打开 Aziru 面板"
 msgid "Open the Aziru side panel"
 msgstr "打开 Aziru 侧边面板"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:463
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:543
 #, fuzzy
 msgid "Open the folder editor"
 msgstr "打开文件夹编辑器"
@@ -5617,6 +5633,11 @@ msgstr "从 Outlook 中的 Aziru 按钮打开此项。"
 #, fuzzy
 msgid "Open your inbox. <0>It's already sorted.</0>"
 msgstr "打开您的收件箱。<0>它已自动整理。</0>"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#, fuzzy
+msgid "Open your inbox. It's already sorted."
+msgstr "打开收件箱。邮件已分类就绪。"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -6001,7 +6022,7 @@ msgstr "媒体"
 msgid "Preview"
 msgstr "预览"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:254
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:363
 #, fuzzy
 msgid "Previous preview"
 msgstr "上一个预览"
@@ -6221,7 +6242,7 @@ msgstr "重新激活"
 #~ msgid "Reading your inbox and building a plan. This can take a moment."
 #~ msgstr "正在读取您的收件箱并构建方案。这可能需要一些时间。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:360
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:439
 #, fuzzy
 msgid "Reading your inbox and building your folders. This can take a moment."
 msgstr "正在读取您的收件箱并构建文件夹。这可能需要一些时间。"
@@ -6594,7 +6615,7 @@ msgstr "审核 {n}，{reviewer}"
 msgid "Review the proposed folders"
 msgstr "审阅建议的文件夹"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 msgid "Review your folders"
 msgstr "审核您的文件夹"
 
@@ -6688,6 +6709,7 @@ msgstr "保存更改"
 #~ msgid "Save hours of triage every week. Let Aziru sort your inbox, filing every email, old and new, where it belongs."
 #~ msgstr "每周节省数小时分类整理时间。让 Aziru 助您整理收件箱，将每封邮件（无论新旧）归入其应属之处。"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
 msgid "Save hours of work every week. Aziru sorts your old and new emails, summarizes your threads, and drafts your replies."
 msgstr "每周节省数小时工作时间。Aziru 自动整理新旧邮件，总结邮件会话，并智能起草回复。"
@@ -6894,7 +6916,7 @@ msgstr "设置新密码"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:393
 #, fuzzy
 msgid "Set up folders"
 msgstr "设置文件夹"
@@ -7158,7 +7180,7 @@ msgstr "自动整理 · {confidence}% 确定"
 #~ msgid "Sorted automatically by content similarity."
 #~ msgstr "已根据内容相似度自动排序。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:241
 #, fuzzy
 msgid "Sorted, summarized, and drafted, without leaving your inbox"
 msgstr "归类、摘要、草拟，全程在收件箱内完成"
@@ -7285,8 +7307,8 @@ msgstr "正在导入您的收件箱。请待导入完成后再查看。"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:126
 #, fuzzy
-msgid "Stop sorting email"
-msgstr "停止整理邮件"
+#~ msgid "Stop sorting email"
+#~ msgstr "停止整理邮件"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 #~ msgid "Stop sorting email.<0/><1>Sort it once.</1>"
@@ -7701,7 +7723,7 @@ msgstr "这些协作者将在账单周期结束时失去访问权限："
 msgid "These collaborators will lose access on {0}:"
 msgstr "这些协作者将在 {0} 失去访问权限："
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:465
 msgid "These folders will be created. You can edit them at any time."
 msgstr "这些文件夹将被创建。您可以随时编辑它们。"
 
@@ -8318,8 +8340,8 @@ msgstr "更改筛选器后，请使用“重新扫描收件箱”将其应用于
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:407
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:487
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:501
 #, fuzzy
 msgid "Use a template"
 msgstr "使用模板"
@@ -8329,7 +8351,7 @@ msgstr "使用模板"
 msgid "Use template"
 msgstr "使用模板"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 msgid "Use these folders"
 msgstr "使用这些文件夹"
 
@@ -8847,8 +8869,8 @@ msgid "Your folders"
 msgstr "您的文件夹"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:133
-msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
-msgstr "您的文件夹是一个从收件箱延伸出的简单树状结构。让Aziru从您的收件箱生成，从模板开始，或自行绘制。"
+#~ msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
+#~ msgstr "您的文件夹是一个从收件箱延伸出的简单树状结构。让Aziru从您的收件箱生成，从模板开始，或自行绘制。"
 
 #: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
@@ -8872,11 +8894,12 @@ msgstr "您的文件夹即为 Gmail 标签/Outlook 类别，已整理的邮件�
 #~ msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it without leaving your mailbox. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "您的文件夹在 Gmail 中变为标签，在 Outlook 中变为类别，确保每封会话都能在您预期的位置找到，无需离开邮箱。需要回复时，一键即可生成草稿，随时供您编辑，未经您的确认绝不发送。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:139
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:242
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:210
 msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it. Each one arrives with a summary, and a reply is one click away, ready for your edits and never sent without them. Assign threads to your team and everyone can see who has what."
 msgstr "您的文件夹在 Gmail 中是标签，在 Outlook 中是类别，所有会话均按预期归档。每个会话都会附带一份摘要。一键即可生成回复，供您修改，未经确认绝不发出。将会话分配给团队，任务分配一目了然。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:236
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
 msgid "Your folders form a simple tree, branching out from the inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives."
@@ -8910,6 +8933,15 @@ msgstr "您的收件箱导入已完成。"
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "您的收件箱仍在导入中。您可以根据目前已加载的内容进行生成，但在导入完成后重新生成将获得更准确的结果。"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#, fuzzy
+msgid "Your inbox is still loading. Your folders will be generated as soon as enough of it has arrived."
+msgstr "您的收件箱仍在加载中。待收件箱内容加载充足后，您的文件夹将自动生成。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
+msgid "Your inbox, already sorted"
+msgstr "您的收件箱，已分类就绪"
+
 #: ../../apps/site/src/components/landing/Footer.tsx:19
 #, fuzzy
 msgid "Your inbox, already sorted."
@@ -8920,10 +8952,10 @@ msgstr "您的收件箱，早已井然有序。"
 #~ msgstr "您的收件箱，依您心意整理。"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
-msgid "Your inbox, sorted your way"
-msgstr "您的收件箱，由您整理"
+#~ msgid "Your inbox, sorted your way"
+#~ msgstr "您的收件箱，由您整理"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:61
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
 msgid "Your mailbox"
 msgstr "您的邮箱"
 

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import type { TaxonomyTransferFile } from "@aziru/shared";
@@ -24,6 +24,7 @@ i18n.activate("en");
 // Vitest runs without globals here, so testing-library's automatic afterEach
 // cleanup never registers; without this, renders accumulate across tests.
 afterEach(cleanup);
+afterEach(() => vi.useRealTimers());
 
 const PROPOSAL: TaxonomyTransferFile = {
   amarnaiTaxonomyVersion: 1,
@@ -68,6 +69,7 @@ function makeApi(overrides: Record<string, unknown> = {}): ApiClient {
       proposal: null,
     })),
     generateTaxonomy: vi.fn(async () => ({ ok: true as const, status: "RUNNING" })),
+    syncStatus: vi.fn(async () => ({ backfillStatus: "DONE" })),
     taxonomyTemplateRecommendation: vi.fn(async () => ({ recommendedTemplateId: null })),
     previewTaxonomyImport: vi.fn(async () => ({
       suggestions: [],
@@ -169,6 +171,83 @@ describe("PlanSetupDialog", () => {
     expect(await screen.findByText(/doesn't have enough variety yet/)).toBeDefined();
     click("Use a template");
     expect(await screen.findByRole("button", { name: /Freelancer/ })).toBeDefined();
+  });
+
+  it("waits out a running backfill and generates once the inbox is big enough", async () => {
+    vi.useFakeTimers();
+    const idle = {
+      status: "IDLE" as const,
+      importing: false,
+      matchedTemplateId: null,
+      lastOutcome: null,
+      proposal: null,
+    };
+    const tooSmall = { eligible: false, reason: "INBOX_TOO_SMALL" as const };
+    const api = makeApi({
+      taxonomyGeneration: vi
+        .fn()
+        // Pre-flight and first tick: still under the floor.
+        .mockResolvedValueOnce({ ...idle, eligibility: tooSmall })
+        .mockResolvedValueOnce({ ...idle, eligibility: tooSmall })
+        // Second tick: the backfill caught up, generation may start.
+        .mockResolvedValueOnce({ ...idle, eligibility: ELIGIBLE })
+        // Generation polling: the run finished.
+        .mockResolvedValue({ ...idle, eligibility: ELIGIBLE, status: "READY", proposal: PROPOSAL }),
+      syncStatus: vi.fn(async () => ({ backfillStatus: "RUNNING" })),
+    });
+    renderDialog(api);
+
+    click("Generate from inbox");
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(0);
+    });
+    expect(screen.getByText(/still loading/)).toBeDefined();
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2500);
+    });
+    expect(api.generateTaxonomy).not.toHaveBeenCalled();
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2500);
+    });
+    expect(api.generateTaxonomy).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2500);
+    });
+    expect(screen.getByTestId("canvas").textContent).toBe("2");
+  });
+
+  it("gives up on the wait when the backfill ends with the inbox still too small", async () => {
+    vi.useFakeTimers();
+    const api = makeApi({
+      taxonomyGeneration: vi.fn(async () => ({
+        status: "IDLE" as const,
+        eligibility: { eligible: false, reason: "INBOX_TOO_SMALL" as const },
+        importing: false,
+        matchedTemplateId: null,
+        lastOutcome: null,
+        proposal: null,
+      })),
+      syncStatus: vi
+        .fn()
+        .mockResolvedValueOnce({ backfillStatus: "RUNNING" })
+        .mockResolvedValue({ backfillStatus: "DONE" }),
+    });
+    renderDialog(api);
+
+    click("Generate from inbox");
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(0);
+    });
+    expect(screen.getByText(/still loading/)).toBeDefined();
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2500);
+    });
+    expect(screen.getByText(/doesn't have enough variety yet/)).toBeDefined();
+    expect(api.generateTaxonomy).not.toHaveBeenCalled();
   });
 
   it("imports a template directly when nothing has to be migrated", async () => {

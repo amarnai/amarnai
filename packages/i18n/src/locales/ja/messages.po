@@ -651,12 +651,12 @@ msgstr "テーベのホレムヘブより、通信長官職への応募があり
 msgid "A queen of Egypt once wrote asking me to send her one of my sons for a husband. Such a thing had never happened, so I sent a chamberlain all the way to Egypt to confirm the tablet was genuine. Aziru separates what is urgent from what merely claims to be. It does not vet royal marriage proposals, but everything else reaches me already sorted."
 msgstr "エジプトの女王から、息子を夫に迎えるために送るよう求める書状が届いた。前例のないことだったため、私は家臣をはるばるエジプトへ派遣し、その書簡が本物であるか確認させた。Aziruは、緊急性と見せかけの緊急性を峻別する。王室の縁談までは扱いませんが、それ以外の情報はすべて、整理された状態であなたの元に届きます。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:449
 #, fuzzy
 msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "テンプレートで即座に仕分け開始。後から編集も可能です。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:475
 msgid "A workspace owner manages this workspace's folders."
 msgstr "ワークスペースのオーナーがこのワークスペースのフォルダを管理します。"
 
@@ -1017,7 +1017,7 @@ msgstr "適用すると現在のプランが置き換えられます。後から
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 #, fuzzy
 msgid "Applying…"
 msgstr "適用中…"
@@ -1042,6 +1042,7 @@ msgstr "アーカイブ"
 msgid "Ask the workspace owner to change the plan."
 msgstr "ワークスペースのオーナーにプラン変更を依頼してください。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:166
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:251
@@ -1068,6 +1069,7 @@ msgstr "スレッドを割り当てる"
 msgid "Assign to"
 msgstr "割り当て先"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:153
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:215
 #: ../ui/src/emails/ThreadPreview.tsx:243
 #: ../ui/src/emails/ThreadRow.tsx:386
@@ -1097,6 +1099,7 @@ msgid "Assigned to {0}"
 msgstr "{0} に割り当て済み"
 
 #. placeholder {0}: assignee.name ?? assignee.email
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:152
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:214
 #, fuzzy
 msgid "Assigned to {0}. Change assignee"
@@ -1175,8 +1178,8 @@ msgid "aziru business plan"
 msgstr "Aziruビジネスプラン"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
-msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
-msgstr "Aziruは、GmailとOutlookの全スレッドをあなたが設計したフォルダーに自動で振り分け、受信トレイを常に整理された状態に保ちます。"
+#~ msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
+#~ msgstr "Aziruは、GmailとOutlookの全スレッドをあなたが設計したフォルダーに自動で振り分け、受信トレイを常に整理された状態に保ちます。"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:71
 #~ msgid "Aziru files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
@@ -1187,7 +1190,7 @@ msgstr "Aziruは、GmailとOutlookの全スレッドをあなたが設計した�
 #~ msgid "Aziru files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 #~ msgstr "Aziruは、お客様が選んだフォルダーにすべてのスレッドをファイルします。ご自身の受信トレイからセットを作成するか、テンプレートから始めることもできます。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:342
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:415
 msgid "Aziru files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
 msgstr "Aziruは、お客様が選んだフォルダーにメールをファイルします。ご自身の受信トレイから作成するか、既成のセットから始めることもできます。"
 
@@ -1394,7 +1397,7 @@ msgstr "AziruはGmailとOutlookの隣のサイドパネルに表示されます�
 #~ msgid "Aziru sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Aziruは、あなたが定義したフォルダーにGmailスレッドを振り分け、承認のための返信の下書きを作成し、すべての決定を説明します。オープンソースでセルフホスト可能です。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:127
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:230
 msgid "Aziru sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Aziruが受信トレイを整理し、新旧のメールを適切な場所に自動分類。分類に迷ったスレッドはレビュー待ちとなります。"
 
@@ -1481,8 +1484,8 @@ msgstr "バビロンの3度目の金貨の荷が2名の使者到着後も未着�
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:511
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:531
 #, fuzzy
 msgid "Back"
 msgstr "戻る"
@@ -1862,7 +1865,7 @@ msgstr "子フォルダー"
 msgid "Choose {planName}"
 msgstr "{planName}を選択"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:71
 msgid "Choose a mailbox"
 msgstr "メールボックスを選択"
 
@@ -1876,7 +1879,7 @@ msgstr "アカウントの新しいパスワードを選択してください。
 msgid "Choose a subscription"
 msgstr "サブスクリプションを選択"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:317
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:390
 msgid "Choose a template"
 msgstr "テンプレートを選択"
 
@@ -1907,7 +1910,7 @@ msgstr "新しいフォルダ構成で、各フォルダのスレッドをどこ
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "新しいプランのもとで、各フォルダのスレッドの移動先を選択してください。一致するフォルダ内のスレッドは即座に保持され、再分類設定されたものはAIが再分類します。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:338
 #, fuzzy
 msgid "Choose which part of Aziru to preview"
 msgstr "Aziruのどの部分をプレビューするか選択"
@@ -1954,10 +1957,10 @@ msgstr "クライアント"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:327
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:400
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:494
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:504
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:546
 #: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
@@ -2036,6 +2039,11 @@ msgstr "色"
 #, fuzzy
 msgid "Comment"
 msgstr "コメント"
+
+#. placeholder {0}: tutu.name
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:174
+msgid "Commenting as {0}"
+msgstr "{0}としてコメント"
 
 #: ../panel/src/CommentsSection.tsx:128
 #: ../ui/src/emails/ThreadCommentsCard.tsx:117
@@ -2560,8 +2568,8 @@ msgstr "アップグレードできませんでした"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Googleアカウントを確認できませんでした。もう一度お試しください。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:283
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:304
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:377
 msgid "Couldn't apply the folders."
 msgstr "フォルダを適用できませんでした。"
 
@@ -2570,7 +2578,7 @@ msgstr "フォルダを適用できませんでした。"
 #~ msgid "Couldn't apply the plan."
 #~ msgstr "プランを適用できませんでした。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:191
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:284
 #, fuzzy
 msgid "Couldn't check generation status."
 msgstr "生成ステータスを確認できませんでした。"
@@ -2583,7 +2591,7 @@ msgstr "受信トレイの読み込みに失敗しました。接続を確認し
 msgid "Couldn't reach Aziru. Check your connection and try again."
 msgstr "Aziruに接続できませんでした。接続を確認し、もう一度お試しください。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:246
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:218
 #, fuzzy
 msgid "Couldn't start generation."
 msgstr "生成を開始できませんでした。"
@@ -3197,6 +3205,10 @@ msgstr "招待するメールアドレス"
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:177
 msgid "Email is teamwork."
 msgstr "メールはチームワークだ。"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:247
+msgid "Email is teamwork. Assign and discuss."
+msgstr "メールはチームの仕事。割り当てて議論しよう。"
 
 #: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
@@ -3865,7 +3877,7 @@ msgstr "受信トレイからフォルダを生成"
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:484
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
@@ -3876,7 +3888,7 @@ msgstr "受信トレイから生成"
 msgid "Generate plan from inbox"
 msgstr "受信トレイからプランを生成"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:132
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:235
 #, fuzzy
 msgid "Generate your folders"
 msgstr "フォルダを生成"
@@ -3894,7 +3906,7 @@ msgstr "フォルダを生成。"
 #~ msgid "Generate your plan."
 #~ msgstr "プランを生成。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:348
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "生成プロセスでは、送信者、ラベル、件名のキーワードが読み取られ、メッセージ本文は読み取られません。適用される前に結果を確認できます。"
 
@@ -3919,7 +3931,7 @@ msgstr "生成が完了しませんでした。{0}後に再度お試しいただ
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "生成が完了しませんでした。しばらくしてから再度お試しいただくか、テンプレートから開始してください。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:159
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:163
 #, fuzzy
 msgid "Generation didn't complete. You can start from a template instead."
 msgstr "生成が完了しませんでした。代わりにテンプレートから開始できます。"
@@ -4794,7 +4806,7 @@ msgstr "コメントを読み込み中…"
 msgid "Loading past threads…"
 msgstr "過去のスレッドを読み込み中…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:133
+#: ../../apps/extension/src/panel/NotificationBell.tsx:126
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
@@ -4827,7 +4839,7 @@ msgstr "主要ドナーとの関係、寄付の確約、寄付受領通知。"
 msgid "Manage"
 msgstr "管理"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:156
+#: ../../apps/extension/src/panel/NotificationBell.tsx:149
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
 #: ../../apps/web/src/components/NotificationBell.tsx:192
 #, fuzzy
@@ -5224,7 +5236,7 @@ msgstr "新規ワークスペース"
 msgid "New workspace name"
 msgstr "新しいワークスペース名"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:262
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:371
 #, fuzzy
 msgid "Next preview"
 msgstr "次のプレビュー"
@@ -5312,7 +5324,7 @@ msgstr "メンバーなし"
 msgid "No members available"
 msgstr "利用可能なメンバーがいません"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:138
+#: ../../apps/extension/src/panel/NotificationBell.tsx:131
 #: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
@@ -5320,6 +5332,10 @@ msgstr "利用可能なメンバーがいません"
 #, fuzzy
 msgid "No notifications yet"
 msgstr "まだ通知がありません"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:248
+msgid "No one emails alone. Assign each thread an owner and talk it through in comments, so everyone can see who has what."
+msgstr "メール対応はもう一人じゃない。各スレッドに担当者を割り当て、コメントで議論。誰が何を担当しているか、一目瞭然です。"
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:180
 #, fuzzy
@@ -5451,9 +5467,9 @@ msgstr "まだ同期されていません"
 msgid "Nothing is waiting on you right now."
 msgstr "現在、対応待ちの項目はありません。"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:40
-#: ../../apps/extension/src/panel/NotificationBell.tsx:125
-#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/extension/src/panel/NotificationBell.tsx:39
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
+#: ../../apps/extension/src/panel/NotificationBell.tsx:121
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
@@ -5465,7 +5481,7 @@ msgstr "現在、対応待ちの項目はありません。"
 msgid "Notifications"
 msgstr "通知"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/extension/src/panel/NotificationBell.tsx:100
 #: ../../apps/web/src/components/NotificationBell.tsx:137
 #, fuzzy
 msgid "Notifications, {unread} unread"
@@ -5590,7 +5606,7 @@ msgstr "Aziruパネルを開く"
 msgid "Open the Aziru side panel"
 msgstr "Aziruサイドパネルを開く"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:463
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:543
 #, fuzzy
 msgid "Open the folder editor"
 msgstr "フォルダエディタを開く"
@@ -5617,6 +5633,11 @@ msgstr "Outlook の Aziru ボタンからこれを開いてください。"
 #, fuzzy
 msgid "Open your inbox. <0>It's already sorted.</0>"
 msgstr "受信トレイを開けば、<0>すでに整理済み。</0>"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#, fuzzy
+msgid "Open your inbox. It's already sorted."
+msgstr "受信トレイを開けば、もう整理済み。"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -6002,7 +6023,7 @@ msgstr "プレス"
 msgid "Preview"
 msgstr "プレビュー"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:254
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:363
 #, fuzzy
 msgid "Previous preview"
 msgstr "前のプレビュー"
@@ -6222,7 +6243,7 @@ msgstr "再開"
 #~ msgid "Reading your inbox and building a plan. This can take a moment."
 #~ msgstr "受信トレイを読み込み、プランを作成中です。しばらくお待ちください。"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:360
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:439
 #, fuzzy
 msgid "Reading your inbox and building your folders. This can take a moment."
 msgstr "受信トレイを読み込み、フォルダを作成しています。しばらくお待ちください。"
@@ -6596,7 +6617,7 @@ msgstr "レビュー: {n}件, {reviewer}"
 msgid "Review the proposed folders"
 msgstr "提案フォルダを確認"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 msgid "Review your folders"
 msgstr "フォルダを確認"
 
@@ -6690,6 +6711,7 @@ msgstr "変更を保存"
 #~ msgid "Save hours of triage every week. Let Aziru sort your inbox, filing every email, old and new, where it belongs."
 #~ msgstr "毎週何時間ものトリアージ時間を節約。Aziruが受信トレイを整理し、新旧すべてのメールを適切な場所に自動で分類します。"
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
 msgid "Save hours of work every week. Aziru sorts your old and new emails, summarizes your threads, and drafts your replies."
 msgstr "毎週、何時間もの作業時間を節約。Aziruが新着メールも過去のメールも自動で整理し、スレッドを要約。さらに返信の下書きも作成します。"
@@ -6896,7 +6918,7 @@ msgstr "新しいパスワードを設定"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:393
 #, fuzzy
 msgid "Set up folders"
 msgstr "フォルダーを設定"
@@ -7160,7 +7182,7 @@ msgstr "自動仕分け済み · 確度{confidence}%"
 #~ msgid "Sorted automatically by content similarity."
 #~ msgstr "コンテンツの類似性により自動的にソートされました。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:241
 #, fuzzy
 msgid "Sorted, summarized, and drafted, without leaving your inbox"
 msgstr "受信トレイで、分類・要約・下書きまで完結"
@@ -7287,8 +7309,8 @@ msgstr "受信トレイをインポート中です。インポートが完了し
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:126
 #, fuzzy
-msgid "Stop sorting email"
-msgstr "メール整理はもう不要に。"
+#~ msgid "Stop sorting email"
+#~ msgstr "メール整理はもう不要に。"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 #~ msgid "Stop sorting email.<0/><1>Sort it once.</1>"
@@ -7703,7 +7725,7 @@ msgstr "これらのコラボレーターは、請求期間の終わりにアク
 msgid "These collaborators will lose access on {0}:"
 msgstr "これらのコラボレーターは{0}にアクセスを失います:"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:465
 msgid "These folders will be created. You can edit them at any time."
 msgstr "これらのフォルダーが作成されます。いつでも編集できます。"
 
@@ -8320,8 +8342,8 @@ msgstr "フィルター変更後、受信トレイ内の既存スレッドに適
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:407
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:487
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:501
 #, fuzzy
 msgid "Use a template"
 msgstr "テンプレートを使用"
@@ -8331,7 +8353,7 @@ msgstr "テンプレートを使用"
 msgid "Use template"
 msgstr "テンプレートを使用"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 msgid "Use these folders"
 msgstr "これらのフォルダーを使用"
 
@@ -8849,8 +8871,8 @@ msgid "Your folders"
 msgstr "あなたのフォルダー"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:133
-msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
-msgstr "フォルダは受信トレイから分岐するシンプルなツリー構造です。Aziruに受信トレイから生成させるか、テンプレートから始めるか、自分で作成することも可能です。"
+#~ msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
+#~ msgstr "フォルダは受信トレイから分岐するシンプルなツリー構造です。Aziruに受信トレイから生成させるか、テンプレートから始めるか、自分で作成することも可能です。"
 
 #: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
@@ -8874,11 +8896,12 @@ msgstr "作成したフォルダーはGmailのラベル/Outlookのカテゴリ�
 #~ msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it without leaving your mailbox. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "お使いのフォルダはGmailではラベル、Outlookではカテゴリとして反映。受信トレイを離れることなく、すべてのスレッドを期待通りの場所に整理できます。返信が必要な時も、ワンクリックで下書きを作成。自由に編集でき、あなたの確認なしに送信されることはありません。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:139
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:242
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:210
 msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it. Each one arrives with a summary, and a reply is one click away, ready for your edits and never sent without them. Assign threads to your team and everyone can see who has what."
 msgstr "Gmailではフォルダーがラベルに、Outlookではカテゴリに。スレッドはすべて、期待通りの場所に整理されます。\n各スレッドには要約が付き、ワンクリックで返信下書きを作成。編集も自由で、未編集のまま送信される心配もありません。\nチームにスレッドを割り当てれば、担当状況も一目瞭然です。"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:236
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
 msgid "Your folders form a simple tree, branching out from the inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives."
@@ -8912,6 +8935,15 @@ msgstr "受信トレイのインポートが完了しました。"
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "受信トレイはまだインポート中です。現時点で読み込まれたものから生成できますが、インポート完了後に再生成すると、より正確な結果が得られます。"
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#, fuzzy
+msgid "Your inbox is still loading. Your folders will be generated as soon as enough of it has arrived."
+msgstr "受信トレイを読み込み中です。十分なデータが届き次第、フォルダが生成されます。"
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
+msgid "Your inbox, already sorted"
+msgstr "受信トレイ、もう整理済み"
+
 #: ../../apps/site/src/components/landing/Footer.tsx:19
 #, fuzzy
 msgid "Your inbox, already sorted."
@@ -8922,10 +8954,10 @@ msgstr "受信トレイは、もう整理済み。"
 #~ msgstr "あなたの受信トレイを、思い通りに整理。"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
-msgid "Your inbox, sorted your way"
-msgstr "受信トレイを、あなた好みに整理。"
+#~ msgid "Your inbox, sorted your way"
+#~ msgstr "受信トレイを、あなた好みに整理。"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:61
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
 msgid "Your mailbox"
 msgstr "あなたのメールボックス"
 

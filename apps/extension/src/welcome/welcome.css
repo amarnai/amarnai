@@ -499,3 +499,81 @@ body {
    still scrolls by wheel, trackpad, and keyboard. */
 .wc-slide-stage *::-webkit-scrollbar { width: 0; height: 0; }
 .wc-slide-stage * { scrollbar-width: none; }
+
+/* ── Collaboration slide ─────────────────────────────────────────────────────
+   One-seat cut of the landing page's collab demo: email header, seat chip, and
+   Tutu's comment card stacked in the frame. Scrolls internally like the other
+   slides (the scrollbar-hiding rules above are scoped to .wc-slide-stage, so
+   this stage carries that class too). */
+.wc-collab-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.wc-collab-stage::-webkit-scrollbar { width: 0; }
+
+/* One line: subject left, assign pill right. */
+.wc-collab-email {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wc-collab-subject {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The assign affordance is the slide's point, so it takes the accent pill the
+   landing page gives it rather than em-preview-assign's muted inline default. */
+.wc-collab-email .wc-collab-assign {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 4px 12px;
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.wc-collab-email .wc-collab-assign:hover {
+  background: var(--accent-line);
+  color: var(--accent-ink);
+}
+
+.wc-collab-persona {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--ink-3);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.wc-collab-persona img {
+  border-radius: 50%;
+}
+
+/* The comments card's quiet-inset treatment (.em-summary-card) reads as a box
+   in a box inside the slide frame; the frame is chrome enough, so the card
+   goes naked and only the comment items keep their elevation. */
+.wc-collab-stage .em-comments-card {
+  margin-top: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+}

@@ -110,6 +110,10 @@ export function PlanSetupDialog({
   // is an expected outcome with its own primary action: use a template.
   const [unavailable, setUnavailable] = useState<string | null>(null);
   const [proposal, setProposal] = useState<Proposal | null>(null);
+  // True while the "generating" step is really waiting for the initial inbox
+  // backfill to sync enough threads to clear the eligibility floor — the copy
+  // says so, and generation starts automatically once it does.
+  const [waitingForInbox, setWaitingForInbox] = useState(false);
   const [applying, setApplying] = useState(false);
   // Set when applying would displace threads that are already filed, so the user
   // decides where each old folder's threads land before anything is replaced.
@@ -179,41 +183,9 @@ export function PlanSetupDialog({
     }, POLL_MS);
   }, [api, workspaceId, stopPolling, settle]);
 
-  const beginGenerate = useCallback(async () => {
-    setError(null);
-    setUnavailable(null);
-    setStep("generating");
-
-    let status: TaxonomyGenerationStatusResult;
-    try {
-      status = await api.taxonomyGeneration(workspaceId);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : _(msg`Couldn't check generation status.`));
-      setStep("choice");
-      return;
-    }
-
-    // Resume a run that is already in flight, or jump straight to a proposal
-    // that finished while the panel was closed.
-    if (status.status === "RUNNING") {
-      startPolling();
-      return;
-    }
-    if (status.status === "READY" && status.proposal) {
-      showProposal(status.proposal, "generated");
-      return;
-    }
-    if (status.status === "INSUFFICIENT") {
-      showUnavailable(generationReasonText("INBOX_TOO_SMALL", tReason));
-      return;
-    }
-    if (!status.eligibility.eligible) {
-      showUnavailable(
-        generationReasonText(status.eligibility.reason, tReason, status.eligibility.nextEligibleAt),
-      );
-      return;
-    }
-
+  // POST the generation and follow it. Shared by the direct path and the
+  // backfill wait, so both handle 403/409/429 identically.
+  const startGeneration = useCallback(async () => {
     try {
       await api.generateTaxonomy(workspaceId);
       startPolling();
@@ -246,7 +218,108 @@ export function PlanSetupDialog({
       setError(err instanceof Error ? err.message : _(msg`Couldn't start generation.`));
       setStep("choice");
     }
-  }, [api, workspaceId, startPolling, showProposal, showUnavailable, tReason, _]);
+  }, [api, workspaceId, startPolling, showUnavailable, tReason, _]);
+
+  // The inbox is under the eligibility floor only because the initial backfill
+  // hasn't synced enough threads yet: sit on the spinner, re-read eligibility
+  // each tick, and start generation the moment the floor clears. Terminal only
+  // when the backfill itself stops while the inbox is still too small.
+  // ponytail: no wait timeout — the Close button is the escape hatch; add a cap
+  // if backfills turn out to stall while reporting RUNNING.
+  const startBackfillWait = useCallback(() => {
+    stopPolling();
+    pollRef.current = setInterval(() => {
+      void (async () => {
+        try {
+          const s = await api.taxonomyGeneration(workspaceId);
+          // A run appeared or finished meanwhile (another tab/member): follow it.
+          if (s.status === "RUNNING") {
+            setWaitingForInbox(false);
+            startPolling();
+            return;
+          }
+          if (s.status === "READY" && s.proposal) {
+            stopPolling();
+            setWaitingForInbox(false);
+            showProposal(s.proposal, "generated");
+            return;
+          }
+          if (s.eligibility.eligible) {
+            stopPolling();
+            setWaitingForInbox(false);
+            await startGeneration();
+            return;
+          }
+          if (s.eligibility.reason !== "INBOX_TOO_SMALL") {
+            stopPolling();
+            setWaitingForInbox(false);
+            showUnavailable(
+              generationReasonText(s.eligibility.reason, tReason, s.eligibility.nextEligibleAt),
+            );
+            return;
+          }
+          const sync = await api.syncStatus(workspaceId);
+          if (sync && sync.backfillStatus !== "PENDING" && sync.backfillStatus !== "RUNNING") {
+            stopPolling();
+            setWaitingForInbox(false);
+            showUnavailable(generationReasonText("INBOX_TOO_SMALL", tReason));
+          }
+        } catch {
+          // Transient failure: the next tick tries again.
+        }
+      })();
+    }, POLL_MS);
+  }, [api, workspaceId, stopPolling, startPolling, startGeneration, showProposal, showUnavailable, tReason]);
+
+  const beginGenerate = useCallback(async () => {
+    setError(null);
+    setUnavailable(null);
+    setWaitingForInbox(false);
+    setStep("generating");
+
+    let status: TaxonomyGenerationStatusResult;
+    try {
+      status = await api.taxonomyGeneration(workspaceId);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : _(msg`Couldn't check generation status.`));
+      setStep("choice");
+      return;
+    }
+
+    // Resume a run that is already in flight, or jump straight to a proposal
+    // that finished while the panel was closed.
+    if (status.status === "RUNNING") {
+      startPolling();
+      return;
+    }
+    if (status.status === "READY" && status.proposal) {
+      showProposal(status.proposal, "generated");
+      return;
+    }
+    if (status.status === "INSUFFICIENT") {
+      showUnavailable(generationReasonText("INBOX_TOO_SMALL", tReason));
+      return;
+    }
+    if (!status.eligibility.eligible) {
+      // Too small right after connect usually means the backfill hasn't caught
+      // up yet, not a genuinely tiny inbox — wait for it instead of bouncing
+      // the user to templates.
+      if (status.eligibility.reason === "INBOX_TOO_SMALL") {
+        const sync = await api.syncStatus(workspaceId).catch(() => null);
+        if (sync?.backfillStatus === "PENDING" || sync?.backfillStatus === "RUNNING") {
+          setWaitingForInbox(true);
+          startBackfillWait();
+          return;
+        }
+      }
+      showUnavailable(
+        generationReasonText(status.eligibility.reason, tReason, status.eligibility.nextEligibleAt),
+      );
+      return;
+    }
+
+    await startGeneration();
+  }, [api, workspaceId, startPolling, startBackfillWait, startGeneration, showProposal, showUnavailable, tReason, _]);
 
   // Opened straight into generation: start once, even under StrictMode's
   // double-invoked effects.
@@ -357,7 +430,14 @@ export function PlanSetupDialog({
             <div className="ps-progress">
               <span className="ps-spinner" aria-hidden />
               <p className="ps-lead">
-                <Trans>Reading your inbox and building your folders. This can take a moment.</Trans>
+                {waitingForInbox ? (
+                  <Trans>
+                    Your inbox is still loading. Your folders will be generated as soon as
+                    enough of it has arrived.
+                  </Trans>
+                ) : (
+                  <Trans>Reading your inbox and building your folders. This can take a moment.</Trans>
+                )}
               </p>
             </div>
           )}

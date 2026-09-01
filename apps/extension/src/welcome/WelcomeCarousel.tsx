@@ -12,15 +12,20 @@ import { msg } from "@lingui/core/macro";
 import type { MessageDescriptor } from "@lingui/core";
 import { GoogleGIcon, OutlookIcon } from "@aziru/ui";
 import {
+  DEMO_COMMENT_THREAD_ID,
+  DEMO_MEMBER_AVATARS,
   DemoTaxonomyCanvas,
   HeroFeedCard,
   MailboxStage,
   getDemoAziruData,
+  getDemoComments,
   getDemoFolders,
+  getDemoMembers,
   getDemoThreads,
   type MockProvider,
 } from "@aziru/ui/demo";
-import type { ThreadItem } from "@aziru/ui/emails";
+import { AssigneePicker, ThreadCommentsCard } from "@aziru/ui/emails";
+import type { MemberItem, ThreadCommentItem, ThreadItem } from "@aziru/ui/emails";
 
 /** How long a slide stays up before the carousel advances on its own. */
 const SLIDE_MS = 9000;
@@ -110,6 +115,104 @@ function SortingDemo() {
   return <HeroFeedCard />;
 }
 
+/**
+ * The landing page's collaboration demo, cut down to one seat: the discussed
+ * thread up top with the real assignee control, and the comment exchange as
+ * Tutu sees it. The stage has no room for the landing page's two mirrored
+ * panes, and this slide's job is showing that threads have owners and
+ * comments, not proving the cross-pane sync. Tutu is the seat because the
+ * seeded exchange ends on her reply, so continuing it is natural from her side.
+ */
+function CollabDemo() {
+  const { i18n, _ } = useLingui();
+  const members = useMemo(() => getDemoMembers(i18n), [i18n]);
+  const thread = useMemo(
+    () => getDemoThreads(i18n).find((t) => t.id === DEMO_COMMENT_THREAD_ID)!,
+    [i18n],
+  );
+  const [comments, setComments] = useState<ThreadCommentItem[]>(() => getDemoComments(i18n));
+  const [assignee, setAssignee] = useState<MemberItem | null>(null);
+  const [assignAnchor, setAssignAnchor] = useState<HTMLElement | null>(null);
+
+  const tutu = members.find((m) => m.userId === "u-tutu")!;
+
+  return (
+    <div className="ld-app-frame wc-slide-frame">
+      <div className="wc-slide-stage wc-collab-stage">
+        {/* One line of thread: the subject the team is discussing and the
+            assignment control. Sender, portrait and snippet stay on the
+            landing page — here they only pushed the composer past the fold. */}
+        <div className="wc-collab-email">
+          <span className="wc-collab-subject">{thread.subject}</span>
+          <button
+            type="button"
+            className={`em-preview-assign wc-collab-assign${assignee ? " is-assigned" : ""}`}
+            aria-label={
+              assignee
+                ? _(msg`Assigned to ${assignee.name ?? assignee.email}. Change assignee`)
+                : _(msg`Assign to a member`)
+            }
+            onClick={(e) => setAssignAnchor((a) => (a ? null : e.currentTarget))}
+          >
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
+              <circle cx="6" cy="4" r="2.1" stroke="currentColor" strokeWidth="1.3" />
+              <path
+                d="M1.9 10.4c0-2 1.8-3.3 4.1-3.3s4.1 1.3 4.1 3.3"
+                stroke="currentColor"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+              />
+            </svg>
+            {assignee ? (assignee.name ?? assignee.email) : <Trans>Assign</Trans>}
+          </button>
+        </div>
+
+        {/* One seat, named: the composer below posts as this member. */}
+        <div className="wc-collab-persona">
+          <img src={DEMO_MEMBER_AVATARS["u-tutu"]} alt="" width={22} height={22} />
+          <span>
+            <Trans>Commenting as {tutu.name}</Trans>
+          </span>
+        </div>
+
+        <ThreadCommentsCard
+          state={{ kind: "ready", comments }}
+          unread={0}
+          members={members}
+          currentUserId={tutu.userId}
+          posting={false}
+          postError={null}
+          onCreate={async (body, mentionUserIds) => {
+            setComments((cs) => [
+              ...cs,
+              {
+                id: `local-${cs.length}`,
+                body,
+                mentionUserIds,
+                author: { userId: tutu.userId, name: tutu.name, email: tutu.email },
+                createdAt: new Date().toISOString(),
+              },
+            ]);
+            return true;
+          }}
+          onDelete={(commentId) => setComments((cs) => cs.filter((c) => c.id !== commentId))}
+          onRetry={() => {}}
+        />
+      </div>
+      <AssigneePicker
+        members={members}
+        assignedUserId={assignee?.userId ?? null}
+        anchor={assignAnchor}
+        onCommit={(userId) => {
+          setAssignee(userId ? (members.find((m) => m.userId === userId) ?? null) : null);
+          setAssignAnchor(null);
+        }}
+        onClose={() => setAssignAnchor(null)}
+      />
+    </div>
+  );
+}
+
 type Slide = {
   id: string;
   Art: ComponentType;
@@ -117,26 +220,32 @@ type Slide = {
   body: MessageDescriptor;
 };
 
-// The three demos from the landing page, in the same order and with the same
-// copy, so the store listing and the first-run tab tell one story.
+// The demos from the landing page, in the same order and with the same copy,
+// so the store listing and the first-run tab tell one story.
 const SLIDES: Slide[] = [
   {
     id: "sorting",
     Art: SortingDemo,
-    title: msg`Stop sorting email`,
+    title: msg`Open your inbox. It's already sorted.`,
     body: msg`Aziru sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review.`,
   },
   {
     id: "plan",
     Art: PlanDemo,
     title: msg`Generate your folders`,
-    body: msg`Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself.`,
+    body: msg`Your folders form a simple tree, branching out from the inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives.`,
   },
   {
     id: "emails",
     Art: EmailsDemo,
     title: msg`Sorted, summarized, and drafted, without leaving your inbox`,
     body: msg`Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it. Each one arrives with a summary, and a reply is one click away, ready for your edits and never sent without them. Assign threads to your team and everyone can see who has what.`,
+  },
+  {
+    id: "collab",
+    Art: CollabDemo,
+    title: msg`Email is teamwork. Assign and discuss.`,
+    body: msg`No one emails alone. Assign each thread an owner and talk it through in comments, so everyone can see who has what.`,
   },
 ];
 

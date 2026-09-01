@@ -71,12 +71,12 @@ export function WelcomeApp() {
 
           <div className="wc-headline">
             <h1 className="wc-title">
-              <Trans>Your inbox, sorted your way</Trans>
+              <Trans>Your inbox, already sorted</Trans>
             </h1>
             <p className="wc-lede">
               <Trans>
-                Aziru files every Gmail and Outlook thread into folders you design,
-                and keeps them sorted right inside your inbox.
+                Save hours of work every week. Aziru sorts your old and new
+                emails, summarizes your threads, and drafts your replies.
               </Trans>
             </p>
           </div>

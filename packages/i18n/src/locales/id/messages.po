@@ -661,12 +661,12 @@ msgstr "Lamaran baru telah diterima dari Horemheb dari Thebes untuk posisi Kepal
 msgid "A queen of Egypt once wrote asking me to send her one of my sons for a husband. Such a thing had never happened, so I sent a chamberlain all the way to Egypt to confirm the tablet was genuine. Aziru separates what is urgent from what merely claims to be. It does not vet royal marriage proposals, but everything else reaches me already sorted."
 msgstr "Seorang ratu Mesir pernah menulis surat kepadaku, meminta salah satu putraku sebagai suami. Hal semacam itu belum pernah terjadi, jadi kuutus bendahara ke Mesir untuk memastikan keaslian pesan tersebut. Aziru membedakan mana yang benar-benar penting dari yang hanya pura-pura penting. Memang tidak menyaring lamaran pernikahan kerajaan, tetapi semua hal lain sampai kepadaku sudah terpilah rapi."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:449
 #, fuzzy
 msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "Dengan templat, Anda bisa langsung mulai memilah. Bisa diedit nanti."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:475
 msgid "A workspace owner manages this workspace's folders."
 msgstr "Pemilik ruang kerja mengelola folder ruang kerja ini."
 
@@ -1030,7 +1030,7 @@ msgstr "Penerapan ini akan mengganti paket Anda saat ini. Anda dapat mengeditnya
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 #, fuzzy
 msgid "Applying…"
 msgstr "Menerapkan…"
@@ -1055,6 +1055,7 @@ msgstr "Arsip"
 msgid "Ask the workspace owner to change the plan."
 msgstr "Minta pemilik ruang kerja untuk mengubah paket."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:166
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:251
@@ -1081,6 +1082,7 @@ msgstr "Tugaskan utas"
 msgid "Assign to"
 msgstr "Tugaskan ke"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:153
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:215
 #: ../ui/src/emails/ThreadPreview.tsx:243
 #: ../ui/src/emails/ThreadRow.tsx:386
@@ -1110,6 +1112,7 @@ msgid "Assigned to {0}"
 msgstr "Ditugaskan ke {0}"
 
 #. placeholder {0}: assignee.name ?? assignee.email
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:152
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:214
 #, fuzzy
 msgid "Assigned to {0}. Change assignee"
@@ -1190,8 +1193,8 @@ msgid "aziru business plan"
 msgstr "Paket Bisnis Aziru"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
-msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
-msgstr "Aziru mengarsipkan semua email Gmail dan Outlook Anda ke dalam folder yang Anda buat, dan menjaganya tetap rapi langsung di kotak masuk Anda."
+#~ msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
+#~ msgstr "Aziru mengarsipkan semua email Gmail dan Outlook Anda ke dalam folder yang Anda buat, dan menjaganya tetap rapi langsung di kotak masuk Anda."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:71
 #~ msgid "Aziru files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
@@ -1202,7 +1205,7 @@ msgstr "Aziru mengarsipkan semua email Gmail dan Outlook Anda ke dalam folder ya
 #~ msgid "Aziru files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 #~ msgstr "Aziru mengatur setiap utas ke folder pilihan Anda. Buat set folder dari kotak masuk Anda, atau mulai dari templat."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:342
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:415
 msgid "Aziru files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
 msgstr "Aziru menata email Anda ke dalam folder pilihan. Buat folder dari kotak masuk Anda, atau mulai dari set yang sudah jadi."
 
@@ -1407,7 +1410,7 @@ msgstr "Aziru berada di panel samping Gmail dan Outlook."
 #~ msgid "Aziru sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Aziru menyortir utas Gmail Anda ke dalam folder yang Anda tentukan, menyusun draf balasan untuk persetujuan Anda, dan menjelaskan setiap keputusan. Sumber terbuka dan dapat di-hosting sendiri."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:127
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:230
 #, fuzzy
 msgid "Aziru sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Aziru menyortir inbox Anda, menyimpan email lama dan baru ke tempatnya. Thread yang tidak yakin akan menunggu Anda untuk ditinjau."
@@ -1493,8 +1496,8 @@ msgstr "Pengiriman emas ketiga Babel tertunda setelah dua utusan. Burna-Buriash 
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:511
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:531
 #, fuzzy
 msgid "Back"
 msgstr "Kembali"
@@ -1877,7 +1880,7 @@ msgstr "Subfolder"
 msgid "Choose {planName}"
 msgstr "Pilih {planName}"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:71
 msgid "Choose a mailbox"
 msgstr "Pilih kotak surat"
 
@@ -1891,7 +1894,7 @@ msgstr "Pilih kata sandi baru untuk akun Anda."
 msgid "Choose a subscription"
 msgstr "Pilih Langganan"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:317
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:390
 msgid "Choose a template"
 msgstr "Pilih templat"
 
@@ -1922,7 +1925,7 @@ msgstr "Pilih tujuan setiap utas folder ke folder baru Anda. Folder yang cocok a
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "Pilih tujuan utas setiap folder di paket baru Anda. Folder yang cocok akan langsung mempertahankan utasnya; apa pun yang diatur untuk disortir ulang akan diklasifikasikan ulang oleh AI."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:338
 #, fuzzy
 msgid "Choose which part of Aziru to preview"
 msgstr "Pilih bagian Aziru yang ingin Anda pratinjau"
@@ -1970,10 +1973,10 @@ msgstr "Klien"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:327
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:400
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:494
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:504
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:546
 #: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
@@ -2052,6 +2055,11 @@ msgstr "Warna"
 #, fuzzy
 msgid "Comment"
 msgstr "Komentar"
+
+#. placeholder {0}: tutu.name
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:174
+msgid "Commenting as {0}"
+msgstr "Mengomentari sebagai {0}"
 
 #: ../panel/src/CommentsSection.tsx:128
 #: ../ui/src/emails/ThreadCommentsCard.tsx:117
@@ -2585,8 +2593,8 @@ msgstr "Gagal meningkatkan"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Gagal memverifikasi akun Google Anda. Silakan coba lagi."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:283
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:304
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:377
 msgid "Couldn't apply the folders."
 msgstr "Gagal menerapkan folder."
 
@@ -2595,7 +2603,7 @@ msgstr "Gagal menerapkan folder."
 #~ msgid "Couldn't apply the plan."
 #~ msgstr "Gagal menerapkan rencana."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:191
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:284
 #, fuzzy
 msgid "Couldn't check generation status."
 msgstr "Gagal memeriksa status pembuatan."
@@ -2608,7 +2616,7 @@ msgstr "Gagal memuat kotak masuk Anda. Periksa koneksi Anda dan buka kembali pan
 msgid "Couldn't reach Aziru. Check your connection and try again."
 msgstr "Gagal terhubung ke Aziru. Periksa koneksi Anda dan coba lagi."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:246
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:218
 #, fuzzy
 msgid "Couldn't start generation."
 msgstr "Gagal memulai pembuatan."
@@ -3229,6 +3237,10 @@ msgstr "Alamat email untuk diundang"
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:177
 msgid "Email is teamwork."
 msgstr "Email adalah kerja tim."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:247
+msgid "Email is teamwork. Assign and discuss."
+msgstr "Email itu kerja tim. Tugaskan dan diskusikan."
 
 #: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
@@ -3910,7 +3922,7 @@ msgstr "Buat folder dari kotak masuk Anda"
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:484
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
@@ -3921,7 +3933,7 @@ msgstr "Hasilkan dari kotak masuk"
 msgid "Generate plan from inbox"
 msgstr "Hasilkan rencana dari kotak masuk"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:132
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:235
 #, fuzzy
 msgid "Generate your folders"
 msgstr "Buat folder Anda"
@@ -3939,7 +3951,7 @@ msgstr "Buat folder Anda."
 #~ msgid "Generate your plan."
 #~ msgstr "Buat rencana Anda."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:348
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "Pembuatan membaca pengirim, label, dan kata kunci subjek Anda, bukan isi pesan. Anda meninjau hasilnya sebelum diterapkan."
 
@@ -3965,7 +3977,7 @@ msgstr "Pembuatan tidak selesai. Coba lagi setelah {0}, atau mulai dari template
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "Pembuatan tidak selesai. Coba lagi sebentar lagi, atau mulai dari template."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:159
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:163
 #, fuzzy
 msgid "Generation didn't complete. You can start from a template instead."
 msgstr "Pembuatan tidak selesai. Anda bisa mulai dari templat sebagai gantinya."
@@ -4849,7 +4861,7 @@ msgstr "Memuat komentar…"
 msgid "Loading past threads…"
 msgstr "Memuat utas sebelumnya..."
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:133
+#: ../../apps/extension/src/panel/NotificationBell.tsx:126
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
@@ -4883,7 +4895,7 @@ msgstr "Hubungan dengan donatur besar, konfirmasi komitmen, dan ucapan terima ka
 msgid "Manage"
 msgstr "Kelola"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:156
+#: ../../apps/extension/src/panel/NotificationBell.tsx:149
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
 #: ../../apps/web/src/components/NotificationBell.tsx:192
 msgid "Manage notifications"
@@ -5287,7 +5299,7 @@ msgstr "Ruang kerja baru"
 msgid "New workspace name"
 msgstr "Nama ruang kerja baru"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:262
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:371
 msgid "Next preview"
 msgstr "Pratinjau berikutnya"
 
@@ -5378,13 +5390,18 @@ msgstr "Tidak ada anggota"
 msgid "No members available"
 msgstr "Tidak ada anggota yang tersedia"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:138
+#: ../../apps/extension/src/panel/NotificationBell.tsx:131
 #: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
 #: ../../apps/web/src/components/NotificationBell.tsx:164
 msgid "No notifications yet"
 msgstr "Belum ada notifikasi"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:248
+#, fuzzy
+msgid "No one emails alone. Assign each thread an owner and talk it through in comments, so everyone can see who has what."
+msgstr "Email bukan urusan sendirian. Tugaskan pemilik ke setiap utas dan diskusikan di kolom komentar, sehingga semua orang tahu siapa yang mengerjakan apa."
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:180
 msgid "No one emails alone. Assign each thread an owner, and talk it through in comments. Try it below: write as {akhenatenName} or as {tutuName}."
@@ -5516,9 +5533,9 @@ msgstr "Belum disinkronkan"
 msgid "Nothing is waiting on you right now."
 msgstr "Tidak ada yang menunggu Anda saat ini."
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:40
-#: ../../apps/extension/src/panel/NotificationBell.tsx:125
-#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/extension/src/panel/NotificationBell.tsx:39
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
+#: ../../apps/extension/src/panel/NotificationBell.tsx:121
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
@@ -5530,7 +5547,7 @@ msgstr "Tidak ada yang menunggu Anda saat ini."
 msgid "Notifications"
 msgstr "Notifikasi"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/extension/src/panel/NotificationBell.tsx:100
 #: ../../apps/web/src/components/NotificationBell.tsx:137
 msgid "Notifications, {unread} unread"
 msgstr "Notifikasi, {unread} belum dibaca"
@@ -5654,7 +5671,7 @@ msgstr "Buka panel Aziru"
 msgid "Open the Aziru side panel"
 msgstr "Buka panel samping Aziru"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:463
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:543
 #, fuzzy
 msgid "Open the folder editor"
 msgstr "Buka editor folder"
@@ -5681,6 +5698,11 @@ msgstr "Buka ini dari tombol Aziru di Outlook."
 #, fuzzy
 msgid "Open your inbox. <0>It's already sorted.</0>"
 msgstr "Buka kotak masuk Anda. <0>Sudah terurut.</0>"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#, fuzzy
+msgid "Open your inbox. It's already sorted."
+msgstr "Buka kotak masuk Anda. Sudah tertata otomatis."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -6065,7 +6087,7 @@ msgstr "Pers"
 msgid "Preview"
 msgstr "Pratinjau"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:254
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:363
 #, fuzzy
 msgid "Previous preview"
 msgstr "Pratinjau sebelumnya"
@@ -6290,7 +6312,7 @@ msgstr "Aktifkan ulang"
 #~ msgid "Reading your inbox and building a plan. This can take a moment."
 #~ msgstr "Membaca kotak masuk Anda dan membuat rencana. Ini mungkin butuh waktu sebentar."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:360
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:439
 #, fuzzy
 msgid "Reading your inbox and building your folders. This can take a moment."
 msgstr "Membaca kotak masuk dan membuat folder Anda. Ini mungkin butuh waktu sebentar."
@@ -6665,7 +6687,7 @@ msgstr "Tinjau {n}, {reviewer}"
 msgid "Review the proposed folders"
 msgstr "Tinjau folder yang diusulkan"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 msgid "Review your folders"
 msgstr "Tinjau folder Anda"
 
@@ -6761,6 +6783,7 @@ msgstr "Simpan perubahan"
 #~ msgid "Save hours of triage every week. Let Aziru sort your inbox, filing every email, old and new, where it belongs."
 #~ msgstr "Hemat berjam-jam waktu triase setiap minggu. Biarkan Aziru merapikan kotak masuk Anda, mengarsipkan setiap email, lama dan baru, pada tempatnya."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
 msgid "Save hours of work every week. Aziru sorts your old and new emails, summarizes your threads, and drafts your replies."
 msgstr "Hemat waktu berjam-jam tiap minggu. Aziru merapikan email lama dan baru, merangkum utasnya, serta menyusun draf balasan Anda."
@@ -6970,7 +6993,7 @@ msgstr "Atur kata sandi baru"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:393
 #, fuzzy
 msgid "Set up folders"
 msgstr "Siapkan folder"
@@ -7240,7 +7263,7 @@ msgstr "Diurutkan otomatis · {confidence}% yakin"
 #~ msgid "Sorted automatically by content similarity."
 #~ msgstr "Diurutkan secara otomatis berdasarkan kemiripan konten."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:241
 #, fuzzy
 msgid "Sorted, summarized, and drafted, without leaving your inbox"
 msgstr "Terpilah, terangkum, dan didrafkan, tanpa meninggalkan kotak masuk Anda"
@@ -7370,8 +7393,8 @@ msgid "Still importing your inbox. Check back once the import finishes."
 msgstr "Masih mengimpor kotak masuk Anda. Periksa kembali setelah impor selesai."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:126
-msgid "Stop sorting email"
-msgstr "Berhenti menyortir email"
+#~ msgid "Stop sorting email"
+#~ msgstr "Berhenti menyortir email"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 #, fuzzy
@@ -7793,7 +7816,7 @@ msgstr "Kolaborator ini akan kehilangan akses pada akhir periode tagihan:"
 msgid "These collaborators will lose access on {0}:"
 msgstr "Kolaborator ini akan kehilangan akses pada {0}:"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:465
 msgid "These folders will be created. You can edit them at any time."
 msgstr "Folder-folder ini akan dibuat. Anda bisa mengeditnya kapan saja."
 
@@ -8423,8 +8446,8 @@ msgstr "Gunakan \"Pindai ulang kotak masuk\" setelah mengubah filter untuk mener
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:407
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:487
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:501
 #, fuzzy
 msgid "Use a template"
 msgstr "Gunakan template"
@@ -8434,7 +8457,7 @@ msgstr "Gunakan template"
 msgid "Use template"
 msgstr "Gunakan template"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 msgid "Use these folders"
 msgstr "Gunakan folder ini"
 
@@ -8959,8 +8982,8 @@ msgid "Your folders"
 msgstr "Folder Anda"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:133
-msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
-msgstr "Folder Anda adalah struktur pohon sederhana yang bercabang dari kotak masuk Anda. Biarkan Aziru membuatnya dari kotak masuk Anda, mulai dari templat, atau buat sendiri."
+#~ msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
+#~ msgstr "Folder Anda adalah struktur pohon sederhana yang bercabang dari kotak masuk Anda. Biarkan Aziru membuatnya dari kotak masuk Anda, mulai dari templat, atau buat sendiri."
 
 #: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
@@ -8984,11 +9007,12 @@ msgstr "Folder Anda menjadi label Gmail/kategori Outlook, sehingga email yang te
 #~ msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it without leaving your mailbox. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "Folder Anda menjadi label di Gmail dan kategori di Outlook, sehingga setiap percakapan tersimpan di tempat yang Anda harapkan, tanpa perlu meninggalkan kotak masuk Anda. Saat dibutuhkan balasan, draf tersedia dalam satu klik, siap untuk Anda edit dan tidak akan terkirim tanpa persetujuan Anda."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:139
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:242
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:210
 msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it. Each one arrives with a summary, and a reply is one click away, ready for your edits and never sent without them. Assign threads to your team and everyone can see who has what."
 msgstr "Folder Anda menjadi label di Gmail dan kategori di Outlook, sehingga setiap percakapan tersimpan di tempat yang Anda harapkan. Setiap percakapan tiba dengan ringkasan, dan balasan cukup satu klik, siap untuk Anda edit dan tidak akan terkirim tanpa editan Anda. Tugaskan percakapan ke tim Anda, dan semua orang dapat melihat siapa mengerjakan apa."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:236
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
 msgid "Your folders form a simple tree, branching out from the inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives."
@@ -9023,6 +9047,15 @@ msgstr "Impor kotak masuk Anda selesai."
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "Kotak masuk Anda masih dalam proses impor. Anda dapat mulai menghasilkan sekarang dari data yang sudah dimuat, tetapi menghasilkan ulang setelah impor selesai akan memberikan hasil yang lebih akurat."
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#, fuzzy
+msgid "Your inbox is still loading. Your folders will be generated as soon as enough of it has arrived."
+msgstr "Kotak masuk Anda masih dimuat. Folder Anda akan dibuat segera setelah cukup data tiba."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
+msgid "Your inbox, already sorted"
+msgstr "Kotak masuk Anda, tertata otomatis"
+
 #: ../../apps/site/src/components/landing/Footer.tsx:19
 #, fuzzy
 msgid "Your inbox, already sorted."
@@ -9033,10 +9066,10 @@ msgstr "Kotak masuk Anda, langsung rapi."
 #~ msgstr "Kotak masuk Anda, tertata sesuai cara pikir Anda."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
-msgid "Your inbox, sorted your way"
-msgstr "Inbox Anda, tersortir sesuai keinginan."
+#~ msgid "Your inbox, sorted your way"
+#~ msgstr "Inbox Anda, tersortir sesuai keinginan."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:61
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
 msgid "Your mailbox"
 msgstr "Kotak Masuk Anda"
 

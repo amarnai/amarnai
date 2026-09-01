@@ -651,12 +651,12 @@ msgstr "Uma nova candidatura foi recebida de Horemheb de Tebas para o cargo de C
 msgid "A queen of Egypt once wrote asking me to send her one of my sons for a husband. Such a thing had never happened, so I sent a chamberlain all the way to Egypt to confirm the tablet was genuine. Aziru separates what is urgent from what merely claims to be. It does not vet royal marriage proposals, but everything else reaches me already sorted."
 msgstr "Uma rainha do Egito me escreveu pedindo um de meus filhos em casamento. Tal coisa nunca havia acontecido, então enviei um camareiro até lá para confirmar a autenticidade da tabuleta. Aziru separa o que é urgente do que apenas *parece* ser. Ele não valida propostas de casamento real, mas todo o resto me alcança já organizado."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:369
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:449
 #, fuzzy
 msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "Com um modelo, você organiza na hora e edita quando quiser."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:395
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:475
 msgid "A workspace owner manages this workspace's folders."
 msgstr "Um proprietário de workspace gerencia as pastas do workspace."
 
@@ -1017,7 +1017,7 @@ msgstr "Aplicar substitui seu plano atual. Você pode editá-lo completamente de
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 #, fuzzy
 msgid "Applying…"
 msgstr "Aplicando…"
@@ -1042,6 +1042,7 @@ msgstr "Arquivo"
 msgid "Ask the workspace owner to change the plan."
 msgstr "Peça ao proprietário do workspace para mudar o plano."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:166
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:234
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:230
 #: ../ui/src/emails/ThreadPreview.tsx:251
@@ -1068,6 +1069,7 @@ msgstr "Atribuir conversa"
 msgid "Assign to"
 msgstr "Atribuir a"
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:153
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:215
 #: ../ui/src/emails/ThreadPreview.tsx:243
 #: ../ui/src/emails/ThreadRow.tsx:386
@@ -1097,6 +1099,7 @@ msgid "Assigned to {0}"
 msgstr "Atribuído a {0}"
 
 #. placeholder {0}: assignee.name ?? assignee.email
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:152
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:214
 #, fuzzy
 msgid "Assigned to {0}. Change assignee"
@@ -1175,8 +1178,8 @@ msgid "aziru business plan"
 msgstr "plano Aziru Business"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
-msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
-msgstr "A Aziru arquiva todas as conversas do Gmail e Outlook em pastas que você cria, e as mantém organizadas diretamente na sua caixa de entrada."
+#~ msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
+#~ msgstr "A Aziru arquiva todas as conversas do Gmail e Outlook em pastas que você cria, e as mantém organizadas diretamente na sua caixa de entrada."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:71
 #~ msgid "Aziru files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
@@ -1187,7 +1190,7 @@ msgstr "A Aziru arquiva todas as conversas do Gmail e Outlook em pastas que voc�
 #~ msgid "Aziru files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
 #~ msgstr "Aziru organiza cada conversa em pastas que você escolhe. Gere um conjunto da sua própria caixa de entrada ou comece com um modelo."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:342
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:415
 msgid "Aziru files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
 msgstr "Aziru organiza seus e-mails em pastas que você escolhe. Crie-as a partir da sua própria caixa de entrada ou comece com um conjunto pronto."
 
@@ -1394,7 +1397,7 @@ msgstr "Aziru fica em um painel lateral ao lado do Gmail e Outlook."
 #~ msgid "Aziru sorts your Gmail threads into folders you define, drafts replies for your approval, and explains every decision. Open-source and self-hostable."
 #~ msgstr "Aziru organiza suas conversas do Gmail em pastas que você define, gera rascunhos de respostas para sua aprovação e explica cada decisão. Código aberto e auto-hospedável."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:127
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:230
 msgid "Aziru sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
 msgstr "Aziru organiza sua caixa de entrada para você, arquivando e-mails antigos e novos em seus devidos lugares. As conversas que geram dúvidas aguardam sua revisão."
 
@@ -1481,8 +1484,8 @@ msgstr "A terceira remessa de ouro da Babilônia está atrasada após dois mensa
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:431
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:451
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:511
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:531
 #, fuzzy
 msgid "Back"
 msgstr "Voltar"
@@ -1862,7 +1865,7 @@ msgstr "Subpasta"
 msgid "Choose {planName}"
 msgstr "Escolher {planName}"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:71
 msgid "Choose a mailbox"
 msgstr "Escolha uma caixa de entrada"
 
@@ -1876,7 +1879,7 @@ msgstr "Escolha uma nova senha para sua conta."
 msgid "Choose a subscription"
 msgstr "Escolha uma assinatura"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:317
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:390
 msgid "Choose a template"
 msgstr "Escolha um modelo"
 
@@ -1907,7 +1910,7 @@ msgstr "Escolha o destino das conversas de cada pasta em suas novas pastas. As p
 #~ msgid "Choose where each folder’s threads should go under your new plan. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
 #~ msgstr "Escolha para onde as conversas de cada pasta devem ir no seu novo plano. Pastas correspondentes mantêm suas conversas instantaneamente; tudo configurado para reclassificação é reclassificado por IA."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:338
 #, fuzzy
 msgid "Choose which part of Aziru to preview"
 msgstr "Escolha qual parte do Aziru pré-visualizar"
@@ -1954,10 +1957,10 @@ msgstr "Clientes"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:327
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:414
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:424
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:400
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:494
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:504
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:546
 #: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
@@ -2036,6 +2039,11 @@ msgstr "Cor"
 #, fuzzy
 msgid "Comment"
 msgstr "Comentário"
+
+#. placeholder {0}: tutu.name
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:174
+msgid "Commenting as {0}"
+msgstr "Comentando como {0}"
 
 #: ../panel/src/CommentsSection.tsx:128
 #: ../ui/src/emails/ThreadCommentsCard.tsx:117
@@ -2560,8 +2568,8 @@ msgstr "Não foi possível fazer o upgrade"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Não foi possível verificar sua conta Google. Por favor, tente novamente."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:283
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:304
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:377
 msgid "Couldn't apply the folders."
 msgstr "Não foi possível aplicar as pastas."
 
@@ -2570,7 +2578,7 @@ msgstr "Não foi possível aplicar as pastas."
 #~ msgid "Couldn't apply the plan."
 #~ msgstr "Não foi possível aplicar o plano."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:191
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:284
 #, fuzzy
 msgid "Couldn't check generation status."
 msgstr "Não foi possível verificar o status da geração."
@@ -2583,7 +2591,7 @@ msgstr "Não foi possível carregar sua caixa de entrada. Verifique sua conexão
 msgid "Couldn't reach Aziru. Check your connection and try again."
 msgstr "Não foi possível conectar-se à Aziru. Verifique sua conexão e tente novamente."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:246
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:218
 #, fuzzy
 msgid "Couldn't start generation."
 msgstr "Não foi possível iniciar a geração."
@@ -3197,6 +3205,10 @@ msgstr "Endereço de e-mail para convidar"
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:177
 msgid "Email is teamwork."
 msgstr "E-mail é trabalho em equipe."
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:247
+msgid "Email is teamwork. Assign and discuss."
+msgstr "Email é trabalho em equipe. Atribua e discuta."
 
 #: ../../apps/site/src/lib/seo.ts:52
 #, fuzzy
@@ -3865,7 +3877,7 @@ msgstr "Gerar pastas da sua caixa de entrada"
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:404
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:484
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
@@ -3876,7 +3888,7 @@ msgstr "Gerar da caixa de entrada"
 msgid "Generate plan from inbox"
 msgstr "Gerar plano da caixa de entrada"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:132
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:235
 #, fuzzy
 msgid "Generate your folders"
 msgstr "Gerar suas pastas"
@@ -3894,7 +3906,7 @@ msgstr "Gerar suas pastas."
 #~ msgid "Generate your plan."
 #~ msgstr "Crie seu plano."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:348
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "A geração lê seus remetentes, marcadores e palavras-chave do assunto, nunca o corpo das mensagens. Você revisa o resultado antes que algo seja aplicado."
 
@@ -3919,7 +3931,7 @@ msgstr "A geração não foi concluída. Tente novamente após {0}, ou comece de
 msgid "Generation didn't complete. Try again shortly, or start from a template."
 msgstr "A geração não foi concluída. Tente novamente em breve, ou comece de um modelo."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:159
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:163
 #, fuzzy
 msgid "Generation didn't complete. You can start from a template instead."
 msgstr "A geração não foi concluída. Você pode começar de um modelo."
@@ -4794,7 +4806,7 @@ msgstr "Carregando comentários…"
 msgid "Loading past threads…"
 msgstr "Carregando conversas anteriores…"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:133
+#: ../../apps/extension/src/panel/NotificationBell.tsx:126
 #: ../../apps/mobile/app/(app)/notifications.tsx:318
 #: ../../apps/mobile/src/components/MessageCard.tsx:53
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
@@ -4827,7 +4839,7 @@ msgstr "Relações com grandes doadores, confirmações de promessas e agradecim
 msgid "Manage"
 msgstr "Gerenciar"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:156
+#: ../../apps/extension/src/panel/NotificationBell.tsx:149
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:79
 #: ../../apps/web/src/components/NotificationBell.tsx:192
 #, fuzzy
@@ -5224,7 +5236,7 @@ msgstr "Novo workspace"
 msgid "New workspace name"
 msgstr "Novo nome do espaço de trabalho"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:262
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:371
 #, fuzzy
 msgid "Next preview"
 msgstr "Próxima prévia"
@@ -5312,7 +5324,7 @@ msgstr "Nenhum membro"
 msgid "No members available"
 msgstr "Nenhum membro disponível"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:138
+#: ../../apps/extension/src/panel/NotificationBell.tsx:131
 #: ../../apps/mobile/app/(app)/notifications.tsx:311
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:73
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:208
@@ -5320,6 +5332,10 @@ msgstr "Nenhum membro disponível"
 #, fuzzy
 msgid "No notifications yet"
 msgstr "Ainda sem notificações"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:248
+msgid "No one emails alone. Assign each thread an owner and talk it through in comments, so everyone can see who has what."
+msgstr "Ninguém troca e-mails sozinho. Atribua um responsável a cada conversa e discuta nos comentários, para que todos vejam quem tem o quê."
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:180
 #, fuzzy
@@ -5451,9 +5467,9 @@ msgstr "Ainda não sincronizado"
 msgid "Nothing is waiting on you right now."
 msgstr "Nada está pendente para você no momento."
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:40
-#: ../../apps/extension/src/panel/NotificationBell.tsx:125
-#: ../../apps/extension/src/panel/NotificationBell.tsx:128
+#: ../../apps/extension/src/panel/NotificationBell.tsx:39
+#: ../../apps/extension/src/panel/NotificationBell.tsx:118
+#: ../../apps/extension/src/panel/NotificationBell.tsx:121
 #: ../../apps/mobile/app/(app)/account.tsx:145
 #: ../../apps/mobile/app/(app)/notifications.tsx:273
 #: ../../apps/mobile/src/components/NotificationsSheet.tsx:49
@@ -5465,7 +5481,7 @@ msgstr "Nada está pendente para você no momento."
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../../apps/extension/src/panel/NotificationBell.tsx:107
+#: ../../apps/extension/src/panel/NotificationBell.tsx:100
 #: ../../apps/web/src/components/NotificationBell.tsx:137
 #, fuzzy
 msgid "Notifications, {unread} unread"
@@ -5590,7 +5606,7 @@ msgstr "Abrir o painel do Aziru"
 msgid "Open the Aziru side panel"
 msgstr "Abrir o painel lateral do Aziru"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:463
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:543
 #, fuzzy
 msgid "Open the folder editor"
 msgstr "Abrir o editor de pastas"
@@ -5617,6 +5633,11 @@ msgstr "Abra pelo botão Aziru no Outlook."
 #, fuzzy
 msgid "Open your inbox. <0>It's already sorted.</0>"
 msgstr "Abra sua caixa de entrada. <0>Já está organizada.</0>"
+
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
+#, fuzzy
+msgid "Open your inbox. It's already sorted."
+msgstr "Abra sua caixa de entrada. Já está tudo organizado."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -6002,7 +6023,7 @@ msgstr "Imprensa"
 msgid "Preview"
 msgstr "Prévia"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:254
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:363
 #, fuzzy
 msgid "Previous preview"
 msgstr "Prévia anterior"
@@ -6222,7 +6243,7 @@ msgstr "Reativar"
 #~ msgid "Reading your inbox and building a plan. This can take a moment."
 #~ msgstr "Lendo sua caixa de entrada e criando um plano. Isso pode levar um momento."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:360
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:439
 #, fuzzy
 msgid "Reading your inbox and building your folders. This can take a moment."
 msgstr "Lendo sua caixa de entrada e criando suas pastas. Isso pode levar um momento."
@@ -6596,7 +6617,7 @@ msgstr "Revisar {n}, {reviewer}"
 msgid "Review the proposed folders"
 msgstr "Revise as pastas propostas"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:319
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
 msgid "Review your folders"
 msgstr "Revisar suas pastas"
 
@@ -6690,6 +6711,7 @@ msgstr "Salvar alterações"
 #~ msgid "Save hours of triage every week. Let Aziru sort your inbox, filing every email, old and new, where it belongs."
 #~ msgstr "Economize horas de triagem toda semana. Deixe o Aziru organizar sua caixa de entrada, arquivando todo e-mail, antigo e novo, onde ele pertence."
 
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
 msgid "Save hours of work every week. Aziru sorts your old and new emails, summarizes your threads, and drafts your replies."
 msgstr "Economize horas de trabalho toda semana. Aziru organiza seus e-mails antigos e novos, resume suas conversas e rascunha suas respostas."
@@ -6896,7 +6918,7 @@ msgstr "Definir nova senha"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:320
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:393
 #, fuzzy
 msgid "Set up folders"
 msgstr "Configurar pastas"
@@ -7160,7 +7182,7 @@ msgstr "Classificado automaticamente · {confidence}% certo"
 #~ msgid "Sorted automatically by content similarity."
 #~ msgstr "Classificado automaticamente por similaridade de conteúdo."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:138
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:241
 #, fuzzy
 msgid "Sorted, summarized, and drafted, without leaving your inbox"
 msgstr "Organizado, resumido e com rascunhos prontos, sem sair da sua caixa de entrada"
@@ -7287,8 +7309,8 @@ msgstr "Sua caixa de entrada ainda está sendo importada. Volte quando a importa
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:126
 #, fuzzy
-msgid "Stop sorting email"
-msgstr "Pare de organizar e-mails"
+#~ msgid "Stop sorting email"
+#~ msgstr "Pare de organizar e-mails"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 #~ msgid "Stop sorting email.<0/><1>Sort it once.</1>"
@@ -7703,7 +7725,7 @@ msgstr "Estes colaboradores perderão o acesso no final do período de cobrança
 msgid "These collaborators will lose access on {0}:"
 msgstr "Estes colaboradores perderão o acesso em {0}:"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:385
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:465
 msgid "These folders will be created. You can edit them at any time."
 msgstr "Essas pastas serão criadas. Você pode editá-las a qualquer momento."
 
@@ -8320,8 +8342,8 @@ msgstr "Use \"Nova verificação da caixa de entrada\" após alterar os filtros 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
 #: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:407
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:487
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:501
 #, fuzzy
 msgid "Use a template"
 msgstr "Usar um modelo"
@@ -8331,7 +8353,7 @@ msgstr "Usar um modelo"
 msgid "Use template"
 msgstr "Usar modelo"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:443
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
 msgid "Use these folders"
 msgstr "Usar estas pastas"
 
@@ -8849,8 +8871,8 @@ msgid "Your folders"
 msgstr "Suas pastas"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:133
-msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
-msgstr "Suas pastas formam uma árvore simples que se ramifica da sua caixa de entrada. Deixe Aziru gerá-las a partir da sua caixa de entrada, comece com um modelo ou crie-as você mesmo."
+#~ msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
+#~ msgstr "Suas pastas formam uma árvore simples que se ramifica da sua caixa de entrada. Deixe Aziru gerá-las a partir da sua caixa de entrada, comece com um modelo ou crie-as você mesmo."
 
 #: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
@@ -8874,11 +8896,12 @@ msgstr "Suas pastas viram marcadores do Gmail / categorias do Outlook, e seus e-
 #~ msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it without leaving your mailbox. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
 #~ msgstr "Suas pastas viram marcadores no Gmail e categorias no Outlook, assim cada conversa é arquivada onde você esperaria encontrá-la, sem sair da sua caixa de entrada. Quando uma resposta é necessária, um rascunho está a um clique, pronto para suas edições e nunca é enviado sem a sua revisão."
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:139
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:242
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:210
 msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it. Each one arrives with a summary, and a reply is one click away, ready for your edits and never sent without them. Assign threads to your team and everyone can see who has what."
 msgstr "Suas pastas viram marcadores no Gmail e categorias no Outlook, para que cada conversa seja arquivada onde você espera encontrá-la. Cada uma chega com um resumo, e uma resposta está a um clique de distância, pronta para suas edições e nunca enviada sem elas. Atribua conversas à sua equipe e todos podem ver quem está com o quê."
 
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:236
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
 msgid "Your folders form a simple tree, branching out from the inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives."
@@ -8912,6 +8935,15 @@ msgstr "A importação da sua caixa de entrada foi concluída."
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
 msgstr "Sua caixa de entrada ainda está importando. Você pode gerar agora com o que foi carregado até o momento, mas regenerar após a conclusão da importação proporcionará um ajuste mais preciso."
 
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#, fuzzy
+msgid "Your inbox is still loading. Your folders will be generated as soon as enough of it has arrived."
+msgstr "Sua caixa de entrada ainda está carregando. Suas pastas serão geradas assim que houver conteúdo suficiente."
+
+#: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
+msgid "Your inbox, already sorted"
+msgstr "Sua caixa de entrada, já organizada"
+
 #: ../../apps/site/src/components/landing/Footer.tsx:19
 #, fuzzy
 msgid "Your inbox, already sorted."
@@ -8922,10 +8954,10 @@ msgstr "Sua caixa de entrada, já organizada."
 #~ msgstr "Sua caixa de entrada, organizada do seu jeito."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
-msgid "Your inbox, sorted your way"
-msgstr "Sua caixa de entrada, organizada do seu jeito"
+#~ msgid "Your inbox, sorted your way"
+#~ msgstr "Sua caixa de entrada, organizada do seu jeito"
 
-#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:61
+#: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
 msgid "Your mailbox"
 msgstr "Sua caixa de entrada"
 
