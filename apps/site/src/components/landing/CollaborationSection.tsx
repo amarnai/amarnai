@@ -174,7 +174,7 @@ export function CollaborationSection() {
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
             <h2 className="ld-section-h">
-              <Trans>Email is teamwork.</Trans>
+              <Trans>Email is <span className="soft">teamwork</span>.</Trans>
             </h2>
             <p className="ld-section-lede">
               <Trans>

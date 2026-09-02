@@ -16,7 +16,7 @@ msgstr ""
 #: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:610
 #, fuzzy
 #~ msgid " (Inbox)"
-#~ msgstr " (Boîte de réception)"
+#~ msgstr " (Boîte mail)"
 
 #: ../../apps/site/src/components/store-tiles/Tile4.tsx:92
 #, fuzzy
@@ -29,7 +29,7 @@ msgstr "…et 8 autres"
 
 #: ../ui/src/demo/demo-seed.ts:211
 msgid "\"Matters easier said than written\" usually means he wants more archers. @{tutu}, what did we promise him last time?"
-msgstr "« Plus facile à dire qu'à écrire » signifie généralement qu'il veut plus d'archers. @{tutu}, que lui avons-nous promis la dernière fois ?"
+msgstr "« Plus facile à dire qu'à écrire » signifie généralement qu'il veut plus d'archers. @{tutu}, que lui avons-nous promis la dernière fois ?"
 
 #: ../../apps/mobile/src/components/MessageCard.tsx:57
 #: ../ui/src/emails/MessageCard.tsx:62
@@ -282,7 +282,7 @@ msgstr "{pillUnread, plural, one {# nouveau} other {# nouveaux}}"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:215
 msgid "{providerName} Inbox"
-msgstr "Boîte de réception {providerName}"
+msgstr "Boîte mail {providerName}"
 
 #. placeholder {0}: draftQuota.limit
 #. placeholder {0}: quota.limit
@@ -300,7 +300,7 @@ msgstr "{remaining} sur {limit} restants · se réinitialise le {resetDate}"
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:876
 #, fuzzy
 msgid "{routableCount} of {TAXONOMY_MIN_NON_ROOT_NODES} folders connected to your inbox. Routing requires at least {TAXONOMY_MIN_NON_ROOT_NODES}."
-msgstr "{routableCount} des {TAXONOMY_MIN_NON_ROOT_NODES} dossiers sont connectés à votre boîte de réception. Le routage nécessite au moins {TAXONOMY_MIN_NON_ROOT_NODES}."
+msgstr "{routableCount} des {TAXONOMY_MIN_NON_ROOT_NODES} dossiers sont connectés à votre boîte mail. Le routage nécessite au moins {TAXONOMY_MIN_NON_ROOT_NODES}."
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:293
 #: ../../apps/web/src/app/(app)/notifications/NotificationsClient.tsx:186
@@ -389,15 +389,15 @@ msgstr "<0>Vos e-mails, un travail d'équipe.</0> Attribuez et discutez."
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:96
 #, fuzzy
 msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Aziru <1>never sends, deletes, or moves your mail</1>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
-msgstr "<0>King Aziru</0> est prêt à trier vos conversations. Connectez votre compte {providerName} pour commencer. Aziru <1>n'envoie, ne supprime ni ne déplace jamais vos e-mails</1>, et la seule chose qu'il écrit, ce sont ses propres libellés de tri, que vous pouvez désactiver. Votre boîte de réception reste la vôtre."
+msgstr "<0>King Aziru</0> est prêt à trier vos conversations. Connectez votre compte {providerName} pour commencer. Aziru <1>n'envoie, ne supprime ni ne déplace jamais vos e-mails</1>, et la seule chose qu'il écrit, ce sont ses propres libellés de tri, que vous pouvez désactiver. Votre boîte mail reste la vôtre."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:95
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your {providerName} account to get started. Aziru connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-#~ msgstr "<0>King Aziru</0> est prêt à trier vos conversations. Connectez votre compte {providerName} pour commencer. Aziru se connecte en <1>lecture seule</1> et ne <2>modifie, envoie ni supprime jamais rien</2>. Votre boîte de réception reste la vôtre."
+#~ msgstr "<0>King Aziru</0> est prêt à trier vos conversations. Connectez votre compte {providerName} pour commencer. Aziru se connecte en <1>lecture seule</1> et ne <2>modifie, envoie ni supprime jamais rien</2>. Votre boîte mail reste la vôtre."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:55
 #~ msgid "<0>King Aziru</0> is ready to sort your email threads. Connect your Gmail account to get started. Aziru connects with <1>read-only access</1> and <2>never sends, deletes, or changes anything</2>. Your inbox stays yours."
-#~ msgstr "<0>Le Roi Aziru</0> est prêt à organiser vos conversations par e-mail. Connectez votre compte Gmail pour commencer. Aziru se connecte avec un <1>accès en lecture seule</1> et <2>n'envoie, ne supprime ni ne modifie jamais rien</2>. Votre boîte de réception reste la vôtre."
+#~ msgstr "<0>Le Roi Aziru</0> est prêt à organiser vos conversations par e-mail. Connectez votre compte Gmail pour commencer. Aziru se connecte avec un <1>accès en lecture seule</1> et <2>n'envoie, ne supprime ni ne modifie jamais rien</2>. Votre boîte mail reste la vôtre."
 
 #: ../../apps/site/src/components/store-tiles/Tile4.tsx:19
 #, fuzzy
@@ -644,18 +644,20 @@ msgstr "Une nouvelle candidature a été reçue de Horemheb de Thèbes pour le p
 msgid "A new application has been received from Horemheb of Thebes for the position of Chief of Correspondence.\n"
 "\n"
 "View the application in the House of Records."
-msgstr "Nous avons reçu une nouvelle candidature de Horemheb de Thèbes pour le poste de Chef de la Correspondance.\n\nConsultez la candidature à la Maison des Archives."
+msgstr "Nous avons reçu une nouvelle candidature de Horemheb de Thèbes pour le poste de Chef de la Correspondance.\n"
+"\n"
+"Consultez la candidature à la Maison des Archives."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:248
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:250
 msgid "A queen of Egypt once wrote asking me to send her one of my sons for a husband. Such a thing had never happened, so I sent a chamberlain all the way to Egypt to confirm the tablet was genuine. Aziru separates what is urgent from what merely claims to be. It does not vet royal marriage proposals, but everything else reaches me already sorted."
 msgstr "Une reine d'Égypte m'a écrit un jour pour me demander un de mes fils en mariage. Une chose pareille ne s'était jamais produite, alors j'ai envoyé un chambellan jusqu'en Égypte pour confirmer l'authenticité de la tablette. Aziru sépare l'urgent du prétendument urgent. Il ne filtre pas les demandes en mariage royales, mais tout le reste m'arrive déjà trié."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:449
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:440
 #, fuzzy
 msgid "A template gets you sorting right away, and you can edit it later."
 msgstr "Un modèle vous permet de trier sans attendre et vous pouvez le modifier plus tard."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:475
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:466
 msgid "A workspace owner manages this workspace's folders."
 msgstr "Un propriétaire d'espace de travail gère les dossiers de cet espace de travail."
 
@@ -663,7 +665,7 @@ msgstr "Un propriétaire d'espace de travail gère les dossiers de cet espace de
 #~ msgid "A workspace owner manages this workspace's sorting plan."
 #~ msgstr "Le propriétaire de l'espace de travail gère le plan de tri de cet espace."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:214
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:216
 msgid "Abdi-Heba"
 msgstr "Abdi-Heba"
 
@@ -678,7 +680,11 @@ msgid "Abdi-Heba,\n"
 "I will be near the Delta that same week. Let us meet at the waystation on the second day; I can spare the morning.\n"
 "\n"
 "Until then,"
-msgstr "Abdi-Heba,\n\nJe serai près du Delta la même semaine. Retrouvons-nous au relais le deuxième jour ; je suis libre le matin.\n\nD'ici là,"
+msgstr "Abdi-Heba,\n"
+"\n"
+"Je serai près du Delta la même semaine. Retrouvons-nous au relais le deuxième jour ; je suis libre le matin.\n"
+"\n"
+"D'ici là,"
 
 #: ../../apps/mobile/src/components/emails/PlanCapBanner.tsx:38
 #: ../../apps/web/src/app/(app)/emails/PlanCapBanner.tsx:41
@@ -862,7 +868,7 @@ msgstr "Routage IA"
 msgid "AI TL;DR of a thread, generated the first time you open it"
 msgstr "Synthèse IA d'une conversation, générée à la première ouverture"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:169
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:171
 #: ../ui/src/demo/demo-seed.ts:159
 #, fuzzy
 msgid "Akhenaten"
@@ -918,7 +924,7 @@ msgstr "Proposition d'alliance"
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:135
 #, fuzzy
 msgid "Already have an account? <0>Sign in</0>"
-msgstr "Vous avez déjà un compte ? <0>Connectez-vous</0>"
+msgstr "Vous avez déjà un compte ? <0>Connectez-vous</0>"
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:54
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:33
@@ -939,16 +945,16 @@ msgstr "Effacer également les données d'e-mails synchronisées"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:68
 msgid "Analyzing your inbox and building a plan…"
-msgstr "Analyse de votre boîte de réception et élaboration d'un plan…"
+msgstr "Analyse de votre boîte mail et élaboration d'un plan…"
 
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:271
 #, fuzzy
 #~ msgid "Analyzing your inbox and building a plan… this can take a moment."
-#~ msgstr "Analyse de votre boîte de réception et élaboration d'un plan… cela peut prendre un instant."
+#~ msgstr "Analyse de votre boîte mail et élaboration d'un plan… cela peut prendre un instant."
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:271
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:295
 msgid "Analyzing your inbox and building your folders… this can take a moment."
-msgstr "Analyse de votre boîte de réception et création de vos dossiers… cela peut prendre un instant."
+msgstr "Analyse de votre boîte mail et création de vos dossiers… cela peut prendre un instant."
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:41
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:36
@@ -973,7 +979,7 @@ msgid "Any thread the model is unsure about is flagged for review instead of bei
 msgstr "Toute conversation sur laquelle le modèle hésite est signalée pour révision au lieu d'être classée automatiquement. Ouvrez-la pour consulter le dossier suggéré, le score de confiance et la justification, puis approuvez l'attribution ou déplacez-la vers un autre dossier."
 
 #. placeholder {0}: res.status
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:148
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:169
 #, fuzzy
 msgid "API error {0}"
 msgstr "Erreur API {0}"
@@ -985,7 +991,7 @@ msgstr "Apparence"
 #: ../ui/src/demo/demo-seed.ts:463
 #, fuzzy
 msgid "Application: Chief of Correspondence"
-msgstr "Candidature : Chef de la Correspondance"
+msgstr "Candidature : Chef de la Correspondance"
 
 #: ../ui/src/demo/demo-seed.ts:37
 msgid "Applications, recruiter outreach, and interview scheduling."
@@ -993,7 +999,7 @@ msgstr "Candidatures, contact avec les recruteurs et planification des entretien
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/site/src/components/store-tiles/Tile4.tsx:64
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:371
 #, fuzzy
 msgid "Apply"
 msgstr "Appliquer"
@@ -1001,22 +1007,22 @@ msgstr "Appliquer"
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:58
 #, fuzzy
 msgid "Apply “{selectedName}”? This replaces your current plan."
-msgstr "Appliquer « {selectedName} » ? Cela remplacera votre plan actuel."
+msgstr "Appliquer « {selectedName} » ? Cela remplacera votre plan actuel."
 
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:81
 #, fuzzy
 msgid "Apply template"
 msgstr "Appliquer le modèle"
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:308
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:343
 #, fuzzy
 msgid "Applying replaces your current plan. You can fully edit it afterward."
 msgstr "L'application remplace votre plan actuel. Vous pourrez le modifier entièrement par la suite."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:134
 #: ../../apps/mobile/src/components/taxonomy/TemplatePickerSheet.tsx:79
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:336
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:371
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:514
 #, fuzzy
 msgid "Applying…"
 msgstr "Application en cours…"
@@ -1056,7 +1062,7 @@ msgstr "Prenez une conversation en charge, elle apparaîtra ici."
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:141
 #~ msgid "Assign any thread to a teammate so everyone knows who has what, and settle it in comments on the thread itself — @mention someone to pull them in. Conversations and assignments live in Aziru — the app and the side panel — layered over your shared inbox. And as always, Aziru never sends mail."
-#~ msgstr "Attribuez une conversation à un coéquipier pour que chacun sache qui gère quoi. Réglez tout directement dans les commentaires, en mentionnant quelqu'un pour l'impliquer. Conversations et attributions résident dans Aziru (l'application et le panneau latéral), s'intégrant à votre boîte de réception partagée. Et comme toujours, Aziru n'envoie jamais d'e-mails."
+#~ msgstr "Attribuez une conversation à un coéquipier pour que chacun sache qui gère quoi. Réglez tout directement dans les commentaires, en mentionnant quelqu'un pour l'impliquer. Conversations et attributions résident dans Aziru (l'application et le panneau latéral), s'intégrant à votre boîte mail partagée. Et comme toujours, Aziru n'envoie jamais d'e-mails."
 
 #: ../ui/src/emails/AssigneePicker.tsx:105
 #, fuzzy
@@ -1152,7 +1158,7 @@ msgstr "Les courriers automatisés et en masse ({0}) sont toujours déplacés ve
 
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:47
 msgid "Automated and bulk mail that doesn't fit another folder lands here automatically. This is different from Needs review, which holds threads too ambiguous for the assistant to sort."
-msgstr "Les emails automatisés et de masse qui ne correspondent à aucun autre dossier sont classés ici automatiquement. Ce dossier est différent de « À examiner », qui contient les conversations trop ambiguës pour être triées par l'assistant."
+msgstr "Les emails automatisés et de masse qui ne correspondent à aucun autre dossier sont classés ici automatiquement. Ce dossier est différent de « À examiner », qui contient les conversations trop ambiguës pour être triées par l'assistant."
 
 #: ../ui/src/demo/demo-seed.ts:473
 #, fuzzy
@@ -1178,7 +1184,7 @@ msgstr "Plan Aziru Entreprise"
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
 #~ msgid "Aziru files every Gmail and Outlook thread into folders you design, and keeps them sorted right inside your inbox."
-#~ msgstr "Aziru classe toutes vos conversations Gmail et Outlook dans des dossiers personnalisés, et les maintient parfaitement organisées directement dans votre boîte de réception."
+#~ msgstr "Aziru classe toutes vos conversations Gmail et Outlook dans des dossiers personnalisés, et les maintient parfaitement organisées directement dans votre boîte mail."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:71
 #~ msgid "Aziru files every Gmail and Outlook thread into folders you design, from the side panel next to the mail you are already reading."
@@ -1187,11 +1193,11 @@ msgstr "Plan Aziru Entreprise"
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:88
 #, fuzzy
 #~ msgid "Aziru files every thread into folders you choose. Generate a set from your own inbox, or start from a template."
-#~ msgstr "Aziru classe chaque conversation dans les dossiers de votre choix. Générez-les à partir de votre boîte de réception ou partez d'un modèle."
+#~ msgstr "Aziru classe chaque conversation dans les dossiers de votre choix. Générez-les à partir de votre boîte mail ou partez d'un modèle."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:415
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:406
 msgid "Aziru files your mail into folders you choose. Build them from your own inbox, or start from a ready-made set."
-msgstr "Aziru classe vos e-mails dans les dossiers de votre choix. Créez-les à partir de votre propre boîte de réception ou partez d'un ensemble prédéfini."
+msgstr "Aziru classe vos e-mails dans les dossiers de votre choix. Créez-les à partir de votre propre boîte mail ou partez d'un ensemble prédéfini."
 
 #: ../ui/src/AppDownloadBanner.tsx:68
 #, fuzzy
@@ -1214,7 +1220,7 @@ msgstr "Accueil Aziru"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:234
 msgid "Aziru in your inbox"
-msgstr "Aziru dans votre boîte de réception"
+msgstr "Aziru dans votre boîte mail"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:17
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:42
@@ -1225,11 +1231,11 @@ msgstr "Aziru dans votre boîte de réception"
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:60
 #, fuzzy
 msgid "Aziru is named after a king. The <0>Amarna Letters</0> are clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age, and one of the rulers who wrote them was Aziru, king of Amurru: a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
-msgstr "Aziru porte le nom d'un roi. Les <0>Lettres d'Amarna</0> sont des tablettes d'argile cunéiformes utilisées pour la correspondance diplomatique avec les pharaons égyptiens à l'Âge du bronze, et l'un des souverains qui les a écrites était Aziru, roi d'Amurru : un souverain plein de ressources et un diplomate astucieux qui a su naviguer entre la rivalité de l'Égypte et des Hittites. Des milliers d'années plus tard, il a trouvé une nouvelle vocation : aider des gens comme vous à mettre de l'ordre dans leurs e-mails."
+msgstr "Aziru porte le nom d'un roi. Les <0>Lettres d'Amarna</0> sont des tablettes d'argile cunéiformes utilisées pour la correspondance diplomatique avec les pharaons égyptiens à l'Âge du bronze, et l'un des souverains qui les a écrites était Aziru, roi d'Amurru : un souverain plein de ressources et un diplomate astucieux qui a su naviguer entre la rivalité de l'Égypte et des Hittites. Des milliers d'années plus tard, il a trouvé une nouvelle vocation : aider des gens comme vous à mettre de l'ordre dans leurs e-mails."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:64
 msgid "Aziru is named after Aziru of Amurru, one of the correspondents in the Amarna letters: a cache of clay tablets from around 1350 BC holding the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Aziru spares you from that fate."
-msgstr "Aziru porte le nom d'Aziru d'Amurru, l'un des correspondants des lettres d'Amarna : un ensemble de tablettes d'argile datant d'environ 1350 av. J.-C. contenant la correspondance diplomatique entre le pharaon d'Égypte et les rois et vassaux du Proche-Orient antique. C'est l'une des plus anciennes boîtes de réception subsistantes, et presque tout son contenu est entrant. Des centaines de lettres sont parvenues au pharaon, mais presque aucune de ses réponses n'a survécu. Des expéditeurs comme Rib-Hadda de Byblos écrivaient inlassablement sans guère de réponse, très probablement parce que le pharaon était trop submergé pour suivre. Aziru vous épargne ce sort."
+msgstr "Aziru porte le nom d'Aziru d'Amurru, l'un des correspondants des lettres d'Amarna : un ensemble de tablettes d'argile datant d'environ 1350 av. J.-C. contenant la correspondance diplomatique entre le pharaon d'Égypte et les rois et vassaux du Proche-Orient antique. C'est l'une des plus anciennes boîtes mail subsistantes, et presque tout son contenu est entrant. Des centaines de lettres sont parvenues au pharaon, mais presque aucune de ses réponses n'a survécu. Des expéditeurs comme Rib-Hadda de Byblos écrivaient inlassablement sans guère de réponse, très probablement parce que le pharaon était trop submergé pour suivre. Aziru vous épargne ce sort."
 
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:60
 #~ msgid "Aziru is named after the <0>Amarna Letters</0>: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
@@ -1250,7 +1256,7 @@ msgstr "Aziru porte le nom d'Aziru d'Amurru, l'un des correspondants des lettres
 #: ../../apps/site/src/components/landing/FAQSection.tsx:64
 #, fuzzy
 #~ msgid "Aziru is named after the Amarna letters, a cache of clay tablets from around 1350 BC: the diplomatic correspondence between the pharaoh of Egypt and the kings and vassals of the ancient Near East. It is one of the earliest surviving inboxes, and almost all of it is incoming. Hundreds of letters reached the pharaoh, but barely any of his replies survive. Senders like Rib-Hadda of Byblos wrote again and again with little response, most likely because the pharaoh was too overloaded to keep up. Aziru spares you from that fate."
-#~ msgstr "Aziru tire son nom des lettres d'Amarna, un lot de tablettes d'argile datant d'environ 1350 av. J.-C. : la correspondance diplomatique entre le pharaon d'Égypte et les rois et vassaux du Proche-Orient antique. C'est l'une des plus anciennes « boîtes de réception » conservées, et presque tous les messages sont entrants. Des centaines de lettres parvenaient au pharaon, mais très peu de ses réponses ont survécu. Des émetteurs comme Rib-Hadda de Byblos écrivaient sans cesse, recevant peu de réponses, très probablement parce que le pharaon était trop submergé pour suivre. Aziru vous épargne ce sort."
+#~ msgstr "Aziru tire son nom des lettres d'Amarna, un lot de tablettes d'argile datant d'environ 1350 av. J.-C. : la correspondance diplomatique entre le pharaon d'Égypte et les rois et vassaux du Proche-Orient antique. C'est l'une des plus anciennes « boîtes mail » conservées, et presque tous les messages sont entrants. Des centaines de lettres parvenaient au pharaon, mais très peu de ses réponses ont survécu. Des émetteurs comme Rib-Hadda de Byblos écrivaient sans cesse, recevant peu de réponses, très probablement parce que le pharaon était trop submergé pour suivre. Aziru vous épargne ce sort."
 
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:63
 #~ msgid "Aziru is named after the Amarna Letters: clay cuneiform tablets used for diplomatic correspondence with the Egyptian pharaohs during the Bronze Age. One sender of these letters was Aziru, king of Amurru, a resourceful ruler and shrewd diplomat who navigated the rivalry between Egypt and the Hittites. Thousands of years later, he has found a new calling: helping folks like you bring order to their emails."
@@ -1258,29 +1264,29 @@ msgstr "Aziru porte le nom d'Aziru d'Amurru, l'un des correspondants des lettres
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:89
 #~ msgid "Aziru is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-#~ msgstr "Aziru ne synchronise plus cette boîte de réception. Reconnectez votre compte {providerName} pour reprendre le tri de vos conversations. L'accès reste en <0>lecture seule</0>, et votre boîte de réception la vôtre."
+#~ msgstr "Aziru ne synchronise plus cette boîte mail. Reconnectez votre compte {providerName} pour reprendre le tri de vos conversations. L'accès reste en <0>lecture seule</0>, et votre boîte mail la vôtre."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:89
 msgid "Aziru is no longer syncing this inbox. Reconnect your {providerName} account to resume sorting your email threads. Aziru <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
-msgstr "Aziru ne synchronise plus cette boîte de réception. Reconnectez votre compte {providerName} pour reprendre le tri de vos conversations. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et votre boîte de réception reste la vôtre."
+msgstr "Aziru ne synchronise plus cette boîte mail. Reconnectez votre compte {providerName} pour reprendre le tri de vos conversations. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et votre boîte mail reste la vôtre."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:88
 #, fuzzy
 #~ msgid "Aziru is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-#~ msgstr "Aziru ne synchronise plus cette boîte de réception. Reconnectez votre compte Gmail pour reprendre le tri de vos conversations e-mail. L'accès reste en <0>lecture seule</0>, et votre boîte de réception reste la vôtre."
+#~ msgstr "Aziru ne synchronise plus cette boîte mail. Reconnectez votre compte Gmail pour reprendre le tri de vos conversations e-mail. L'accès reste en <0>lecture seule</0>, et votre boîte mail reste la vôtre."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:89
 #, fuzzy
 msgid "Aziru is no longer syncing this inbox. Reconnect your Gmail account to resume sorting your email threads. Aziru <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
-msgstr "Aziru ne synchronise plus cette boîte de réception. Reconnectez votre compte Gmail pour reprendre le tri de vos conversations. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et votre boîte de réception reste la vôtre."
+msgstr "Aziru ne synchronise plus cette boîte mail. Reconnectez votre compte Gmail pour reprendre le tri de vos conversations. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et votre boîte mail reste la vôtre."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
 #~ msgid "Aziru is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Access stays <0>read-only</0>, and your inbox stays yours."
-#~ msgstr "Aziru ne synchronise plus cette boîte de réception. Reconnectez votre compte Outlook pour reprendre le tri de vos conversations e-mail. L'accès reste <0>en lecture seule</0>, et votre boîte de réception reste la vôtre."
+#~ msgstr "Aziru ne synchronise plus cette boîte mail. Reconnectez votre compte Outlook pour reprendre le tri de vos conversations e-mail. L'accès reste <0>en lecture seule</0>, et votre boîte mail reste la vôtre."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:82
 msgid "Aziru is no longer syncing this inbox. Reconnect your Outlook account to resume sorting your email threads. Aziru <0>never sends, deletes, or moves your mail</0>, and your inbox stays yours."
-msgstr "Aziru ne synchronise plus cette boîte de réception. Reconnectez votre compte Outlook pour reprendre le tri de vos conversations. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et votre boîte de réception reste la vôtre."
+msgstr "Aziru ne synchronise plus cette boîte mail. Reconnectez votre compte Outlook pour reprendre le tri de vos conversations. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et votre boîte mail reste la vôtre."
 
 #: ../ui/src/pricing/planMessages.ts:113
 #, fuzzy
@@ -1298,7 +1304,7 @@ msgstr "Aziru est épinglé. Son icône ouvre le panneau depuis n'importe quel o
 
 #: ../../apps/site/src/components/pricing/ExtensionBanner.tsx:33
 msgid "Aziru lives in your inbox."
-msgstr "Aziru vit dans votre boîte de réception."
+msgstr "Aziru vit dans votre boîte mail."
 
 #. placeholder {0}: d.gmailAddress
 #: ../../apps/web/src/lib/notifications.ts:87
@@ -1315,16 +1321,16 @@ msgstr "Aziru a perdu l'accès à {0}. Appuyez pour reconnecter votre compte Goo
 #: ../../apps/web/src/lib/notifications.ts:88
 #, fuzzy
 msgid "Aziru lost access to your inbox. Click to reconnect your Google account."
-msgstr "Aziru a perdu l'accès à votre boîte de réception. Cliquez pour reconnecter votre compte Google."
+msgstr "Aziru a perdu l'accès à votre boîte mail. Cliquez pour reconnecter votre compte Google."
 
 #: ../../apps/mobile/src/data/notificationView.ts:56
 msgid "Aziru lost access to your inbox. Tap to reconnect your Google account."
-msgstr "Aziru a perdu l'accès à votre boîte de réception. Appuyez pour reconnecter votre compte Google."
+msgstr "Aziru a perdu l'accès à votre boîte mail. Appuyez pour reconnecter votre compte Google."
 
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
 #~ msgid "Aziru needs access to its server and Gmail to show your inbox."
-#~ msgstr "Aziru nécessite l'accès à son serveur et à Gmail pour afficher votre boîte de réception."
+#~ msgstr "Aziru nécessite l'accès à son serveur et à Gmail pour afficher votre boîte mail."
 
 #: ../../apps/extension/src/App.tsx:52
 #: ../../apps/extension/src/auth/SignInScreen.tsx:13
@@ -1334,12 +1340,12 @@ msgstr "Aziru a perdu l'accès à votre boîte de réception. Appuyez pour recon
 #: ../../apps/extension/src/platform/HostPermissionGate.tsx:34
 #, fuzzy
 msgid "Aziru needs access to its server and your inbox to show your emails."
-msgstr "Aziru a besoin d'accéder à son serveur et à votre boîte de réception pour afficher vos e-mails."
+msgstr "Aziru a besoin d'accéder à son serveur et à votre boîte mail pour afficher vos e-mails."
 
 #: ../../apps/extension/src/App.tsx:56
 #: ../../apps/extension/src/auth/SignInScreen.tsx:15
 msgid "Aziru needs access to its server and your inbox to work. Please allow access and try again."
-msgstr "Aziru a besoin d'accéder à son serveur et à votre boîte de réception pour fonctionner. Veuillez autoriser l'accès et réessayer."
+msgstr "Aziru a besoin d'accéder à son serveur et à votre boîte mail pour fonctionner. Veuillez autoriser l'accès et réessayer."
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:129
 msgid "Aziru never sends email. You review and send from Outlook."
@@ -1371,17 +1377,17 @@ msgstr "Plan Aziru Pro"
 
 #: ../../apps/site/src/lib/seo.ts:64
 msgid "Aziru reads your inbox, sorts every thread into the folders you define, and drafts replies for your approval. Reach inbox zero without the busywork."
-msgstr "Aziru lit votre boîte de réception, trie chaque conversation dans les dossiers que vous définissez et rédige des brouillons de réponses pour votre approbation. Atteignez la boîte de réception zéro sans les tâches superflues."
+msgstr "Aziru lit votre boîte mail, trie chaque conversation dans les dossiers que vous définissez et rédige des brouillons de réponses pour votre approbation. Atteignez la boîte mail zéro sans les tâches superflues."
 
 #: ../ui/src/demo/mailbox/AziruReply.tsx:70
 #: ../ui/src/demo/mailbox/AziruReply.tsx:163
 msgid "Aziru Reply"
 msgstr "Réponse Aziru"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:158
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:160
 #, fuzzy
 msgid "Aziru saved me so much time that Pharaoh believed I had doubled my staff. Petitions, tribute lists, complaints: all sorted before I break a seal. It even drafts my replies, though nothing is sent without my approval. And when a letter is beyond my judgment, I simply tag Pharaoh so he can take a look."
-msgstr "Aziru m'a fait gagner tellement de temps que Pharaon a cru que j'avais doublé mon personnel. Pétitions, listes de tributs, plaintes : tout est trié avant même que je ne brise un sceau. Il rédige même mes réponses, mais rien n'est envoyé sans mon approbation. Et quand une lettre dépasse mes compétences, je tague simplement Pharaon pour qu'il puisse y jeter un œil."
+msgstr "Aziru m'a fait gagner tellement de temps que Pharaon a cru que j'avais doublé mon personnel. Pétitions, listes de tributs, plaintes : tout est trié avant même que je ne brise un sceau. Il rédige même mes réponses, mais rien n'est envoyé sans mon approbation. Et quand une lettre dépasse mes compétences, je tague simplement Pharaon pour qu'il puisse y jeter un œil."
 
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:63
 msgid "Aziru sits in a side panel next to Gmail and Outlook."
@@ -1398,12 +1404,12 @@ msgstr "Aziru s'intègre dans un panneau latéral à côté de Gmail et Outlook.
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:230
 msgid "Aziru sorts your inbox for you, filing old and new mail where it belongs. Threads it is unsure about wait for you in review."
-msgstr "Aziru trie votre boîte de réception pour vous, classant anciens et nouveaux e-mails à leur juste place. Les conversations incertaines vous attendent pour révision."
+msgstr "Aziru trie votre boîte mail pour vous, classant anciens et nouveaux e-mails à leur juste place. Les conversations incertaines vous attendent pour révision."
 
 #: ../../apps/site/src/lib/seo.ts:46
 #, fuzzy
 msgid "Aziru sorts your inbox into the folders you define, drafts replies for your approval, and explains every call so you reach inbox zero faster."
-msgstr "Aziru trie votre boîte de réception dans les dossiers que vous définissez, rédige des brouillons de réponses pour votre approbation et explique chaque décision pour vous permettre d'atteindre la boîte de réception zéro plus rapidement."
+msgstr "Aziru trie votre boîte mail dans les dossiers que vous définissez, rédige des brouillons de réponses pour votre approbation et explique chaque décision pour vous permettre d'atteindre la boîte mail zéro plus rapidement."
 
 #: ../panel/src/ClassificationCard.tsx:111
 #, fuzzy
@@ -1414,7 +1420,7 @@ msgstr "Aziru n'a pas su classer cette conversation. Déplacez-la si elle est au
 msgid "Aziru will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. Review and edit before anything is applied."
 msgstr "Aziru analyse vos expéditeurs, libellés et mots-clés de sujet (jamais le contenu des messages) pour suggérer un ensemble personnalisé de dossiers. Passez-les en revue et modifiez-les avant application."
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:293
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:317
 #, fuzzy
 msgid "Aziru will analyze your senders, labels, and subject keywords (never message bodies) to suggest a personalized set of folders. You can review and edit before anything is applied."
 msgstr "Aziru analysera vos expéditeurs, libellés et mots-clés d'objet (jamais les corps de message) pour suggérer un ensemble de dossiers personnalisé. Vous pouvez les examiner et les modifier avant toute application."
@@ -1446,7 +1452,7 @@ msgstr "Aziru analysera vos expéditeurs, libellés et mots-clés d'objet (jamai
 
 #: ../../apps/site/src/lib/seo.ts:40
 msgid "Aziru: AI Email Sorter for Gmail™ & Outlook"
-msgstr "Aziru : Trieur d'e-mails IA pour Gmail™ et Outlook"
+msgstr "Aziru : Trieur d'e-mails IA pour Gmail™ et Outlook"
 
 #: ../../apps/site/src/app/[locale]/page.tsx:29
 #~ msgid "Aziru: AI email triage"
@@ -1470,7 +1476,7 @@ msgstr "Aziru : Trieur d'e-mails IA pour Gmail™ et Outlook"
 #: ../../apps/site/src/lib/seo.ts:39
 #, fuzzy
 msgid "Aziru: Your inbox, already sorted"
-msgstr "Aziru : Votre boîte de réception, déjà triée"
+msgstr "Aziru : Votre boîte mail, déjà triée"
 
 #: ../ui/src/demo/demo-seed.ts:319
 msgid "Babylon's third gold consignment is overdue after two messengers. Burna-Buriash asks you to dispatch it without further delay."
@@ -1483,8 +1489,8 @@ msgstr "Le troisième envoi d'or de Babylone est en retard après deux messagers
 #: ../../apps/site/src/components/pricing/PricingContent.tsx:25
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:379
 #: ../ui/src/emails/ThreadPreview.tsx:123
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:511
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:531
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:502
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:522
 #, fuzzy
 msgid "Back"
 msgstr "Retour"
@@ -1495,7 +1501,7 @@ msgstr "Retour à Gmail"
 
 #: ../../apps/site/src/components/landing/MailThreadMock.tsx:62
 #~ msgid "Back to inbox"
-#~ msgstr "Retour à la boîte de réception"
+#~ msgstr "Retour à la boîte mail"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:355
 #: ../../apps/web/src/app/(app)/emails/ThreadPreview.tsx:374
@@ -1516,7 +1522,7 @@ msgstr "Retour à la connexion"
 
 #: ../ui/src/demo/mailbox/MailThreadMock.tsx:169
 msgid "Back to the inbox"
-msgstr "Retour à la boîte de réception"
+msgstr "Retour à la boîte mail"
 
 #: ../ui/src/emails/BackfillCard.tsx:28
 #, fuzzy
@@ -1532,7 +1538,7 @@ msgstr "Relevés bancaires, investissements, polices d'assurance et dossiers fin
 msgid "Basic"
 msgstr "Basique"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:173
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:175
 msgid "Before Aziru, my scribes and I sorted letters from sunrise to sunset. Now I finally have the bandwidth to help my vassals, promote the cult of Aten, and plan the city of Amarna."
 msgstr "Avant Aziru, mes scribes et moi triions les lettres du lever au coucher du soleil. Maintenant, j'ai enfin la liberté d'esprit pour aider mes vassaux, promouvoir le culte d'Aton et planifier la cité d'Amarna."
 
@@ -1590,9 +1596,13 @@ msgstr "Membres du conseil, partenaires de fonds actuels et mises à jour du por
 msgid "Brand Deals"
 msgstr "Partenariats de marque"
 
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:355
+msgid "Browse and draft"
+msgstr "Parcourir et rédiger"
+
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:357
-msgid "Browse emails easily through your folders. Click Aziru Reply, and the draft lands in your compose window, ready for your edits."
-msgstr "Naviguez facilement dans vos e-mails via vos dossiers. Cliquez sur Répondre Aziru, et le brouillon apparaît dans votre fenêtre de rédaction, prêt pour vos modifications."
+#~ msgid "Browse emails easily through your folders. Click Aziru Reply, and the draft lands in your compose window, ready for your edits."
+#~ msgstr "Naviguez facilement dans vos e-mails via vos dossiers. Cliquez sur Répondre Aziru, et le brouillon apparaît dans votre fenêtre de rédaction, prêt pour vos modifications."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:385
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to Gmail."
@@ -1600,7 +1610,7 @@ msgstr "Naviguez facilement dans vos e-mails via vos dossiers. Cliquez sur Répo
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:379
 #~ msgid "Browse emails easily through your folders. Generate draft replies and copy them to your inbox."
-#~ msgstr "Parcourez facilement vos e-mails dans vos dossiers. Générez des brouillons de réponses et copiez-les dans votre boîte de réception."
+#~ msgstr "Parcourez facilement vos e-mails dans vos dossiers. Générez des brouillons de réponses et copiez-les dans votre boîte mail."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:283
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:817
@@ -1639,14 +1649,14 @@ msgstr "Élaborer un plan"
 #: ../../apps/mobile/src/components/emails/BackfillBanner.tsx:36
 #: ../ui/src/emails/BackfillCard.tsx:21
 #~ msgid "Bulk triage your inbox"
-#~ msgstr "Trier en masse votre boîte de réception"
+#~ msgstr "Trier en masse votre boîte mail"
 
 #: ../ui/src/demo/demo-seed.ts:478
 #, fuzzy
 msgid "Bureau of Royal Appointments"
 msgstr "Bureau des Nominations Royales"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:182
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:184
 #, fuzzy
 msgid "Burna-Buriash"
 msgstr "Burna-Buriash"
@@ -1699,16 +1709,16 @@ msgstr "Administration du campus"
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
 msgid "Can Aziru draft replies?"
-msgstr "Aziru peut-il rédiger des réponses ?"
+msgstr "Aziru peut-il rédiger des réponses ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:43
 #, fuzzy
 msgid "Can Aziru sort my existing inbox, not just new mail?"
-msgstr "Aziru peut-il trier ma boîte de réception existante, et pas seulement les nouveaux e-mails ?"
+msgstr "Aziru peut-il trier ma boîte mail existante, et pas seulement les nouveaux e-mails ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:59
 msgid "Can I self-host Aziru?"
-msgstr "Puis-je auto-héberger Aziru ?"
+msgstr "Puis-je auto-héberger Aziru ?"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:147
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:174
@@ -1751,7 +1761,7 @@ msgstr "Annuler l'abonnement"
 
 #: ../../apps/mobile/app/(app)/subscription.tsx:114
 msgid "Cancel subscription?"
-msgstr "Annuler l'abonnement ?"
+msgstr "Annuler l'abonnement ?"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:294
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:182
@@ -1838,7 +1848,7 @@ msgstr "Vérifiez votre e-mail"
 #: ../../apps/web/src/app/verify-email/page.tsx:26
 #, fuzzy
 msgid "Check your inbox"
-msgstr "Vérifiez votre boîte de réception"
+msgstr "Vérifiez votre boîte mail"
 
 #: ../ui/src/demo/demo-seed.ts:220
 #, fuzzy
@@ -1848,12 +1858,12 @@ msgstr "Vérifiez votre boîte de réception"
 #: ../ui/src/demo/demo-seed.ts:220
 #, fuzzy
 msgid "Checked the archive: he asked for fifty, we sent twenty. I would take the meeting. @{pentu} can you take care of replying to him?"
-msgstr "Archives vérifiées : il a demandé cinquante, nous en avons envoyé vingt. Je prendrais ce rendez-vous. @{pentu}, peux-tu t'occuper de lui répondre ?"
+msgstr "Archives vérifiées : il a demandé cinquante, nous en avons envoyé vingt. Je prendrais ce rendez-vous. @{pentu}, peux-tu t'occuper de lui répondre ?"
 
 #. placeholder {0}: err.message
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:143
 msgid "Checkout failed: {0}"
-msgstr "Le paiement a échoué : {0}"
+msgstr "Le paiement a échoué : {0}"
 
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:80
 #, fuzzy
@@ -1878,7 +1888,7 @@ msgstr "Choisissez un nouveau mot de passe pour votre compte."
 msgid "Choose a subscription"
 msgstr "Choisir un abonnement"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:390
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:381
 msgid "Choose a template"
 msgstr "Choisissez un modèle"
 
@@ -1902,7 +1912,7 @@ msgstr "Choisir un parent"
 
 #: ../ui/src/taxonomy-editor/MigrationReviewModal.tsx:119
 msgid "Choose where each folder’s threads should go under your new folders. Matched folders keep their threads instantly; anything set to re-sort is re-classified by AI."
-msgstr "Choisissez où les conversations de chaque dossier doivent être placées dans vos nouveaux dossiers. Les dossiers correspondants conservent instantanément leurs conversations ; tout ce qui est défini pour être reclassé est reclassifié par l'IA."
+msgstr "Choisissez où les conversations de chaque dossier doivent être placées dans vos nouveaux dossiers. Les dossiers correspondants conservent instantanément leurs conversations ; tout ce qui est défini pour être reclassé est reclassifié par l'IA."
 
 #: ../../apps/web/src/app/(app)/plan/MigrationReviewModal.tsx:117
 #, fuzzy
@@ -1951,15 +1961,15 @@ msgstr "Clients"
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:140
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:155
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:252
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:319
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:276
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:354
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:128
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:39
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:119
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:400
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:494
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:504
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:546
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:391
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:485
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:495
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:537
 #: ../ui/src/upgrade/UpgradeDialog.tsx:177
 #, fuzzy
 msgid "Close"
@@ -2104,7 +2114,7 @@ msgstr "Connecter {name}"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:401
 msgid "Connect {name} to this workspace?"
-msgstr "Connecter {name} à cet espace de travail ?"
+msgstr "Connecter {name} à cet espace de travail ?"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:124
 #, fuzzy
@@ -2123,7 +2133,7 @@ msgstr "Connecter {secondaryName}"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:170
 msgid "Connect a Gmail inbox to configure sync filters."
-msgstr "Connectez une boîte de réception Gmail pour configurer les filtres de synchronisation."
+msgstr "Connectez une boîte mail Gmail pour configurer les filtres de synchronisation."
 
 #: ../panel/src/states/PanelStates.tsx:62
 #, fuzzy
@@ -2132,7 +2142,7 @@ msgstr "Connecter une boîte mail"
 
 #: ../panel/src/states/PanelStates.tsx:67
 msgid "Connect a mailbox to Aziru to start sorting your inbox."
-msgstr "Connectez une boîte mail à Aziru pour commencer à trier votre boîte de réception."
+msgstr "Connectez une boîte mail à Aziru pour commencer à trier votre boîte mail."
 
 #: ../../apps/extension/src/App.tsx:114
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:140
@@ -2173,11 +2183,11 @@ msgstr "Connecter Gmail"
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:218
 #, fuzzy
 #~ msgid "Connect Gmail to generate a plan from your inbox"
-#~ msgstr "Connectez Gmail pour générer un plan depuis votre boîte de réception"
+#~ msgstr "Connectez Gmail pour générer un plan depuis votre boîte mail"
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:218
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:242
 msgid "Connect Gmail to generate folders from your inbox"
-msgstr "Connectez Gmail pour générer des dossiers à partir de votre boîte de réception"
+msgstr "Connectez Gmail pour générer des dossiers à partir de votre boîte mail"
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:180
 #, fuzzy
@@ -2187,20 +2197,24 @@ msgstr "Connectez Gmail pour commencer le tri"
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:327
 #, fuzzy
 msgid "Connect inbox"
-msgstr "Connecter la boîte de réception"
+msgstr "Connecter la boîte mail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:347
 #~ msgid "Connect inbox button"
-#~ msgstr "Bouton Connecter la boîte de réception"
+#~ msgstr "Bouton Connecter la boîte mail"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:374
-msgid "Connect once, generate your folders once, and let Aziru handle new mail and the thousands of threads already sitting in your inbox."
-msgstr "Connectez-vous une seule fois, générez vos dossiers, et laissez Aziru gérer les nouveaux courriels et les milliers de conversations déjà dans votre boîte de réception."
+#~ msgid "Connect once, generate your folders once, and let Aziru handle new mail and the thousands of threads already sitting in your inbox."
+#~ msgstr "Connectez-vous une seule fois, générez vos dossiers, et laissez Aziru gérer les nouveaux courriels et les milliers de conversations déjà dans votre boîte mail."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:375
+msgid "Connect once, generate your folders once, and let Aziru handle old and new mail."
+msgstr "Connectez-vous une seule fois, générez vos dossiers, et laissez Aziru gérer tous vos e-mails."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:434
 #, fuzzy
 #~ msgid "Connect once, generate your plan once, and let Aziru handle new mail and the thousands of threads already sitting in your inbox."
-#~ msgstr "Connectez-vous une fois, générez votre plan une seule fois, et laissez Aziru gérer les nouveaux courriels ainsi que les milliers de conversations déjà présentes dans votre boîte de réception."
+#~ msgstr "Connectez-vous une fois, générez votre plan une seule fois, et laissez Aziru gérer les nouveaux courriels ainsi que les milliers de conversations déjà présentes dans votre boîte mail."
 
 #: ../../apps/extension/src/App.tsx:124
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:153
@@ -2217,15 +2231,15 @@ msgstr "Connecter Outlook"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:84
 msgid "Connect your {providerName} inbox"
-msgstr "Connecter votre boîte de réception {providerName}"
+msgstr "Connecter votre boîte mail {providerName}"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:97
 msgid "Connect your account to get started. Aziru <0>never sends, deletes, or moves your mail</0>, and the only thing it writes is its own sorting labels, which you can switch off. Your inbox stays yours."
-msgstr "Connectez votre compte pour commencer. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et la seule chose qu'il écrit, ce sont ses propres libellés de tri, que vous pouvez désactiver. Votre boîte de réception reste la vôtre."
+msgstr "Connectez votre compte pour commencer. Aziru <0>n'envoie, ne supprime ni ne déplace jamais vos e-mails</0>, et la seule chose qu'il écrit, ce sont ses propres libellés de tri, que vous pouvez désactiver. Votre boîte mail reste la vôtre."
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
 #~ msgid "Connect your account to get started. Aziru connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-#~ msgstr "Pour commencer, connectez votre compte. Aziru se connecte avec <0>un accès en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte de réception reste la vôtre."
+#~ msgstr "Pour commencer, connectez votre compte. Aziru se connecte avec <0>un accès en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte mail reste la vôtre."
 
 #: ../../apps/extension/src/App.tsx:91
 #, fuzzy
@@ -2234,24 +2248,24 @@ msgstr "Connectez votre compte pour commencer. Aziru <0>n'envoie, ne supprime ni
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:183
 msgid "Connect your Gmail account to sync your inbox into Aziru. Aziru connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-msgstr "Connectez votre compte Gmail pour synchroniser votre boîte de réception avec Aziru. Aziru se connecte avec <0>un accès en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte de réception reste la vôtre."
+msgstr "Connectez votre compte Gmail pour synchroniser votre boîte mail avec Aziru. Aziru se connecte avec <0>un accès en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte mail reste la vôtre."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:44
 #~ msgid "Connect your Gmail inbox"
-#~ msgstr "Connecter votre boîte de réception Gmail"
+#~ msgstr "Connecter votre boîte mail Gmail"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:76
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:93
 msgid "Connect your inbox"
-msgstr "Connecter votre boîte de réception"
+msgstr "Connecter votre boîte mail"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:10
-msgid "Connect your inbox and Aziru starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
-msgstr "Connectez votre boîte de réception et Aziru commence le tri en quelques minutes. La tarification est par espace de travail. L'outil trie les nouveaux e-mails dès leur arrivée et traite les années d'arriérés."
+#~ msgid "Connect your inbox and Aziru starts sorting within minutes. Pricing is per workspace. Sorts new mail as it arrives, and works through years of backlog."
+#~ msgstr "Connectez votre boîte mail et Aziru commence le tri en quelques minutes. La tarification est par espace de travail. L'outil trie les nouveaux e-mails dès leur arrivée et traite les années d'arriérés."
 
 #: ../../apps/extension/src/App.tsx:105
 msgid "Connect your inbox to start triaging."
-msgstr "Connectez votre boîte de réception pour commencer le tri."
+msgstr "Connectez votre boîte mail pour commencer le tri."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:395
 #, fuzzy
@@ -2363,16 +2377,16 @@ msgstr "Copier"
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
 #~ msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the gmail.readonly scope is added to the OAuth consent screen in Google Cloud Console."
-#~ msgstr "Impossible d'accéder à votre boîte de réception Gmail. Assurez-vous que l'API Gmail est activée et que la portée gmail.readonly est ajoutée à l'écran de consentement OAuth dans la Google Cloud Console."
+#~ msgstr "Impossible d'accéder à votre boîte mail Gmail. Assurez-vous que l'API Gmail est activée et que la portée gmail.readonly est ajoutée à l'écran de consentement OAuth dans la Google Cloud Console."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:70
 #, fuzzy
 msgid "Could not access your Gmail inbox. Make sure the Gmail API is enabled and the scopes Aziru requests are added to the OAuth consent screen in Google Cloud Console."
-msgstr "Impossible d'accéder à votre boîte de réception Gmail. Assurez-vous que l'API Gmail est activée et que les champs d'application demandés par Aziru sont ajoutés à l'écran de consentement OAuth dans la Google Cloud Console."
+msgstr "Impossible d'accéder à votre boîte mail Gmail. Assurez-vous que l'API Gmail est activée et que les champs d'application demandés par Aziru sont ajoutés à l'écran de consentement OAuth dans la Google Cloud Console."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:98
 msgid "Could not access your Outlook inbox. Please try again."
-msgstr "Impossible d'accéder à votre boîte de réception Outlook. Veuillez réessayer."
+msgstr "Impossible d'accéder à votre boîte mail Outlook. Veuillez réessayer."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:66
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:46
@@ -2406,7 +2420,7 @@ msgstr "Impossible de modifier l'abonnement"
 
 #: ../../apps/extension/src/App.tsx:95
 msgid "Could not connect your inbox. Please try again."
-msgstr "Impossible de connecter votre boîte de réception. Veuillez réessayer."
+msgstr "Impossible de connecter votre boîte mail. Veuillez réessayer."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:113
 #, fuzzy
@@ -2489,7 +2503,7 @@ msgstr "Impossible de joindre le serveur. Veuillez vérifier votre connexion et 
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:565
 #, fuzzy
 msgid "Could not read file: invalid JSON."
-msgstr "Impossible de lire le fichier : JSON invalide."
+msgstr "Impossible de lire le fichier : JSON invalide."
 
 #: ../../apps/web/src/app/(app)/settings/EmailBlacklistSection.tsx:62
 msgid "Could not remove email. Please try again."
@@ -2566,8 +2580,8 @@ msgstr "Impossible de mettre à niveau"
 msgid "Could not verify your Google account. Please try again."
 msgstr "Impossible de vérifier votre compte Google. Veuillez réessayer."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:356
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:377
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:347
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:368
 msgid "Couldn't apply the folders."
 msgstr "Impossible d'appliquer les dossiers."
 
@@ -2576,14 +2590,14 @@ msgstr "Impossible d'appliquer les dossiers."
 #~ msgid "Couldn't apply the plan."
 #~ msgstr "Impossible d'appliquer le plan."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:284
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:278
 #, fuzzy
 msgid "Couldn't check generation status."
 msgstr "Impossible de vérifier le statut de la génération."
 
 #: ../../apps/extension/src/panel/TriageGate.tsx:108
 msgid "Couldn't load your inbox. Check your connection and reopen the panel."
-msgstr "Impossible de charger votre boîte de réception. Vérifiez votre connexion et rouvrez le panneau."
+msgstr "Impossible de charger votre boîte mail. Vérifiez votre connexion et rouvrez le panneau."
 
 #: ../../apps/extension/src/App.tsx:142
 msgid "Couldn't reach Aziru. Check your connection and try again."
@@ -2601,7 +2615,7 @@ msgstr "Le Conseil se réunit au début de Shemu"
 #: ../ui/src/demo/demo-seed.ts:580
 #, fuzzy
 msgid "Council convening: season of Shemu"
-msgstr "Convocation du conseil : saison de Shemu"
+msgstr "Convocation du conseil : saison de Shemu"
 
 #: ../ui/src/demo/demo-seed.ts:590
 #, fuzzy
@@ -2635,7 +2649,7 @@ msgstr "Créer un compte"
 
 #: ../../apps/mobile/app/sign-up.tsx:94
 msgid "Create an account to triage your inbox"
-msgstr "Créez un compte pour trier votre boîte de réception"
+msgstr "Créez un compte pour trier votre boîte mail"
 
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:151
 #, fuzzy
@@ -2691,7 +2705,7 @@ msgstr "Abonnement actuel"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:137
 #, fuzzy
 msgid "Current workspace: <0>{workspaceName}</0>"
-msgstr "Espace de travail actuel : <0>{workspaceName}</0>"
+msgstr "Espace de travail actuel : <0>{workspaceName}</0>"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:174
 #, fuzzy
@@ -2762,7 +2776,7 @@ msgstr "Supprimer"
 #. placeholder {0}: ids.length
 #: ../../apps/mobile/app/(app)/notifications.tsx:143
 msgid "Delete {0} notifications?"
-msgstr "Supprimer {0} notifications ?"
+msgstr "Supprimer {0} notifications ?"
 
 #: ../../apps/mobile/app/(app)/account.tsx:166
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:119
@@ -2773,7 +2787,7 @@ msgstr "Supprimer le compte"
 #: ../../apps/mobile/app/(app)/account.tsx:79
 #, fuzzy
 msgid "Delete account?"
-msgstr "Supprimer le compte ?"
+msgstr "Supprimer le compte ?"
 
 #: ../ui/src/emails/ThreadCommentsCard.tsx:196
 #, fuzzy
@@ -2801,7 +2815,7 @@ msgstr "Supprimer les notifications"
 
 #: ../../apps/mobile/app/(app)/notifications.tsx:142
 msgid "Delete this notification?"
-msgstr "Supprimer cette notification ?"
+msgstr "Supprimer cette notification ?"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:303
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:26
@@ -2812,7 +2826,7 @@ msgstr "Supprimer l'espace de travail"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:171
 msgid "Delete workspace?"
-msgstr "Supprimer l'espace de travail ?"
+msgstr "Supprimer l'espace de travail ?"
 
 #: ../ui/src/demo/mailbox/OutlookInboxMock.tsx:126
 #, fuzzy
@@ -2839,11 +2853,11 @@ msgstr "Déploiements"
 #: ../ui/src/taxonomy-editor/DescriptionTips.tsx:42
 #, fuzzy
 msgid "Describe what kinds of emails belong here: who they come from and what they are about. Be specific and use the actual names, topics, and words that show up in those emails. Describe what the emails are, not what you plan to do about them. The clearer your description, the more accurately your email is sorted here."
-msgstr "Décrivez le type d'e-mails qui doivent être classés ici : de qui ils proviennent et de quoi ils parlent. Soyez précis et utilisez les noms, sujets et mots réels qui apparaissent dans ces e-mails. Décrivez ce que sont les e-mails, pas ce que vous comptez en faire. Plus votre description est claire, plus vos e-mails seront triés précisément ici."
+msgstr "Décrivez le type d'e-mails qui doivent être classés ici : de qui ils proviennent et de quoi ils parlent. Soyez précis et utilisez les noms, sujets et mots réels qui apparaissent dans ces e-mails. Décrivez ce que sont les e-mails, pas ce que vous comptez en faire. Plus votre description est claire, plus vos e-mails seront triés précisément ici."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:342
-msgid "Describe your folders"
-msgstr "Décrivez vos dossiers"
+#~ msgid "Describe your folders"
+#~ msgstr "Décrivez vos dossiers"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:289
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:176
@@ -2863,10 +2877,10 @@ msgstr "Les notifications, newsletters et mises à jour de service détectées s
 
 #: ../../apps/web/src/app/sign-up/SignUpForm.tsx:53
 msgid "Didn't get an email? Check your spam folder, or <0>try again</0>."
-msgstr "Vous n'avez pas reçu d'e-mail ? Vérifiez votre dossier de courriers indésirables, ou <0>réessayez</0>."
+msgstr "Vous n'avez pas reçu d'e-mail ? Vérifiez votre dossier de courriers indésirables, ou <0>réessayez</0>."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:127
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:319
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:354
 #, fuzzy
 msgid "Discard"
 msgstr "Annuler"
@@ -2901,12 +2915,12 @@ msgstr "Déconnecter Gmail"
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:90
 #, fuzzy
 msgid "Disconnect Gmail?"
-msgstr "Déconnecter Gmail ?"
+msgstr "Déconnecter Gmail ?"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:106
 #, fuzzy
 msgid "Disconnect your inbox or delete your account"
-msgstr "Déconnecter votre boîte de réception ou supprimer votre compte"
+msgstr "Déconnecter votre boîte mail ou supprimer votre compte"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:102
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:114
@@ -2930,7 +2944,7 @@ msgstr "Déconnecté. {erasedNote} Pour révoquer complètement l'accès d'Aziru
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:366
 #, fuzzy
 msgid "Disconnected. Aziru is no longer syncing this inbox."
-msgstr "Déconnecté. Aziru ne synchronise plus cette boîte de réception."
+msgstr "Déconnecté. Aziru ne synchronise plus cette boîte mail."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:236
 #, fuzzy
@@ -2985,11 +2999,11 @@ msgstr "Nom d'affichage"
 #: ../../apps/site/src/components/landing/FAQSection.tsx:27
 #, fuzzy
 msgid "Do I have to build the folder structure myself?"
-msgstr "Dois-je créer moi-même la structure des dossiers ?"
+msgstr "Dois-je créer moi-même la structure des dossiers ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:31
 msgid "Do I need the browser extension?"
-msgstr "Ai-je besoin de l'extension de navigateur ?"
+msgstr "Ai-je besoin de l'extension de navigateur ?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:201
 #, fuzzy
@@ -3013,16 +3027,16 @@ msgstr "Documentation"
 #: ../../apps/site/src/components/landing/FAQSection.tsx:39
 #, fuzzy
 msgid "Does Aziru work with Outlook?"
-msgstr "Aziru fonctionne-t-il avec Outlook ?"
+msgstr "Aziru fonctionne-t-il avec Outlook ?"
 
 #: ../../apps/mobile/app/sign-in.tsx:145
 msgid "Don't have an account? <0>Create one</0>"
-msgstr "Vous n'avez pas de compte ? <0>Créez-en un</0>"
+msgstr "Vous n'avez pas de compte ? <0>Créez-en un</0>"
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:166
 #, fuzzy
 msgid "Don't have an account? <0>Sign up</0>"
-msgstr "Vous n'avez pas de compte ? <0>S'inscrire</0>"
+msgstr "Vous n'avez pas de compte ? <0>S'inscrire</0>"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:229
 msgid "Donation drives, giving campaigns, and fundraising appeal responses."
@@ -3170,7 +3184,7 @@ msgstr "Modifier le dossier"
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:252
 #, fuzzy
 msgid "Edit inbox"
-msgstr "Modifier la boîte de réception"
+msgstr "Modifier la boîte mail"
 
 #: ../ui/src/taxonomy-editor/EdgeForm.tsx:48
 msgid "Edit Path"
@@ -3201,8 +3215,13 @@ msgid "Email address to invite"
 msgstr "Adresse e-mail à inviter"
 
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:177
-msgid "Email is teamwork."
-msgstr "L'e-mail, c'est un travail d'équipe."
+#, fuzzy
+msgid "Email is <0>teamwork</0>."
+msgstr "L'e-mail, c'est du <0>travail d'équipe</0>."
+
+#: ../../apps/site/src/components/landing/CollaborationSection.tsx:177
+#~ msgid "Email is teamwork."
+#~ msgstr "L'e-mail, c'est un travail d'équipe."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:247
 msgid "Email is teamwork. Assign and discuss."
@@ -3242,7 +3261,7 @@ msgstr "Contactez-nous"
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:45
 #, fuzzy
 msgid "Email verified! Sign in to continue."
-msgstr "E-mail vérifié ! Connectez-vous pour continuer."
+msgstr "E-mail vérifié ! Connectez-vous pour continuer."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:15
 #~ msgid "Email, sorted automatically. Never sends without you."
@@ -3361,12 +3380,12 @@ msgstr "Chaque compte inclut un espace de travail gratuit, sans carte bancaire r
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:109
 #~ msgid "Every email goes where it belongs. Right beside your inbox."
-#~ msgstr "Chaque e-mail trouve sa place. Juste à côté de votre boîte de réception."
+#~ msgstr "Chaque e-mail trouve sa place. Juste à côté de votre boîte mail."
 
 #: ../ui/src/emails/queueLabels.ts:11
 #, fuzzy
 msgid "Every thread in your inbox."
-msgstr "Toutes les conversations de votre boîte de réception."
+msgstr "Toutes les conversations de votre boîte mail."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:112
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:195
@@ -3415,7 +3434,7 @@ msgstr "Agences externes, cabinets tiers et partenaires commerciaux engagés pro
 #~ msgid "External vendors, clients, and agencies engaged in a professional capacity."
 #~ msgstr "Fournisseurs externes, clients et agences engagés à titre professionnel."
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:163
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:187
 #, fuzzy
 msgid "Failed to apply"
 msgstr "Échec de l'application"
@@ -3440,7 +3459,7 @@ msgstr "Échec de la suppression du dossier"
 msgid "Failed to delete path"
 msgstr "Échec de la suppression du chemin"
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:96
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:115
 #, fuzzy
 msgid "Failed to load status"
 msgstr "Échec du chargement du statut"
@@ -3455,7 +3474,7 @@ msgstr "Échec du rétablissement"
 msgid "Failed to save position"
 msgstr "Échec de l'enregistrement de la position"
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:150
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:171
 #, fuzzy
 msgid "Failed to start generation"
 msgstr "Échec du démarrage de la génération"
@@ -3530,7 +3549,7 @@ msgstr "Volet de filtre"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
 msgid "Filters match rules you write by hand: this sender, that subject keyword. Aziru reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement. Your folders are mirrored back into your inbox as labels or categories, so the sorting shows up there too, but the calm workspace is what you work from. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Aziru is unsure about is flagged for your review."
-msgstr "Les filtres correspondent aux règles que vous écrivez à la main : cet expéditeur, ce mot-clé dans l'objet. Aziru lit chaque conversation comme le ferait une personne et les organise dans un espace de travail clair où les conversations liées sont regroupées, chacune avec la raison de son placement. Vos dossiers sont reflétés dans votre boîte de réception sous forme d'étiquettes ou de catégories, de sorte que le tri apparaît également là-bas, mais l'espace de travail serein est votre point de départ. Le spam et les promotions sont automatiquement écartés, sauf si vous les activez dans les paramètres, et tout ce dont Aziru n'est pas sûr est signalé pour votre examen."
+msgstr "Les filtres correspondent aux règles que vous écrivez à la main : cet expéditeur, ce mot-clé dans l'objet. Aziru lit chaque conversation comme le ferait une personne et les organise dans un espace de travail clair où les conversations liées sont regroupées, chacune avec la raison de son placement. Vos dossiers sont reflétés dans votre boîte mail sous forme d'étiquettes ou de catégories, de sorte que le tri apparaît également là-bas, mais l'espace de travail serein est votre point de départ. Le spam et les promotions sont automatiquement écartés, sauf si vous les activez dans les paramètres, et tout ce dont Aziru n'est pas sûr est signalé pour votre examen."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:24
 #, fuzzy
@@ -3538,8 +3557,13 @@ msgid "Finance"
 msgstr "Finance"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:354
-msgid "Find and draft"
-msgstr "Trouver et rédiger"
+#~ msgid "Find and draft"
+#~ msgstr "Trouver et rédiger"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:358
+#, fuzzy
+msgid "Find emails easily through your folders. Click Aziru Reply, and the draft lands in your compose window, ready for your edits."
+msgstr "Retrouvez facilement vos e-mails dans vos dossiers. Cliquez sur Aziru Reply, et le brouillon s'affiche dans votre fenêtre de rédaction, prêt à être modifié."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:208
 msgid "Fine-tune later in the folder editor"
@@ -3557,12 +3581,12 @@ msgstr "Demandes de premiers contacts acheteurs et vendeurs et introductions de 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
 #~ msgid "Five things keep your inbox safe. First, Aziru is read-only by design: the permissions you grant through Google make it impossible for Aziru to send, delete, or change any email. Second, Aziru has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Aziru at any time. Fourth, no email bodies are stored: Aziru keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
-#~ msgstr "Cinq points garantissent la sécurité de votre boîte de réception. Premièrement, Aziru est conçu pour être en lecture seule : les autorisations que vous accordez via Google l'empêchent d'envoyer, de supprimer ou de modifier des e-mails. Deuxièmement, Aziru a passé l'examen de sécurité de Google, incluant l'évaluation de sécurité CASA requise pour toute application accédant à Gmail. Troisièmement, vous gardez le contrôle : les réponses restent des brouillons jusqu'à votre validation, rien n'est jamais envoyé en votre nom, et vous pouvez déconnecter Aziru à tout moment. Quatrièmement, aucun corps d'e-mail n'est stocké : Aziru ne conserve que les étiquettes et les métadonnées, jamais le contenu de vos messages. Cinquièmement, le code est public, ce qui permet à quiconque d'inspecter précisément ce qui accède à vos e-mails."
+#~ msgstr "Cinq points garantissent la sécurité de votre boîte mail. Premièrement, Aziru est conçu pour être en lecture seule : les autorisations que vous accordez via Google l'empêchent d'envoyer, de supprimer ou de modifier des e-mails. Deuxièmement, Aziru a passé l'examen de sécurité de Google, incluant l'évaluation de sécurité CASA requise pour toute application accédant à Gmail. Troisièmement, vous gardez le contrôle : les réponses restent des brouillons jusqu'à votre validation, rien n'est jamais envoyé en votre nom, et vous pouvez déconnecter Aziru à tout moment. Quatrièmement, aucun corps d'e-mail n'est stocké : Aziru ne conserve que les étiquettes et les métadonnées, jamais le contenu de vos messages. Cinquièmement, le code est public, ce qui permet à quiconque d'inspecter précisément ce qui accède à vos e-mails."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #, fuzzy
 msgid "Five things keep your inbox safe. First, Aziru's access is narrow by design: it can never send, delete, or move your mail, and the only thing it writes is its own sorting labels, which you can switch off. Second, Aziru has passed Google's security review, completing the CASA security assessment required for any app that accesses Gmail. Third, you stay in control: replies stay drafts until you say so, nothing is ever sent on your behalf, and you can disconnect Aziru at any time. Fourth, no email bodies are stored: Aziru keeps labels and metadata, never the contents of your messages. Fifth, the code is public, so anyone can inspect exactly what touches your email."
-msgstr "Cinq points garantissent la sécurité de votre boîte de réception. Premièrement, l'accès d'Aziru est limité par conception : il ne peut jamais envoyer, supprimer ou déplacer vos e-mails, et la seule chose qu'il écrit, ce sont ses propres libellés de tri, que vous pouvez désactiver. Deuxièmement, Aziru a réussi l'examen de sécurité de Google, en complétant l'évaluation de sécurité CASA requise pour toute application accédant à Gmail. Troisièmement, vous gardez le contrôle : les réponses restent des brouillons jusqu'à ce que vous le décidiez, rien n'est jamais envoyé en votre nom, et vous pouvez déconnecter Aziru à tout moment. Quatrièmement, aucun corps d'e-mail n'est stocké : Aziru conserve les libellés et les métadonnées, jamais le contenu de vos messages. Cinquièmement, le code est public, afin que chacun puisse inspecter exactement ce qui touche à vos e-mails."
+msgstr "Cinq points garantissent la sécurité de votre boîte mail. Premièrement, l'accès d'Aziru est limité par conception : il ne peut jamais envoyer, supprimer ou déplacer vos e-mails, et la seule chose qu'il écrit, ce sont ses propres libellés de tri, que vous pouvez désactiver. Deuxièmement, Aziru a réussi l'examen de sécurité de Google, en complétant l'évaluation de sécurité CASA requise pour toute application accédant à Gmail. Troisièmement, vous gardez le contrôle : les réponses restent des brouillons jusqu'à ce que vous le décidiez, rien n'est jamais envoyé en votre nom, et vous pouvez déconnecter Aziru à tout moment. Quatrièmement, aucun corps d'e-mail n'est stocké : Aziru conserve les libellés et les métadonnées, jamais le contenu de vos messages. Cinquièmement, le code est public, afin que chacun puisse inspecter exactement ce qui touche à vos e-mails."
 
 #: ../ui/src/demo/demo-seed.ts:386
 #~ msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Aziru has been known to send similar overtures to multiple courts."
@@ -3570,7 +3594,7 @@ msgstr "Cinq points garantissent la sécurité de votre boîte de réception. Pr
 
 #: ../ui/src/demo/demo-seed.ts:432
 msgid "Flagged as alliance/investor intro based on language (\"mutual benefit\", \"long-standing friendship\"). Confidence is moderate; Suppiluliuma has been known to send similar overtures to multiple courts."
-msgstr "Signalé comme introduction alliance/investisseur basé sur le langage (« bénéfice mutuel », « amitié de longue date »). La confiance est modérée ; Suppiluliuma est connu pour envoyer des ouvertures similaires à plusieurs cours."
+msgstr "Signalé comme introduction alliance/investisseur basé sur le langage (« bénéfice mutuel », « amitié de longue date »). La confiance est modérée ; Suppiluliuma est connu pour envoyer des ouvertures similaires à plusieurs cours."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:92
 #, fuzzy
@@ -3627,7 +3651,7 @@ msgstr "Le dossier sera ignoré tant qu'il ne sera pas connecté."
 
 #: ../../apps/mobile/app/(app)/(tabs)/emails/index.tsx:150
 msgid "Folder: {activeFolderName}"
-msgstr "Dossier : {activeFolderName}"
+msgstr "Dossier : {activeFolderName}"
 
 #: ../../apps/extension/src/panel/TaxonomyEditorOverlay.tsx:83
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:46
@@ -3656,7 +3680,7 @@ msgstr "Pour les créateurs gérant les partenariats de marque, les plateformes,
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
 msgid "For employees managing work, team communication, and personal email in one inbox."
-msgstr "Pour les employés gérant travail, communication d'équipe et emails personnels dans une seule boîte de réception."
+msgstr "Pour les employés gérant travail, communication d'équipe et emails personnels dans une seule boîte mail."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:109
 msgid "For engineers and open-source maintainers tracking code, deployments, and releases."
@@ -3681,12 +3705,12 @@ msgstr "Pour les particuliers gérant finances, santé, logement, famille et abo
 #: ../ui/src/pricing/planMessages.ts:25
 #, fuzzy
 #~ msgid "For individuals trying Aziru on their own inbox."
-#~ msgstr "Pour les particuliers qui essaient Aziru avec leur propre boîte de réception."
+#~ msgstr "Pour les particuliers qui essaient Aziru avec leur propre boîte mail."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:38
 #, fuzzy
 msgid "For individuals trying Aziru on their personal inbox."
-msgstr "Pour les particuliers qui souhaitent essayer Aziru avec leur boîte de réception personnelle."
+msgstr "Pour les particuliers qui souhaitent essayer Aziru avec leur boîte mail personnelle."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:168
 msgid "For K-12 educators managing classroom, parents, and school administration."
@@ -3718,7 +3742,7 @@ msgstr "Pour les vendeurs en ligne qui suivent les commandes, les expéditions, 
 #: ../ui/src/pricing/planMessages.ts:26
 #, fuzzy
 #~ msgid "For power users and small businesses who live in their inbox."
-#~ msgstr "Pour les utilisateurs avancés et les petites entreprises qui vivent dans leur boîte de réception."
+#~ msgstr "Pour les utilisateurs avancés et les petites entreprises qui vivent dans leur boîte mail."
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:44
 #, fuzzy
@@ -3737,22 +3761,22 @@ msgstr "Pour les étudiants conciliant université, candidatures de stage et vie
 #: ../ui/src/pricing/planMessages.ts:25
 #, fuzzy
 msgid "For trying Aziru on your own inbox."
-msgstr "Pour essayer Aziru avec votre propre boîte de réception."
+msgstr "Pour essayer Aziru avec votre propre boîte mail."
 
 #: ../ui/src/pricing/planMessages.ts:26
 #, fuzzy
 msgid "For your busy inbox as a freelancer, consultant, property manager, or business owner."
-msgstr "Pour gérer une boîte de réception chargée en tant qu'indépendant, consultant, gestionnaire immobilier ou chef d'entreprise."
+msgstr "Pour gérer une boîte mail chargée en tant qu'indépendant, consultant, gestionnaire immobilier ou chef d'entreprise."
 
 #: ../ui/src/pricing/planMessages.ts:27
 msgid "For your high-volume or shared inbox as a recruiter, agency, or small team on one mailbox."
-msgstr "Pour une boîte de réception à volume élevé ou partagée, pour un recruteur, une agence ou une petite équipe utilisant une seule boîte aux lettres."
+msgstr "Pour une boîte mail à volume élevé ou partagée, pour un recruteur, une agence ou une petite équipe utilisant une seule boîte aux lettres."
 
 #: ../../apps/mobile/app/sign-in.tsx:120
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:132
 #, fuzzy
 msgid "Forgot password?"
-msgstr "Mot de passe oublié ?"
+msgstr "Mot de passe oublié ?"
 
 #: ../ui/src/demo/mailbox/MailThreadMock.tsx:155
 msgid "Forward"
@@ -3830,7 +3854,7 @@ msgid "Gala planning, charity auctions, and awareness campaign logistics."
 msgstr "Planification de galas, enchères caritatives et logistique de campagnes de sensibilisation."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:159
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:342
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:377
 #, fuzzy
 msgid "Generate"
 msgstr "Générer"
@@ -3846,7 +3870,7 @@ msgstr "Générer un nouveau brouillon. Déduit de votre allocation mensuelle."
 #: ../../apps/web/src/app/(app)/plan/GenerateFromInboxButton.tsx:217
 #, fuzzy
 #~ msgid "Generate a plan from your inbox"
-#~ msgstr "Générer un plan à partir de votre boîte de réception"
+#~ msgstr "Générer un plan à partir de votre boîte mail"
 
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:467
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:146
@@ -3856,15 +3880,15 @@ msgstr "Générer un nouveau brouillon. Déduit de votre allocation mensuelle."
 msgid "Generate draft reply"
 msgstr "Générer un brouillon de réponse"
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:197
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:221
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:234
 #, fuzzy
 msgid "Generate folders from inbox"
-msgstr "Générer des dossiers depuis la boîte de réception"
+msgstr "Générer des dossiers depuis la boîte mail"
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:217
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:241
 msgid "Generate folders from your inbox"
-msgstr "Générer des dossiers à partir de votre boîte de réception"
+msgstr "Générer des dossiers à partir de votre boîte mail"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:197
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:53
@@ -3872,19 +3896,19 @@ msgstr "Générer des dossiers à partir de votre boîte de réception"
 #: ../../apps/site/src/components/store-tiles/Tile4.tsx:43
 #: ../../apps/site/src/components/store-tiles/Tile4.tsx:54
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:60
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:207
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:251
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:231
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:275
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:484
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:475
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:901
 #, fuzzy
 msgid "Generate from inbox"
-msgstr "Générer depuis la boîte de réception"
+msgstr "Générer depuis la boîte mail"
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:275
 #, fuzzy
 msgid "Generate plan from inbox"
-msgstr "Générer un plan depuis la boîte de réception"
+msgstr "Générer un plan depuis la boîte mail"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:235
 #, fuzzy
@@ -3892,8 +3916,12 @@ msgid "Generate your folders"
 msgstr "Générer vos dossiers"
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
-msgid "Generate your folders."
-msgstr "Générer vos dossiers."
+msgid "Generate your folders <0>in one click</0>."
+msgstr "Créez vos dossiers <0>en un clic</0>."
+
+#: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:10
+#~ msgid "Generate your folders."
+#~ msgstr "Générer vos dossiers."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:98
 #, fuzzy
@@ -3904,17 +3932,17 @@ msgstr "Générer vos dossiers."
 #~ msgid "Generate your plan."
 #~ msgstr "Générez votre plan."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:421
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:412
 msgid "Generating reads your senders, labels, and subject keywords, never message bodies. You review the result before anything is applied."
 msgstr "La génération lit vos expéditeurs, étiquettes et mots-clés de sujet, jamais le corps des messages. Vous examinez le résultat avant toute application."
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:354
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:389
 #: ../ui/src/demo/DemoTaxonomyCanvas.tsx:237
 #, fuzzy
 msgid "Generating…"
 msgstr "Génération en cours…"
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:283
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:307
 #, fuzzy
 msgid "Generation didn't complete."
 msgstr "La génération n'a pas pu être complétée."
@@ -3945,7 +3973,7 @@ msgstr "Obtenir de l'aide avec Aziru"
 
 #: ../../apps/site/src/lib/seo.ts:141
 msgid "Get help with Aziru: contact support, browse the documentation, report a bug, or manage your account and data."
-msgstr "Obtenir de l'aide avec Aziru : contactez le support, consultez la documentation, signalez un bug ou gérez votre compte et vos données."
+msgstr "Obtenir de l'aide avec Aziru : contactez le support, consultez la documentation, signalez un bug ou gérez votre compte et vos données."
 
 #: ../ui/src/AppDownloadBanner.tsx:75
 msgid "Get the app"
@@ -3972,7 +4000,7 @@ msgstr "Assistant IA pour Gmail"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:36
 #~ msgid "Gmail and Outlook filters just slap a label or category on each message and leave it in the same crowded inbox. Aziru reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Aziru is unsure about is flagged for your review."
-#~ msgstr "Les filtres de Gmail et Outlook se contentent d'apposer une étiquette ou une catégorie sur chaque message et les laissent dans la même boîte de réception encombrée. Aziru lit chaque conversation comme le ferait une personne et les organise dans un espace de travail épuré où les conversations connexes sont regroupées, chacune avec la justification de son classement. Vous obtenez ainsi une vue plus sereine, au lieu d'une étiquette supplémentaire perdue au milieu. Les spams et promotions sont automatiquement exclus, sauf si vous les activez dans les paramètres, et tout ce dont Aziru n'est pas certain est signalé pour votre examen."
+#~ msgstr "Les filtres de Gmail et Outlook se contentent d'apposer une étiquette ou une catégorie sur chaque message et les laissent dans la même boîte mail encombrée. Aziru lit chaque conversation comme le ferait une personne et les organise dans un espace de travail épuré où les conversations connexes sont regroupées, chacune avec la justification de son classement. Vous obtenez ainsi une vue plus sereine, au lieu d'une étiquette supplémentaire perdue au milieu. Les spams et promotions sont automatiquement exclus, sauf si vous les activez dans les paramètres, et tout ce dont Aziru n'est pas certain est signalé pour votre examen."
 
 #: ../../apps/extension/src/panel/notificationText.ts:22
 #: ../../apps/mobile/src/data/notificationView.ts:53
@@ -3983,16 +4011,16 @@ msgstr "Gmail déconnecté"
 
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:39
 msgid "Gmail disconnected. Aziru stopped syncing this inbox, so new mail will not appear until you reconnect."
-msgstr "Gmail déconnecté. Aziru a arrêté de synchroniser cette boîte de réception, donc les nouveaux e-mails n'apparaîtront pas tant que vous ne vous serez pas reconnecté."
+msgstr "Gmail déconnecté. Aziru a arrêté de synchroniser cette boîte mail, donc les nouveaux e-mails n'apparaîtront pas tant que vous ne vous serez pas reconnecté."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:32
 #~ msgid "Gmail filters just slap a label on each message and leave it in the same crowded inbox. Aziru reads every thread the way a person would and lays them out in a clean workspace where related threads sit together, each with the reasoning behind its placement, so you get a calmer view instead of one more buried label. Spam and promotions are kept out automatically unless you turn them on in settings, and anything Aziru is unsure about is flagged for your review."
-#~ msgstr "Les filtres Gmail se contentent d'apposer une étiquette sur chaque message et les laissent dans la même boîte de réception encombrée. Aziru lit chaque conversation comme le ferait une personne et les organise dans un espace de travail clair où les conversations similaires sont regroupées, chacune avec la raison de son emplacement, vous offrant une vue plus sereine au lieu d'une étiquette supplémentaire noyée. Les spams et promotions sont automatiquement exclus, sauf si vous les activez dans les paramètres, et tout ce dont Aziru n'est pas sûr est signalé pour votre examen."
+#~ msgstr "Les filtres Gmail se contentent d'apposer une étiquette sur chaque message et les laissent dans la même boîte mail encombrée. Aziru lit chaque conversation comme le ferait une personne et les organise dans un espace de travail clair où les conversations similaires sont regroupées, chacune avec la raison de son emplacement, vous offrant une vue plus sereine au lieu d'une étiquette supplémentaire noyée. Les spams et promotions sont automatiquement exclus, sauf si vous les activez dans les paramètres, et tout ce dont Aziru n'est pas sûr est signalé pour votre examen."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:132
 #, fuzzy
 #~ msgid "Gmail Inbox"
-#~ msgstr "Boîte de réception Gmail"
+#~ msgstr "Boîte mail Gmail"
 
 #: ../ui/src/pricing/planMessages.ts:71
 msgid "Gmail label sync"
@@ -4048,7 +4076,7 @@ msgstr "Aller à la connexion"
 
 #: ../ui/src/demo/demo-seed.ts:381
 msgid "Gold balance: third consignment overdue"
-msgstr "Solde d'or : troisième envoi en souffrance"
+msgstr "Solde d'or : troisième envoi en souffrance"
 
 #: ../../apps/web/src/app/sign-up/WaitlistForm.tsx:56
 #, fuzzy
@@ -4063,7 +4091,7 @@ msgstr "Permissions du compte Google"
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:66
 #, fuzzy
 msgid "Google could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the Gmail callback URL is registered in Google Cloud Console."
-msgstr "Google n'a pas pu finaliser l'autorisation. Le lien a peut-être expiré : veuillez réessayer. Si le problème persiste, vérifiez que l'URL de rappel Gmail est bien enregistrée dans la Google Cloud Console."
+msgstr "Google n'a pas pu finaliser l'autorisation. Le lien a peut-être expiré : veuillez réessayer. Si le problème persiste, vérifiez que l'URL de rappel Gmail est bien enregistrée dans la Google Cloud Console."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:75
 #: ../../apps/mobile/app/sign-in.tsx:65
@@ -4072,12 +4100,12 @@ msgstr "Google n'a pas pu finaliser l'autorisation. Le lien a peut-être expiré
 msgid "Google sign-in failed. Please try again."
 msgstr "La connexion Google a échoué. Veuillez réessayer."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:230
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:232
 #, fuzzy
 msgid "Governor of Byblos"
 msgstr "Gouverneur de Byblos"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:215
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:217
 #, fuzzy
 msgid "Governor of Urushalim"
 msgstr "Gouverneur d'Urushalim"
@@ -4107,7 +4135,11 @@ msgid "Great King,\n"
 "The reports you requested will be prepared before the council convenes. I will have my scribes compile the accounts of the eastern territories and send them ahead by fast courier.\n"
 "\n"
 "In brotherhood,"
-msgstr "Grand Roi,\n\nLes rapports que vous avez demandés seront prêts avant la réunion du conseil. Je ferai compiler les comptes des territoires de l'Est par mes scribes et les enverrai par courrier rapide.\n\nFraternellement,"
+msgstr "Grand Roi,\n"
+"\n"
+"Les rapports que vous avez demandés seront prêts avant la réunion du conseil. Je ferai compiler les comptes des territoires de l'Est par mes scribes et les enverrai par courrier rapide.\n"
+"\n"
+"Fraternellement,"
 
 #: ../../apps/site/src/components/support/SupportContent.tsx:77
 msgid "Guides and answers to common questions"
@@ -4115,8 +4147,8 @@ msgstr "Guides et réponses aux questions fréquentes"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
 #, fuzzy
-msgid "Hand the sorting to Aziru."
-msgstr "Confiez le tri à Aziru."
+#~ msgid "Hand the sorting to Aziru."
+#~ msgstr "Confiez le tri à Aziru."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:96
 msgid "Health"
@@ -4178,21 +4210,21 @@ msgstr "Comment Aziru stocke et protège vos données"
 #: ../../apps/site/src/components/landing/FAQSection.tsx:23
 #, fuzzy
 msgid "How do Aziru's folders work?"
-msgstr "Comment fonctionnent les dossiers Aziru ?"
+msgstr "Comment fonctionnent les dossiers Aziru ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:15
 msgid "How do I know it's safe?"
-msgstr "Comment savoir si c'est sécurisé ?"
+msgstr "Comment savoir si c'est sécurisé ?"
 
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:123
 #, fuzzy
 msgid "How do you want to use this plan?"
-msgstr "Comment souhaitez-vous utiliser ce plan ?"
+msgstr "Comment souhaitez-vous utiliser ce plan ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:19
 #, fuzzy
 msgid "How does Aziru save me time?"
-msgstr "Comment Aziru me fait-il gagner du temps ?"
+msgstr "Comment Aziru me fait-il gagner du temps ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:23
 #, fuzzy
@@ -4201,7 +4233,7 @@ msgstr "Comment Aziru me fait-il gagner du temps ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:35
 msgid "How is Aziru different from Gmail and Outlook filters?"
-msgstr "En quoi Aziru est-il différent des filtres de Gmail et Outlook ?"
+msgstr "En quoi Aziru est-il différent des filtres de Gmail et Outlook ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:31
 #, fuzzy
@@ -4211,7 +4243,7 @@ msgstr "En quoi Aziru est-il différent des filtres de Gmail et Outlook ?"
 #: ../../apps/site/src/components/landing/FAQSection.tsx:55
 #, fuzzy
 msgid "How is Aziru's pricing structured?"
-msgstr "Comment la tarification d'Aziru est-elle structurée ?"
+msgstr "Comment la tarification d'Aziru est-elle structurée ?"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:26
 #: ../../apps/site/src/components/landing/Nav.tsx:49
@@ -4224,15 +4256,15 @@ msgstr "Comment ça marche"
 msgid "How to write a good description"
 msgstr "Comment écrire une bonne description"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:218
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:220
 #, fuzzy
 msgid "I have asked the king for archers in nearly every letter I have ever written, and the reports of raids kept getting buried under tax accounts. Aziru puts anything urgent from the hill country in front of me first. The archers have still not arrived, but my inbox is finally in order."
-msgstr "J'ai demandé des archers au roi dans presque toutes mes lettres, mais les rapports de raids s'engloutissaient sous les comptes fiscaux. Aziru me met en avant toutes les urgences des hauts plateaux. Les archers ne sont toujours pas là, mais ma boîte de réception, elle, est enfin en ordre."
+msgstr "J'ai demandé des archers au roi dans presque toutes mes lettres, mais les rapports de raids s'engloutissaient sous les comptes fiscaux. Aziru me met en avant toutes les urgences des hauts plateaux. Les archers ne sont toujours pas là, mais ma boîte mail, elle, est enfin en ordre."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:233
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:235
 #, fuzzy
 msgid "I have sent sixty-eight letters to Pharaoh and received almost nothing back, so I know something about a hopeless inbox. Aziru files my pleas, my grain shortages, and my warnings about the sons of Abdi-Ashirta into their own folders. I remain besieged, but I am besieged in an organized way."
-msgstr "J'ai envoyé soixante-huit lettres au Pharaon et n'ai presque rien reçu en retour, alors je sais ce qu'est une boîte de réception désespérée. Aziru classe mes suppliques, mes pénuries de céréales et mes avertissements concernant les fils d'Abdi-Ashirta dans leurs propres dossiers. Je suis toujours assiégé, mais au moins, c'est de manière organisée."
+msgstr "J'ai envoyé soixante-huit lettres au Pharaon et n'ai presque rien reçu en retour, alors je sais ce qu'est une boîte mail désespérée. Aziru classe mes suppliques, mes pénuries de céréales et mes avertissements concernant les fils d'Abdi-Ashirta dans leurs propres dossiers. Je suis toujours assiégé, mais au moins, c'est de manière organisée."
 
 #: ../ui/src/demo/demo-seed.ts:440
 msgid "I write to propose that we formalise our friendship."
@@ -4324,24 +4356,24 @@ msgstr "Dans Gmail et Outlook"
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:73
 #, fuzzy
 msgid "Inbox"
-msgstr "Boîte de réception"
+msgstr "Boîte mail"
 
 #: ../../apps/mobile/src/components/taxonomy/NodeFormSheet.tsx:184
 msgid "Inbox (entry point)"
-msgstr "Boîte de réception (point d'entrée)"
+msgstr "Boîte mail (point d'entrée)"
 
 #: ../../apps/extension/src/panel/notificationText.ts:24
 #: ../../apps/mobile/src/data/notificationView.ts:61
 #: ../../apps/web/src/lib/notifications.ts:93
 msgid "Inbox import complete"
-msgstr "Importation de la boîte de réception terminée"
+msgstr "Importation de la boîte mail terminée"
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:145
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:237
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:250
 #, fuzzy
 msgid "Inbox sync"
-msgstr "Synchronisation de la boîte de réception"
+msgstr "Synchronisation de la boîte mail"
 
 #: ../../apps/site/src/lib/seo.ts:53
 msgid "inbox zero"
@@ -4375,7 +4407,7 @@ msgstr "Adresse e-mail ou mot de passe incorrects."
 
 #: ../ui/src/demo/demo-seed.ts:551
 msgid "Informal message with no clear category: personal visit or political audience? Tone is personal but sender is a known vassal governor. Routed to Other with low confidence."
-msgstr "Message informel sans catégorie claire : visite personnelle ou audience politique ? Le ton est personnel mais l'expéditeur est un gouverneur vassal connu. Dirigé vers Autre avec une faible confiance."
+msgstr "Message informel sans catégorie claire : visite personnelle ou audience politique ? Le ton est personnel mais l'expéditeur est un gouverneur vassal connu. Dirigé vers Autre avec une faible confiance."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:116
 msgid "Infrastructure"
@@ -4418,15 +4450,15 @@ msgstr "Installez l'extension gratuite pour navigateur et commencez à trier vos
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 #~ msgid "Instead of scanning a crowded inbox, you open Aziru and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Sorting that used to take an hour takes minutes."
-#~ msgstr "Au lieu de parcourir une boîte de réception surchargée, vous ouvrez Aziru et trouvez vos conversations déjà regroupées dans les dossiers qui vous intéressent. Vous pouvez ainsi traiter les questions clients, les mises à jour d'investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est accompagnée d'un dossier suggéré et de sa justification, et vous pouvez rédiger une réponse ou accéder directement à la conversation dans Gmail en un clic. Le tri qui prenait auparavant une heure ne prend plus que quelques minutes."
+#~ msgstr "Au lieu de parcourir une boîte mail surchargée, vous ouvrez Aziru et trouvez vos conversations déjà regroupées dans les dossiers qui vous intéressent. Vous pouvez ainsi traiter les questions clients, les mises à jour d'investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est accompagnée d'un dossier suggéré et de sa justification, et vous pouvez rédiger une réponse ou accéder directement à la conversation dans Gmail en un clic. Le tri qui prenait auparavant une heure ne prend plus que quelques minutes."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:16
 #~ msgid "Instead of scanning a crowded inbox, you open Aziru and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in Gmail with one click. Triage that used to take an hour takes minutes."
-#~ msgstr "Au lieu de scanner une boîte de réception saturée, ouvrez Aziru : vos conversations sont déjà regroupées dans les dossiers qui vous importent. Traitez ainsi les questions clients, les mises à jour investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est associée à un dossier suggéré et sa justification. Rédigez une réponse ou accédez directement à la conversation dans Gmail en un clic. Un tri qui prenait une heure ne prend plus que quelques minutes."
+#~ msgstr "Au lieu de scanner une boîte mail saturée, ouvrez Aziru : vos conversations sont déjà regroupées dans les dossiers qui vous importent. Traitez ainsi les questions clients, les mises à jour investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est associée à un dossier suggéré et sa justification. Rédigez une réponse ou accédez directement à la conversation dans Gmail en un clic. Un tri qui prenait une heure ne prend plus que quelques minutes."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:20
 msgid "Instead of scanning a crowded inbox, you open Aziru and find your threads already grouped into the folders you care about, so you can work through customer questions, investor updates, or hiring replies in focused batches. Each thread comes with a suggested folder and the reasoning behind it, and you can draft a reply or jump straight to the thread in your inbox with one click. Sorting that used to take an hour takes minutes."
-msgstr "Au lieu de parcourir une boîte de réception encombrée, ouvrez Aziru et trouvez vos conversations déjà regroupées dans les dossiers qui vous intéressent. Vous pouvez ainsi traiter les questions des clients, les mises à jour des investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est accompagnée d'un dossier suggéré et de la justification de ce choix. Vous pouvez rédiger une réponse ou accéder directement à la conversation dans votre boîte de réception en un clic. Ce qui prenait une heure de tri s'effectue désormais en quelques minutes."
+msgstr "Au lieu de parcourir une boîte mail encombrée, ouvrez Aziru et trouvez vos conversations déjà regroupées dans les dossiers qui vous intéressent. Vous pouvez ainsi traiter les questions des clients, les mises à jour des investisseurs ou les réponses de recrutement par lots ciblés. Chaque conversation est accompagnée d'un dossier suggéré et de la justification de ce choix. Vous pouvez rédiger une réponse ou accéder directement à la conversation dans votre boîte mail en un clic. Ce qui prenait une heure de tri s'effectue désormais en quelques minutes."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:39
 #, fuzzy
@@ -4464,12 +4496,12 @@ msgstr "Lien de réinitialisation invalide ou manquant."
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:579
 #, fuzzy
 msgid "Invalid taxonomy file: {0}"
-msgstr "Fichier de taxonomie invalide : {0}"
+msgstr "Fichier de taxonomie invalide : {0}"
 
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:573
 #, fuzzy
 msgid "Invalid taxonomy file: {detail}"
-msgstr "Fichier de taxonomie invalide : {detail}"
+msgstr "Fichier de taxonomie invalide : {detail}"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:170
 #: ../ui/src/demo/demo-seed.ts:35
@@ -4498,7 +4530,7 @@ msgstr "Inviter des collaborateurs"
 
 #: ../../apps/extension/src/panel/SettingsOverlay.tsx:208
 msgid "Invite teammates to this workspace to triage the inbox together."
-msgstr "Invitez vos coéquipiers à cet espace de travail pour trier la boîte de réception ensemble."
+msgstr "Invitez vos coéquipiers à cet espace de travail pour trier la boîte mail ensemble."
 
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:70
 #, fuzzy
@@ -4530,11 +4562,11 @@ msgstr "Factures, reçus et questions de facturation des clients et fournisseurs
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:11
 msgid "Is connecting my inbox to Aziru safe?"
-msgstr "La connexion de ma boîte de réception à Aziru est-elle sûre ?"
+msgstr "La connexion de ma boîte mail à Aziru est-elle sûre ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:32
 msgid "It is the best way to use Aziru, and it is where most people spend their time: the extension puts Aziru in a side panel next to Gmail and Outlook, so you can sort, read, and draft without leaving your inbox. Everything is also available in the web app at app.aziru.email, and both work on the same account, so you can install the extension whenever you like."
-msgstr "C'est la meilleure façon d'utiliser Aziru, et c'est là que la plupart des utilisateurs passent leur temps : l'extension intègre Aziru dans un panneau latéral à côté de Gmail et Outlook, pour que vous puissiez trier, lire et rédiger sans quitter votre boîte de réception. Tout est également disponible dans l'application web sur app.aziru.email, et les deux fonctionnent sur le même compte, vous pouvez donc installer l'extension quand vous le souhaitez."
+msgstr "C'est la meilleure façon d'utiliser Aziru, et c'est là que la plupart des utilisateurs passent leur temps : l'extension intègre Aziru dans un panneau latéral à côté de Gmail et Outlook, pour que vous puissiez trier, lire et rédiger sans quitter votre boîte mail. Tout est également disponible dans l'application web sur app.aziru.email, et les deux fonctionnent sur le même compte, vous pouvez donc installer l'extension quand vous le souhaitez."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:47
 #, fuzzy
@@ -4605,7 +4637,7 @@ msgstr "Conserver l'abonnement"
 #: ../../apps/web/src/app/(app)/upgrade/WorkspaceChoiceModal.tsx:25
 #, fuzzy
 msgid "Keep your current inbox, taxonomy, and sorting history."
-msgstr "Conserver votre boîte de réception, taxonomie et historique de tri actuels."
+msgstr "Conserver votre boîte mail, taxonomie et historique de tri actuels."
 
 #: ../../apps/web/src/components/CreateWorkspaceDialog.tsx:131
 #, fuzzy
@@ -4619,26 +4651,26 @@ msgstr "Le roi Aziru a consulté toutes les tablettes d'argile de ses archives, 
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:95
 #~ msgid "King Aziru is ready to sort your email threads. Connect your account to get started. Aziru connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-#~ msgstr "Le Roi Aziru est prêt à trier vos conversations e-mail. Connectez votre compte pour commencer. Aziru se connecte avec un accès <0>en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte de réception reste la vôtre."
+#~ msgstr "Le Roi Aziru est prêt à trier vos conversations e-mail. Connectez votre compte pour commencer. Aziru se connecte avec un accès <0>en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte mail reste la vôtre."
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:41
 #~ msgid "King Aziru is ready to sort your email threads. Connect your Gmail account to get started. Aziru connects with <0>read-only access</0> and <1>never sends, deletes, or changes anything</1>. Your inbox stays yours."
-#~ msgstr "Le roi Aziru est prêt à trier vos conversations e-mail. Connectez votre compte Gmail pour commencer. Aziru se connecte avec un <0>accès en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte de réception reste la vôtre."
+#~ msgstr "Le roi Aziru est prêt à trier vos conversations e-mail. Connectez votre compte Gmail pour commencer. Aziru se connecte avec un <0>accès en lecture seule</0> et <1>n'envoie, ne supprime ni ne modifie jamais rien</1>. Votre boîte mail reste la vôtre."
 
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:91
 #~ msgid "King of Amurru"
 #~ msgstr "Roi d'Amourrou"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:183
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:185
 msgid "King of Babylon"
 msgstr "Roi de Babylone"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:245
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:247
 #, fuzzy
 msgid "King of Hatti"
 msgstr "Roi de Hatti"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:199
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:201
 msgid "King of Mitanni"
 msgstr "Roi de Mitanni"
 
@@ -4654,6 +4686,10 @@ msgstr "Labo et collaborateurs"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:199
 msgid "Lab group updates, collaborator threads, and experiment coordination."
 msgstr "Mises à jour du groupe de labo, conversations avec les collaborateurs et coordination des expériences."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:238
+msgid "Labaya"
+msgstr "Labaya"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:78
 #, fuzzy
@@ -4684,7 +4720,7 @@ msgstr "Dernière synchronisation le {0}"
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:226
 #, fuzzy
 msgid "Last verified: {0}"
-msgstr "Dernière vérification : {0}"
+msgstr "Dernière vérification : {0}"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:374
 #, fuzzy
@@ -4693,8 +4729,13 @@ msgstr "Dernière vérification : {0}"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:345
 #, fuzzy
-msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
-msgstr "Créez des dossiers comme <0>Clients</0>, <1>Investisseurs</1>, <2>Recrutement</2>. Une simple phrase pour chacun, et le tour est joué."
+#~ msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. A simple sentence each: that's the whole setup."
+#~ msgstr "Créez des dossiers comme <0>Clients</0>, <1>Investisseurs</1>, <2>Recrutement</2>. Une simple phrase pour chacun, et le tour est joué."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:345
+#, fuzzy
+msgid "Lay out folders like <0>Customers</0>, <1>Investors</1>, <2>Hiring</2>. Generate them in one click, use a template or write them yourself. That's the whole setup."
+msgstr "Organisez vos dossiers par catégorie : <0>Clients</0>, <1>Investisseurs</1>, <2>Recrutement</2>. Créez-les en un clic, à partir d'un modèle ou en les rédigeant vous-même. Et le tour est joué."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:32
 msgid "Leads"
@@ -4727,10 +4768,14 @@ msgstr "Prêteurs et hypothèque"
 msgid "Lesson Planning"
 msgstr "Planification des cours"
 
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:8
+msgid "Let <0>Aziru</0> handle it."
+msgstr "Laissez <0>Aziru</0> s'en charger."
+
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:112
 #, fuzzy
 msgid "Let Aziru generate a set that fits your own inbox, or start from a template. One click either way, and you can change them any time."
-msgstr "Laissez Aziru générer une configuration de dossiers personnalisée pour votre boîte de réception, ou utilisez un modèle. Dans les deux cas, un clic suffit, et vous pouvez les modifier quand vous le souhaitez."
+msgstr "Laissez Aziru générer une configuration de dossiers personnalisée pour votre boîte mail, ou utilisez un modèle. Dans les deux cas, un clic suffit, et vous pouvez les modifier quand vous le souhaitez."
 
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:94
 #~ msgid "Letters reached me from Pharaoh in the south and the Hittites in the north, and I could answer only one lord at a time. Aziru puts the mail that cannot wait at the top of my pile and drafts my reply, ready for my seal. Nothing from the King goes unanswered now."
@@ -4751,7 +4796,7 @@ msgstr "Clair"
 
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:193
 msgid "List the kinds of emails that belong here: senders, topics, keywords. Aim for a full sentence."
-msgstr "Listez les types d'e-mails qui appartiennent ici : expéditeurs, sujets, mots-clés. Visez une phrase complète."
+msgstr "Listez les types d'e-mails qui appartiennent ici : expéditeurs, sujets, mots-clés. Visez une phrase complète."
 
 #: ../../apps/web/src/app/(app)/plan/TaxonomyClient.tsx:429
 #, fuzzy
@@ -4860,7 +4905,7 @@ msgstr "Gestion"
 #: ../ui/src/i18n/taxonomy-template-messages.ts:45
 #, fuzzy
 msgid "Manager emails: one-on-ones, performance evaluations, and career feedback."
-msgstr "E-mails du manager : entretiens individuels, évaluations de performance et retours sur carrière."
+msgstr "E-mails du manager : entretiens individuels, évaluations de performance et retours sur carrière."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:41
 #~ msgid "Manager emails: one-on-ones, performance reviews, and feedback."
@@ -5011,7 +5056,7 @@ msgstr "Autorisations du compte Microsoft"
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:94
 msgid "Microsoft could not complete the authorization. The link may have expired: please try again. If the problem persists, check that the redirect URI is registered on the app registration."
-msgstr "Microsoft n'a pas pu finaliser l'autorisation. Le lien a peut-être expiré : veuillez réessayer. Si le problème persiste, vérifiez que l'URI de redirection est enregistré dans l'enregistrement de l'application."
+msgstr "Microsoft n'a pas pu finaliser l'autorisation. Le lien a peut-être expiré : veuillez réessayer. Si le problème persiste, vérifiez que l'URI de redirection est enregistré dans l'enregistrement de l'application."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:97
 #, fuzzy
@@ -5025,7 +5070,7 @@ msgstr "Migrer et appliquer"
 #: ../../apps/web/src/components/Sidebar.tsx:35
 #, fuzzy
 msgid "Mock Inbox"
-msgstr "Boîte de réception factice"
+msgstr "Boîte mail factice"
 
 #: ../ui/src/pricing/planMessages.ts:70
 msgid "Model quality"
@@ -5053,7 +5098,7 @@ msgstr "Mensuel"
 msgid "Monthly sorting limit reached"
 msgstr "Limite de tri mensuelle atteinte"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:293
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:295
 msgid "More reviews"
 msgstr "Plus d'avis"
 
@@ -5107,7 +5152,7 @@ msgstr "Déplacer vers…"
 msgid "Moved to {folderName}"
 msgstr "Déplacé vers {folderName}"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:202
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:204
 #, fuzzy
 msgid "My letters to Egypt are long, and the replies are longer, and for years I could not tell a dowry inventory from a note about the statue of Shaushka. Aziru keeps the gold I am owed in one folder and the pleasantries in another. Pharaoh still sends less gold than promised, but at least I now know exactly which tablet says so."
 msgstr "Mes lettres à l'Égypte sont longues, et les réponses encore plus. Pendant des années, je n'arrivais pas à distinguer un inventaire de dot d'une note sur la statue de Shaushka. Aziru garde l'or qu'on me doit dans un dossier et les amabilités dans un autre. Le Pharaon envoie toujours moins d'or que promis, mais au moins, je sais maintenant exactement quelle tablette le mentionne."
@@ -5221,7 +5266,7 @@ msgstr "Les nouvelles conversations apparaîtront au fur et à mesure qu'elles s
 #: ../../apps/extension/src/auth/SignInScreen.tsx:168
 #, fuzzy
 msgid "New to Aziru? <0>Create an account</0>"
-msgstr "Nouveau sur Aziru ? <0>Créer un compte</0>"
+msgstr "Nouveau sur Aziru ? <0>Créer un compte</0>"
 
 #: ../../apps/mobile/src/components/NewWorkspaceSheet.tsx:162
 msgid "New workspace"
@@ -5292,16 +5337,16 @@ msgstr "Aucun dossier pour l'instant"
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:265
 #, fuzzy
 #~ msgid "No Gmail inbox connected to this workspace."
-#~ msgstr "Aucune boîte de réception Gmail connectée à cet espace de travail."
+#~ msgstr "Aucune boîte mail Gmail connectée à cet espace de travail."
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:118
 #, fuzzy
 msgid "No Gmail inbox connected. Connect your account to start syncing."
-msgstr "Aucune boîte de réception Gmail connectée. Connectez votre compte pour lancer la synchronisation."
+msgstr "Aucune boîte mail Gmail connectée. Connectez votre compte pour lancer la synchronisation."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:447
 msgid "No inbox connected to this workspace."
-msgstr "Aucune boîte de réception connectée à cet espace de travail."
+msgstr "Aucune boîte mail connectée à cet espace de travail."
 
 #: ../../apps/mobile/app/(app)/(tabs)/plan/index.tsx:376
 #, fuzzy
@@ -5338,7 +5383,7 @@ msgstr "Fini les e-mails en solo. Attribuez chaque conversation à un responsabl
 #: ../../apps/site/src/components/landing/CollaborationSection.tsx:180
 #, fuzzy
 msgid "No one emails alone. Assign each thread an owner, and talk it through in comments. Try it below: write as {akhenatenName} or as {tutuName}."
-msgstr "Personne n'est seul face à ses e-mails. Désignez un responsable pour chaque conversation et discutez-en dans les commentaires. Essayez ci-dessous : écrivez en tant que {akhenatenName} ou {tutuName}."
+msgstr "Personne n'est seul face à ses e-mails. Désignez un responsable pour chaque conversation et discutez-en dans les commentaires. Essayez ci-dessous : écrivez en tant que {akhenatenName} ou {tutuName}."
 
 #: ../../apps/mobile/src/components/BlacklistSheet.tsx:146
 msgid "No senders blocked yet."
@@ -5346,7 +5391,7 @@ msgstr "Aucun expéditeur bloqué pour l'instant."
 
 #: ../ui/src/i18n/generation-reason-messages.ts:16
 msgid "No significant new mail since your last generation, so the result would be the same. Available again once your inbox grows."
-msgstr "Aucun nouveau message significatif depuis votre dernière génération, le résultat serait donc identique. Disponible à nouveau une fois que votre boîte de réception se sera enrichie."
+msgstr "Aucun nouveau message significatif depuis votre dernière génération, le résultat serait donc identique. Disponible à nouveau une fois que votre boîte mail se sera enrichie."
 
 #: ../../apps/web/src/app/admin/waitlist/page.tsx:58
 #, fuzzy
@@ -5441,12 +5486,12 @@ msgstr "Non inclus · <0>passer à une version supérieure pour ajouter</0>"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:28
 #~ msgid "Not necessarily. Aziru can generate a complete plan for you from your inbox, with one click. You can also start from a ready-made template. Most people generate a plan, rename two or three folders, and they're done."
-#~ msgstr "Pas nécessairement. Aziru peut générer un plan complet à partir de votre boîte de réception, en un clic. Vous pouvez aussi partir d'un modèle prêt à l'emploi. La plupart des utilisateurs génèrent un plan, renomment deux ou trois dossiers, et le tour est joué."
+#~ msgstr "Pas nécessairement. Aziru peut générer un plan complet à partir de votre boîte mail, en un clic. Vous pouvez aussi partir d'un modèle prêt à l'emploi. La plupart des utilisateurs génèrent un plan, renomment deux ou trois dossiers, et le tour est joué."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:28
 #, fuzzy
 msgid "Not necessarily. Aziru can generate a complete set of folders for you from your inbox, with one click. You can also start from a ready-made template. Most people generate their folders, rename two or three of them, and they're done."
-msgstr "Pas nécessairement. Aziru peut générer pour vous un ensemble complet de dossiers à partir de votre boîte de réception, en un seul clic. Vous pouvez également partir d'un modèle prêt à l'emploi. La plupart des utilisateurs génèrent leurs dossiers, en renomment deux ou trois, et le tour est joué."
+msgstr "Pas nécessairement. Aziru peut générer pour vous un ensemble complet de dossiers à partir de votre boîte mail, en un seul clic. Vous pouvez également partir d'un modèle prêt à l'emploi. La plupart des utilisateurs génèrent leurs dossiers, en renomment deux ou trois, et le tour est joué."
 
 #: ../../apps/mobile/app/(app)/account.tsx:133
 msgid "Not set"
@@ -5487,7 +5532,7 @@ msgstr "Notifications, {unread} non lues"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:76
 msgid "Official university emails: registrar, student services, and housing."
-msgstr "E-mails officiels de l'université : service des inscriptions, services aux étudiants et logement."
+msgstr "E-mails officiels de l'université : service des inscriptions, services aux étudiants et logement."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:121
 #, fuzzy
@@ -5506,16 +5551,16 @@ msgstr "Une seule connexion suffit pour créer votre compte et connecter Gmail o
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:141
 #~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you build your sorting plan. Aziru never sends or deletes mail."
-#~ msgstr "Une seule connexion suffit pour créer votre compte, connecter votre boîte de réception Gmail ou Outlook et élaborer votre plan de tri. Aziru n'envoie ni ne supprime jamais d'e-mails."
+#~ msgstr "Une seule connexion suffit pour créer votre compte, connecter votre boîte mail Gmail ou Outlook et élaborer votre plan de tri. Aziru n'envoie ni ne supprime jamais d'e-mails."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:120
 #~ msgid "One sign-in creates your account, connects your Gmail or Outlook inbox, and lets you set up your folders. Aziru never sends or deletes mail."
-#~ msgstr "Une seule connexion crée votre compte, connecte votre boîte de réception Gmail ou Outlook, et vous permet de configurer vos dossiers. Aziru n'envoie ni ne supprime jamais de courriels."
+#~ msgstr "Une seule connexion crée votre compte, connecte votre boîte mail Gmail ou Outlook, et vous permet de configurer vos dossiers. Aziru n'envoie ni ne supprime jamais de courriels."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:100
 #, fuzzy
 #~ msgid "One sign-in creates your account, connects your inbox, and lets you build your sorting plan. Aziru never sends or deletes mail."
-#~ msgstr "Une seule connexion crée votre compte, connecte votre boîte de réception et vous permet de créer votre plan de tri. Aziru n'envoie ni ne supprime jamais de messages."
+#~ msgstr "Une seule connexion crée votre compte, connecte votre boîte mail et vous permet de créer votre plan de tri. Aziru n'envoie ni ne supprime jamais de messages."
 
 #: ../ui/src/demo/demo-seed.ts:510
 msgid "Ongoing thread with a known city governor raising a recurring supply issue. Escalatory tone and repeated follow-ups match the Support folder."
@@ -5561,7 +5606,7 @@ msgstr "Ouvrir Aziru"
 #: ../panel/src/queue/QueueRow.tsx:54
 #, fuzzy
 msgid "Open conversation: {subject}"
-msgstr "Ouvrir la conversation : {subject}"
+msgstr "Ouvrir la conversation : {subject}"
 
 #: ../panel/src/InjectedThreadPanel.tsx:451
 msgid "Open in Aziru"
@@ -5604,7 +5649,7 @@ msgstr "Ouvrir le panneau Aziru"
 msgid "Open the Aziru side panel"
 msgstr "Ouvrir le panneau latéral Aziru"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:543
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:534
 #, fuzzy
 msgid "Open the folder editor"
 msgstr "Ouvrir l'éditeur de dossiers"
@@ -5635,7 +5680,7 @@ msgstr "Ouvrez votre boîte mail. <0>Elle est déjà triée.</0>"
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:229
 #, fuzzy
 msgid "Open your inbox. It's already sorted."
-msgstr "Ouvrez votre boîte de réception. Elle est déjà triée."
+msgstr "Ouvrez votre boîte mail. Elle est déjà triée."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:13
 msgid "Open your inbox.<0/><1>It's already sorted.</1>"
@@ -5679,11 +5724,11 @@ msgstr "Facultatif. Appliqué lors de la génération de brouillons de réponses
 
 #: ../../apps/web/src/app/(app)/folders/TaxonomyClient.tsx:573
 #~ msgid "Optional. Sets this folder's chip and icon color across your inbox. Default assigns a stable color automatically."
-#~ msgstr "Facultatif. Définit la couleur de la pastille et de l'icône de ce dossier dans votre boîte de réception. Par défaut, une couleur stable est attribuée automatiquement."
+#~ msgstr "Facultatif. Définit la couleur de la pastille et de l'icône de ce dossier dans votre boîte mail. Par défaut, une couleur stable est attribuée automatiquement."
 
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:240
 msgid "Optional. Sets this folder’s chip and icon color across your inbox. Default assigns a stable color automatically."
-msgstr "Facultatif. Définit la couleur de la puce et de l'icône de ce dossier dans votre boîte de réception. Par défaut, une couleur stable est attribuée automatiquement."
+msgstr "Facultatif. Définit la couleur de la puce et de l'icône de ce dossier dans votre boîte mail. Par défaut, une couleur stable est attribuée automatiquement."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:138
 #: ../../apps/mobile/src/auth/GoogleSignInButton.tsx:17
@@ -5696,7 +5741,7 @@ msgstr "ou"
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:389
 #, fuzzy
 msgid "Or connect a different inbox:"
-msgstr "Ou connecter une autre boîte de réception :"
+msgstr "Ou connecter une autre boîte mail :"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:131
 #, fuzzy
@@ -5754,7 +5799,7 @@ msgstr "A passé l'examen de sécurité de Google"
 #: ../ui/src/demo/demo-seed.ts:541
 #: ../ui/src/demo/demo-seed.ts:559
 msgid "Passing through the Delta: free to meet?"
-msgstr "De passage dans le Delta : disponible pour une rencontre ?"
+msgstr "De passage dans le Delta : disponible pour une rencontre ?"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:152
 #: ../../apps/mobile/app/sign-in.tsx:106
@@ -5772,11 +5817,11 @@ msgstr "Mot de passe (min. {PASSWORD_MIN_LENGTH} caractères)"
 #: ../../apps/web/src/app/reset-password/page.tsx:28
 #, fuzzy
 msgid "Password set! You can now sign in."
-msgstr "Mot de passe défini ! Vous pouvez maintenant vous connecter."
+msgstr "Mot de passe défini ! Vous pouvez maintenant vous connecter."
 
 #: ../../apps/web/src/app/reset-password/page.tsx:30
 msgid "Password updated! You can now sign in."
-msgstr "Mot de passe mis à jour ! Vous pouvez maintenant vous connecter."
+msgstr "Mot de passe mis à jour ! Vous pouvez maintenant vous connecter."
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:50
 #, fuzzy
@@ -5842,7 +5887,7 @@ msgstr "Personnes ayant accès à cet espace de travail."
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:172
 #: ../../apps/web/src/app/(app)/settings/DeleteWorkspaceSection.tsx:28
 msgid "Permanently delete this workspace and all of its data: emails, plan, settings, and Gmail connection. This cannot be undone."
-msgstr "Supprimer définitivement cet espace de travail et toutes ses données : e-mails, plan, paramètres et connexion Gmail. Cette action est irréversible."
+msgstr "Supprimer définitivement cet espace de travail et toutes ses données : e-mails, plan, paramètres et connexion Gmail. Cette action est irréversible."
 
 #: ../../apps/mobile/app/(app)/account.tsx:80
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:108
@@ -5929,7 +5974,7 @@ msgstr "Correspondance personnelle et e-mails non académiques pour la vie quoti
 msgid "Pharaoh"
 msgstr "Pharaoh"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:170
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:172
 #, fuzzy
 msgid "Pharaoh of Egypt"
 msgstr "Pharaon d'Égypte"
@@ -5995,11 +6040,11 @@ msgstr "Questions et messages avant-vente de la part de potentiels acheteurs con
 #: ../ui/src/pricing/planMessages.ts:112
 #, fuzzy
 msgid "Prefer to self-host?"
-msgstr "Vous préférez l'auto-hébergement ?"
+msgstr "Vous préférez l'auto-hébergement ?"
 
 #: ../../apps/site/src/components/landing/FinalCTASection.tsx:26
 msgid "Prefer to self-host? It's open source:<0/> <1>clone it and run it free</1>."
-msgstr "Vous préférez l'auto-hébergement ? C'est open source :<0/> <1>clonez-le et exécutez-le gratuitement</1>."
+msgstr "Vous préférez l'auto-hébergement ? C'est open source :<0/> <1>clonez-le et exécutez-le gratuitement</1>."
 
 #: ../ui/src/demo/demo-seed.ts:598
 msgid "Prepare your accounts before the council convenes."
@@ -6025,7 +6070,7 @@ msgstr "Aperçu"
 msgid "Previous preview"
 msgstr "Aperçu précédent"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:263
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:265
 #, fuzzy
 msgid "Previous reviews"
 msgstr "Avis précédents"
@@ -6089,8 +6134,8 @@ msgstr "Confidentialité garantie"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:238
 #, fuzzy
-msgid "Priya"
-msgstr "Priya"
+#~ msgid "Priya"
+#~ msgstr "Priya"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:39
 #: ../../apps/mobile/app/(app)/subscription.tsx:40
@@ -6151,7 +6196,7 @@ msgstr "Annonces immobilières, mises à jour MLS, valorisation et planification
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:86
 msgid "Proposed folders. Applying replaces your current plan; you can edit everything afterward."
-msgstr "Dossiers proposés. L'application remplace votre plan actuel ; tout est modifiable ensuite."
+msgstr "Dossiers proposés. L'application remplace votre plan actuel ; tout est modifiable ensuite."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:188
 #, fuzzy
@@ -6216,7 +6261,7 @@ msgstr "Retri en cours…"
 
 #: ../ui/src/demo/demo-seed.ts:500
 msgid "Re: Grain shipment: third delay this season"
-msgstr "Re: Expédition de céréales : troisième retard cette saison"
+msgstr "Re: Expédition de céréales : troisième retard cette saison"
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:228
 msgid "Re: Q3 renewal"
@@ -6238,12 +6283,12 @@ msgstr "Réactiver"
 #: ../ui/src/plan-setup/PlanSetupDialog.tsx:331
 #, fuzzy
 #~ msgid "Reading your inbox and building a plan. This can take a moment."
-#~ msgstr "Lecture de votre boîte de réception et création d'un plan. Cela peut prendre un instant."
+#~ msgstr "Lecture de votre boîte mail et création d'un plan. Cela peut prendre un instant."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:439
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:430
 #, fuzzy
 msgid "Reading your inbox and building your folders. This can take a moment."
-msgstr "Lecture de votre boîte de réception et création de vos dossiers. Cela peut prendre un instant."
+msgstr "Lecture de votre boîte mail et création de vos dossiers. Cela peut prendre un instant."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:205
 msgid "Real Estate Agent"
@@ -6272,7 +6317,7 @@ msgstr "Recommandé"
 #: ../ui/src/taxonomy-editor/TaxonomyEditor.tsx:1077
 #, fuzzy
 msgid "Recommended for your inbox"
-msgstr "Recommandé pour votre boîte de réception"
+msgstr "Recommandé pour votre boîte mail"
 
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
 msgid "Reconnect"
@@ -6301,17 +6346,17 @@ msgstr "Reconnecter Outlook"
 
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:82
 msgid "Reconnect your {providerName} inbox"
-msgstr "Reconnecter votre boîte de réception {providerName}"
+msgstr "Reconnecter votre boîte mail {providerName}"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:73
 #, fuzzy
 msgid "Reconnect your Gmail inbox"
-msgstr "Reconnecter votre boîte de réception Gmail"
+msgstr "Reconnecter votre boîte mail Gmail"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:71
 #, fuzzy
 msgid "Reconnect your Outlook inbox"
-msgstr "Reconnecter votre boîte de réception Outlook"
+msgstr "Reconnecter votre boîte mail Outlook"
 
 #: ../../apps/extension/src/panel/ConnectMailCta.tsx:124
 #: ../../apps/mobile/src/components/emails/DisconnectedBanner.tsx:46
@@ -6359,7 +6404,7 @@ msgstr "Actualiser"
 #~ msgstr "Actualiser après le {refreshDate} pour charger plus."
 
 #: ../../apps/mobile/src/components/DraftSheet.tsx:127
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:348
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:383
 #: ../ui/src/emails/SuggestedDraftCard.tsx:126
 #, fuzzy
 msgid "Regenerate"
@@ -6372,7 +6417,7 @@ msgstr "Versions"
 
 #: ../../apps/mobile/app/forgot-password.tsx:115
 msgid "Remembered it? <0>Sign in</0>"
-msgstr "Vous vous en souvenez ? <0>Connectez-vous</0>"
+msgstr "Vous vous en souvenez ? <0>Connectez-vous</0>"
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:158
 #, fuzzy
@@ -6409,7 +6454,7 @@ msgstr "Supprimez ses sous-dossiers avant de supprimer celui-ci."
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:31
 #, fuzzy
 msgid "Remove the Gmail connection, delete all synced emails, and reset the taxonomy to Inbox only. Your workspace and account are kept. This cannot be undone."
-msgstr "Supprimer la connexion Gmail, supprimer tous les e-mails synchronisés et réinitialiser la taxonomie à la boîte de réception uniquement. Votre espace de travail et votre compte sont conservés. Cette action est irréversible."
+msgstr "Supprimer la connexion Gmail, supprimer tous les e-mails synchronisés et réinitialiser la taxonomie à la boîte mail uniquement. Votre espace de travail et votre compte sont conservés. Cette action est irréversible."
 
 #: ../../apps/web/src/app/(app)/settings/TeamMembersSection.tsx:158
 #, fuzzy
@@ -6495,7 +6540,7 @@ msgstr "Échec de la réanalyse"
 #: ../ui/src/settings/GmailSyncSettingsSection.tsx:115
 #, fuzzy
 msgid "Rescan inbox"
-msgstr "Analyser à nouveau la boîte de réception"
+msgstr "Analyser à nouveau la boîte mail"
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
 #~ msgid "Rescan queued — threads will update shortly."
@@ -6504,7 +6549,7 @@ msgstr "Analyser à nouveau la boîte de réception"
 #: ../ui/src/settings/GmailSyncSettingsSection.tsx:119
 #, fuzzy
 msgid "Rescan queued: threads will update shortly."
-msgstr "Réanalyse mise en file d'attente : les conversations seront mises à jour sous peu."
+msgstr "Réanalyse mise en file d'attente : les conversations seront mises à jour sous peu."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:158
 #, fuzzy
@@ -6545,7 +6590,7 @@ msgstr "Réinitialiser l'espace de travail"
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:144
 #, fuzzy
 msgid "Reset workspace?"
-msgstr "Réinitialiser l'espace de travail ?"
+msgstr "Réinitialiser l'espace de travail ?"
 
 #: ../../apps/mobile/app/(app)/thread/[threadId].tsx:156
 msgid "Resets {draftResetDate}"
@@ -6567,7 +6612,7 @@ msgstr "Redimensionner la barre latérale des dossiers"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:297
 #~ msgid "Resize the split between the inbox and Aziru"
-#~ msgstr "Redimensionner la séparation entre la boîte de réception et Aziru"
+#~ msgstr "Redimensionner la séparation entre la boîte mail et Aziru"
 
 #: ../ui/src/emails/ColumnResizeHandle.tsx:32
 #, fuzzy
@@ -6599,7 +6644,7 @@ msgstr "Demandes de retour, approbations de remboursement et étiquettes d'écha
 msgid "Returns"
 msgstr "Retours"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:281
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:283
 #, fuzzy
 msgid "Review {n}, {reviewer}"
 msgstr "Vérifier {n}, {reviewer}"
@@ -6613,7 +6658,7 @@ msgstr "Vérifier {n}, {reviewer}"
 msgid "Review the proposed folders"
 msgstr "Passez en revue les dossiers proposés"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:392
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:383
 msgid "Review your folders"
 msgstr "Vérifier vos dossiers"
 
@@ -6623,7 +6668,17 @@ msgstr "Vérifier vos dossiers"
 #~ msgstr "Examinez votre plan"
 
 #: ../../apps/site/src/components/landing/ReviewsSection.tsx:140
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:150
+#, fuzzy
+#~ msgid "Reviews from “early” users"
+#~ msgstr "Avis des « premiers » utilisateurs"
+
+#. Ironic: the reviews below are from ancient Amarna-letter figures, so 'early' is a joke
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:140
+#, fuzzy
+msgid "Reviews from <0>early</0> users"
+msgstr "Avis des <0>premiers</0> utilisateurs"
+
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:152
 msgid "Reviews from early users"
 msgstr "Avis des premiers utilisateurs"
 
@@ -6631,7 +6686,7 @@ msgstr "Avis des premiers utilisateurs"
 #~ msgid "Reviews from our earliest correspondents"
 #~ msgstr ""
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:229
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:231
 msgid "Rib-Hadda"
 msgstr "Rib-Hadda"
 
@@ -6646,7 +6701,11 @@ msgid "Rib-Hadda,\n"
 "We hear you. Additional grain has been ordered from the southern stores and will arrive before the harvest festival. We ask for your patience until then.\n"
 "\n"
 "Be well,"
-msgstr "Rib-Hadda,\n\nNous vous avons entendu. Du grain supplémentaire a été commandé aux réserves du sud et arrivera avant la fête des moissons. Nous vous demandons de patienter jusque-là.\n\nPortez-vous bien,"
+msgstr "Rib-Hadda,\n"
+"\n"
+"Nous vous avons entendu. Du grain supplémentaire a été commandé aux réserves du sud et arrivera avant la fête des moissons. Nous vous demandons de patienter jusque-là.\n"
+"\n"
+"Portez-vous bien,"
 
 #: ../../apps/mobile/src/components/emails/UnroutedBanner.tsx:71
 #: ../../apps/web/src/app/(app)/emails/UnroutedBanner.tsx:78
@@ -6664,7 +6723,7 @@ msgstr "Rib-Hadda,\n\nNous vous avons entendu. Du grain supplémentaire a été 
 #~ msgid "Routing…"
 #~ msgstr "Acheminement…"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:155
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:157
 msgid "Royal scribe"
 msgstr "Scribe royale"
 
@@ -6696,16 +6755,16 @@ msgstr "Enregistrer les modifications"
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
 #~ msgid "Save hours of email sorting every week. Let Aziru sort your inbox, filing every email, old and new, where it belongs."
-#~ msgstr "Gagnez des heures de tri d'e-mails chaque semaine. Laissez Aziru organiser votre boîte de réception, en classant chaque e-mail, ancien comme nouveau, là où il doit être."
+#~ msgstr "Gagnez des heures de tri d'e-mails chaque semaine. Laissez Aziru organiser votre boîte mail, en classant chaque e-mail, ancien comme nouveau, là où il doit être."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
 #~ msgid "Save hours of email sorting every week. Let Aziru sort your inbox, filing old and new mail where it belongs."
-#~ msgstr "Gagnez des heures de tri d'e-mails chaque semaine. Laissez Aziru trier votre boîte de réception, classant les anciens et les nouveaux e-mails à leur place."
+#~ msgstr "Gagnez des heures de tri d'e-mails chaque semaine. Laissez Aziru trier votre boîte mail, classant les anciens et les nouveaux e-mails à leur place."
 
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
 #, fuzzy
 #~ msgid "Save hours of triage every week. Let Aziru sort your inbox, filing every email, old and new, where it belongs."
-#~ msgstr "Gagnez des heures de tri chaque semaine. Laissez Aziru organiser votre boîte de réception, classant chaque e-mail, ancien comme nouveau, là où il doit être."
+#~ msgstr "Gagnez des heures de tri chaque semaine. Laissez Aziru organiser votre boîte mail, classant chaque e-mail, ancien comme nouveau, là où il doit être."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:77
 #: ../../apps/site/src/components/landing/HeroSection.tsx:20
@@ -6715,17 +6774,17 @@ msgstr "Gagnez des heures de travail chaque semaine. Aziru trie vos anciens et n
 #: ../../apps/web/src/lib/notifications.ts:66
 #, fuzzy
 #~ msgid "Save time by triaging your inbox without leaving Gmail."
-#~ msgstr "Gagnez du temps en triant votre boîte de réception sans quitter Gmail."
+#~ msgstr "Gagnez du temps en triant votre boîte mail sans quitter Gmail."
 
 #: ../../apps/mobile/src/data/notificationView.ts:48
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving Gmail. The extension runs in your desktop browser."
-msgstr "Gagnez du temps en triant votre boîte de réception sans quitter Gmail. L'extension fonctionne dans votre navigateur de bureau."
+msgstr "Gagnez du temps en triant votre boîte mail sans quitter Gmail. L'extension fonctionne dans votre navigateur de bureau."
 
 #: ../../apps/web/src/lib/notifications.ts:79
 #, fuzzy
 msgid "Save time by triaging your inbox without leaving your email."
-msgstr "Gagnez du temps en triant votre boîte de réception sans quitter votre messagerie."
+msgstr "Gagnez du temps en triant votre boîte mail sans quitter votre messagerie."
 
 #: ../ui/src/PricingPlans.tsx:146
 msgid "Save up to 20% annually"
@@ -6788,11 +6847,11 @@ msgstr "Rechercher des conversations…"
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:70
 #~ msgid "See how your inbox is sorted, right next to Gmail."
-#~ msgstr "Découvrez comment votre boîte de réception est triée, directement dans Gmail."
+#~ msgstr "Découvrez comment votre boîte mail est triée, directement dans Gmail."
 
 #: ../../apps/extension/src/auth/SignInScreen.tsx:112
 msgid "See how your inbox is sorted, right next to your email."
-msgstr "Voyez comment votre boîte de réception est triée, juste à côté de vos e-mails."
+msgstr "Voyez comment votre boîte mail est triée, juste à côté de vos e-mails."
 
 #: ../../apps/site/src/components/landing/Footer.tsx:28
 #: ../../apps/site/src/components/landing/Nav.tsx:48
@@ -6862,7 +6921,7 @@ msgstr "Envoyer l'invitation"
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:90
 #, fuzzy
 msgid "Send me a weekly reminder when my Aziru inbox needs attention."
-msgstr "Envoyez-moi un rappel hebdomadaire lorsque ma boîte de réception Aziru nécessite une attention."
+msgstr "Envoyez-moi un rappel hebdomadaire lorsque ma boîte mail Aziru nécessite une attention."
 
 #: ../../apps/mobile/app/forgot-password.tsx:109
 #: ../../apps/web/src/app/forgot-password/page.tsx:48
@@ -6914,7 +6973,7 @@ msgstr "Définir un nouveau mot de passe"
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:59
 #: ../../apps/extension/src/panel/ThreadPreviewPane.tsx:438
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:393
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:384
 #, fuzzy
 msgid "Set up folders"
 msgstr "Configurer les dossiers"
@@ -6928,6 +6987,11 @@ msgstr "Configurez les dossiers pour qu'Aziru sache où classer vos e-mails. Cel
 #, fuzzy
 msgid "Set up your folders"
 msgstr "Configurer vos dossiers"
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:342
+#, fuzzy
+msgid "Set your folders"
+msgstr "Configurez vos dossiers"
 
 #: ../ui/src/settings/WorkspaceLanguageSection.tsx:75
 msgid "Sets the language for this workspace, including the interface and AI-generated folders."
@@ -7024,7 +7088,7 @@ msgstr "Connectez-vous à Aziru pour voir comment cette conversation a été tri
 #: ../../apps/mobile/app/sign-in.tsx:85
 #, fuzzy
 msgid "Sign in to triage your inbox"
-msgstr "Connectez-vous pour trier votre boîte de réception"
+msgstr "Connectez-vous pour trier votre boîte mail"
 
 #: ../../apps/web/src/app/outlook-panel/OutlookPanel.tsx:177
 msgid "Sign in to your Aziru account."
@@ -7178,14 +7242,18 @@ msgstr "Trié automatiquement · fiable à {confidence}%"
 #~ msgid "Sorted automatically by content similarity."
 #~ msgstr "Trié automatiquement par similarité de contenu."
 
+#: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:207
+msgid "Sorted, summarized, and drafted, <0>without leaving your inbox</0>."
+msgstr "Classé, résumé et rédigé, <0>sans quitter votre boîte mail</0>."
+
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:241
 #, fuzzy
 msgid "Sorted, summarized, and drafted, without leaving your inbox"
-msgstr "Trié, résumé et rédigé, sans quitter votre boîte de réception"
+msgstr "Trié, résumé et rédigé, sans quitter votre boîte mail"
 
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:207
-msgid "Sorted, summarized, and drafted, without leaving your inbox."
-msgstr "Trié, résumé et rédigé, sans quitter votre boîte de réception."
+#~ msgid "Sorted, summarized, and drafted, without leaving your inbox."
+#~ msgstr "Trié, résumé et rédigé, sans quitter votre boîte mail."
 
 #: ../../apps/mobile/src/components/ThreadRow.tsx:36
 #: ../panel/src/queue/SortingStrip.tsx:47
@@ -7198,7 +7266,7 @@ msgstr "Tri"
 #: ../panel/src/queue/SortingStrip.tsx:69
 #: ../ui/src/emails/BackfillCard.tsx:33
 msgid "Sorting historical inbox"
-msgstr "Tri de la boîte de réception historique"
+msgstr "Tri de la boîte mail historique"
 
 #: ../../apps/web/src/components/ClassifyingRefresher.tsx:48
 #, fuzzy
@@ -7301,7 +7369,7 @@ msgstr "Rester connecté avec le compte actuel"
 #: ../ui/src/i18n/generation-reason-messages.ts:15
 #, fuzzy
 msgid "Still importing your inbox. Check back once the import finishes."
-msgstr "Importation de votre boîte de réception en cours. Revenez une fois l'importation terminée."
+msgstr "Importation de votre boîte mail en cours. Revenez une fois l'importation terminée."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:126
 #, fuzzy
@@ -7314,7 +7382,7 @@ msgstr "Importation de votre boîte de réception en cours. Revenez une fois l'i
 
 #: ../../apps/mobile/src/components/GmailSettingsSheet.tsx:91
 msgid "Stops syncing and revokes Aziru's access to this mailbox."
-msgstr "Arrête la synchronisation et révoque l'accès d'Aziru à cette boîte de réception."
+msgstr "Arrête la synchronisation et révoque l'accès d'Aziru à cette boîte mail."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:194
 #, fuzzy
@@ -7388,6 +7456,10 @@ msgstr "Abonnements"
 msgid "Suggested reply"
 msgstr "Réponse suggérée"
 
+#: ../../apps/site/src/components/landing/FinalCTASection.tsx:10
+msgid "Summaries and drafts work as soon as you add the extension. Sorting follows within minutes, for new mail and the years of email already piled up."
+msgstr "Les résumés et brouillons sont opérationnels dès l'installation de l'extension. Le tri s'active en quelques minutes, pour les nouveaux mails comme pour les années d'e-mails accumulés."
+
 #: ../../apps/extension/src/panel/WorkspacePicker.tsx:126
 #, fuzzy
 #~ msgid "Summaries in Gmail and Outlook"
@@ -7408,7 +7480,7 @@ msgstr "Résumé"
 msgid "Supervision"
 msgstr "Supervision"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:244
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:246
 msgid "Suppiluliuma"
 msgstr "Suppiluliuma"
 
@@ -7428,7 +7500,11 @@ msgid "Suppiluliuma,\n"
 "Your words of friendship reach us well. We are open to hearing more of what the house of Hatti proposes. Send your terms by the next courier.\n"
 "\n"
 "With regards,"
-msgstr "Suppiluliuma,\n\nVos paroles d'amitié nous sont bien parvenues. Nous sommes disposés à en savoir plus sur ce que propose la maison de Hatti. Envoyez vos conditions par le prochain coursier.\n\nCordialement,"
+msgstr "Suppiluliuma,\n"
+"\n"
+"Vos paroles d'amitié nous sont bien parvenues. Nous sommes disposés à en savoir plus sur ce que propose la maison de Hatti. Envoyez vos conditions par le prochain coursier.\n"
+"\n"
+"Cordialement,"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:137
 #, fuzzy
@@ -7457,7 +7533,7 @@ msgstr "Basculer"
 #: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:30
 #, fuzzy
 msgid "Switch account?"
-msgstr "Changer de compte ?"
+msgstr "Changer de compte ?"
 
 #: ../../apps/extension/src/panel/ScopeField.tsx:165
 #: ../../apps/extension/src/panel/ScopeField.tsx:207
@@ -7520,9 +7596,9 @@ msgstr "Synchronisation…"
 #~ msgid "System"
 #~ msgstr "Système"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:186
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:188
 msgid "Tablets arrive from Egypt, from Hatti, and from every merchant robbed on the road to Canaan, and all of them land in the same basket. Aziru sorts them before I break the seal: gold shipments here, caravan complaints there, marriage terms in their own folder. I still write to Pharaoh about the gold, but now it is the first letter of my day instead of the last."
-msgstr "Des tablettes arrivent d'Égypte, de Hatti, et de chaque marchand dévalisé sur la route de Canaan, et toutes atterrissent dans le même panier. Aziru les trie avant que je ne brise le sceau : les livraisons d'or ici, les plaintes de caravanes là, les termes de mariage dans leur propre dossier. J'écris toujours au Pharaon à propos de l'or, mais c'est désormais la première lettre de ma journée au lieu de la dernière."
+msgstr "Des tablettes arrivent d'Égypte, de Hatti, et de chaque marchand dévalisé sur la route de Canaan, et toutes atterrissent dans le même panier. Aziru les trie avant que je ne brise le sceau : les livraisons d'or ici, les plaintes de caravanes là, les termes de mariage dans leur propre dossier. J'écris toujours au Pharaon à propos de l'or, mais c'est désormais la première lettre de ma journée au lieu de la dernière."
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:19
 #, fuzzy
@@ -7671,12 +7747,12 @@ msgstr "Le conseil se réunit au début de Shemu. Tushratta demande un rapport c
 
 #: ../../apps/web/src/app/(app)/settings/ResetWorkspaceSection.tsx:51
 msgid "The Gmail connection, all synced emails, and the taxonomy will be permanently deleted. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
-msgstr "La connexion Gmail, tous les e-mails synchronisés et la taxonomie seront définitivement supprimés. La réimportation de cette boîte de réception est déduite de votre quota d'importation mensuel ; si vous l'épuisez, vous pourrez importer de nouveau après le {allowanceResetsAt} ou en passant à une formule supérieure."
+msgstr "La connexion Gmail, tous les e-mails synchronisés et la taxonomie seront définitivement supprimés. La réimportation de cette boîte mail est déduite de votre quota d'importation mensuel ; si vous l'épuisez, vous pourrez importer de nouveau après le {allowanceResetsAt} ou en passant à une formule supérieure."
 
 #: ../ui/src/demo/demo-seed.ts:505
 #, fuzzy
 msgid "The grain you sent last month was received with gratitude. But I must write again: the third shipment has not arrived and the city grows restless."
-msgstr "Les céréales que vous avez envoyées le mois dernier ont été reçues avec gratitude. Mais je dois écrire à nouveau : le troisième envoi n'est pas arrivé et la ville s'impatiente."
+msgstr "Les céréales que vous avez envoyées le mois dernier ont été reçues avec gratitude. Mais je dois écrire à nouveau : le troisième envoi n'est pas arrivé et la ville s'impatiente."
 
 #: ../ui/src/demo/demo-seed.ts:585
 #, fuzzy
@@ -7708,20 +7784,20 @@ msgstr "La troisième cargaison de céréales n'est pas arrivée."
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:270
 #, fuzzy
 msgid "These collaborators will immediately lose access:"
-msgstr "Ces collaborateurs perdront immédiatement l'accès :"
+msgstr "Ces collaborateurs perdront immédiatement l'accès :"
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:274
 #, fuzzy
 msgid "These collaborators will lose access at the end of the billing period:"
-msgstr "Ces collaborateurs perdront l'accès à la fin de la période de facturation :"
+msgstr "Ces collaborateurs perdront l'accès à la fin de la période de facturation :"
 
 #. placeholder {0}: currentPeriodEnd.toLocaleDateString()
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:272
 #, fuzzy
 msgid "These collaborators will lose access on {0}:"
-msgstr "Ces collaborateurs perdront l'accès le {0} :"
+msgstr "Ces collaborateurs perdront l'accès le {0} :"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:465
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:456
 msgid "These folders will be created. You can edit them at any time."
 msgstr "Ces dossiers seront créés. Vous pouvez les modifier à tout moment."
 
@@ -7732,7 +7808,7 @@ msgstr "Ces dossiers seront créés. Vous pouvez les modifier à tout moment."
 
 #: ../ui/src/settings/GmailSyncSettingsSection.tsx:67
 msgid "These settings control which inbox threads are imported. Trash is always excluded."
-msgstr "Ces paramètres déterminent quelles conversations sont importées de la boîte de réception. La corbeille est toujours exclue."
+msgstr "Ces paramètres déterminent quelles conversations sont importées de la boîte mail. La corbeille est toujours exclue."
 
 #: ../../apps/web/src/app/auth/bridge/BridgeAccountChoice.tsx:35
 #, fuzzy
@@ -7754,7 +7830,7 @@ msgstr "Ce dossier contient des sous-dossiers. Supprimez d'abord leurs chemins, 
 
 #: ../ui/src/taxonomy/TaxonomyNodeCard.tsx:44
 msgid "This folder is not reachable from the inbox and will not be used for routing."
-msgstr "Ce dossier n'est pas accessible depuis la boîte de réception et ne sera pas utilisé pour le routage."
+msgstr "Ce dossier n'est pas accessible depuis la boîte mail et ne sera pas utilisé pour le routage."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:148
 #, fuzzy
@@ -7763,7 +7839,7 @@ msgstr "Ce dossier n'est pas accessible depuis la boîte de réception et ne ser
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:231
 msgid "This inbox is also connected in {sharedNames}. Each workspace syncs and classifies it separately, which uses separate AI quota."
-msgstr "Cette boîte de réception est également connectée dans {sharedNames}. Chaque espace de travail la synchronise et la classe séparément, ce qui utilise un quota d'IA distinct."
+msgstr "Cette boîte mail est également connectée dans {sharedNames}. Chaque espace de travail la synchronise et la classe séparément, ce qui utilise un quota d'IA distinct."
 
 #: ../../apps/web/src/app/sign-in/SignInForm.tsx:66
 #, fuzzy
@@ -7795,11 +7871,11 @@ msgstr "Cette page n'a pas été trouvée"
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:143
 #~ msgid "This removes the Gmail connection, deletes all synced emails, and resets the plan to Inbox only. The workspace is kept. This cannot be undone."
-#~ msgstr "Ceci supprime la connexion Gmail, supprime tous les e-mails synchronisés et réinitialise le forfait à « Boîte de réception uniquement ». L'espace de travail est conservé. Cette action est irréversible."
+#~ msgstr "Ceci supprime la connexion Gmail, supprime tous les e-mails synchronisés et réinitialise le forfait à « Boîte mail uniquement ». L'espace de travail est conservé. Cette action est irréversible."
 
 #: ../../apps/mobile/app/(app)/(tabs)/settings/index.tsx:145
 msgid "This removes the Gmail connection, deletes all synced emails, and resets the taxonomy to Inbox only. The workspace is kept; this cannot be undone. Re-importing this inbox uses your monthly import allowance; if it runs out, you can import again after {allowanceResetsAt} or by upgrading."
-msgstr "Cela supprime la connexion Gmail, supprime tous les e-mails synchronisés et réinitialise la taxonomie à 'Boîte de réception uniquement'. L'espace de travail est conservé ; cette action est irréversible. La réimportation de cette boîte de réception est déduite de votre quota d'importation mensuel ; si vous l'épuisez, vous pourrez importer de nouveau après le {allowanceResetsAt} ou en passant à une formule supérieure."
+msgstr "Cela supprime la connexion Gmail, supprime tous les e-mails synchronisés et réinitialise la taxonomie à 'Boîte mail uniquement'. L'espace de travail est conservé ; cette action est irréversible. La réimportation de cette boîte mail est déduite de votre quota d'importation mensuel ; si vous l'épuisez, vous pourrez importer de nouveau après le {allowanceResetsAt} ou en passant à une formule supérieure."
 
 #: ../ui/src/emails/RationaleCard.tsx:78
 #, fuzzy
@@ -7913,8 +7989,13 @@ msgid "Threads you've marked as important."
 msgstr "Vos conversations importantes."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:371
-msgid "Three steps to a sorted inbox."
-msgstr "Trois étapes pour une boîte de réception organisée."
+#~ msgid "Three steps to a sorted inbox."
+#~ msgstr "Trois étapes pour une boîte mail organisée."
+
+#: ../../apps/site/src/components/landing/HowItWorksSection.tsx:372
+#, fuzzy
+msgid "Three steps, then you're set."
+msgstr "Trois étapes, et le tour est joué."
 
 #: ../../apps/site/src/components/landing/HowItWorksSection.tsx:400
 #~ msgid "Three steps. Then it sorts every email for you."
@@ -7922,7 +8003,7 @@ msgstr "Trois étapes pour une boîte de réception organisée."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:220
 msgid "Tip: pin the Aziru icon in your toolbar to keep it one click away."
-msgstr "Astuce : épinglez l'icône Aziru dans votre barre d'outils pour la garder à portée de clic."
+msgstr "Astuce : épinglez l'icône Aziru dans votre barre d'outils pour la garder à portée de clic."
 
 #: ../ui/src/demo/demo-seed.ts:599
 #, fuzzy
@@ -7933,7 +8014,13 @@ msgid "To my brother, the Great King,\n"
 "Our alliance is strong. Let us show the council that it remains so.\n"
 "\n"
 "Tushratta, Great King of Mitanni"
-msgstr "À mon frère, le Grand Roi,\n\nLe grand conseil se réunit au début de Shemu. Je vous demande de préparer un compte rendu complet des territoires de l'Est et de l'envoyer par courrier rapide, si possible avant la nouvelle lune.\n\nNotre alliance est forte. Montrons au conseil qu'elle le reste.\n\nTushratta, Grand Roi de Mitanni"
+msgstr "À mon frère, le Grand Roi,\n"
+"\n"
+"Le grand conseil se réunit au début de Shemu. Je vous demande de préparer un compte rendu complet des territoires de l'Est et de l'envoyer par courrier rapide, si possible avant la nouvelle lune.\n"
+"\n"
+"Notre alliance est forte. Montrons au conseil qu'elle le reste.\n"
+"\n"
+"Tushratta, Grand Roi de Mitanni"
 
 #: ../ui/src/demo/demo-seed.ts:283
 #, fuzzy
@@ -7942,7 +8029,11 @@ msgid "To the Bureau of Royal Appointments,\n"
 "We have received the application from Horemheb of Thebes and will review his record before the next new moon. Please inform him that we will send word in due course.\n"
 "\n"
 "By royal decree,"
-msgstr "Au Bureau des Nominations Royales,\n\nNous avons reçu la candidature de Horemheb de Thèbes et examinerons son dossier avant la prochaine nouvelle lune. Veuillez l'informer que nous lui ferons part de notre décision en temps voulu.\n\nPar décret royal,"
+msgstr "Au Bureau des Nominations Royales,\n"
+"\n"
+"Nous avons reçu la candidature de Horemheb de Thèbes et examinerons son dossier avant la prochaine nouvelle lune. Veuillez l'informer que nous lui ferons part de notre décision en temps voulu.\n"
+"\n"
+"Par décret royal,"
 
 #: ../ui/src/demo/demo-seed.ts:395
 #, fuzzy
@@ -7969,7 +8060,13 @@ msgid "To the Great King,\n"
 "I ask only that you hear my terms. Send word by the next courier and I will dispatch my envoy at once.\n"
 "\n"
 "Suppiluliuma, Great King, king of Hatti"
-msgstr "Au Grand Roi,\n\nDepuis de nombreuses années, nos maisons sont liées comme des frères. Je vous écris maintenant pour proposer de formaliser cette amitié pour le bien de nos deux peuples : un pacte de protection mutuelle et de routes partagées.\n\nJe demande seulement que vous écoutiez mes conditions. Envoyez une réponse par le prochain coursier et j'enverrai mon émissaire aussitôt.\n\nSuppiluliuma, Grand Roi, roi de Hatti"
+msgstr "Au Grand Roi,\n"
+"\n"
+"Depuis de nombreuses années, nos maisons sont liées comme des frères. Je vous écris maintenant pour proposer de formaliser cette amitié pour le bien de nos deux peuples : un pacte de protection mutuelle et de routes partagées.\n"
+"\n"
+"Je demande seulement que vous écoutiez mes conditions. Envoyez une réponse par le prochain coursier et j'enverrai mon émissaire aussitôt.\n"
+"\n"
+"Suppiluliuma, Grand Roi, roi de Hatti"
 
 #: ../ui/src/demo/demo-seed.ts:560
 #, fuzzy
@@ -7978,7 +8075,11 @@ msgid "To the Great King,\n"
 "My travels bring me near the Delta in the coming days. If the Great King has an hour to spare, I would welcome the chance to speak face to face; there are matters easier said than written.\n"
 "\n"
 "Your servant, Abdi-Heba, governor of Urushalim"
-msgstr "Au Grand Roi,\n\nMes voyages me mèneront près du Delta dans les prochains jours. Si le Grand Roi a une heure à consacrer, j'aimerais avoir l'occasion de parler en personne ; certaines affaires sont plus faciles à dire qu'à écrire.\n\nVotre serviteur, Abdi-Heba, gouverneur d'Urushalim"
+msgstr "Au Grand Roi,\n"
+"\n"
+"Mes voyages me mèneront près du Delta dans les prochains jours. Si le Grand Roi a une heure à consacrer, j'aimerais avoir l'occasion de parler en personne ; certaines affaires sont plus faciles à dire qu'à écrire.\n"
+"\n"
+"Votre serviteur, Abdi-Heba, gouverneur d'Urushalim"
 
 #: ../ui/src/demo/demo-seed.ts:273
 #, fuzzy
@@ -7987,7 +8088,11 @@ msgid "To the Great King, my brother,\n"
 "I have heard your words. The gold shall be dispatched before the next messenger departs. We value the bond between our houses and do not wish for it to cool.\n"
 "\n"
 "In friendship,"
-msgstr "Au Grand Roi, mon frère,\n\nJ'ai entendu vos paroles. L'or sera expédié avant le départ du prochain messager. Nous chérissons le lien entre nos maisons et ne voulons pas qu'il se refroidisse.\n\nEn toute amitié,"
+msgstr "Au Grand Roi, mon frère,\n"
+"\n"
+"J'ai entendu vos paroles. L'or sera expédié avant le départ du prochain messager. Nous chérissons le lien entre nos maisons et ne voulons pas qu'il se refroidisse.\n"
+"\n"
+"En toute amitié,"
 
 #: ../ui/src/demo/demo-seed.ts:400
 #, fuzzy
@@ -7998,7 +8103,13 @@ msgid "To the Great King, my brother,\n"
 "We ask that you dispatch it without further delay, as befits the bond between our houses.\n"
 "\n"
 "Burna-Buriash II, King of Babylon"
-msgstr "Au Grand Roi, mon frère,\n\nJ'écris en ami, comme nos pères l'ont fait avant nous. Le troisième envoi d'or convenu par notre traité n'est pas arrivé. Deux messagers sont passés et nous attendons toujours.\n\nNous vous demandons de l'expédier sans plus tarder, comme il sied au lien entre nos maisons.\n\nBurna-Buriash II, Roi de Babylone"
+msgstr "Au Grand Roi, mon frère,\n"
+"\n"
+"J'écris en ami, comme nos pères l'ont fait avant nous. Le troisième envoi d'or convenu par notre traité n'est pas arrivé. Deux messagers sont passés et nous attendons toujours.\n"
+"\n"
+"Nous vous demandons de l'expédier sans plus tarder, comme il sied au lien entre nos maisons.\n"
+"\n"
+"Burna-Buriash II, Roi de Babylone"
 
 #: ../ui/src/demo/demo-seed.ts:519
 msgid "To the Great King, my lord, my sun,\n"
@@ -8008,16 +8119,22 @@ msgid "To the Great King, my lord, my sun,\n"
 "I have written seven times. I do not wish to trouble you, yet what else can I do?\n"
 "\n"
 "Your servant, Rib-Hadda, governor of Byblos"
-msgstr "Au Grand Roi, mon seigneur, mon soleil,\n\nLe grain que vous avez envoyé le mois dernier a été reçu avec gratitude et j'ai loué votre nom devant le peuple. Mais je dois écrire à nouveau : le troisième chargement n'est pas arrivé et la ville s'agite.\n\nJ'ai écrit sept fois. Je ne souhaite pas vous importuner, mais que puis-je faire d'autre ?\n\nVotre serviteur, Rib-Hadda, gouverneur de Byblos"
+msgstr "Au Grand Roi, mon seigneur, mon soleil,\n"
+"\n"
+"Le grain que vous avez envoyé le mois dernier a été reçu avec gratitude et j'ai loué votre nom devant le peuple. Mais je dois écrire à nouveau : le troisième chargement n'est pas arrivé et la ville s'agite.\n"
+"\n"
+"J'ai écrit sept fois. Je ne souhaite pas vous importuner, mais que puis-je faire d'autre ?\n"
+"\n"
+"Votre serviteur, Rib-Hadda, gouverneur de Byblos"
 
 #: ../ui/src/demo/mailbox/AziruReply.tsx:107
 #, fuzzy
 msgid "To: {toName}"
-msgstr "À : {toName}"
+msgstr "À : {toName}"
 
 #: ../ui/src/demo/mailbox/MailThreadMock.tsx:222
 msgid "To: You"
-msgstr "À : Vous"
+msgstr "À : Vous"
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:19
 #: ../ui/src/emails/ThreadList.tsx:15
@@ -8039,17 +8156,17 @@ msgstr "Basculer les dossiers"
 msgid "Transactions"
 msgstr "Transactions"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:184
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:200
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:216
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:231
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:246
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:186
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:202
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:218
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:233
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:248
 #, fuzzy
 msgid "Translated from cuneiform"
 msgstr "Traduit du cunéiforme"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:156
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:171
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:158
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:173
 #, fuzzy
 msgid "Translated from hieroglyphics"
 msgstr "Traduit des hiéroglyphes"
@@ -8076,21 +8193,21 @@ msgstr "Triage et révision"
 
 #: ../../apps/web/src/components/GetExtensionBanner.tsx:60
 msgid "Triage without leaving your inbox"
-msgstr "Triez sans quitter votre boîte de réception."
+msgstr "Triez sans quitter votre boîte mail."
 
 #: ../../apps/mobile/src/data/notificationView.ts:33
 #, fuzzy
 #~ msgid "Triage your inbox from a side panel next to Gmail on your computer."
-#~ msgstr "Triez votre boîte de réception depuis un panneau latéral à côté de Gmail sur votre ordinateur."
+#~ msgstr "Triez votre boîte mail depuis un panneau latéral à côté de Gmail sur votre ordinateur."
 
 #: ../../apps/web/src/lib/notifications.ts:39
 #, fuzzy
 #~ msgid "Triage your inbox from a side panel next to Gmail."
-#~ msgstr "Triez votre boîte de réception depuis un panneau latéral à côté de Gmail."
+#~ msgstr "Triez votre boîte mail depuis un panneau latéral à côté de Gmail."
 
 #: ../ui/src/AppDownloadBanner.tsx:71
 msgid "Triage your inbox on the go."
-msgstr "Triez votre boîte de réception où que vous soyez."
+msgstr "Triez votre boîte mail où que vous soyez."
 
 #: ../../apps/site/src/components/landing/HeroFeedCard.tsx:257
 #, fuzzy
@@ -8110,7 +8227,7 @@ msgstr "Essayez Aziru"
 msgid "Turning this on will ask for permission to manage your labels."
 msgstr "L'activation de cette option demandera l'autorisation de gérer vos libellés."
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:198
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:200
 msgid "Tushratta"
 msgstr "Tushratta"
 
@@ -8119,7 +8236,7 @@ msgstr "Tushratta"
 msgid "Tushratta of Mitanni"
 msgstr "Tushratta de Mitanni"
 
-#: ../../apps/site/src/components/landing/ReviewsSection.tsx:154
+#: ../../apps/site/src/components/landing/ReviewsSection.tsx:156
 #: ../ui/src/demo/demo-seed.ts:160
 #, fuzzy
 msgid "Tutu"
@@ -8328,18 +8445,18 @@ msgstr "Passez au plan Scribe ou Pharaoh pour inviter des collaborateurs."
 #: ../ui/src/settings/GmailSyncSettingsSection.tsx:130
 #, fuzzy
 msgid "Use \"Rescan inbox\" after changing filter settings to apply them to threads already in your inbox."
-msgstr "Utilisez « Rescanner la boîte de réception » après avoir modifié les paramètres de filtre pour les appliquer aux conversations déjà présentes dans votre boîte de réception."
+msgstr "Utilisez « Rescanner la boîte mail » après avoir modifié les paramètres de filtre pour les appliquer aux conversations déjà présentes dans votre boîte mail."
 
 #: ../../apps/mobile/src/components/SyncFiltersSheet.tsx:162
 msgid "Use \"Rescan inbox\" after changing filters to apply them to threads already in your inbox."
-msgstr "Utilisez « Réanalyser la boîte de réception » après avoir modifié les filtres pour les appliquer aux conversations déjà présentes dans votre boîte de réception."
+msgstr "Utilisez « Réanalyser la boîte mail » après avoir modifié les filtres pour les appliquer aux conversations déjà présentes dans votre boîte mail."
 
 #: ../../apps/extension/src/panel/StatusSlot.tsx:204
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:149
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:170
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:330
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:487
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:501
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:365
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:478
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:492
 #, fuzzy
 msgid "Use a template"
 msgstr "Utiliser un modèle"
@@ -8349,7 +8466,7 @@ msgstr "Utiliser un modèle"
 msgid "Use template"
 msgstr "Utiliser le modèle"
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:523
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:514
 msgid "Use these folders"
 msgstr "Utiliser ces dossiers"
 
@@ -8383,12 +8500,12 @@ msgstr "Accords fournisseurs, logistique de bureau et coordination opérationnel
 #: ../../apps/web/src/app/verify-email/page.tsx:32
 #, fuzzy
 msgid "Verification email sent!"
-msgstr "E-mail de vérification envoyé !"
+msgstr "E-mail de vérification envoyé !"
 
 #: ../../apps/mobile/app/verify-email.tsx:62
 #, fuzzy
 msgid "Verification email sent. Check your inbox."
-msgstr "E-mail de vérification envoyé. Vérifiez votre boîte de réception."
+msgstr "E-mail de vérification envoyé. Vérifiez votre boîte mail."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:149
 #, fuzzy
@@ -8497,7 +8614,7 @@ msgstr "Nous avons envoyé un lien à cette adresse e-mail. Suivez-le pour final
 
 #: ../../apps/mobile/app/(app)/account.tsx:149
 msgid "Weekly inbox reminder"
-msgstr "Rappel hebdomadaire de la boîte de réception"
+msgstr "Rappel hebdomadaire de la boîte mail"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:51
 #, fuzzy
@@ -8506,11 +8623,11 @@ msgstr "Rappel hebdomadaire de la boîte de réception"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:47
 msgid "What happens to threads Aziru is unsure about?"
-msgstr "Qu'advient-il des conversations sur lesquelles Aziru a des doutes ?"
+msgstr "Qu'advient-il des conversations sur lesquelles Aziru a des doutes ?"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:67
 msgid "What model does Aziru use?"
-msgstr "Quel modèle Aziru utilise-t-il ?"
+msgstr "Quel modèle Aziru utilise-t-il ?"
 
 #: ../ui/src/taxonomy-editor/NodeForm.tsx:286
 #, fuzzy
@@ -8520,7 +8637,7 @@ msgstr "Emplacement de ce dossier. Les dossiers sans parent restent déconnecté
 #: ../../apps/web/src/components/AziruIntroDialog.tsx:46
 #: ../../apps/web/src/components/ConnectGmailCta.tsx:68
 msgid "Who is king Aziru?"
-msgstr "Qui est le Roi Aziru ?"
+msgstr "Qui est le Roi Aziru ?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:138
 msgid "Wholesale suppliers, restock orders, and inventory availability from manufacturers."
@@ -8528,7 +8645,7 @@ msgstr "Fournisseurs en gros, commandes de réapprovisionnement et disponibilit�
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:63
 msgid "Why is it called Aziru?"
-msgstr "Pourquoi Aziru ?"
+msgstr "Pourquoi Aziru ?"
 
 #: ../ui/src/i18n/taxonomy-template-messages.ts:40
 #, fuzzy
@@ -8646,7 +8763,7 @@ msgstr "Rédaction du brouillon de réponse…"
 
 #: ../../apps/mobile/app/verify-email.tsx:116
 msgid "Wrong account? <0>Sign out</0>"
-msgstr "Mauvais compte ? <0>Déconnexion</0>"
+msgstr "Mauvais compte ? <0>Déconnexion</0>"
 
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:143
 #, fuzzy
@@ -8670,20 +8787,20 @@ msgstr "Oui, réinitialiser l'espace de travail"
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:44
 msgid "Yes. Aziru can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same folders, up to your plan's limits, so old and new mail end up organized the same way."
-msgstr "Oui. Aziru peut traiter l'arriéré déjà présent dans votre boîte de réception, et pas seulement les messages qui arrivent à partir de maintenant. Le traitement de votre arriéré et le classement des nouveaux courriels utilisent les mêmes dossiers, dans la limite de votre forfait, ainsi, les anciens et les nouveaux courriels sont organisés de la même manière."
+msgstr "Oui. Aziru peut traiter l'arriéré déjà présent dans votre boîte mail, et pas seulement les messages qui arrivent à partir de maintenant. Le traitement de votre arriéré et le classement des nouveaux courriels utilisent les mêmes dossiers, dans la limite de votre forfait, ainsi, les anciens et les nouveaux courriels sont organisés de la même manière."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:44
 #~ msgid "Yes. Aziru can work through the backlog already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, up to your plan's limits, so old and new mail end up organized the same way."
-#~ msgstr "Oui. Aziru peut traiter l'arriéré déjà présent dans votre boîte de réception, pas uniquement les messages qui arrivent à partir de maintenant. Le traitement de votre arriéré et le tri des nouveaux messages utilisent le même plan, dans les limites de celui-ci, afin que les anciens et les nouveaux e-mails soient organisés de la même manière."
+#~ msgstr "Oui. Aziru peut traiter l'arriéré déjà présent dans votre boîte mail, pas uniquement les messages qui arrivent à partir de maintenant. Le traitement de votre arriéré et le tri des nouveaux messages utilisent le même plan, dans les limites de celui-ci, afin que les anciens et les nouveaux e-mails soient organisés de la même manière."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
 #~ msgid "Yes. Aziru can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Clearing your backlog and sorting new mail use the same plan, so your whole inbox ends up organized the same way."
-#~ msgstr "Oui. Aziru peut traiter les milliers de conversations déjà présentes dans votre boîte de réception, et pas seulement les nouveaux messages. Le nettoyage de votre historique et le tri des nouveaux e-mails utilisent le même plan, de sorte que toute votre boîte de réception est organisée de la même manière."
+#~ msgstr "Oui. Aziru peut traiter les milliers de conversations déjà présentes dans votre boîte mail, et pas seulement les nouveaux messages. Le nettoyage de votre historique et le tri des nouveaux e-mails utilisent le même plan, de sorte que toute votre boîte mail est organisée de la même manière."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:32
 #, fuzzy
 #~ msgid "Yes. Aziru can work through the thousands of threads already sitting in your inbox, not only messages that arrive from now on. Historical triage and ongoing sorting use the same plan, so your whole inbox ends up organized the same way."
-#~ msgstr "Oui. Aziru peut traiter les milliers de conversations déjà présentes dans votre boîte de réception, et pas seulement les nouveaux messages. Le triage historique et le tri continu utilisent le même plan, de sorte que l'ensemble de votre boîte de réception est organisé de la même manière."
+#~ msgstr "Oui. Aziru peut traiter les milliers de conversations déjà présentes dans votre boîte mail, et pas seulement les nouveaux messages. Le triage historique et le tri continu utilisent le même plan, de sorte que l'ensemble de votre boîte mail est organisé de la même manière."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #~ msgid "Yes. Aziru connects with a read-only scope, so it can read your threads but cannot send, delete, label, or change anything in your account. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
@@ -8702,7 +8819,7 @@ msgstr "Oui. Aziru est open source sous licence AGPL-3.0. Vous pouvez cloner le 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:12
 #, fuzzy
 msgid "Yes. Aziru reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes back is its own labels in Gmail or categories in Outlook, kept under an Aziru namespace so sorted mail is easy to find in your inbox, and you can switch that off. It keeps only what it needs to sort and display threads: subjects, participants, snippets, and the labels and reasoning it generates. Full message bodies are fetched when needed and processed in memory, not stored, and OAuth tokens are encrypted at rest."
-msgstr "Oui. Aziru lit vos conversations pour les trier, et ne peut jamais envoyer, supprimer ou déplacer vos e-mails. La seule chose qu'il écrit, ce sont ses propres libellés dans Gmail ou catégories dans Outlook, conservés sous un espace de noms Aziru afin que le courrier trié soit facile à trouver dans votre boîte de réception, et vous pouvez désactiver cette fonction. Il ne conserve que ce dont il a besoin pour trier et afficher les conversations : les objets, les participants, les extraits, ainsi que les libellés et le raisonnement qu'il génère. Les corps complets des messages sont récupérés si nécessaire et traités en mémoire, non stockés, et les jetons OAuth sont chiffrés au repos."
+msgstr "Oui. Aziru lit vos conversations pour les trier, et ne peut jamais envoyer, supprimer ou déplacer vos e-mails. La seule chose qu'il écrit, ce sont ses propres libellés dans Gmail ou catégories dans Outlook, conservés sous un espace de noms Aziru afin que le courrier trié soit facile à trouver dans votre boîte mail, et vous pouvez désactiver cette fonction. Il ne conserve que ce dont il a besoin pour trier et afficher les conversations : les objets, les participants, les extraits, ainsi que les libellés et le raisonnement qu'il génère. Les corps complets des messages sont récupérés si nécessaire et traités en mémoire, non stockés, et les jetons OAuth sont chiffrés au repos."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
 #~ msgid "Yes. Aziru works with both Gmail and Outlook, each connected the same read-only way: Aziru reads your threads to sort them and never sends, deletes, or changes anything in your account."
@@ -8710,7 +8827,7 @@ msgstr "Oui. Aziru lit vos conversations pour les trier, et ne peut jamais envoy
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:40
 msgid "Yes. Aziru works with both Gmail and Outlook, each connected the same way: Aziru reads your threads to sort them, and can never send, delete, or move your mail. The only thing it writes is its own labels in Gmail or categories in Outlook, and you can switch that off."
-msgstr "Oui. Aziru fonctionne avec Gmail et Outlook, chacun connecté de la même manière : Aziru lit vos conversations pour les trier, et ne peut jamais envoyer, supprimer ou déplacer vos e-mails. La seule chose qu'il écrit, ce sont ses propres libellés dans Gmail ou catégories dans Outlook, et vous pouvez désactiver cette fonction."
+msgstr "Oui. Aziru fonctionne avec Gmail et Outlook, chacun connecté de la même manière : Aziru lit vos conversations pour les trier, et ne peut jamais envoyer, supprimer ou déplacer vos e-mails. La seule chose qu'il écrit, ce sont ses propres libellés dans Gmail ou catégories dans Outlook, et vous pouvez désactiver cette fonction."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:48
 #, fuzzy
@@ -8720,7 +8837,7 @@ msgstr "Oui. Aziru fonctionne avec Gmail et Outlook, chacun connecté de la mêm
 #: ../../apps/site/src/components/landing/FAQSection.tsx:52
 #, fuzzy
 msgid "Yes. Open a thread, press Generate draft reply, and a suggested draft appears in Aziru for you to read and edit. Nothing is ever sent for you: when you are happy with it, you can jump to the thread in your inbox with one click and paste your reply there to send. Each subscription includes a monthly draft allowance."
-msgstr "Oui. Ouvrez une conversation, appuyez sur Générer un brouillon de réponse, et un brouillon suggéré apparaît dans Aziru pour que vous puissiez le lire et le modifier. Rien n'est jamais envoyé automatiquement : lorsque vous en êtes satisfait, vous pouvez accéder à la conversation dans votre boîte de réception en un clic et y coller votre réponse pour l'envoyer. Chaque abonnement inclut un quota mensuel de brouillons."
+msgstr "Oui. Ouvrez une conversation, appuyez sur Générer un brouillon de réponse, et un brouillon suggéré apparaît dans Aziru pour que vous puissiez le lire et le modifier. Rien n'est jamais envoyé automatiquement : lorsque vous en êtes satisfait, vous pouvez accéder à la conversation dans votre boîte mail en un clic et y coller votre réponse pour l'envoyer. Chaque abonnement inclut un quota mensuel de brouillons."
 
 #: ../../apps/mobile/src/components/emails/queueLabels.ts:20
 #: ../ui/src/emails/ThreadList.tsx:16
@@ -8754,12 +8871,12 @@ msgid "You can keep your free workspace and use paid workspaces separately."
 msgstr "Vous pouvez conserver votre espace de travail gratuit et utiliser les espaces de travail payants séparément."
 
 #. placeholder {0}: new Date(eligibility.nextEligibleAt).toLocaleString()
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:285
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:309
 #, fuzzy
 msgid "You can try again after {0}, or start from a template."
 msgstr "Vous pouvez réessayer après {0}, ou commencer à partir d'un modèle."
 
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:286
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:310
 #, fuzzy
 msgid "You can try again shortly, or start from a template."
 msgstr "Vous pouvez réessayer sous peu, ou commencer à partir d'un modèle."
@@ -8771,11 +8888,11 @@ msgstr "Vous n'êtes pas autorisé à modifier ce plan."
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:64
 #, fuzzy
 msgid "You do not have permission to connect a Gmail inbox to this workspace."
-msgstr "Vous n'avez pas la permission de connecter une boîte de réception Gmail à cet espace de travail."
+msgstr "Vous n'avez pas la permission de connecter une boîte mail Gmail à cet espace de travail."
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:92
 msgid "You do not have permission to connect an Outlook inbox to this workspace."
-msgstr "Vous n'avez pas l'autorisation de connecter une boîte de réception Outlook à cet espace de travail."
+msgstr "Vous n'avez pas l'autorisation de connecter une boîte mail Outlook à cet espace de travail."
 
 #. placeholder {0}: outcome.limit
 #. placeholder {1}: new Date(outcome.resetsAt).toLocaleDateString()
@@ -8868,7 +8985,7 @@ msgstr "Vos dossiers"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:133
 #~ msgid "Your folders are a simple tree branching out from your inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself."
-#~ msgstr "Vos dossiers forment une simple arborescence à partir de votre boîte de réception. Laissez Aziru les générer depuis votre boîte de réception, partez d'un modèle, ou dessinez-les vous-même."
+#~ msgstr "Vos dossiers forment une simple arborescence à partir de votre boîte mail. Laissez Aziru les générer depuis votre boîte mail, partez d'un modèle, ou dessinez-les vous-même."
 
 #: ../ui/src/settings/LabelWritebackSection.tsx:93
 #, fuzzy
@@ -8881,7 +8998,7 @@ msgstr "Vos dossiers sont reproduits en catégories Outlook et maintenus à jour
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:128
 msgid "Your folders become Gmail labels / Outlook categories, so sorted mail is waiting in your inbox."
-msgstr "Vos dossiers se transforment en libellés Gmail / catégories Outlook, et vos messages triés vous attendent directement dans votre boîte de réception."
+msgstr "Vos dossiers se transforment en libellés Gmail / catégories Outlook, et vos messages triés vous attendent directement dans votre boîte mail."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:128
 #~ msgid "Your folders become Gmail labels and Outlook categories, so sorted mail is waiting in your inbox."
@@ -8890,7 +9007,7 @@ msgstr "Vos dossiers se transforment en libellés Gmail / catégories Outlook, e
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:139
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:210
 #~ msgid "Your folders become labels in Gmail and categories in Outlook, so every thread is filed where you would expect to find it without leaving your mailbox. When a reply is needed, a draft is one click away, ready for your edits and never sent without them."
-#~ msgstr "Vos dossiers deviennent des libellés dans Gmail et des catégories dans Outlook. Chaque conversation est classée là où vous l'attendez, sans quitter votre boîte de réception. Quand une réponse est nécessaire, un brouillon est à portée de clic, prêt à être modifié et jamais envoyé sans votre accord."
+#~ msgstr "Vos dossiers deviennent des libellés dans Gmail et des catégories dans Outlook. Chaque conversation est classée là où vous l'attendez, sans quitter votre boîte mail. Quand une réponse est nécessaire, un brouillon est à portée de clic, prêt à être modifié et jamais envoyé sans votre accord."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:242
 #: ../../apps/site/src/components/landing/EmailsDemoSection.tsx:210
@@ -8901,11 +9018,11 @@ msgstr "Vos dossiers deviennent des libellés dans Gmail et des catégories dans
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
 msgid "Your folders form a simple tree, branching out from the inbox. Let Aziru generate them from your inbox, start from a template, or draw them yourself. Then it walks the tree for every email that arrives."
-msgstr "Vos dossiers forment une arborescence simple, se ramifiant depuis votre boîte de réception. Laissez Aziru les générer depuis votre boîte de réception, partez d'un modèle, ou dessinez-les vous-même. Aziru parcourt ensuite cette arborescence pour chaque courriel qui arrive."
+msgstr "Vos dossiers forment une arborescence simple, se ramifiant depuis votre boîte mail. Laissez Aziru les générer depuis votre boîte mail, partez d'un modèle, ou dessinez-les vous-même. Aziru parcourt ensuite cette arborescence pour chaque courriel qui arrive."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:24
 msgid "Your folders form a tree (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Aziru walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Aziru generate it for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
-msgstr "Vos dossiers forment une arborescence (par exemple, un dossier Clients avec Support et Facturation en dessous), chacun décrit en langage clair, et Aziru parcourt cette arborescence pour acheminer chaque conversation vers le dossier le plus approprié. Le moyen le plus rapide de la créer est de laisser Aziru la générer pour vous : Aziru lit votre boîte de réception et propose une arborescence complète, nommée et décrite, que vous pouvez conserver telle quelle ou ajuster. Vous pouvez également partir de l'un de nos modèles prêts à l'emploi ou créer le vôtre de toutes pièces. Aucune connaissance technique requise."
+msgstr "Vos dossiers forment une arborescence (par exemple, un dossier Clients avec Support et Facturation en dessous), chacun décrit en langage clair, et Aziru parcourt cette arborescence pour acheminer chaque conversation vers le dossier le plus approprié. Le moyen le plus rapide de la créer est de laisser Aziru la générer pour vous : Aziru lit votre boîte mail et propose une arborescence complète, nommée et décrite, que vous pouvez conserver telle quelle ou ajuster. Vous pouvez également partir de l'un de nos modèles prêts à l'emploi ou créer le vôtre de toutes pièces. Aucune connaissance technique requise."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:259
 #, fuzzy
@@ -8918,44 +9035,45 @@ msgstr "Votre essai gratuit prendra fin immédiatement et votre espace de travai
 
 #: ../ui/src/i18n/generation-reason-messages.ts:14
 msgid "Your inbox doesn't have enough variety yet to personalize a taxonomy. Choose a template instead."
-msgstr "Votre boîte de réception n'offre pas encore assez de variété pour personnaliser une taxonomie. Choisissez plutôt un modèle."
+msgstr "Votre boîte mail n'offre pas encore assez de variété pour personnaliser une taxonomie. Choisissez plutôt un modèle."
 
 #: ../../apps/mobile/src/data/notificationView.ts:64
 #: ../../apps/web/src/lib/notifications.ts:96
 msgid "Your inbox import finished."
-msgstr "L'importation de votre boîte de réception est terminée."
+msgstr "L'importation de votre boîte mail est terminée."
 
 #: ../../apps/mobile/src/components/taxonomy/GenerateFromInboxSheet.tsx:57
-#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:262
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:286
 #, fuzzy
 msgid "Your inbox is still importing. You can generate now from what's loaded so far, but regenerating once the import finishes will give a more accurate fit."
-msgstr "Votre boîte de réception est toujours en cours d'importation. Vous pouvez générer maintenant à partir de ce qui a été chargé jusqu'à présent, mais une régénération une fois l'importation terminée donnera un résultat plus précis."
+msgstr "Votre boîte mail est toujours en cours d'importation. Vous pouvez générer maintenant à partir de ce qui a été chargé jusqu'à présent, mais une régénération une fois l'importation terminée donnera un résultat plus précis."
 
-#: ../ui/src/plan-setup/PlanSetupDialog.tsx:434
+#: ../../apps/web/src/app/(app)/folders/GenerateFromInboxButton.tsx:328
+#: ../ui/src/plan-setup/PlanSetupDialog.tsx:425
 #, fuzzy
 msgid "Your inbox is still loading. Your folders will be generated as soon as enough of it has arrived."
-msgstr "Votre boîte de réception est en cours de chargement. Vos dossiers seront générés dès qu'elle sera suffisamment chargée."
+msgstr "Votre boîte mail est en cours de chargement. Vos dossiers seront générés dès qu'elle sera suffisamment chargée."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
 msgid "Your inbox, already sorted"
-msgstr "Votre boîte de réception, déjà triée"
+msgstr "Votre boîte mail, déjà triée"
 
 #: ../../apps/site/src/components/landing/Footer.tsx:19
 #, fuzzy
 msgid "Your inbox, already sorted."
-msgstr "Votre boîte de réception, déjà triée."
+msgstr "Votre boîte mail, déjà triée."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:55
 #~ msgid "Your inbox, sorted the way you think."
-#~ msgstr "Votre boîte de réception, triée selon votre logique."
+#~ msgstr "Votre boîte mail, triée selon votre logique."
 
 #: ../../apps/extension/src/welcome/WelcomeApp.tsx:74
 #~ msgid "Your inbox, sorted your way"
-#~ msgstr "Votre boîte de réception, triée à votre façon"
+#~ msgstr "Votre boîte mail, triée à votre façon"
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:66
 msgid "Your mailbox"
-msgstr "Votre boîte de réception"
+msgstr "Votre boîte mail"
 
 #: ../../apps/mobile/src/components/EditNameSheet.tsx:56
 #: ../../apps/web/src/app/(app)/account/AccountForm.tsx:65
@@ -8977,16 +9095,16 @@ msgstr "Vos anciennes conversations se chargent et s'afficheront bientôt."
 
 #: ../../apps/extension/src/welcome/WelcomeCarousel.tsx:99
 #~ msgid "Your plan is a simple folder tree branching out from your inbox. Let Aziru generate it from your inbox, start from a template, or draw it yourself."
-#~ msgstr "Votre plan est une simple arborescence de dossiers qui part de votre boîte de réception. Laissez Aziru le générer depuis votre boîte de réception, partez d'un modèle, ou dessinez-le vous-même."
+#~ msgstr "Votre plan est une simple arborescence de dossiers qui part de votre boîte mail. Laissez Aziru le générer depuis votre boîte mail, partez d'un modèle, ou dessinez-le vous-même."
 
 #: ../../apps/site/src/components/landing/TaxonomyDemoSection.tsx:12
 #, fuzzy
 #~ msgid "Your plan is a simple folder tree: your folders branching out from the inbox. Let Aziru generate it from your inbox, start from a template, or draw it yourself. Then it walks the tree for every email that arrives."
-#~ msgstr "Votre plan est un simple arbre de dossiers : vos dossiers se ramifient à partir de la boîte de réception. Laissez Aziru le générer à partir de votre boîte de réception, partez d'un modèle ou dessinez-le vous-même. Ensuite, il parcourt l'arbre pour chaque e-mail qui arrive."
+#~ msgstr "Votre plan est un simple arbre de dossiers : vos dossiers se ramifient à partir de la boîte mail. Laissez Aziru le générer à partir de votre boîte mail, partez d'un modèle ou dessinez-le vous-même. Ensuite, il parcourt l'arbre pour chaque e-mail qui arrive."
 
 #: ../../apps/site/src/components/landing/FAQSection.tsx:24
 #~ msgid "Your plan is a tree of folders (for example a Customers folder with Support and Billing beneath it), each described in plain language, and Aziru walks that tree to route every thread to the folder that fits best. The fastest way to build it is to let Aziru generate one for you: it reads your inbox and proposes a complete tree, named and described, that you can keep as-is or adjust. You can also start from one of our ready-made templates or build your own from scratch. No technical know-how required."
-#~ msgstr "Votre plan est un arbre de dossiers (par exemple, un dossier Clients avec Support et Facturation en dessous), chacun décrit en langage clair, et Aziru parcourt cet arbre pour acheminer chaque conversation vers le dossier le plus approprié. La manière la plus rapide de le construire est de laisser Aziru en générer un pour vous : il lit votre boîte de réception et propose un arbre complet, nommé et décrit, que vous pouvez conserver tel quel ou ajuster. Vous pouvez également partir de l'un de nos modèles prêts à l'emploi ou créer le vôtre de toutes pièces. Aucune connaissance technique requise."
+#~ msgstr "Votre plan est un arbre de dossiers (par exemple, un dossier Clients avec Support et Facturation en dessous), chacun décrit en langage clair, et Aziru parcourt cet arbre pour acheminer chaque conversation vers le dossier le plus approprié. La manière la plus rapide de le construire est de laisser Aziru en générer un pour vous : il lit votre boîte mail et propose un arbre complet, nommé et décrit, que vous pouvez conserver tel quel ou ajuster. Vous pouvez également partir de l'un de nos modèles prêts à l'emploi ou créer le vôtre de toutes pièces. Aucune connaissance technique requise."
 
 #: ../ui/src/upgrade/UpgradeDialog.tsx:180
 #~ msgid "Your plan is updated. The new limits apply right away."
@@ -9005,7 +9123,7 @@ msgstr "Votre nouvelle tentative d'importation est terminée, et elle reste limi
 
 #: ../../apps/web/src/app/(app)/settings/GmailConnectionSection.tsx:371
 msgid "Your sorted email from {retainedAddress} is saved. Reconnecting the same inbox restores it; connecting a different inbox permanently removes it. Folders and settings are kept either way."
-msgstr "Vos e-mails triés de {retainedAddress} sont enregistrés. Reconnecter la même boîte de réception les restaure ; connecter une autre boîte de réception les supprime définitivement. Vos dossiers et paramètres sont conservés dans tous les cas."
+msgstr "Vos e-mails triés de {retainedAddress} sont enregistrés. Reconnecter la même boîte mail les restaure ; connecter une autre boîte mail les supprime définitivement. Vos dossiers et paramètres sont conservés dans tous les cas."
 
 #: ../../apps/web/src/app/(app)/settings/BillingSection.tsx:102
 #, fuzzy

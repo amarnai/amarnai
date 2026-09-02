@@ -69,6 +69,12 @@ export function GenerateFromInboxButton({
   const [error, setError] = useState<string | null>(null);
   const [applying, setApplying] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Set while the open modal is waiting out the initial inbox import (reason
+  // IMPORTING); when the eligibility floor clears, generation continues
+  // automatically instead of dropping the user on another button.
+  const waitedRef = useRef(false);
+  // Latest handleGenerate, so refresh can auto-continue without a dep cycle.
+  const generateRef = useRef<(() => Promise<void>) | null>(null);
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
@@ -90,8 +96,21 @@ export function GenerateFromInboxButton({
     try {
       const s = await api.taxonomyGeneration(workspaceId);
       applyStatus(s);
-      if (s.status !== "RUNNING") stopPolling();
-      return s.status;
+      if (s.status === "RUNNING") return s;
+      // Under the eligibility floor only because the initial import is still
+      // syncing: keep polling, and continue straight into generation the
+      // moment the floor clears — the user already asked for it by opening
+      // the generator.
+      if (s.eligibility.reason === "IMPORTING") {
+        waitedRef.current = true;
+        return s;
+      }
+      stopPolling();
+      if (waitedRef.current) {
+        waitedRef.current = false;
+        if (s.eligibility.eligible) void generateRef.current?.();
+      }
+      return s;
     } catch (err) {
       setError(err instanceof Error ? err.message : _(msg`Failed to load status`));
       setPhase("error");
@@ -105,15 +124,17 @@ export function GenerateFromInboxButton({
     pollRef.current = setInterval(() => void refresh(), POLL_MS);
   }, [refresh, stopPolling]);
 
-  // Reset state and load fresh status each time the modal opens.
-  // If generation is already in progress, resume live polling immediately.
+  // Reset state and load fresh status each time the modal opens. If generation
+  // is already in progress, or the initial import is still syncing the inbox up
+  // to the eligibility floor, resume live polling immediately.
   useEffect(() => {
     if (open) {
       setError(null);
       setStatus(null);
       setPhase("idle");
-      void refresh().then((status) => {
-        if (status === "RUNNING") startPolling();
+      waitedRef.current = false;
+      void refresh().then((s) => {
+        if (s && (s.status === "RUNNING" || s.eligibility.reason === "IMPORTING")) startPolling();
       });
     }
     return () => stopPolling();
@@ -151,6 +172,9 @@ export function GenerateFromInboxButton({
       setPhase("error");
     }
   }
+  useEffect(() => {
+    generateRef.current = handleGenerate;
+  });
 
   async function handleApply() {
     if (!status?.proposal) return;
@@ -297,7 +321,18 @@ export function GenerateFromInboxButton({
                       </Trans>
                     </p>
                     {!canGenerate && eligibility && (
-                      <p className="text-muted">{generationReasonText(eligibility.reason, tReason, eligibility.nextEligibleAt)}</p>
+                      <p className="text-muted">
+                        {eligibility.reason === "IMPORTING" ? (
+                          // The modal is polling and will generate by itself, so
+                          // no "check back later" — just say what it's doing.
+                          <Trans>
+                            Your inbox is still loading. Your folders will be generated as soon as
+                            enough of it has arrived.
+                          </Trans>
+                        ) : (
+                          generationReasonText(eligibility.reason, tReason, eligibility.nextEligibleAt)
+                        )}
+                      </p>
                     )}
                   </>
                 )}

@@ -69,7 +69,6 @@ function makeApi(overrides: Record<string, unknown> = {}): ApiClient {
       proposal: null,
     })),
     generateTaxonomy: vi.fn(async () => ({ ok: true as const, status: "RUNNING" })),
-    syncStatus: vi.fn(async () => ({ backfillStatus: "DONE" })),
     taxonomyTemplateRecommendation: vi.fn(async () => ({ recommendedTemplateId: null })),
     previewTaxonomyImport: vi.fn(async () => ({
       suggestions: [],
@@ -182,18 +181,17 @@ describe("PlanSetupDialog", () => {
       lastOutcome: null,
       proposal: null,
     };
-    const tooSmall = { eligible: false, reason: "INBOX_TOO_SMALL" as const };
+    const importing = { eligible: false, reason: "IMPORTING" as const };
     const api = makeApi({
       taxonomyGeneration: vi
         .fn()
-        // Pre-flight and first tick: still under the floor.
-        .mockResolvedValueOnce({ ...idle, eligibility: tooSmall })
-        .mockResolvedValueOnce({ ...idle, eligibility: tooSmall })
+        // Pre-flight and first tick: still under the floor, backfill running.
+        .mockResolvedValueOnce({ ...idle, eligibility: importing })
+        .mockResolvedValueOnce({ ...idle, eligibility: importing })
         // Second tick: the backfill caught up, generation may start.
         .mockResolvedValueOnce({ ...idle, eligibility: ELIGIBLE })
         // Generation polling: the run finished.
         .mockResolvedValue({ ...idle, eligibility: ELIGIBLE, status: "READY", proposal: PROPOSAL }),
-      syncStatus: vi.fn(async () => ({ backfillStatus: "RUNNING" })),
     });
     renderDialog(api);
 
@@ -221,19 +219,20 @@ describe("PlanSetupDialog", () => {
 
   it("gives up on the wait when the backfill ends with the inbox still too small", async () => {
     vi.useFakeTimers();
+    const idle = {
+      status: "IDLE" as const,
+      importing: false,
+      matchedTemplateId: null,
+      lastOutcome: null,
+      proposal: null,
+    };
     const api = makeApi({
-      taxonomyGeneration: vi.fn(async () => ({
-        status: "IDLE" as const,
-        eligibility: { eligible: false, reason: "INBOX_TOO_SMALL" as const },
-        importing: false,
-        matchedTemplateId: null,
-        lastOutcome: null,
-        proposal: null,
-      })),
-      syncStatus: vi
+      taxonomyGeneration: vi
         .fn()
-        .mockResolvedValueOnce({ backfillStatus: "RUNNING" })
-        .mockResolvedValue({ backfillStatus: "DONE" }),
+        // Backfill running at open, then finished with the inbox still small —
+        // the server flips IMPORTING to the terminal INBOX_TOO_SMALL.
+        .mockResolvedValueOnce({ ...idle, eligibility: { eligible: false, reason: "IMPORTING" as const } })
+        .mockResolvedValue({ ...idle, eligibility: { eligible: false, reason: "INBOX_TOO_SMALL" as const } }),
     });
     renderDialog(api);
 

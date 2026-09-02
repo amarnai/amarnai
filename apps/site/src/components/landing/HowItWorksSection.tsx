@@ -224,7 +224,7 @@ function StepArt3({ provider }: { provider: Provider }) {
   return (
     <div className="ld-sa ld-sa-draft" ref={ref}>
       <div className="ld-dr-thread">
-        <span className="ld-sa-ava">PN</span>
+        <span className="ld-sa-ava">LA</span>
         <span className="ld-dr-subj"><Trans>Re: Q3 renewal</Trans></span>
         <span className="ld-dr-flag">
           <span className="ld-chip-fi" aria-hidden>
@@ -235,7 +235,7 @@ function StepArt3({ provider }: { provider: Provider }) {
       </div>
       <AziruCompose
         provider={provider}
-        toName={_(msg`Priya`)}
+        toName={_(msg`Labaya`)}
         body={_(msg`Thanks for the update. Friday works.`)}
         stage={stage}
         onDraft={startDraft}
@@ -339,23 +339,24 @@ export function HowItWorksSection() {
     },
     {
       id: "describe",
-      title: <Trans>Describe your folders</Trans>,
+      title: <Trans>Set your folders</Trans>,
       headerExtra: null,
       body: (
         <Trans>
           Lay out folders like <em>Customers</em>, <em>Investors</em>,{" "}
-          <em>Hiring</em>. A simple sentence each: that&apos;s the whole setup.
+          <em>Hiring</em>. Generate them in one click,
+          use a template or write them yourself. That&apos;s the whole setup.
         </Trans>
       ),
       art: <StepArt2 />,
     },
     {
       id: "find",
-      title: <Trans>Find and draft</Trans>,
+      title: <Trans>Browse and draft</Trans>,
       headerExtra: null,
       body: (
         <Trans>
-          Browse emails easily through your folders. Click Aziru Reply, and the
+          Find emails easily through your folders. Click Aziru Reply, and the
           draft lands in your compose window, ready for your edits.
         </Trans>
       ),
@@ -368,13 +369,12 @@ export function HowItWorksSection() {
       <div className="ld-wrap">
         <div className="ld-section-head ld-reveal">
           <h2 className="ld-section-h">
-            <Trans>Three steps to a sorted inbox.</Trans>
+            <Trans>Three steps, then you&apos;re set.</Trans>
           </h2>
           <p className="ld-section-lede">
             <Trans>
               Connect once, generate your folders once, and let Aziru handle
-              new mail and the thousands of threads already sitting in your
-              inbox.
+              old and new mail.
             </Trans>
           </p>
         </div>

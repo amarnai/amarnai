@@ -204,7 +204,7 @@ export function EmailsDemoSection() {
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
             <h2 className="ld-section-h">
-              <Trans>Sorted, summarized, and drafted, without leaving your inbox.</Trans>
+              <Trans>Sorted, summarized, and drafted, <span className="soft">without leaving your inbox</span>.</Trans>
             </h2>
             <p className="ld-section-lede">
               <Trans>

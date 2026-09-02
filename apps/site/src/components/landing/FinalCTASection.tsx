@@ -5,12 +5,12 @@ export function FinalCTASection() {
   return (
     <section className="ld-final" id="cta">
       <div className="ld-final-inner ld-reveal">
-        <h2><Trans>Hand the sorting to Aziru.</Trans></h2>
+        <h2><Trans>Let <span className="soft">Aziru</span> handle it.</Trans></h2>
         <p>
           <Trans>
-            Connect your inbox and Aziru starts sorting within minutes. Pricing is
-            per workspace. Sorts new mail as it arrives, and works through years
-            of backlog.
+            Summaries and drafts work as soon as you add the extension. Sorting
+            follows within minutes, for new mail and the years of email already
+            piled up.
           </Trans>
         </p>
         <CtaButtons rowClassName="ld-final-cta-row" signUpLabel={<Trans>Try Aziru</Trans>} />

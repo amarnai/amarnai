@@ -137,7 +137,9 @@ export function ReviewsSection() {
       <div className="ld-wrap">
         <div className="ld-section-head ld-reveal">
           <h2 className="ld-section-h">
-            <Trans>Reviews from early users</Trans>
+            <Trans comment="Ironic: the reviews below are from ancient Amarna-letter figures, so 'early' is a joke">
+              Reviews from <q>early</q> users
+            </Trans>
           </h2>
         </div>
 

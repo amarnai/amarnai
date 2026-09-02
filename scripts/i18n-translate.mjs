@@ -135,6 +135,15 @@ function writePo(entries) {
 
 // ── ICU placeholder extraction ────────────────────────────────────────────────
 
+// French typography puts a space before ?!;: and inside « » — it must be a
+// narrow no-break space (U+202F), or the punctuation wraps to its own line.
+function fixFrenchPunctuationSpacing(locale, str) {
+  if (locale !== "fr") return str;
+  return str
+    .replace(/ ([?!;:»])/g, " $1")
+    .replace(/« /g, "« ");
+}
+
 function extractPlaceholders(str) {
   // Extract ICU argument placeholders as {name} tokens, ignoring the literal
   // text inside plural/select sub-messages. A naive /\{(\w+)/ regex wrongly
@@ -326,8 +335,13 @@ async function buildProvider() {
 // "thread" is always an email *conversation* (never a literal sewing thread/wire),
 // so we anchor it to the locale's word for a conversation. Extend this with other
 // domain terms (e.g. "folder") as drift shows up.
+const GLOSSARY_NOTES = {
+  thread: "an email conversation, NOT a sewing thread or wire",
+  threads: "email conversations, NOT sewing threads or wires",
+};
+
 const GLOSSARY = {
-  fr: { thread: "conversation", threads: "conversations" },
+  fr: { thread: "conversation", threads: "conversations", inbox: "boîte mail" },
   es: { thread: "conversación", threads: "conversaciones" },
   de: { thread: "Konversation", threads: "Konversationen" },
   "pt-BR": { thread: "conversa", threads: "conversas" },
@@ -363,7 +377,7 @@ function buildPrompt(locale, batch) {
   const glossaryBlock = glossary
     ? `\n\nGLOSSARY — use these exact target terms for these concepts, consistently, adjusting only for grammar (gender, number, agreement):\n` +
       Object.entries(glossary)
-        .map(([en, tgt]) => `- "${en}" (an email conversation, NOT a sewing thread or wire) → "${tgt}"`)
+        .map(([en, tgt]) => `- "${en}"${GLOSSARY_NOTES[en] ? ` (${GLOSSARY_NOTES[en]})` : ""} → "${tgt}"`)
         .join("\n")
     : "";
 
@@ -514,7 +528,7 @@ async function main() {
       for (const entry of batch) {
         const translation = validation.data[entry.msgid];
         if (translation) {
-          entry.msgstr = translation;
+          entry.msgstr = fixFrenchPunctuationSpacing(locale, translation);
           entry.needsFuzzy = true;
         }
       }

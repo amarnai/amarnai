@@ -7,7 +7,7 @@ export function TaxonomyDemoSection() {
       <div className="ld-wrap">
         <div className="ld-demo-head ld-reveal">
           <div className="ld-copy">
-            <h2 className="ld-section-h"><Trans>Generate your folders.</Trans></h2>
+            <h2 className="ld-section-h"><Trans>Generate your folders <span className="soft">in one click</span>.</Trans></h2>
             <p className="ld-section-lede">
               <Trans>
                 Your folders form a simple tree, branching out from the inbox.

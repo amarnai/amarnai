@@ -221,9 +221,10 @@ export function PlanSetupDialog({
   }, [api, workspaceId, startPolling, showUnavailable, tReason, _]);
 
   // The inbox is under the eligibility floor only because the initial backfill
-  // hasn't synced enough threads yet: sit on the spinner, re-read eligibility
-  // each tick, and start generation the moment the floor clears. Terminal only
-  // when the backfill itself stops while the inbox is still too small.
+  // hasn't synced enough threads yet (the server reports this as IMPORTING):
+  // sit on the spinner, re-read eligibility each tick, and start generation the
+  // moment the floor clears. The server flips IMPORTING to a terminal reason
+  // (e.g. INBOX_TOO_SMALL) once the backfill ends, which ends the wait.
   // ponytail: no wait timeout — the Close button is the escape hatch; add a cap
   // if backfills turn out to stall while reporting RUNNING.
   const startBackfillWait = useCallback(() => {
@@ -250,19 +251,12 @@ export function PlanSetupDialog({
             await startGeneration();
             return;
           }
-          if (s.eligibility.reason !== "INBOX_TOO_SMALL") {
+          if (s.eligibility.reason !== "IMPORTING") {
             stopPolling();
             setWaitingForInbox(false);
             showUnavailable(
               generationReasonText(s.eligibility.reason, tReason, s.eligibility.nextEligibleAt),
             );
-            return;
-          }
-          const sync = await api.syncStatus(workspaceId);
-          if (sync && sync.backfillStatus !== "PENDING" && sync.backfillStatus !== "RUNNING") {
-            stopPolling();
-            setWaitingForInbox(false);
-            showUnavailable(generationReasonText("INBOX_TOO_SMALL", tReason));
           }
         } catch {
           // Transient failure: the next tick tries again.
@@ -301,16 +295,13 @@ export function PlanSetupDialog({
       return;
     }
     if (!status.eligibility.eligible) {
-      // Too small right after connect usually means the backfill hasn't caught
-      // up yet, not a genuinely tiny inbox — wait for it instead of bouncing
-      // the user to templates.
-      if (status.eligibility.reason === "INBOX_TOO_SMALL") {
-        const sync = await api.syncStatus(workspaceId).catch(() => null);
-        if (sync?.backfillStatus === "PENDING" || sync?.backfillStatus === "RUNNING") {
-          setWaitingForInbox(true);
-          startBackfillWait();
-          return;
-        }
+      // IMPORTING means the inbox is under the floor only because the initial
+      // backfill is still syncing — wait for it instead of bouncing the user
+      // to templates.
+      if (status.eligibility.reason === "IMPORTING") {
+        setWaitingForInbox(true);
+        startBackfillWait();
+        return;
       }
       showUnavailable(
         generationReasonText(status.eligibility.reason, tReason, status.eligibility.nextEligibleAt),
